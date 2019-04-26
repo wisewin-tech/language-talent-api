@@ -1,6 +1,7 @@
 package com.wisewin.api.entity.bo;
 
-import com.wisewin.backend.common.base.BaseModel;
+
+import com.wisewin.api.common.base.BaseModel;
 
 import java.util.Date;
 

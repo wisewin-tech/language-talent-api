@@ -1,11 +1,14 @@
 package com.wisewin.api.entity.bo;
 
-import com.wisewin.backend.common.base.BaseModel;
+
+
+
+import com.wisewin.api.common.base.BaseModel;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class CourseBO extends BaseModel{
+public class CourseBO extends BaseModel {
     private Integer id; //课程分类表
     private String courseName; //课程名称
     private String languageId; //语言id
@@ -25,6 +28,8 @@ public class CourseBO extends BaseModel{
     private Date createTime; //创建时间
     private Integer updateUserId; //修改人id
     private Date updateTime; //修改时间
+    private String languageName;//语言名称
+    private String thumbnailImageUrl;//国旗图片路径
 
     public Integer getId() {
         return id;
@@ -176,5 +181,21 @@ public class CourseBO extends BaseModel{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getLanguageName() {
+        return languageName;
+    }
+
+    public void setLanguageName(String languageName) {
+        this.languageName = languageName;
+    }
+
+    public String getThumbnailImageUrl() {
+        return thumbnailImageUrl;
+    }
+
+    public void setThumbnailImageUrl(String thumbnailImageUrl) {
+        this.thumbnailImageUrl = thumbnailImageUrl;
     }
 }

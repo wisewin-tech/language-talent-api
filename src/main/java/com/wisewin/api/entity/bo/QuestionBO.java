@@ -1,11 +1,13 @@
 package com.wisewin.api.entity.bo;
 
-import com.wisewin.backend.common.base.BaseModel;
+
+
+import com.wisewin.api.common.base.BaseModel;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class QuestionBO extends BaseModel{
+public class QuestionBO extends BaseModel {
     private Integer id; //题库表
     private String topic; //题目
     private String option; //选项

@@ -1,10 +1,11 @@
 package com.wisewin.api.entity.bo;
 
-import com.wisewin.backend.common.base.BaseModel;
+
+import com.wisewin.api.common.base.BaseModel;
 
 import java.util.Date;
 
-public class HelpCenterBO extends BaseModel{
+public class HelpCenterBO extends BaseModel {
     private Integer id; //帮助中心
     private String title; //标题
     private String content; //内容

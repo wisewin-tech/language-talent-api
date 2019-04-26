@@ -1,10 +1,11 @@
 package com.wisewin.api.entity.bo;
 
-import com.wisewin.backend.common.base.BaseModel;
+
+import com.wisewin.api.common.base.BaseModel;
 
 import java.util.Date;
 
-public class MyCertificateBO extends BaseModel{
+public class MyCertificateBO extends BaseModel {
     private Integer id; //我的证书
     private Integer userId; //用户id
     private Integer certificateId; //证书id

@@ -1,11 +1,12 @@
 package com.wisewin.api.entity.bo;
 
-import com.wisewin.backend.common.base.BaseModel;
+
+import com.wisewin.api.common.base.BaseModel;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class LanguageBO extends BaseModel{
+public class LanguageBO extends BaseModel {
     private Integer id; //语言表
     private String languageName; //语言名称
     private String status; //状态
