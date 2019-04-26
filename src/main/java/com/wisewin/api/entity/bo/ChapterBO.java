@@ -9,6 +9,7 @@ public class ChapterBO extends BaseModel {
     private Integer id; //课时表
     private String chapterName; //课时名称
     private Integer levelId; //级别id
+    private String status;//状态
     private String videoPath; //链接地址
     private String duration; //时长
     private String chapterIntro; //简介
@@ -42,6 +43,14 @@ public class ChapterBO extends BaseModel {
 
     public void setLevelId(Integer levelId) {
         this.levelId = levelId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getVideoPath() {

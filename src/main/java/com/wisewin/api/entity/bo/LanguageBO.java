@@ -18,10 +18,13 @@ public class LanguageBO extends BaseModel {
     private String purchaseNotes; //购买须知
     private String videoPath; //视频路径
     private String languageIntro; //语言简介
-    private BigDecimal price; //价格
-    private BigDecimal discountPrice; //特惠价
+    private BigDecimal languagePrice; //价格
+    private BigDecimal languageDiscountPrice; //特惠价
     private Date discountStartTime; //特惠开始时间
-    private Date discountEndTime; //特惠结束时间
+    private Date discountEndTime; //特惠结束时
+    private String courseName;//课程名称
+    private BigDecimal coursePrice;//课程价格
+    private BigDecimal courseDiscountPrice;//课程特惠价格
     private Integer createUserId; //创建人id
     private Date createTime; //创建时间
     private Integer updateUserId; //修改人id
@@ -115,20 +118,20 @@ public class LanguageBO extends BaseModel {
         this.languageIntro = languageIntro;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getLanguagePrice() {
+        return languagePrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setLanguagePrice(BigDecimal languagePrice) {
+        this.languagePrice = languagePrice;
     }
 
-    public BigDecimal getDiscountPrice() {
-        return discountPrice;
+    public BigDecimal getLanguageDiscountPrice() {
+        return languageDiscountPrice;
     }
 
-    public void setDiscountPrice(BigDecimal discountPrice) {
-        this.discountPrice = discountPrice;
+    public void setLanguageDiscountPrice(BigDecimal languageDiscountPrice) {
+        this.languageDiscountPrice = languageDiscountPrice;
     }
 
     public Date getDiscountStartTime() {
@@ -145,6 +148,30 @@ public class LanguageBO extends BaseModel {
 
     public void setDiscountEndTime(Date discountEndTime) {
         this.discountEndTime = discountEndTime;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public BigDecimal getCoursePrice() {
+        return coursePrice;
+    }
+
+    public void setCoursePrice(BigDecimal coursePrice) {
+        this.coursePrice = coursePrice;
+    }
+
+    public BigDecimal getCourseDiscountPrice() {
+        return courseDiscountPrice;
+    }
+
+    public void setCourseDiscountPrice(BigDecimal courseDiscountPrice) {
+        this.courseDiscountPrice = courseDiscountPrice;
     }
 
     public Integer getCreateUserId() {

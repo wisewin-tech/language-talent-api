@@ -11,8 +11,10 @@ public class QuestionBO extends BaseModel {
     private Integer id; //题库表
     private String topic; //题目
     private String option; //选项
+    private String content;//内容
     private String answer; //答案
     private String analysis; //解析
+    private String questionType;//题型
     private BigDecimal score; //分值
     private String stage; //阶段
     private Integer chapterId; //课时id
@@ -48,6 +50,14 @@ public class QuestionBO extends BaseModel {
         this.option = option;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getAnswer() {
         return answer;
     }
@@ -62,6 +72,14 @@ public class QuestionBO extends BaseModel {
 
     public void setAnalysis(String analysis) {
         this.analysis = analysis;
+    }
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
     }
 
     public BigDecimal getScore() {

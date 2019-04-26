@@ -20,6 +20,8 @@ public class CourseDTO {
     private String purchaseNotes; //购买须知
     private Integer popularSort; //热门排序
     private String hotOrNot; //是否为热门
+    private String certificateOrNot;//是否可以考证
+    private Integer certificateId;//证书id
     private Integer createUserId; //创建人id
     private Date createTime; //创建时间
     private Integer updateUserId; //修改人id
@@ -143,6 +145,22 @@ public class CourseDTO {
 
     public void setHotOrNot(String hotOrNot) {
         this.hotOrNot = hotOrNot;
+    }
+
+    public String getCertificateOrNot() {
+        return certificateOrNot;
+    }
+
+    public void setCertificateOrNot(String certificateOrNot) {
+        this.certificateOrNot = certificateOrNot;
+    }
+
+    public Integer getCertificateId() {
+        return certificateId;
+    }
+
+    public void setCertificateId(Integer certificateId) {
+        this.certificateId = certificateId;
     }
 
     public Integer getCreateUserId() {

@@ -8,6 +8,7 @@ public class LevelBO extends BaseModel {
     private Integer id; //级别表
     private Integer levelName; //级别名称
     private Integer courseId; //课程id
+    private String status;//状态
     private String levelIntro; //简介
     private Integer serialNumber; //序号
     private Integer createUserId; //添加人id
@@ -37,6 +38,14 @@ public class LevelBO extends BaseModel {
 
     public void setCourseId(Integer courseId) {
         this.courseId = courseId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getLevelIntro() {

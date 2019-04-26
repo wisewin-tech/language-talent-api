@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class MedalBO extends BaseModel {
     private Integer id; //勋章表
+    private Integer levelId;//级别id
     private String medalName; //勋章名称
     private String imageUrl; //图片路径
     private Integer createUserId; //创建人id
@@ -19,6 +20,14 @@ public class MedalBO extends BaseModel {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
     }
 
     public String getMedalName() {
