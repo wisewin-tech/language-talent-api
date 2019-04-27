@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【记录】 -->
+<mapper namespace="com.wisewin.api.dao.RecordDAO">
+
+   <!--添加用户行为记录-->
+    <insert id="insertUserAction"     parameterType="com.wisewin.api.entity.bo.RecordBO">
+
+        INSERT INTO lt_record
+        <set>
+            <if test="userId!=null">`user_id`=#{userId},</if>
+            <if test="source!=null">`source`=#{source},</if>
+            <if test="status!=null">`status`=#{status},</if>
+            <if test="specificAmount!=null">`specific_amount`=#{specificAmount},</if>
+            <if test="describe!=null">`describe`=#{describe},</if>
+            `create_time`=now()
+
+        </set>
+
+    </insert>
+    <!--查询用户行为记录-->
+    <select id="selectUserAction" resultType="com.wisewin.api.entity.bo.RecordBO">
+        select
+        `id`,`user_id`,`source`,`status`,`specific_amount`,`describe` ,`effective_date`,
+        `create_time`,`update_time`,`create_id`,`update_id`
+        from
+         `lt_record`
+
+        <where>
+            user_id=#{userId}
+
+            <if test="source!=null">AND source=#{source}</if>
+            <if test="status!=null">AND status=#{status}</if>
+        </where>
+
+        <include refid="limit" />
+
+    </select>
+
+    <sql id="limit">
+        limit #{pageOffset},#{pageSize}
+    </sql>
+
+</mapper>

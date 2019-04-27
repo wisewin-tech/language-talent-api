@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【签到】 -->
+<mapper namespace="com.wisewin.api.dao.SignDAO">
+    <!--查询用户本月签到记录-->
+    <select id="selectMon" resultType="com.wisewin.api.entity.bo.SignBO"
+            parameterType="java.util.Map">
+        SELECT
+        id,user_id,DATE_FORMAT(sign_time,'%Y-%m-%d') AS sign_time FROM lt_sign
+        WHERE
+	    sign_time BETWEEN #{monstart} AND #{monend}  AND  user_id=#{userId}
+    </select>
+
+    <!--查询用签到表一个用户的最新信息-->
+    <select id="selectNew" resultType="com.wisewin.api.entity.bo.SignBO"
+            parameterType="java.lang.Integer">
+        SELECT
+        id,user_id,sign_time FROM lt_sign
+        WHERE
+        id=(SELECT MAX(id) FROM lt_sign WHERE user_id=#{userId} )
+    </select>
+
+    <!--查询用户表用户签到信息-->
+    <select id="selectUserSign" resultType="com.wisewin.api.entity.bo.UserSignBO"
+            parameterType="java.lang.Integer">
+        SELECT id,continuous_sign,cumulative_sign,last_sign,integral
+        FROM lt_user
+        WHERE id=#{id}
+    </select>
+
+
+
+    <!--签到-->
+    <insert id="insertSign" parameterType="java.lang.Integer">
+      INSERT INTO lt_sign
+        <set>
+            user_id=#{userId},
+            sign_time=now()
+        </set>
+
+    </insert>
+    <update id="updateUserSign" parameterType="com.wisewin.api.entity.bo.UserBO">
+        update lt_user
+        <set>
+
+            <if test="continuousSign!=null">continuous_sign=#{continuousSign},</if>
+            <if test="cumulativeSign!=null">cumulative_sign=#{cumulativeSign},</if>
+            <if test="integral!=null">      integral=#{integral},</if>
+            last_sign=now()
+
+        </set>
+        where
+        id=#{id}
+    </update>
+
+
+
+
+
+</mapper>

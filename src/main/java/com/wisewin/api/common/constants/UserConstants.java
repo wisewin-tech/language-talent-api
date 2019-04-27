@@ -1,21 +1,38 @@
 package com.wisewin.api.common.constants;
 
 public enum UserConstants {
-        /* 管理员用户信息 */
-        MAN("man"),WOMEN("women"),
 
-        /*  管理员状态 */
-        NORMAL("normal"),LOGOUT("logout"),
-
-        /*  管理员标识 */
-        YES("yes"),NO("no"),
         /*  验证码标识` */
-        VERIFY("verify");
+        VERIFY("verify"),
+        /*  积分  */
+        Integral("积分"),
+        /*  咖豆  */
+
+        /*  增加  */
+        Increase("获取"),
+        /*  减少  */
+        Decrease("支出"),
+        /*  签到增加积分值` */
+        signNum(10);
 
     private UserConstants(String value) {
         this.value = value;
     }
+
+    private UserConstants(Integer num) {
+        this.num = num;
+    }
+
     private String value;
+    private Integer num;
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
 
     public String getValue() {
         return value;

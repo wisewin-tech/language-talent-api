@@ -2,7 +2,7 @@ package com.wisewin.api.web.controller.base;
 
 import com.google.common.collect.Lists;
 import com.wisewin.api.common.constants.SysConstants;
-import com.wisewin.api.entity.bo.TestBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.query.PageObject;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.util.redisUtils.RedissonHandler;
@@ -36,6 +36,20 @@ public class BaseCotroller {
     protected PageObject pager = null;
     private int default_page_size = 10;
     private int default_page_no = 1;
+
+    /**
+     * 获取cookie中的user对象,通过user对象返回id
+     * @param request
+     * @return
+     */
+    public Integer getId(HttpServletRequest request) {
+        UserBO user =  this.getLoginUser(request);
+        if(user != null) {
+            return user.getId();
+        }else {
+            return null;
+        }
+    }
 
     /**
      * 异步返回结果
@@ -222,14 +236,23 @@ public class BaseCotroller {
     }
 
     /** 获取登录用户*/
-    public TestBO getLoginUser (HttpServletRequest request ) {
-        return (TestBO)this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+    public UserBO getLoginUser (HttpServletRequest request ) {
+        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
     }
 
+    /**获取登录管理员*/
+//    public AdminBO getLoginAdmin (HttpServletRequest request ) {
+//        return (AdminBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+//    }
+
     /** putLoginUser*/
-    public void putLoginUser (String loginId , TestBO loginUser) {
+    public void putLoginUser (String loginId , UserBO loginUser) {
         this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
     }
+    /** putLoginAdmin*/
+//    public void putLoginAdmin (String loginId , AdminBO loginUser) {
+//        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
+//    }
 
 
 //    /** 获取登录用户*/
