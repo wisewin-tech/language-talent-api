@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.LanguageDAO">
+    <!--为你定制-->
+    <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.LanguageBO">
+        SELECT
+	      ensign_image_url ensignImageUrl,
+	      `language`.id languageId
+        FROM
+	      lt_language `language`
+        WHERE
+	      `language`.`status` = 'putaway' AND `language`.hot_or_not = 'yes'
+    </select>
+    <!--限时特惠-->
+    <select id="getFlashSales" resultType="com.wisewin.api.entity.bo.LanguageBO">
+       SELECT
+	    `language`.thumbnail_image_url,
+	    `language`.language_name,
+	    `language`.language_intro,
+	    `language`.price,
+	    `language`.discount_price,
+	    `language`.discount_end_time,
+	    course.id courseId
+      FROM
+	    lt_language `language`
+	    LEFT JOIN lt_course course ON `language`.id = course.language_id
+      WHERE
+	    `language`.`status` = 'putaway'
+      AND NOW() BETWEEN `language`.discount_start_time
+      AND `language`.discount_end_time
+    </select>
+    <!--语言详情页-->
+    <select id="languageDetails" resultType="com.wisewin.api.entity.bo.LanguageBO">
+        SELECT
+         `language`.video_path,`language`.language_name,
+	     `language`.language_intro,`language`.language_lightspot,
+	     `language`.purchase_notes,`language`.price languserPrice,
+	     `language`.discount_price languageDiscountPrice,course.course_name,
+	     course.price coursePrice,course.discount_price courseDiscountPrice,
+	     chapter.level_id levelId
+        FROM
+	      lt_language `language`
+        LEFT JOIN lt_course `course` ON `language`.id = course.language_id
+        LEFT JOIN lt_level `level` ON course.id = `level`.course_id
+        LEFT JOIN lt_chapter `chapter` ON `level`.id = chapter.level_id
+        WHERE
+	      `language`.`status` = 'putaway'
+        AND `language`.hot_or_not = 'yes' AND course.`status` = 'putaway'
+    </select>
+</mapper>

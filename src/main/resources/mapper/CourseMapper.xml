@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.CourseDAO">
+
+    <!--热门课程-->
+    <select id="getHotCourse" resultType="com.wisewin.api.entity.bo.CourseBO">
+       SELECT
+	    `language`.language_name,
+	    `language`.thumbnail_image_url,
+	    course.course_name,
+	    course.course_intro,
+	    course.certificate_or_not,
+	    course.id courseId
+      FROM
+	    lt_course `course`
+      JOIN lt_language `language` ON course.language_id = `language`.id
+      WHERE course.hot_or_not = 'yes'
+    </select>
+
+</mapper>
