@@ -25,10 +25,21 @@ public class LanguageBO extends BaseModel {
     private String courseName;//课程名称
     private BigDecimal coursePrice;//课程价格
     private BigDecimal courseDiscountPrice;//课程特惠价格
+    private Integer chapterCount;//课时数
+    private Integer levelId;//级别id
     private Integer createUserId; //创建人id
     private Date createTime; //创建时间
     private Integer updateUserId; //修改人id
     private Date updateTime; //修改时间
+    private Integer courseId;//课程id
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
 
     public Integer getId() {
         return id;
@@ -172,6 +183,22 @@ public class LanguageBO extends BaseModel {
 
     public void setCourseDiscountPrice(BigDecimal courseDiscountPrice) {
         this.courseDiscountPrice = courseDiscountPrice;
+    }
+
+    public Integer getChapterCount() {
+        return chapterCount;
+    }
+
+    public void setChapterCount(Integer chapterCount) {
+        this.chapterCount = chapterCount;
+    }
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
     }
 
     public Integer getCreateUserId() {

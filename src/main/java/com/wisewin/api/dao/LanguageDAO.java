@@ -16,4 +16,16 @@ public interface LanguageDAO {
      * @return
      */
     LanguageBO selectLanguage(Integer id);
+
+    /**
+     * 语言详情页
+     * @return
+     */
+    List<LanguageBO> languageDetails();
+    /**
+     *  课时数
+     * @param levelId  级别id
+     * @return 数量 可能为null
+     */
+    Integer chapterCount(Integer levelId);
 }

@@ -32,6 +32,7 @@ public class CourseBO extends BaseModel {
     private Date updateTime; //修改时间
     private String languageName;//语言名称
     private String thumbnailImageUrl;//国旗图片路径
+    private Integer courseId;//课程id
 
     public Integer getId() {
         return id;
@@ -215,5 +216,13 @@ public class CourseBO extends BaseModel {
 
     public void setThumbnailImageUrl(String thumbnailImageUrl) {
         this.thumbnailImageUrl = thumbnailImageUrl;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 }
