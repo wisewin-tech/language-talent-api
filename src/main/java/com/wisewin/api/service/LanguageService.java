@@ -47,14 +47,8 @@ public class LanguageService {
      * 语言详情
      * @return
      */
-    public List<LanguageBO> languageDetails(){
-        List<LanguageBO> languageBOList = languageDAO.languageDetails();
-        for (LanguageBO languageBO:languageBOList){
-              Integer  sum=languageDAO.chapterCount(languageBO.getLevelId());
-              languageBO.setChapterCount(sum);
-        }
-
-
+    public List<LanguageBO> languageDetails(LanguageBO id){
+        List<LanguageBO> languageBOList = languageDAO.languageDetails(id);
         return languageBOList;
     }
 }

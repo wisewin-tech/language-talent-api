@@ -13,11 +13,44 @@
 	    course.course_name,
 	    course.course_intro,
 	    course.certificate_or_not,
-	    course.id courseId
+	    course.id
       FROM
 	    lt_course `course`
       JOIN lt_language `language` ON course.language_id = `language`.id
       WHERE course.hot_or_not = 'yes'
     </select>
 
+    <!--课程详情页-->
+    <select id="courseDetails" parameterType="com.wisewin.api.entity.bo.CourseBO" resultType="com.wisewin.api.entity.bo.CourseBO">
+        SELECT
+			`language`.language_name languageName,
+			course.thumbnail_image_url courseThumbnail,
+			course.course_name,course.course_intro,
+			course.certificate_or_not,certificate.id certificateId,
+			certificate.title certificateTitle,certificate.image_url certificateImageUrl,
+			certificate.certificate_intro certificateIntro,
+			`level`.level_name levelName,`level`.id levelId,
+			course.course_lightspot,course.purchase_notes,
+			course.price,course.discount_price,course.id
+		FROM
+			lt_course `course`
+		LEFT JOIN lt_language `language` ON course.language_id = `language`.id
+		LEFT JOIN lt_level `level` ON course.id = `level`.course_id
+		LEFT JOIN lt_certificate `certificate` ON course.certificate_id = certificate.id
+		WHERE
+			course.`status` = 'putaway' AND course.id = #{id}
+    </select>
+	<!--搜索课程-->
+	<select id="courseSearch" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.CourseBO">
+		SELECT
+			`language`.language_name,course.course_name,
+			course.course_intro,course.thumbnail_image_url,
+			course.certificate_or_not,course.id courseId
+		FROM lt_course `course`
+		LEFT JOIN lt_language `language` ON course.language_id = `language`.id
+		<where>
+			`language`.language_name LIKE concat('%',#{languageName},'%')
+			AND course.`status`='putaway'
+		</where>
+	</select>
 </mapper>

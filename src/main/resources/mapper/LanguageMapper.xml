@@ -8,7 +8,7 @@
     <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.LanguageBO">
         SELECT
 	      ensign_image_url ensignImageUrl,
-	      `language`.id languageId
+	      `language`.id
         FROM
 	      lt_language `language`
         WHERE
@@ -33,21 +33,30 @@
       AND `language`.discount_end_time
     </select>
     <!--语言详情页-->
-    <select id="languageDetails" resultType="com.wisewin.api.entity.bo.LanguageBO">
-        SELECT
-         `language`.video_path,`language`.language_name,
-	     `language`.language_intro,`language`.language_lightspot,
-	     `language`.purchase_notes,`language`.price languserPrice,
-	     `language`.discount_price languageDiscountPrice,course.course_name,
-	     course.price coursePrice,course.discount_price courseDiscountPrice,
-	     chapter.level_id levelId
-        FROM
-	      lt_language `language`
-        LEFT JOIN lt_course `course` ON `language`.id = course.language_id
-        LEFT JOIN lt_level `level` ON course.id = `level`.course_id
-        LEFT JOIN lt_chapter `chapter` ON `level`.id = chapter.level_id
-        WHERE
-	      `language`.`status` = 'putaway'
-        AND `language`.hot_or_not = 'yes' AND course.`status` = 'putaway'
+    <select id="languageDetails" parameterType="com.wisewin.api.entity.bo.LanguageBO" resultType="com.wisewin.api.entity.bo.LanguageBO">
+       SELECT
+	`language`.video_path,`language`.id,
+	`language`.language_name,
+	`language`.language_intro,
+	`language`.language_lightspot,
+	`language`.purchase_notes,
+	`language`.price languserPrice,
+	`language`.discount_price languageDiscountPrice,
+    `level`.level_name levelName,`level`.id levelId,
+	course.id courseId,course.certificate_or_not certificateOrNot,course.certificate_id certificateId,
+	course.course_name courseName,
+	course.price coursePrice,
+	course.discount_price courseDiscountPrice
+FROM
+	lt_language `language`
+LEFT JOIN lt_course `course` ON `language`.id = course.language_id
+LEFT JOIN lt_level `level` ON course.id = `level`.course_id
+LEFT JOIN lt_chapter `chapter` ON `level`.id = chapter.level_id
+WHERE
+	`language`.`status` = 'putaway'
+AND course.`status` = 'putaway'
+	AND `language`.id = #{id}
+
     </select>
+
 </mapper>

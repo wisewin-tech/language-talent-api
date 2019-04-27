@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【课时】 -->
+<mapper namespace="com.wisewin.api.dao.ChapterDAO">
+    <!--查询某个级别下的课时列表-->
+    <select id="chapterTist" parameterType="com.wisewin.api.entity.bo.ChapterBO" resultType="com.wisewin.api.entity.bo.ChapterBO">
+        SELECT
+	      `language`.language_name,
+	      `level`.level_name,
+	      chapter.chapter_name,
+	      chapter.free_or_not,
+	      chapter.id
+        FROM
+	      lt_chapter `chapter`
+        LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
+        LEFT JOIN lt_course `course` ON `level`.course_id = course.id
+        LEFT JOIN lt_language `language` ON course.language_id = `language`.id
+        WHERE
+	        chapter.`status`='putaway' AND `level`.id = #{levelId}
+    </select>
+    <!--查询某个级别下的课时数-->
+    <select id="chapterNum" resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM lt_chapter WHERE level_id = #{levelId}
+    </select>
+    <!--课时详情-->
+    <select id="chapterDetails" parameterType="com.wisewin.api.entity.bo.ChapterBO" resultType="com.wisewin.api.entity.bo.ChapterBO">
+        SELECT
+	      `language`.language_name,course.course_name,
+	      `level`.level_name,chapter.chapter_name,
+	      chapter.video_path,chapter.chapter_intro,
+	      chapter.manuscript,chapter.content
+        FROM lt_chapter `chapter`
+        LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
+        LEFT JOIN lt_course `course` ON `level`.course_id = course.id
+        LEFT JOIN lt_language `language` ON course.language_id = `language`.id
+        WHERE chapter.id = #{id}
+
+    </select>
+
+</mapper>

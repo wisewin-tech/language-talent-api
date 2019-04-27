@@ -27,11 +27,47 @@ public class LanguageBO extends BaseModel {
     private BigDecimal courseDiscountPrice;//课程特惠价格
     private Integer chapterCount;//课时数
     private Integer levelId;//级别id
+    private String levelName;//级别名称
     private Integer createUserId; //创建人id
     private Date createTime; //创建时间
     private Integer updateUserId; //修改人id
     private Date updateTime; //修改时间
     private Integer courseId;//课程id
+    private String certificateOrNot;//是否可以考证
+    private Integer certificateId;//证书id
+    private String certificateImage;//证书图片
+
+    public String getCertificateImage() {
+        return certificateImage;
+    }
+
+    public void setCertificateImage(String certificateImage) {
+        this.certificateImage = certificateImage;
+    }
+
+    public Integer getCertificateId() {
+        return certificateId;
+    }
+
+    public void setCertificateId(Integer certificateId) {
+        this.certificateId = certificateId;
+    }
+
+    public String getCertificateOrNot() {
+        return certificateOrNot;
+    }
+
+    public void setCertificateOrNot(String certificateOrNot) {
+        this.certificateOrNot = certificateOrNot;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
+    }
 
     public Integer getCourseId() {
         return courseId;

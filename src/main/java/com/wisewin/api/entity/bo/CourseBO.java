@@ -33,6 +33,12 @@ public class CourseBO extends BaseModel {
     private String languageName;//语言名称
     private String thumbnailImageUrl;//国旗图片路径
     private Integer courseId;//课程id
+    private String courseThumbnail;//缩略图
+    private String certificateTitle;//证书标题
+    private String certificateImageUrl;//证书图片地址
+    private String certificateIntro;//证书简介
+    private String levelName;//级别名称
+    private Integer levelId;//级别id
 
     public Integer getId() {
         return id;
@@ -224,5 +230,53 @@ public class CourseBO extends BaseModel {
 
     public void setCourseId(Integer courseId) {
         this.courseId = courseId;
+    }
+
+    public String getCourseThumbnail() {
+        return courseThumbnail;
+    }
+
+    public void setCourseThumbnail(String courseThumbnail) {
+        this.courseThumbnail = courseThumbnail;
+    }
+
+    public String getCertificateTitle() {
+        return certificateTitle;
+    }
+
+    public void setCertificateTitle(String certificateTitle) {
+        this.certificateTitle = certificateTitle;
+    }
+
+    public String getCertificateImageUrl() {
+        return certificateImageUrl;
+    }
+
+    public void setCertificateImageUrl(String certificateImageUrl) {
+        this.certificateImageUrl = certificateImageUrl;
+    }
+
+    public String getCertificateIntro() {
+        return certificateIntro;
+    }
+
+    public void setCertificateIntro(String certificateIntro) {
+        this.certificateIntro = certificateIntro;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
+    }
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
     }
 }

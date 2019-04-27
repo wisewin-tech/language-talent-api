@@ -15,6 +15,7 @@ public class CourseDTO {
     private Date discountStartTime; //特惠开始时间
     private Date discountEndTime; //特惠结束时间
     private Integer studyNumber; //学习人数
+    private String thumbnailImageUrl;//缩略图
     private String courseIntro; //课程简介
     private String courseLightspot; //课程亮点
     private String purchaseNotes; //购买须知
@@ -105,6 +106,14 @@ public class CourseDTO {
 
     public void setStudyNumber(Integer studyNumber) {
         this.studyNumber = studyNumber;
+    }
+
+    public String getThumbnailImageUrl() {
+        return thumbnailImageUrl;
+    }
+
+    public void setThumbnailImageUrl(String thumbnailImageUrl) {
+        this.thumbnailImageUrl = thumbnailImageUrl;
     }
 
     public String getCourseIntro() {

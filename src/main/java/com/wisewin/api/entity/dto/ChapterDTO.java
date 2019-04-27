@@ -7,6 +7,7 @@ public class ChapterDTO {
     private Integer id; //课时表
     private String chapterName; //课时名称
     private Integer levelId; //级别id
+    private String content;//课时内容
     private String status;//状态
     private String videoPath; //链接地址
     private String duration; //时长
@@ -41,6 +42,14 @@ public class ChapterDTO {
 
     public void setLevelId(Integer levelId) {
         this.levelId = levelId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getStatus() {

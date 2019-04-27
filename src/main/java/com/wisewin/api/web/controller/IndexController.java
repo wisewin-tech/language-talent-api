@@ -7,6 +7,7 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.BannerService;
 import com.wisewin.api.service.CourseService;
 import com.wisewin.api.service.LanguageService;
+import com.wisewin.api.service.SignService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -28,12 +29,16 @@ public class IndexController extends BaseCotroller {
     private CourseService courseService;
     @Resource
     private BannerService bannerService;
+    @Resource
+    private SignService signService;
     @RequestMapping("/showIndex")
     public void showIndex(HttpServletRequest request, HttpServletResponse response){
         List<LanguageBO> ensignImage = languageService.selectEnsignImage();
         List<LanguageBO> flashSales = languageService.getFlashSales();
         List<CourseBO> hotCourse = courseService.getHotCourse();
         List<BannerBO> banner = bannerService.getBanner();
+
+        //signService.selectMon()
         Map map = new HashMap();
         map.put("EnsignImage",ensignImage);
         map.put("FlashSales",flashSales);

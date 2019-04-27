@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.CertificateDAO">
+    <!--查询证书图片-->
+    <select id="certificateImage" parameterType="java.lang.Integer" resultType="String">
+        SELECT image_url FROM lt_certificate WHERE id = #{certificateId}
+    </select>
+
+</mapper>
