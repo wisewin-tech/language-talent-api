@@ -4,6 +4,8 @@ public enum UserConstants {
 
         /*  验证码标识` */
         VERIFY("verify"),
+        /*  验证码失效标识` */
+        VERIFY_LOSE("verify_lose"),
         /*  积分  */
         Integral("积分"),
         /*  咖豆  */

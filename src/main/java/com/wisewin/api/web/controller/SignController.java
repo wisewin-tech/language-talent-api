@@ -40,7 +40,7 @@ public class SignController extends BaseCotroller {
         Map<String,Object> mapSign=signService.selectMon(userId);
 
         System.out.println("Map集合签到数据:"+mapSign);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("签到所有数据"+mapSign));
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapSign));
         super.safeJsonPrint(response, json);
 
 

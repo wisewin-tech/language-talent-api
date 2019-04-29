@@ -34,13 +34,21 @@
             <if test="source!=null">AND source=#{source}</if>
             <if test="status!=null">AND status=#{status}</if>
         </where>
+        ORDER BY `create_time` DESC
 
         <include refid="limit" />
 
     </select>
-
     <sql id="limit">
         limit #{pageOffset},#{pageSize}
     </sql>
+
+    <!--查询当前用户记录总条数-->
+    <select id="selectUserRecord" resultType="java.lang.Integer">
+
+        SELECT COUNT(id) FROM lt_record WHERE user_id =#{userId}
+
+    </select>
+
 
 </mapper>

@@ -6,10 +6,7 @@ import com.wisewin.api.entity.bo.common.constants.SysConstants;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.UserParam;
 import com.wisewin.api.service.UserService;
-import com.wisewin.api.util.AccountValidatorUtil;
-import com.wisewin.api.util.JsonUtils;
-import com.wisewin.api.util.ParamNullUtil;
-import com.wisewin.api.util.StringUtils;
+import com.wisewin.api.util.*;
 import com.wisewin.api.util.redisUtils.RedissonHandler;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -18,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -68,9 +67,17 @@ public class UserController extends BaseCotroller {
     public void send(String phone,HttpServletResponse response)  {
         //手机号非空+格式判断
         if (this.phoneFormt(phone,response)){
-            userService.send(phone);
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("验证码发送成功!"));
-            super.safeJsonPrint(response, json);
+            //获取缓存中的失效验证码
+            String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY_LOSE.getValue());
+            if (mobileAuthCode!=null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001","请稍后发送"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+                userService.send(phone);
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("验证码发送成功!"));
+                super.safeJsonPrint(response, json);
+
         }
 
 
@@ -98,7 +105,7 @@ public class UserController extends BaseCotroller {
         //如果和用户收到的验证码相同
         if(verify.equals(mobileAuthCode)){
            //通过手机号查询表中是否有该用户
-             UserBO userBO = userService.selectPhone(phone);
+             UserBO userBO = userService.selectByPhone(phone);
             if(userBO!=null){
                 //user对象存入cookie中
                 this.putUser(response,userBO);
@@ -109,7 +116,7 @@ public class UserController extends BaseCotroller {
                 UserBO userBO1=new UserBO();
                 userBO1.setMobile(phone);
                 userService.insertUser(userBO1);
-                userBO1 = userService.selectPhone(phone);
+                userBO1 = userService.selectByPhone(phone);
                 //将只带有手机号的user对象存入cookie中
                 this.putUser(response,userBO1);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("用户注册完成,登录成功"));
@@ -142,13 +149,37 @@ public class UserController extends BaseCotroller {
         }
         //把id设置到user参数对象中
         userParam.setId(id);
-        //修改信息
-        UserBO userBO=new UserBO();
 
         userService.updateUser(userParam);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改信息成功"));
         super.safeJsonPrint(response, json);
     }
 
+    /**
+     * 查询用户信息
+     * @param response
+     * @param request
+     * @throws Exception
+     */
+    @RequestMapping("/selectUser")
+    public void selectUser(HttpServletResponse response, HttpServletRequest request) throws Exception {
+        //从cookie中获取他的user对象的id
+        Integer id=this.getId(request);
+        //如果获取不到,参数异常
+        if (id==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+        }
+        //通过cookie中的用户id返回user对象
+        UserBO userBO=userService.selectById(id);
+        Map<String,Object> mapUser=new HashMap<String, Object>();
+        //通过生日得到用户年龄
+        Integer age= AgeUtil.getAge(userBO.getBirthday());
+        //把年龄和用户信息封装到map中返回
+        mapUser.put("age",age);
+        mapUser.put("userBO", userBO);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
+        super.safeJsonPrint(response, json);
+    }
 
 }

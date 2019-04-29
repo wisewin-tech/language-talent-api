@@ -40,7 +40,15 @@
         where
         id=#{id}
     </update>
-
+    <!--通过id查找用户信息-->
+    <select id="selectById" resultType="com.wisewin.api.entity.bo.UserBO">
+        select
+        id,`name`,nickname,birthday,sex,mobile
+        from
+        lt_user
+        where
+        id=#{id}
+    </select>
 
     <!--后面的所有留待备用-->
     <update id="updatePassword" parameterType="com.wisewin.api.entity.bo.UserBO">
@@ -55,15 +63,7 @@
         where
         phone=#{phone}
     </update>
-    <!--通过id查找用户信息-->
-    <select id="selectById" resultType="com.wisewin.api.entity.bo.UserBO">
-        select
-        id,name,birthday,gender,password,phone
-        from
-        lt_user
-        where
-        id=#{id}
-    </select>
+
     <!--通过用户名查询用户信息-->
     <select id="selectUserByUsername" resultType="com.wisewin.api.entity.bo.UserBO">
         select

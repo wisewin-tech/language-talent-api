@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【收藏】 -->
+<mapper namespace="com.wisewin.api.dao.FavoritesDAO">
+    <!--查询用户收藏记录-->
+    <select id="selectFavorites" resultType="com.wisewin.api.entity.bo.FavoritesResultBO"
+            parameterType="java.util.Map">
+     SELECT
+	lmf.user_id,ll.language_name,lc.course_name,lv.level_name,lch.chapter_name
+    FROM
+      lt_my_favorite AS lmf
+    left JOIN `lt_chapter`  AS lch ON lmf.source_id=lch.id
+    left JOIN `lt_level`    AS lv ON lch.level_id=lv.id
+    left JOIN `lt_course`   AS lc ON lv.course_id=lc.id
+    left JOIN `lt_language` AS ll ON lc.language_id=ll.id
+        WHERE
+        lmf.user_id=#{userId}
+        ORDER BY lmf.create_time DESC
+        <include refid="limit" />
+    </select>
+    <sql id="limit">
+        limit #{pageOffset},#{pageSize}
+    </sql>
+
+    <!--添加收藏-->
+    <insert id="insertCollect" parameterType="com.wisewin.api.entity.bo.MyFavoriteBO">
+      INSERT INTO lt_my_favorite  AS lmf
+        <set>
+            <if test="userId!=null">AND lmf.user_id=#{userId}</if>
+            <if test="source!=null">AND lmf.source=#{source}</if>
+            <if test="sourceId!=null">AND lmf.source_id=#{sourceId}</if>
+            lmf.createTime=now()
+        </set>
+
+    </insert>
+
+    <!--<update id="updateUserSign" parameterType="com.wisewin.api.entity.bo.UserBO">-->
+        <!--update lt_user-->
+        <!--<set>-->
+
+            <!--<if test="continuousSign!=null">continuous_sign=#{continuousSign},</if>-->
+            <!--<if test="cumulativeSign!=null">cumulative_sign=#{cumulativeSign},</if>-->
+            <!--<if test="integral!=null">      integral=#{integral},</if>-->
+            <!--last_sign=now()-->
+
+        <!--</set>-->
+        <!--where-->
+        <!--id=#{id}-->
+    <!--</update>-->
+
+
+
+
+
+</mapper>

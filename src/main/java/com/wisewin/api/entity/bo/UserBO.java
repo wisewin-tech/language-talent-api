@@ -15,6 +15,7 @@ public class UserBO  extends BaseModel{
     private String headPortraitUrl; //头像路径
     private String sex; //性别
     private Date birthday; //生日
+    private Integer age; //年龄
     private String source; //个人/企业
     private Integer integral; //积分
     private Integer kadou; //咖豆
@@ -280,5 +281,13 @@ public class UserBO  extends BaseModel{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 }

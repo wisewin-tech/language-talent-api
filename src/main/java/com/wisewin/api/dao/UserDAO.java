@@ -28,7 +28,14 @@ public interface UserDAO {
      * @return
      */
     void updateUser(UserParam userParam);
+    /**
+     * 通过id查找用户user
+     * @param id
+     * @return
+     */
+    UserBO selectById(Integer id);
 
+        /* 后面的功能留作备用*/
     /**
      * 手机号修改密码
      * @param phone
@@ -37,13 +44,7 @@ public interface UserDAO {
     void updatePassword(@Param("phone") String phone,
                         @Param("password") String newPassword);
 
-    /**
-     * 通过id查找用户user
-     * @param id
-     * @return
-     */
 
-    UserBO selectById(Integer id);
 
     /**
      * 通过手机号发送验证码修改密码

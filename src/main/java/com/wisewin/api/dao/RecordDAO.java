@@ -18,4 +18,11 @@ public interface RecordDAO {
     void insertUserAction(RecordBO recordBO);
 
     List<RecordBO> selectUserAction(Map<String,Object> map);
+
+    /**
+     * 查询用户记录总条数
+     * @param userId 用户id
+     * @return
+     */
+    Integer selectUserRecord(Integer userId);
 }
