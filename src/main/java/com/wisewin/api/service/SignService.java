@@ -137,4 +137,20 @@ public class SignService {
             return true;
     }
 
+    /**
+     * 返回连续签到天数
+     * @param userId
+     * @return
+     */
+    public Integer getContinuousSign(Integer userId){
+        if (userId==null){
+            return null;
+        }
+        //用户表签到信息
+        UserSignBO userSignBO=signDAO.selectUserSign(userId);
+        //返回连续签到天数
+        return userSignBO.getContinuousSign();
+    }
+
+
 }
