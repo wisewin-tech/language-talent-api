@@ -29,7 +29,7 @@ public class ChapterController extends BaseCotroller {
      */
     public void chapterTist(ChapterBO levelId, HttpServletRequest request, HttpServletResponse response) {
         if (levelId==null){
-            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001","参数不正确！"));
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);
         }
         List<ChapterBO> chapterBOList = chapterService.chapterTist(levelId);

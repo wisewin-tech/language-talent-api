@@ -34,7 +34,7 @@ public class CourseController extends BaseCotroller {
     public void courseSearch(String languageName, HttpServletRequest request, HttpServletResponse response){
         //验证参数
         if (StringUtils.isEmpty(languageName)){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001", "参数不正确！"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
         List<CourseBO> courseBOList = courseService.courseSearch(languageName);
