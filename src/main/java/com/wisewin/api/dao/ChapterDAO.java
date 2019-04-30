@@ -25,4 +25,11 @@ public interface ChapterDAO {
      * @return
      */
     ChapterBO chapterDetails(ChapterBO id);
+
+    /**
+     * 获取课时目录
+     * @param levelId 级别id
+     * @return
+     */
+    List<ChapterBO> getChapterCatalogue(ChapterBO levelId);
 }

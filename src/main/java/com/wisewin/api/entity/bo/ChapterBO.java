@@ -8,6 +8,8 @@ import java.util.Date;
 public class ChapterBO extends BaseModel {
     private Integer id; //课时表
     private String chapterName; //课时名称
+    private Integer languageId;//语言id
+    private Integer courseId;//课程id
     private Integer levelId; //级别id
     private String content;//课时内容
     private String status;//状态
@@ -36,6 +38,22 @@ public class ChapterBO extends BaseModel {
 
     public void setChapterName(String chapterName) {
         this.chapterName = chapterName;
+    }
+
+    public Integer getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(Integer languageId) {
+        this.languageId = languageId;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 
     public Integer getLevelId() {

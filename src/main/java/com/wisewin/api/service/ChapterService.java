@@ -34,10 +34,19 @@ public class ChapterService {
 
     /**
      * 课时详情
-     * @param id
+     * @param id 课时id
      * @return
      */
     public ChapterBO chapterDetails(ChapterBO id){
         return chapterDAO.chapterDetails(id);
+    }
+
+    /**
+     * 获取课时目录
+     * @param levelId 级别id
+     * @return
+     */
+    public List<ChapterBO> getChapterCatalogue(ChapterBO levelId){
+        return chapterDAO.getChapterCatalogue(levelId);
     }
 }

@@ -28,9 +28,10 @@ public class ChapterController extends BaseCotroller {
      * 获取课时列表
      */
     public void chapterTist(ChapterBO levelId, HttpServletRequest request, HttpServletResponse response) {
-        if (levelId==null){
+        if (levelId == null) {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);
+            return;
         }
         List<ChapterBO> chapterBOList = chapterService.chapterTist(levelId);
         Integer chapterNum = chapterService.chapterNum(levelId);
@@ -42,15 +43,30 @@ public class ChapterController extends BaseCotroller {
     }
 
     @RequestMapping("/chapterDetails")
-    public void chapterDetails(ChapterBO id,HttpServletRequest request,HttpServletResponse response){
+    public void chapterDetails(ChapterBO id, HttpServletRequest request, HttpServletResponse response) {
         //参数验证
-        if (id==null){
+        if (id == null) {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);
+            return;
         }
         ChapterBO chapterBO = chapterService.chapterDetails(id);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBO));
         super.safeJsonPrint(response, result);
+    }
+
+    @RequestMapping("/getChapterCatalogue")
+    public void getChapterCatalogue(ChapterBO levelId, HttpServletRequest request, HttpServletResponse response) {
+        //参数验证
+        if (levelId == null) {
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, result);
+            return;
+        }
+        List<ChapterBO> chapterBOList = chapterService.getChapterCatalogue(levelId);
+        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBOList));
+        super.safeJsonPrint(response, result);
+
     }
 
 }

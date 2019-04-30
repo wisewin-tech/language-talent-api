@@ -25,10 +25,13 @@
         SELECT COUNT(id) FROM lt_chapter WHERE level_id = #{levelId}
     </select>
     <!--课时详情-->
-    <select id="chapterDetails" parameterType="com.wisewin.api.entity.bo.ChapterBO" resultType="com.wisewin.api.entity.bo.ChapterBO">
+    <select id="chapterDetails" parameterType="com.wisewin.api.entity.bo.ChapterBO"
+            resultType="com.wisewin.api.entity.bo.ChapterBO">
         SELECT
 	      `language`.language_name,course.course_name,
 	      `level`.level_name,chapter.chapter_name,
+	      `language`.id languageId,course.id courseId,
+	      `level`.id levelId,
 	      chapter.video_path,chapter.chapter_intro,
 	      chapter.manuscript,chapter.content
         FROM lt_chapter `chapter`
@@ -36,7 +39,23 @@
         LEFT JOIN lt_course `course` ON `level`.course_id = course.id
         LEFT JOIN lt_language `language` ON course.language_id = `language`.id
         WHERE chapter.id = #{id}
-
+    </select>
+    <!--课时目录-->
+    <select id="getChapterCatalogue" parameterType="com.wisewin.api.entity.bo.ChapterBO"
+            resultType="com.wisewin.api.entity.bo.ChapterBO">
+      SELECT
+	    `language`.language_name,course.course_name,
+	    `level`.level_name,chapter.chapter_name,
+	    `language`.id languageId,course.id courseId,
+        chapter.id chapterId,chapter.video_path,
+	    chapter.chapter_intro
+      FROM
+	    lt_chapter `chapter`
+      LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
+      LEFT JOIN lt_course `course` ON `level`.course_id = course.id
+      LEFT JOIN lt_language `language` ON course.language_id = `language`.id
+      WHERE
+	    `level`.id = #{levelId}
     </select>
 
 </mapper>
