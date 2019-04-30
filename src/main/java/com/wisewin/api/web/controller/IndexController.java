@@ -1,11 +1,9 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.BannerBO;
-import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.BannerService;
-import com.wisewin.api.service.CourseService;
 import com.wisewin.api.service.LanguageService;
 import com.wisewin.api.service.SignService;
 import com.wisewin.api.util.JsonUtils;
@@ -26,23 +24,23 @@ public class IndexController extends BaseCotroller {
     @Resource
     private LanguageService languageService;
     @Resource
-    private CourseService courseService;
-    @Resource
     private BannerService bannerService;
     @Resource
     private SignService signService;
+
     @RequestMapping("/showIndex")
     public void showIndex(HttpServletRequest request, HttpServletResponse response){
+        Integer useId = super.getId(request);
         List<LanguageBO> ensignImage = languageService.selectEnsignImage();
         List<LanguageBO> flashSales = languageService.getFlashSales();
-        List<CourseBO> hotCourse = courseService.getHotCourse();
         List<BannerBO> banner = bannerService.getBanner();
-
+        Integer ContinuousSigndays = signService.getContinuousSign(useId);
         //signService.selectMon()
         Map map = new HashMap();
+        //将对象封装到map中
+        map.put("ContinuousSigndays",ContinuousSigndays);
         map.put("EnsignImage",ensignImage);
         map.put("FlashSales",flashSales);
-        map.put("HotCourse",hotCourse);
         map.put("Banner",banner);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response, result);

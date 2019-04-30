@@ -6,7 +6,7 @@
 <mapper namespace="com.wisewin.api.dao.CourseDAO">
 
     <!--热门课程-->
-    <select id="getHotCourse" resultType="com.wisewin.api.entity.bo.CourseBO">
+    <select id="getHotCourse" parameterType="java.util.Map" resultType="com.wisewin.api.entity.bo.CourseBO">
        SELECT
 	    `language`.language_name,
 	    `language`.thumbnail_image_url,
@@ -18,7 +18,11 @@
 	    lt_course `course`
       JOIN lt_language `language` ON course.language_id = `language`.id
       WHERE course.hot_or_not = 'yes'
+		<include refid="limit" />
     </select>
+	<sql id="limit">
+		limit #{pageOffset},#{pageSize}
+	</sql>
 
     <!--课程详情页-->
     <select id="courseDetails" parameterType="com.wisewin.api.entity.bo.CourseBO" resultType="com.wisewin.api.entity.bo.CourseBO">

@@ -4,13 +4,14 @@ import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CourseDAO {
     /**
      * 热门课程
      * @return
      */
-    List<CourseBO> getHotCourse();
+    List<CourseBO> getHotCourse(Map<String,Object> map);
 
     /**
      * 课程详情

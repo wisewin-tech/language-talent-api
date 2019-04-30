@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service("courseService")
 @Transactional
@@ -19,8 +20,8 @@ public class CourseService {
      * 热门课程
      * @return
      */
-    public List<CourseBO> getHotCourse(){
-        return courseDAO.getHotCourse();
+    public List<CourseBO> getHotCourse(Map<String,Object> map){
+        return courseDAO.getHotCourse(map);
     }
 
     /**
