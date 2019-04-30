@@ -59,6 +59,15 @@ public class UserController extends BaseCotroller {
         System.out.println("UUID:"+uuid);
         super.putLoginUser(uuid, userBO);
         super.setCookie(response, SysConstants.CURRENT_LOGIN_CLIENT_ID, uuid,24 * 60 * 60);
+
+        Object oldKey =RedissonHandler.getInstance().get(userBO.getId() + SysConstants.LOGIN_IDENTIFICATION);
+        if(oldKey!=null){
+            RedissonHandler.getInstance().delete((String)oldKey);
+        }
+        RedissonHandler.getInstance().set(userBO.getId()+ SysConstants.LOGIN_IDENTIFICATION,
+                super.createKey(uuid, com.wisewin.api.common.constants.SysConstants.CURRENT_LOGIN_USER) , (long)24*60*60);
+
+
     }
 
 
@@ -78,9 +87,9 @@ public class UserController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }
-                userService.send(phone);
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
-                super.safeJsonPrint(response, json);
+            userService.send(phone);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+            super.safeJsonPrint(response, json);
 
         }
 
@@ -104,6 +113,7 @@ public class UserController extends BaseCotroller {
             return;
         }
         //获取Redis中的用户验证码
+        System.out.println(phone + UserConstants.VERIFY.getValue());
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
         System.out.println("register方法中,缓存中的验证码为"+mobileAuthCode);
         //如果和用户收到的验证码相同
@@ -113,7 +123,7 @@ public class UserController extends BaseCotroller {
             if(userBO!=null){
                 //user对象存入cookie中
                 this.putUser(response,userBO);
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
                 super.safeJsonPrint(response, json);
 
             }else{ //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
@@ -123,7 +133,7 @@ public class UserController extends BaseCotroller {
                 userBO1 = userService.selectByPhone(phone);
                 //将只带有手机号的user对象存入cookie中
                 this.putUser(response,userBO1);
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO1));
                 super.safeJsonPrint(response, json);
             }
         }else{
@@ -148,7 +158,7 @@ public class UserController extends BaseCotroller {
                 //把图片路径放入属性中
                 userParam.setHeadPortraitUrl(imageUrl);
             } catch (Exception e) {
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure(e));
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
                 super.safeJsonPrint(response, json);
             }
         }

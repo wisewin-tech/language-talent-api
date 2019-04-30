@@ -1,5 +1,6 @@
 package com.wisewin.api.entity.dto;
 
+import com.wisewin.api.entity.bo.common.constants.Result;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.util.env.Env;
 
@@ -11,6 +12,24 @@ public class ResultDTOBuilder {
     public ResultDTOBuilder() {
     }
 
+    public static <T> Result success(T data) {
+        Env env = new Env();
+        if(data==null || data.equals("")){
+          return   getInstance("0000000",StringUtils.clearNull(env.getProperty("0000000")),new Object());
+        }else{
+            return   getInstance("0000000",StringUtils.clearNull(env.getProperty("0000000")),data);
+        }
+    }
+
+
+    public static Result failure(String errCode) {
+        Env env = new Env();
+        return   new Result(new Object(),errCode,StringUtils.clearNull(env.getProperty(errCode)));
+    }
+
+
+
+/*
     public static <T> ResultDTO<T> success(T data) {
         ResultDTO<T> instance = getInstance("", "", true, data);
         return instance;
@@ -50,5 +69,17 @@ public class ResultDTOBuilder {
         resultDTO.setErrMsg(errMsg);
         resultDTO.setSuccess(success);
         return resultDTO;
+    }*/
+
+    public static <T> Result getInstance(String errCode,String msg, T data) {
+        Result<T> result = new Result<T>();
+        result.setData(data);
+        result.setCode(errCode);
+        result.setMsg(msg);
+        return result;
+    }
+
+    public static void main(String[]  args){
+       // StringUtils.clearNull(env.getProperty("01"))
     }
 }

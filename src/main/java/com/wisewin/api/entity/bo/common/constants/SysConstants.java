@@ -29,6 +29,8 @@ public class SysConstants {
 
     public static final String CURRENT_LOGIN_CLIENT_ID = "clientLoginID";
 
+    public static final String LOGIN_IDENTIFICATION="@identification";
+
     /**
      * 登录用户id
      */

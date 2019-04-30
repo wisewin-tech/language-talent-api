@@ -240,30 +240,12 @@ public class BaseCotroller {
         return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
     }
 
-    /**获取登录管理员*/
-//    public AdminBO getLoginAdmin (HttpServletRequest request ) {
-//        return (AdminBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
-//    }
 
     /** putLoginUser*/
     public void putLoginUser (String loginId , UserBO loginUser) {
         this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
     }
-    /** putLoginAdmin*/
-//    public void putLoginAdmin (String loginId , AdminBO loginUser) {
-//        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
-//    }
 
-
-//    /** 获取登录用户*/
-//    public ClientInfo getLoginClientInfo (HttpServletRequest request ) {
-//        return (ClientInfo)this.getClientSession(request, SysConstants.CURRENT_LOGIN_CLIENT) ;
-//    }
-//
-//    /** putLoginUser*/
-//    public void putLoginClientInfo (String loginId , ClientInfo clientInfo) {
-//        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_CLIENT), clientInfo) ;
-//    }
 
     /** putSession */
     public void putSession (HttpServletRequest request, String key , String value ) {
@@ -301,7 +283,7 @@ public class BaseCotroller {
      * session赋值
      */
     private void putSession (String key , Object value) {
-        RedissonHandler.getInstance().set(key , value , null);
+        RedissonHandler.getInstance().set(key , value , (long)24*60*60);
 //        RedisUtil.set(value , key) ;
     }
 
