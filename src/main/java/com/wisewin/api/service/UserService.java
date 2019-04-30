@@ -7,6 +7,7 @@ import com.wisewin.api.common.constants.UserConstants;
 import com.wisewin.api.dao.UserDAO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.param.UserParam;
+import com.wisewin.api.util.AgeUtil;
 import com.wisewin.api.util.MD5Util;
 import com.wisewin.api.util.RandomUtils;
 import com.wisewin.api.util.StringUtils;
@@ -33,6 +34,9 @@ public class UserService {
         SendMessageUtil.sendSignInCodeMessage(phone, number);
         // 保存验证码信息到Redis
         RedissonHandler.getInstance().set(phone + UserConstants.VERIFY.getValue(), number, 180L);
+        //失效时间
+        RedissonHandler.getInstance().set(phone + UserConstants.VERIFY_LOSE.getValue(), number, 60L);
+
         //获取缓存中验证码
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
         System.out.println("send方法缓存中的验证码为" + mobileAuthCode);
@@ -42,10 +46,21 @@ public class UserService {
     /**
      * 通过手机号查询用户信息
      */
-    public UserBO selectPhone(String phone) {
+    public UserBO selectByPhone(String phone) {
         System.out.println(phone);
         System.out.println( "UserBO对象:" +userDAO.selectByPhone(phone));
-        return userDAO.selectByPhone(phone) ;
+
+        return userDAO.selectByPhone(phone);
+
+    }
+    /**
+     * 通过id查询用户信息
+     */
+    public UserBO selectById(Integer id) throws Exception {
+//        UserBO userBO=userDAO.selectById(id);
+//        Integer age= AgeUtil.getAge(userBO.getBirthday());
+//        userBO.setAge(age);
+        return userDAO.selectById(id);
 
     }
 
@@ -58,7 +73,7 @@ public class UserService {
     public void insertUser(UserBO userBO) {
 
         userDAO.insertUser(userBO);
-    }
+}
 
     /**
      * 修改用户信息
