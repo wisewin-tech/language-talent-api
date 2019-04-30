@@ -45,7 +45,7 @@ public class ChapterController extends BaseCotroller {
     public void chapterDetails(ChapterBO id,HttpServletRequest request,HttpServletResponse response){
         //参数验证
         if (id==null){
-            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001","参数不正确！"));
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);
         }
         ChapterBO chapterBO = chapterService.chapterDetails(id);

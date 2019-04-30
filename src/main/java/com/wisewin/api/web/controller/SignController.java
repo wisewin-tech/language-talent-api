@@ -39,7 +39,7 @@ public class SignController extends BaseCotroller {
         }
         Map<String,Object> mapSign=signService.selectMon(userId);
 
-        System.out.println("Map集合签到数据:"+mapSign);
+
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapSign));
         super.safeJsonPrint(response, json);
 
@@ -61,10 +61,10 @@ public class SignController extends BaseCotroller {
             return;
         }
         if ( signService.signIn(userId)){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("签到成功"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
             super.safeJsonPrint(response, json);
         }else{
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001","今天已经签到,无须重复"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000012"));
             super.safeJsonPrint(response, json);
         }
 

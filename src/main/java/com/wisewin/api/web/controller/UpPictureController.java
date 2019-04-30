@@ -24,7 +24,7 @@ public class UpPictureController extends BaseCotroller {
             throws Exception {
         //图片非空判断
         if (image==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001","参数异常"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response,json);
         }
         OSSClientUtil ossClientUtil=new OSSClientUtil();
@@ -40,14 +40,14 @@ public class UpPictureController extends BaseCotroller {
 
         if (StringUtils.isEmpty(name)){
             String json = JsonUtils.getJsonString4JavaPOJO
-                    (ResultDTOBuilder.failure("0000001","参数异常"));
+                    (ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response,json);
         }
 
         OSSClientUtil ossClientUtil=new OSSClientUtil();
         ossClientUtil.deleteFileInfo(name);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success
-                ("删除成功"));
+                (null));
         super.safeJsonPrint(response,json);
     }
 }
