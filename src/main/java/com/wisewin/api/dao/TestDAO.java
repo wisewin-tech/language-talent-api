@@ -5,6 +5,4 @@ public interface TestDAO {
 
     int test() ;
 
-
-    
 }
