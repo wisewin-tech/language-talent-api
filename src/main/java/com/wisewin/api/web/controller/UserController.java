@@ -66,7 +66,7 @@ public class UserController extends BaseCotroller {
             RedissonHandler.getInstance().delete((String)oldKey);
         }
         RedissonHandler.getInstance().set(userBO.getId()+ SysConstants.LOGIN_IDENTIFICATION,
-                super.createKey(uuid, com.wisewin.api.common.constants.SysConstants.CURRENT_LOGIN_USER) , (long)24*60*60);
+                super.createKey(uuid, com.wisewin.api.common.constants.SysConstants.CURRENT_LOGIN_USER) , (long)24*60*60*30);
 
 
     }
