@@ -5,8 +5,11 @@ import com.wisewin.api.dao.RecordDAO;
 import com.wisewin.api.dao.SignDAO;
 import com.wisewin.api.entity.bo.RecordBO;
 import com.wisewin.api.entity.bo.SignBO;
+import com.wisewin.api.entity.bo.SignResultBO;
 import com.wisewin.api.entity.bo.UserSignBO;
-import com.wisewin.api.util.TimeStartEndUtil;
+import com.wisewin.api.util.DateUtils;
+import com.wisewin.api.util.TimeUtil;
+import com.wisewin.api.util.date.DateUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,7 +49,7 @@ public class SignService {
     }
 
     //查询用户本月签到信息,返回签到对象集合
-    public Map<String,Object>  selectMon(Integer userId) {
+    public List<SignResultBO> selectMon(Integer userId) {
 
         //获取当前月份1号的时间
         SimpleDateFormat dfstart = new SimpleDateFormat("yyyy-MM-01 00:00:00 ");
@@ -57,35 +60,47 @@ public class SignService {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);
         String monend=dfend.format(calendar.getTime());
-//        System.out.println("当前月份的第一天是:"+monstart);
-////        System.out.println("下个月的第一天是:"+monend);
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("userId",userId);
         map.put("monstart",monstart);
         map.put("monend",monend);
         //把这个月的起始时间和结束时间以及userId放入map中
          List<SignBO> signBOList= signDAO.selectMon(map);
-        //查询用户表签到信息,返回userSign 用户签到对象
-        UserSignBO userBO=signDAO.selectUserSign(userId);
-         //创建一个map集合,用于存在签到表和用户表的信息
-        Map<String,Object> mapSign=new HashMap<String, Object>();
-        //把用户表的签到信息和签到表的信息放在map中
-        mapSign.put("signBOList",signBOList);
-        mapSign.put("userBO",userBO);
+        Set<String>  set=new HashSet<String>();
+        for (SignBO signBO:signBOList){
+            set.add(DateUtils.getDateStr(signBO.getSignTime()));
+        }
+        //这个月的天数集合
+        List<String> listOfMonth = TimeUtil.getDayListOfMonth();
+        //结果集合,用于接收这个月的天数和是否签到
+        List<SignResultBO>  resultList=new ArrayList<SignResultBO>();
+        for(String  str:listOfMonth){
+            SignResultBO  signResultBO=new SignResultBO();
+            signResultBO.setDate(str);
+            if(set.contains(str)){  //如果此字符串包含，此方法返回true，否则返回false。
+                signResultBO.setFlag("yes");
+            }else{
+                signResultBO.setFlag("no");
+            }
+            resultList.add(signResultBO);
 
-        return mapSign;
+        }
+
+        return resultList;
     }
 
 
     //用户签到
     public boolean signIn(Integer userId) {
         //获取今天的起始时间
-        Date start= TimeStartEndUtil.getTimeStart(0);
+        Date start= TimeUtil.getTimeStart(0);
         //获取今天的结束时间
-        Date end=TimeStartEndUtil.getTimeEnd(0);
+        Date end= TimeUtil.getTimeEnd(0);
+        //查询签到表用户最新记录
         SignBO signBO=signDAO.selectNew(userId);
         Date signTime=signBO.getSignTime();
         //true在时间段内，false不在时间段内
+
         if (hourMinuteBetween(signTime,start,end)){
             //如果最新记录的签到时间为当天
             return false;
@@ -93,11 +108,11 @@ public class SignService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取昨天的起始时间
-        Date startdate= TimeStartEndUtil.getTimeStart(-1);
+        Date startdate= TimeUtil.getTimeStart(-1);
         //获取昨天的结束时间
-        Date enddate=TimeStartEndUtil.getTimeEnd(-1);
+        Date enddate= TimeUtil.getTimeEnd(-1);
 
-        UserSignBO userBO=signDAO.selectUserSign(userId);
+        UserSignBO userBO=signDAO.selectUser(userId);
 
         //连续签到天数
         Integer continuousSign=userBO.getContinuousSign();
@@ -107,8 +122,6 @@ public class SignService {
         Date date=userBO.getLastSign();
         //用户积分
         Integer integral=userBO.getIntegral();
-
-
         //true在时间段内，false不在时间段内
         if (!hourMinuteBetween(date,startdate,enddate)){
 
@@ -121,15 +134,15 @@ public class SignService {
             //累计签到天数+1
             userBO.setCumulativeSign(cumulativeSign+1);
             //积分+10
-            userBO.setIntegral(integral+ UserConstants.signNum.getNum());
+            userBO.setIntegral(integral+ UserConstants.SIGNNUM.getNum());
             //修改用户签到信息
             signDAO.updateUserSign(userBO);
             RecordBO recordBO=new RecordBO();
             recordBO.setUserId(userId);
-            recordBO.setSource(UserConstants.Integral.getValue());
-            recordBO.setStatus(UserConstants.Increase.getValue());
+            recordBO.setSource(UserConstants.INTEGRAL.getValue());
+            recordBO.setStatus(UserConstants.INCREASE.getValue());
             recordBO.setDescribe("签到所获积分");
-            recordBO.setSpecificAmount(UserConstants.signNum.getNum());
+            recordBO.setSpecificAmount(UserConstants.SIGNNUM.getNum());
             System.out.println(recordBO);
             recordDAO.insertUserAction(recordBO);
             //签到表添加用户签到
@@ -147,7 +160,7 @@ public class SignService {
             return null;
         }
         //用户表签到信息
-        UserSignBO userSignBO=signDAO.selectUserSign(userId);
+        UserSignBO userSignBO=signDAO.selectUser(userId);
         //返回连续签到天数
         return userSignBO.getContinuousSign();
     }

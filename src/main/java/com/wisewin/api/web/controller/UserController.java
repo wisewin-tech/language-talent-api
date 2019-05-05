@@ -8,6 +8,7 @@ import com.wisewin.api.entity.param.UserParam;
 import com.wisewin.api.service.UpPictureService;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.*;
+import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.util.redisUtils.RedissonHandler;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -83,7 +84,7 @@ public class UserController extends BaseCotroller {
             //获取缓存中的失效验证码
             String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY_LOSE.getValue());
             if (mobileAuthCode!=null){
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000012"));
                 super.safeJsonPrint(response, json);
                 return;
             }
@@ -115,15 +116,18 @@ public class UserController extends BaseCotroller {
         //获取Redis中的用户验证码
         System.out.println(phone + UserConstants.VERIFY.getValue());
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
-        System.out.println("register方法中,缓存中的验证码为"+mobileAuthCode);
+        Map<String,Object> mapUser=new HashMap<String, Object>();
+
         //如果和用户收到的验证码相同
         if(verify.equals(mobileAuthCode)){
            //通过手机号查询表中是否有该用户
              UserBO userBO = userService.selectByPhone(phone);
             if(userBO!=null){
+                //islogin 是否为登录, yes 登录
+                mapUser.put("islogin",UserConstants.Yes.getValue());
                 //user对象存入cookie中
                 this.putUser(response,userBO);
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                 super.safeJsonPrint(response, json);
 
             }else{ //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
@@ -131,9 +135,11 @@ public class UserController extends BaseCotroller {
                 userBO1.setMobile(phone);
                 userService.insertUser(userBO1);
                 userBO1 = userService.selectByPhone(phone);
+                //islogin 是否为登录, yes 登录
+                mapUser.put("islogin",UserConstants.No.getValue());
                 //将只带有手机号的user对象存入cookie中
                 this.putUser(response,userBO1);
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO1));
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                 super.safeJsonPrint(response, json);
             }
         }else{
@@ -199,14 +205,25 @@ public class UserController extends BaseCotroller {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
-        //通过cookie中的用户id返回user对象
+        //通过id找出用户对象
+        //id,nickname,birthday,sex,mobile,currency,career,head_portrait_url
         UserBO userBO=userService.selectById(id);
         Map<String,Object> mapUser=new HashMap<String, Object>();
         //通过生日得到用户年龄
-        Integer age= AgeUtil.getAge(userBO.getBirthday());
+        Integer age= AgeUtil.getAge(DateUtil.getDate(userBO.getBirthday()));
         //把年龄和用户信息封装到map中返回
+        //id,nickname,birthday,sex,mobile,currency,career,head_portrait_url
+        //用户id,昵称,生日,性别,手机号,咖豆,职业兴趣,头像路径
+        mapUser.put("id", userBO.getId());
+        mapUser.put("nickname", userBO.getNickname());
         mapUser.put("age",age);
-        mapUser.put("userBO", userBO);
+        mapUser.put("birthday", userBO.getBirthday());
+        mapUser.put("sex", userBO.getSex());
+        mapUser.put("mobile", userBO.getMobile());
+        mapUser.put("currency", userBO.getCurrency());
+        mapUser.put("career", userBO.getCareer());
+        mapUser.put("head_portrait_url", userBO.getHeadPortraitUrl());
+        //根据需求追加....
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
         super.safeJsonPrint(response, json);
     }

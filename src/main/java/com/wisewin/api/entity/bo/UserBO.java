@@ -1,10 +1,14 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
+import com.wisewin.api.util.TimeUtil;
+import com.wisewin.api.util.date.DateUtil;
 
 import java.util.Date;
 
 public class UserBO  extends BaseModel{
+
+
     private Integer id; //用戶表
     private String name; //姓名
     private String nickname; //昵称
@@ -13,12 +17,15 @@ public class UserBO  extends BaseModel{
     private String mobile; //手机号
     private String ageGroup; //年龄段
     private String headPortraitUrl; //头像路径
+    private String learningGoal; //学习目的
     private String sex; //性别
-    private Date birthday; //生日
+    private String birthday; //生日
     private Integer age; //年龄
     private String source; //个人/企业
     private Integer integral; //积分
-    private Integer kadou; //咖豆
+    private Integer currency; //咖豆
+    private String isLogin; //是否为登录 Yes:登录 No:注册
+    private Integer career; //职业和兴趣
     private String inviteCode; //邀请码
     private String byInvite; //被邀请码
     private String job; //职业
@@ -45,11 +52,14 @@ public class UserBO  extends BaseModel{
                 ", mobile='" + mobile + '\'' +
                 ", ageGroup='" + ageGroup + '\'' +
                 ", headPortraitUrl='" + headPortraitUrl + '\'' +
+                ", learningGoal='" + learningGoal + '\'' +
                 ", sex='" + sex + '\'' +
                 ", birthday=" + birthday +
+                ", age=" + age +
                 ", source='" + source + '\'' +
                 ", integral=" + integral +
-                ", kadou=" + kadou +
+                ", currency=" + currency +
+                ", currency=" + career +
                 ", inviteCode='" + inviteCode + '\'' +
                 ", byInvite='" + byInvite + '\'' +
                 ", job='" + job + '\'' +
@@ -65,6 +75,30 @@ public class UserBO  extends BaseModel{
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
+    }
+
+    public String getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(String isLogin) {
+        this.isLogin = isLogin;
+    }
+
+    public Integer getCareer() {
+        return career;
+    }
+
+    public void setCareer(Integer career) {
+        this.career = career;
+    }
+
+    public String getLearningGoal() {
+        return learningGoal;
+    }
+
+    public void setLearningGoal(String learningGoal) {
+        this.learningGoal = learningGoal;
     }
 
     public Integer getId() {
@@ -139,12 +173,13 @@ public class UserBO  extends BaseModel{
         this.sex = sex;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public String getBirthday() {
+
+        return DateUtil.getStr(birthday);
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setBirthday(String birthday) {
+        this.birthday = DateUtil.getStr(birthday);
     }
 
     public String getSource() {
@@ -163,12 +198,12 @@ public class UserBO  extends BaseModel{
         this.integral = integral;
     }
 
-    public Integer getKadou() {
-        return kadou;
+    public Integer getCurrency() {
+        return currency;
     }
 
-    public void setKadou(Integer kadou) {
-        this.kadou = kadou;
+    public void setCurrency(Integer currency) {
+        this.currency = currency;
     }
 
     public String getInviteCode() {

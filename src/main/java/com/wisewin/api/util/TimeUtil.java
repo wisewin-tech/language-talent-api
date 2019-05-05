@@ -1,12 +1,11 @@
 package com.wisewin.api.util;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 import static java.util.Calendar.*;
 
-public class TimeStartEndUtil {
+public class TimeUtil {
 
     /*
         以当前时间为基准 num用于控制
@@ -33,5 +32,27 @@ public class TimeStartEndUtil {
         end.set(Calendar.SECOND,59);
         return end.getTime();
     }
+
+    //java获取当前月的天数
+    public static int getDayOfMonth(){
+        Calendar aCalendar = Calendar.getInstance(Locale.CHINA);
+        int day=aCalendar.getActualMaximum(Calendar.DATE);
+        return day;
+    }
+
+    //java获取当前月每天的日期
+    public static List<String> getDayListOfMonth() {
+        List list = new ArrayList();
+        Calendar aCalendar = Calendar.getInstance(Locale.CHINA);
+        int year = aCalendar.get(Calendar.YEAR);//年份
+        int month = aCalendar.get(Calendar.MONTH) + 1;//月份
+        int day = aCalendar.getActualMaximum(Calendar.DATE);
+        for (int i = 1; i <= day; i++) {
+            String aDate = String.valueOf(year)+"-"+month+"-"+i;
+            list.add(aDate);
+        }
+        return list;
+    }
+
 
 }

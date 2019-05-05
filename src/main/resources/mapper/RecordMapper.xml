@@ -24,7 +24,7 @@
     <select id="selectUserAction" resultType="com.wisewin.api.entity.bo.RecordBO">
         select
         `id`,`user_id`,`source`,`status`,`specific_amount`,`describe` ,`effective_date`,
-        `create_time`,`update_time`,`create_id`,`update_id`
+        `create_time`
         from
          `lt_record`
 
@@ -44,11 +44,29 @@
     </sql>
 
     <!--查询当前用户记录总条数-->
-    <select id="selectUserRecord" resultType="java.lang.Integer">
+    <select id="selectUserRecord" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
 
-        SELECT COUNT(id) FROM lt_record WHERE user_id =#{userId}
+        SELECT COUNT(id) FROM lt_record
+        <where>
+            user_id=#{userId}
 
+            <if test="source!=null">AND source=#{source}</if>
+
+        </where>
     </select>
+
+    <update id="updateUser" parameterType="com.wisewin.api.entity.bo.UserSignBO">
+        update lt_user
+        <set>
+
+            <if test="integral!=null">integral=#{integral},</if>
+            <if test="currency!=null">currency=#{currency}</if>
+
+        </set>
+        where
+        id=#{id}
+    </update>
 
 
 </mapper>

@@ -34,7 +34,7 @@ public class UserService {
         SendMessageUtil.sendSignInCodeMessage(phone, number);
         // 保存验证码信息到Redis
         RedissonHandler.getInstance().set(phone + UserConstants.VERIFY.getValue(), number, 180L);
-        //失效时间
+        //缓存验证码失效标识
         RedissonHandler.getInstance().set(phone + UserConstants.VERIFY_LOSE.getValue(), number, 60L);
 
         //获取缓存中验证码
@@ -89,5 +89,7 @@ public class UserService {
         userDAO.updateUser(userParam);
 
     }
+
+
 
 }

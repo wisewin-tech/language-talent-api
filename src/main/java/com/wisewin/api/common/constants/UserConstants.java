@@ -7,15 +7,23 @@ public enum UserConstants {
         /*  验证码失效标识` */
         VERIFY_LOSE("verify_lose"),
         /*  积分  */
-        Integral("积分"),
+        INTEGRAL("积分"),
+        /*  咖豆  */
+        CURRENCY("currency"),
+        /*  课时  */
+        CHAPTER("课时"),
+        /*  Yes  */
+        Yes("yes"),
+        /*  No  */
+        No("no"),
         /*  咖豆  */
 
         /*  增加  */
-        Increase("获取"),
+        INCREASE("获取"),
         /*  减少  */
-        Decrease("支出"),
+        DECREASE("支出"),
         /*  签到增加积分值` */
-        signNum(10);
+        SIGNNUM(10);
 
     private UserConstants(String value) {
         this.value = value;

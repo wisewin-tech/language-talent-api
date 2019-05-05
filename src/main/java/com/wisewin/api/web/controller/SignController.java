@@ -1,5 +1,6 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.entity.bo.SignResultBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.SignService;
 import com.wisewin.api.util.JsonUtils;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,10 +39,10 @@ public class SignController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        Map<String,Object> mapSign=signService.selectMon(userId);
+        List<SignResultBO> listSign=signService.selectMon(userId);
 
 
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapSign));
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(listSign));
         super.safeJsonPrint(response, json);
 
 
@@ -60,11 +62,12 @@ public class SignController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+            //如果今天第一次签到
         if ( signService.signIn(userId)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
             super.safeJsonPrint(response, json);
         }else{
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000012"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000013"));
             super.safeJsonPrint(response, json);
         }
 

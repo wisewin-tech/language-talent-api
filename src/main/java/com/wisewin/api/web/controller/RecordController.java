@@ -1,5 +1,4 @@
 package com.wisewin.api.web.controller;
-
 import com.wisewin.api.entity.bo.RecordBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
@@ -24,7 +23,7 @@ public class RecordController extends BaseCotroller{
     private RecordService recordService;
 
     /**
-     *
+     * 查询积分支出/获取记录
      * @param pageNo    页数
      * @param pageSize  每页条数
      * @param status    状态:支出/获取
@@ -55,9 +54,36 @@ public class RecordController extends BaseCotroller{
 
         //把带有条件的查询结果集放入map中
         List<RecordBO> recordBOList= recordService.selectIntegralInt(condition);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(recordBOList));
+        Integer count=recordService.selectUserRecord(userId);
+        Map<String, Object> map=new HashMap<String, Object>();
+        //recordBOList的结果集
+        map.put("recordBOList",recordBOList);
+        //积分查询总条数
+        map.put("count",count);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response, json);
 
 
     }
+
+    /**
+     * 兑换积分
+     * @param num   兑换的数量
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/exchange")
+    public void exchange(Integer num,HttpServletResponse response, HttpServletRequest request)  {
+        //判断用户id是否为空,即:用户是否登录
+        Integer userId=super.getId(request);
+        if (userId==null||num==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        recordService.exchange(userId,num);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+        super.safeJsonPrint(response, json);
+    }
+
 }

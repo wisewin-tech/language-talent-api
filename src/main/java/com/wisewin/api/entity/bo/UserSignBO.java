@@ -5,6 +5,7 @@ import java.util.Date;
 public class UserSignBO {
     private Integer id; //用戶表
     private Integer integral; //积分
+    private Integer currency; //咖豆
     private Integer continuousSign; //连续签到天数
     private Integer cumulativeSign; //累计签到天数
     private Date lastSign; //上次签到时间
@@ -14,10 +15,19 @@ public class UserSignBO {
         return "UserSignBO{" +
                 "id=" + id +
                 ", integral=" + integral +
+                ", currency=" + currency +
                 ", continuousSign=" + continuousSign +
                 ", cumulativeSign=" + cumulativeSign +
                 ", lastSign=" + lastSign +
                 '}';
+    }
+
+    public Integer getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Integer currency) {
+        this.currency = currency;
     }
 
     public Integer getId() {
