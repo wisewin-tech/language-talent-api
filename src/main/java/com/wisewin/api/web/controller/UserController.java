@@ -59,7 +59,7 @@ public class UserController extends BaseCotroller {
         String uuid = UUID.randomUUID().toString();
         System.out.println("UUID:"+uuid);
         super.putLoginUser(uuid, userBO);
-        super.setCookie(response, SysConstants.CURRENT_LOGIN_CLIENT_ID, uuid,24 * 60 * 60);
+        super.setCookie(response, SysConstants.CURRENT_LOGIN_CLIENT_ID, uuid,24 * 60 * 60*30);
 
         Object oldKey =RedissonHandler.getInstance().get(userBO.getId() + SysConstants.LOGIN_IDENTIFICATION);
         if(oldKey!=null){
@@ -154,20 +154,7 @@ public class UserController extends BaseCotroller {
      * @param request
      */
     @RequestMapping("/update")
-    public void updateUser(MultipartFile image,HttpServletResponse response,
-                           HttpServletRequest request, UserParam userParam) {
-        //如果有图片,上传图片至oss服务器
-        if (image!=null){
-            try {
-                //上传图片,返回图片路径
-                String imageUrl=upPictureService.upImage(image);
-                //把图片路径放入属性中
-                userParam.setHeadPortraitUrl(imageUrl);
-            } catch (Exception e) {
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-                super.safeJsonPrint(response, json);
-            }
-        }
+    public void updateUser(HttpServletResponse response,HttpServletRequest request, UserParam userParam) {
         //从cookie中获取他的user对象的id
         Integer id=this.getId(request);
         //如果获取不到,参数异常
@@ -182,9 +169,6 @@ public class UserController extends BaseCotroller {
         }
         //把id设置到user参数对象中
         userParam.setId(id);
-
-
-
         userService.updateUser(userParam);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
         super.safeJsonPrint(response, json);
