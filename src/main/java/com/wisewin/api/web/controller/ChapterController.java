@@ -2,7 +2,6 @@ package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.ChapterBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
-import com.wisewin.api.service.CertificateService;
 import com.wisewin.api.service.ChapterService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
