@@ -23,17 +23,17 @@ public class ChapterController extends BaseCotroller {
     @Resource
     private ChapterService chapterService;
 
-    @RequestMapping("/chapterTist")
+    @RequestMapping("/chapterList")
     /**
      * 获取课时列表
      */
-    public void chapterTist(ChapterBO levelId, HttpServletRequest request, HttpServletResponse response) {
+    public void chapterList(ChapterBO levelId, HttpServletRequest request, HttpServletResponse response) {
         if (levelId == null) {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);
             return;
         }
-        List<ChapterBO> chapterBOList = chapterService.chapterTist(levelId);
+        List<ChapterBO> chapterBOList = chapterService.chapterList(levelId);
         Integer chapterNum = chapterService.chapterNum(levelId);
         Map map = new HashMap();
         map.put("chapterBOList", chapterBOList);
