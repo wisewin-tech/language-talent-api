@@ -1,13 +1,14 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
+import com.wisewin.api.util.date.DateUtil;
 
 import java.util.Date;
 
 public class SignBO extends BaseModel{
     private Integer id; //签到表
     private Integer userId; //用户id
-    private Date signTime; //签到时间
+    private String signTime; //签到时间
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
     private Date createTime; //创建时间
@@ -42,12 +43,12 @@ public class SignBO extends BaseModel{
         this.userId = userId;
     }
 
-    public Date getSignTime() {
-        return signTime;
+    public String getSignTime() {
+        return DateUtil.getStr(signTime);
     }
 
-    public void setSignTime(Date signTime) {
-        this.signTime = signTime;
+    public void setSignTime(String signTime) {
+        this.signTime = DateUtil.getStr(signTime);
     }
 
     public Integer getCreateId() {

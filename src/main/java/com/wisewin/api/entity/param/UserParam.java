@@ -19,7 +19,7 @@ public class UserParam {
     private Date birthday; //生日
     private String source; //个人/企业
     private Integer integral; //积分
-    private Integer kadou; //咖豆
+    private Integer currency; //咖豆
     private String inviteCode; //邀请码
     private String byInvite; //被邀请码
     private String job; //职业
@@ -51,7 +51,7 @@ public class UserParam {
                 ", birthday=" + birthday +
                 ", source='" + source + '\'' +
                 ", integral=" + integral +
-                ", kadou=" + kadou +
+                ", currency=" + currency +
                 ", inviteCode='" + inviteCode + '\'' +
                 ", byInvite='" + byInvite + '\'' +
                 ", job='" + job + '\'' +
@@ -173,12 +173,12 @@ public class UserParam {
         this.integral = integral;
     }
 
-    public Integer getKadou() {
-        return kadou;
+    public Integer getCurrency() {
+        return currency;
     }
 
-    public void setKadou(Integer kadou) {
-        this.kadou = kadou;
+    public void setCurrency(Integer currency) {
+        this.currency = currency;
     }
 
     public String getInviteCode() {

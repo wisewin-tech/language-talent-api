@@ -39,10 +39,10 @@ public class SignController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        List<SignResultBO> listSign=signService.selectMon(userId);
+        Map<String,Object> map=signService.selectMon(userId);
 
 
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(listSign));
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response, json);
 
 

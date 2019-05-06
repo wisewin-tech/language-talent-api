@@ -49,6 +49,26 @@ public class DateUtil {
     }
     /**
      * date转换为String类型
+     * yyyy-M-d
+     */
+    public  static String getStrDate(String date){
+        Date thisDate=null;
+        //设置要获取到什么样的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+        try {
+            //获取Date类型的时间
+            thisDate = sdf.parse(date);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return  null;
+        }
+        String str=sdf.format(thisDate);
+        return str;
+
+    }
+    /**
+     * date转换为String类型
      * yyyy-MM-dd
      */
     public  static String getStr(String date) {

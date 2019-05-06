@@ -12,6 +12,8 @@ public enum UserConstants {
         CURRENCY("currency"),
         /*  课时  */
         CHAPTER("课时"),
+        /*  课时  */
+        DISCOVERY("发现"),
         /*  Yes  */
         Yes("yes"),
         /*  No  */

@@ -124,12 +124,17 @@ public class UserController extends BaseCotroller {
              UserBO userBO = userService.selectByPhone(phone);
             if(userBO!=null){
                 //islogin 是否为登录, yes 登录
-                mapUser.put("islogin",UserConstants.Yes.getValue());
-                //user对象存入cookie中
-                this.putUser(response,userBO);
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
-                super.safeJsonPrint(response, json);
-
+                if (userBO.getStatus().equals(UserConstants.Yes.getValue())){
+                    //状态,是否被拉黑  yes:拉黑,no:账号正常使用
+                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
+                    super.safeJsonPrint(response, json);
+                }else {
+                    mapUser.put("islogin", UserConstants.Yes.getValue());
+                    //user对象存入cookie中
+                    this.putUser(response, userBO);
+                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
+                    super.safeJsonPrint(response, json);
+                }
             }else{ //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
                 UserBO userBO1=new UserBO();
                 userBO1.setMobile(phone);
@@ -173,6 +178,37 @@ public class UserController extends BaseCotroller {
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
         super.safeJsonPrint(response, json);
     }
+    /**
+     *上传头像
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/upPicture")
+    public void upPicture(HttpServletResponse response,HttpServletRequest request,MultipartFile image, UserParam userParam)
+            throws Exception {
+        //从cookie中获取他的user对象的id
+        Integer id=this.getId(request);
+        //如果获取不到,参数异常
+        if (id==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+        }
+        //图片非空判断
+        if (image==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response,json);
+        }
+        OSSClientUtil ossClientUtil=new OSSClientUtil();
+        //上传
+        String name=ossClientUtil.uploadImg2Oss(image);
+        //name:图片路径+图片名(图片名为生成的随机数)
+        userParam.setHeadPortraitUrl(name);
+        //把id设置到user参数对象中
+        userParam.setId(id);
+        userService.updateUser(userParam);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+        super.safeJsonPrint(response, json);
+    }
 
     /**
      * 查询用户信息
@@ -206,6 +242,7 @@ public class UserController extends BaseCotroller {
         mapUser.put("mobile", userBO.getMobile());
         mapUser.put("currency", userBO.getCurrency());
         mapUser.put("career", userBO.getCareer());
+        mapUser.put("integral", userBO.getIntegral());
         mapUser.put("head_portrait_url", userBO.getHeadPortraitUrl());
         //根据需求追加....
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
