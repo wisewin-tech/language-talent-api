@@ -29,7 +29,14 @@
         FROM lt_user
         WHERE id=#{id}
     </select>
-
+    <!--查询用户签到积分值-->
+    <select id="selectSignIntegral" resultType="java.lang.String">
+        select
+        `values`
+        from
+        lt_key_val
+        WHERE `key`=#{key}
+    </select>
 
 
     <!--签到-->

@@ -92,7 +92,9 @@ public class SignService {
         //把用户表的签到信息和签到表的信息放在map中
         mapSign.put("resultList",resultList);
         mapSign.put("userBO",userBO);
-
+        //从库里取出"签到获取积分"对应的值
+        String signIntegral=signDAO.selectSignIntegral(UserConstants.SIGNNUM.getValue());
+        mapSign.put("SignIntegral",signIntegral);
         return mapSign;
     }
 
@@ -103,11 +105,14 @@ public class SignService {
         Date start= TimeUtil.getTimeStart(0);
         //获取今天的结束时间
         Date end= TimeUtil.getTimeEnd(0);
+        //hourMinuteBetween(DateUtil.gainDate(signTime),start,end)
+        //获取今天的日期
+        String now=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         //查询签到表用户最新记录
         SignBO signBO=signDAO.selectNew(userId);
         String signTime=signBO.getSignTime();
         //true在时间段内，false不在时间段内
-        if (hourMinuteBetween(DateUtil.gainDate(signTime),start,end)){
+        if (now.equals(signTime)){
             //如果最新记录的签到时间为当天
             return false;
         }
@@ -139,8 +144,11 @@ public class SignService {
         }
             //累计签到天数+1
             userBO.setCumulativeSign(cumulativeSign+1);
+            //从库里取出"签到获取积分"对应的值
+            String signIntegral=signDAO.selectSignIntegral(UserConstants.SIGNNUM.getValue());
+            Integer signNum=Integer.parseInt(signIntegral);
             //积分+10
-            userBO.setIntegral(integral+ UserConstants.SIGNNUM.getNum());
+            userBO.setIntegral(integral+ signNum);
             //修改用户签到信息
             signDAO.updateUserSign(userBO);
             RecordBO recordBO=new RecordBO();
@@ -148,7 +156,7 @@ public class SignService {
             recordBO.setSource(UserConstants.INTEGRAL.getValue());
             recordBO.setStatus(UserConstants.INCREASE.getValue());
             recordBO.setDescribe("签到获取积分");
-            recordBO.setSpecificAmount(UserConstants.SIGNNUM.getNum());
+            recordBO.setSpecificAmount(signNum);
             System.out.println("recordBO:"+ recordBO);
             recordDAO.insertUserAction(recordBO);
             //签到表添加用户签到

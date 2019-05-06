@@ -19,6 +19,8 @@ public interface SignDAO {
     //修改用户签到信息
     void updateUserSign(UserSignBO userBO);
 
+    String selectSignIntegral(String key);
+
 
 
 }

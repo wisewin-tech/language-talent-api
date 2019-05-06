@@ -8,6 +8,7 @@ public enum UserConstants {
         VERIFY_LOSE("verify_lose"),
         /*  积分  */
         INTEGRAL("积分"),
+
         /*  咖豆  */
         CURRENCY("currency"),
         /*  课时  */
@@ -25,7 +26,7 @@ public enum UserConstants {
         /*  减少  */
         DECREASE("支出"),
         /*  签到增加积分值` */
-        SIGNNUM(10);
+        SIGNNUM("签到获取积分");
 
     private UserConstants(String value) {
         this.value = value;
