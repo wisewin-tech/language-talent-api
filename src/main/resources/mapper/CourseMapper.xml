@@ -30,9 +30,9 @@
 			`language`.language_name languageName,
 			course.thumbnail_image_url courseThumbnail,
 			course.course_name,course.course_intro,
-			course.certificate_or_not,certificate.id certificateId,
-			certificate.title certificateTitle,certificate.image_url certificateImageUrl,
-			certificate.certificate_intro certificateIntro,
+			course.certificate_or_not,course.certificate_title certificateTitle,
+			course.certificate_image_url certificateImageUrl,
+			course.certificate_intro certificateIntro,
 			`level`.level_name levelName,`level`.id levelId,
 			course.course_lightspot,course.purchase_notes,
 			course.price,course.discount_price,course.id
@@ -40,7 +40,6 @@
 			lt_course `course`
 		LEFT JOIN lt_language `language` ON course.language_id = `language`.id
 		LEFT JOIN lt_level `level` ON course.id = `level`.course_id
-		LEFT JOIN lt_certificate `certificate` ON course.certificate_id = certificate.id
 		WHERE
 			course.`status` = 'putaway' AND course.id = #{id}
     </select>
