@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.HelpCenterDAO">
+    <resultMap id="help" type="com.wisewin.api.entity.bo.HelpCenterBO"  >
+        <result column="title"  property="title"  />
+        <result column="id"  property="id"  />
+    </resultMap>
+    <!--查询帮助中心标题-->
+    <select id="selectHelpCenter" resultMap="help">
+        select title,id from lt_help_center WHERE 1=1 ORDER BY serial_number DESC
+    </select>
+
+    <!--查看文本内容-->
+    <select id="getparticulars" parameterType="com.wisewin.api.entity.bo.HelpCenterBO"
+     resultType="com.wisewin.api.entity.bo.HelpCenterBO">
+        SELECT content FROM lt_help_center WHERE id=#{id}
+    </select>
+
+
+
+</mapper>
