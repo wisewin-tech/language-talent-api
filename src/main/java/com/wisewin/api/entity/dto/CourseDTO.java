@@ -14,6 +14,7 @@ public class CourseDTO {
     private BigDecimal discountPrice; //特惠价
     private Date discountStartTime; //特惠开始时间
     private Date discountEndTime; //特惠结束时间
+    private Integer courseValidityPeriod;//课程有效期
     private Integer studyNumber; //学习人数
     private String thumbnailImageUrl;//缩略图
     private String courseIntro; //课程简介
@@ -22,6 +23,9 @@ public class CourseDTO {
     private Integer popularSort; //热门排序
     private String hotOrNot; //是否为热门
     private String certificateOrNot;//是否可以考证
+    private String certificateTitle;//证书标题
+    private String certificateImageUrl;//证书图片地址
+    private String certificateIntro;//证书简介
     private Integer certificateId;//证书id
     private Integer createUserId; //创建人id
     private Date createTime; //创建时间
@@ -100,6 +104,14 @@ public class CourseDTO {
         this.discountEndTime = discountEndTime;
     }
 
+    public Integer getCourseValidityPeriod() {
+        return courseValidityPeriod;
+    }
+
+    public void setCourseValidityPeriod(Integer courseValidityPeriod) {
+        this.courseValidityPeriod = courseValidityPeriod;
+    }
+
     public Integer getStudyNumber() {
         return studyNumber;
     }
@@ -162,6 +174,30 @@ public class CourseDTO {
 
     public void setCertificateOrNot(String certificateOrNot) {
         this.certificateOrNot = certificateOrNot;
+    }
+
+    public String getCertificateTitle() {
+        return certificateTitle;
+    }
+
+    public void setCertificateTitle(String certificateTitle) {
+        this.certificateTitle = certificateTitle;
+    }
+
+    public String getCertificateImageUrl() {
+        return certificateImageUrl;
+    }
+
+    public void setCertificateImageUrl(String certificateImageUrl) {
+        this.certificateImageUrl = certificateImageUrl;
+    }
+
+    public String getCertificateIntro() {
+        return certificateIntro;
+    }
+
+    public void setCertificateIntro(String certificateIntro) {
+        this.certificateIntro = certificateIntro;
     }
 
     public Integer getCertificateId() {

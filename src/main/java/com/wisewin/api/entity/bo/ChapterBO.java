@@ -19,6 +19,7 @@ public class ChapterBO extends BaseModel {
     private String manuscript; //文稿
     private String freeOrNot; //是否免费观看
     private Integer serialNumber; //序号
+    private Integer score;//分数
     private Integer createUserId; //添加人id
     private Date createTime; //创建时间
     private Integer updateUserId; //添加人姓名
@@ -126,6 +127,14 @@ public class ChapterBO extends BaseModel {
 
     public void setSerialNumber(Integer serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public Integer getCreateUserId() {

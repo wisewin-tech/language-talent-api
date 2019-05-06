@@ -19,8 +19,8 @@ public class ChapterService {
      * @param levelId 级别id
      * @return
      */
-    public List<ChapterBO> chapterTist(ChapterBO levelId){
-        return chapterDAO.chapterTist(levelId);
+    public List<ChapterBO> chapterList(ChapterBO levelId){
+        return chapterDAO.chapterList(levelId);
     }
 
     /**

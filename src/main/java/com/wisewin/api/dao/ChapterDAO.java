@@ -1,6 +1,7 @@
 package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.ChapterBO;
+import com.wisewin.api.entity.bo.StudyCoursesBO;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ChapterDAO {
      * @param levelId 级别id
      * @return
      */
-    List<ChapterBO> chapterTist(ChapterBO levelId);
+    List<ChapterBO> chapterList(ChapterBO levelId);
 
     /**
      * 获取某个级别的课时数
@@ -32,4 +33,6 @@ public interface ChapterDAO {
      * @return
      */
     List<ChapterBO> getChapterCatalogue(ChapterBO levelId);
+
+
 }

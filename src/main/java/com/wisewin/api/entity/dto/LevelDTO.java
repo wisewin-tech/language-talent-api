@@ -11,6 +11,8 @@ public class LevelDTO  {
     private String status;//状态
     private String levelIntro; //简介
     private Integer serialNumber; //序号
+    private String medalImageUrl;//勋章图片地址
+    private String medalName;//勋章名称
     private Integer createUserId; //添加人id
     private Integer updateUserId; //添加人姓名
     private Date createTime; //创建时间
@@ -62,6 +64,22 @@ public class LevelDTO  {
 
     public void setSerialNumber(Integer serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    public String getMedalImageUrl() {
+        return medalImageUrl;
+    }
+
+    public void setMedalImageUrl(String medalImageUrl) {
+        this.medalImageUrl = medalImageUrl;
+    }
+
+    public String getMedalName() {
+        return medalName;
+    }
+
+    public void setMedalName(String medalName) {
+        this.medalName = medalName;
     }
 
     public Integer getCreateUserId() {

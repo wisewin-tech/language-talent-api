@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.AboutUsDAO">
+    <resultMap id="aboutUs" type="com.wisewin.api.entity.bo.AboutUsBO"  >
+
+        <result column="image_url"  property="imageUrl"  />
+
+    </resultMap>
+    <!--查询信息-->
+    <select id="selectAbout" resultMap="aboutUs">
+        select id,content,image_url from lt_about_us WHERE 1=1
+    </select>
+</mapper>

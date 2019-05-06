@@ -18,6 +18,7 @@ public class CourseBO extends BaseModel {
     private BigDecimal discountPrice; //特惠价
     private Date discountStartTime; //特惠开始时间
     private Date discountEndTime; //特惠结束时间
+    private Integer courseValidityPeriod;//课程有效期
     private Integer studyNumber; //学习人数
     private String courseIntro; //课程简介
     private String courseLightspot; //课程亮点
@@ -110,6 +111,14 @@ public class CourseBO extends BaseModel {
 
     public void setDiscountEndTime(Date discountEndTime) {
         this.discountEndTime = discountEndTime;
+    }
+
+    public Integer getCourseValidityPeriod() {
+        return courseValidityPeriod;
+    }
+
+    public void setCourseValidityPeriod(Integer courseValidityPeriod) {
+        this.courseValidityPeriod = courseValidityPeriod;
     }
 
     public Integer getStudyNumber() {
