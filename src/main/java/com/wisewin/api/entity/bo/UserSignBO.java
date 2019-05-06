@@ -1,5 +1,8 @@
 package com.wisewin.api.entity.bo;
 
+import com.wisewin.api.util.TimeUtil;
+import com.wisewin.api.util.date.DateUtil;
+
 import java.util.Date;
 
 public class UserSignBO {
@@ -8,7 +11,7 @@ public class UserSignBO {
     private Integer currency; //咖豆
     private Integer continuousSign; //连续签到天数
     private Integer cumulativeSign; //累计签到天数
-    private Date lastSign; //上次签到时间
+    private String lastSign; //上次签到时间
 
     @Override
     public String toString() {
@@ -62,11 +65,12 @@ public class UserSignBO {
         this.cumulativeSign = cumulativeSign;
     }
 
-    public Date getLastSign() {
-        return lastSign;
+    public String getLastSign() {
+
+        return DateUtil.getStr(lastSign);
     }
 
-    public void setLastSign(Date lastSign) {
+    public void setLastSign(String lastSign) {
         this.lastSign = lastSign;
     }
 }

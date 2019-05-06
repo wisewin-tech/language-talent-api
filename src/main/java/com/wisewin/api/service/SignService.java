@@ -49,7 +49,7 @@ public class SignService {
     }
 
     //查询用户本月签到信息,返回签到对象集合
-    public List<SignResultBO> selectMon(Integer userId) {
+    public  Map<String,Object> selectMon(Integer userId) {
 
         //获取当前月份1号的时间
         SimpleDateFormat dfstart = new SimpleDateFormat("yyyy-MM-01 00:00:00 ");
@@ -68,7 +68,8 @@ public class SignService {
          List<SignBO> signBOList= signDAO.selectMon(map);
         Set<String>  set=new HashSet<String>();
         for (SignBO signBO:signBOList){
-            set.add(DateUtils.getDateStr(signBO.getSignTime()));
+            //signBO.getSignTime()
+            set.add(DateUtil.getStrDate(signBO.getSignTime()));
         }
         //这个月的天数集合
         List<String> listOfMonth = TimeUtil.getDayListOfMonth();
@@ -83,10 +84,16 @@ public class SignService {
                 signResultBO.setFlag("no");
             }
             resultList.add(signResultBO);
-
         }
+        //查询用户表签到信息,返回userSign 用户签到对象
+        UserSignBO userBO=signDAO.selectUser(userId);
+        //创建一个map集合,用于存在签到表和用户表的信息
+        Map<String,Object> mapSign=new HashMap<String, Object>();
+        //把用户表的签到信息和签到表的信息放在map中
+        mapSign.put("resultList",resultList);
+        mapSign.put("userBO",userBO);
 
-        return resultList;
+        return mapSign;
     }
 
 
@@ -98,20 +105,18 @@ public class SignService {
         Date end= TimeUtil.getTimeEnd(0);
         //查询签到表用户最新记录
         SignBO signBO=signDAO.selectNew(userId);
-        Date signTime=signBO.getSignTime();
+        String signTime=signBO.getSignTime();
         //true在时间段内，false不在时间段内
-
-        if (hourMinuteBetween(signTime,start,end)){
+        if (hourMinuteBetween(DateUtil.gainDate(signTime),start,end)){
             //如果最新记录的签到时间为当天
             return false;
         }
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取昨天的起始时间
         Date startdate= TimeUtil.getTimeStart(-1);
         //获取昨天的结束时间
         Date enddate= TimeUtil.getTimeEnd(-1);
-
+        //通过用户id查询用户相关签到信息
         UserSignBO userBO=signDAO.selectUser(userId);
 
         //连续签到天数
@@ -119,12 +124,13 @@ public class SignService {
         //累计签到天数
         Integer cumulativeSign=userBO.getCumulativeSign();
         //上次签到日期
-        Date date=userBO.getLastSign();
+        String date=userBO.getLastSign();
         //用户积分
         Integer integral=userBO.getIntegral();
         //true在时间段内，false不在时间段内
-        if (!hourMinuteBetween(date,startdate,enddate)){
 
+        if (!hourMinuteBetween(DateUtil.gainDate(date),startdate,enddate)){
+            //上次签到日期不在昨天的时间范围内
             //连续签到天数改为1
             userBO.setContinuousSign(1);
         }else {
@@ -141,9 +147,9 @@ public class SignService {
             recordBO.setUserId(userId);
             recordBO.setSource(UserConstants.INTEGRAL.getValue());
             recordBO.setStatus(UserConstants.INCREASE.getValue());
-            recordBO.setDescribe("签到所获积分");
+            recordBO.setDescribe("签到获取积分");
             recordBO.setSpecificAmount(UserConstants.SIGNNUM.getNum());
-            System.out.println(recordBO);
+            System.out.println("recordBO:"+ recordBO);
             recordDAO.insertUserAction(recordBO);
             //签到表添加用户签到
             signDAO.insertSign(userId);

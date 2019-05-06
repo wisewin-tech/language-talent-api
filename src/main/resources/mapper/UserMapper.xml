@@ -8,7 +8,7 @@
     <!--通过phone查看库里有没有这个账号-->
     <select id="selectByPhone" resultType="com.wisewin.api.entity.bo.UserBO">
         select
-        id,nickname,mobile
+        id,nickname,mobile,status
         from
         lt_user
         where
@@ -46,7 +46,7 @@
     <!--通过id查找用户信息-->
     <select id="selectById" resultType="com.wisewin.api.entity.bo.UserBO">
         select
-        id,nickname,birthday,sex,mobile,currency,career,head_portrait_url
+        id,nickname,birthday,sex,mobile,currency,career,head_portrait_url,integral
         from
         lt_user
         where

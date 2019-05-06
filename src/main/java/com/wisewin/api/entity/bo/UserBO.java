@@ -26,6 +26,7 @@ public class UserBO  extends BaseModel{
     private Integer currency; //咖豆
     private String isLogin; //是否为登录 Yes:登录 No:注册
     private Integer career; //职业和兴趣
+    private String status; //状态,是否被拉黑  yes:拉黑,no:账号正常使用
     private String inviteCode; //邀请码
     private String byInvite; //被邀请码
     private String job; //职业
@@ -75,6 +76,14 @@ public class UserBO  extends BaseModel{
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getIsLogin() {
