@@ -5,7 +5,7 @@
 <!-- 【课时】 -->
 <mapper namespace="com.wisewin.api.dao.ChapterDAO">
     <!--查询某个级别下的课时列表-->
-    <select id="chapterTist" parameterType="com.wisewin.api.entity.bo.ChapterBO" resultType="com.wisewin.api.entity.bo.ChapterBO">
+    <select id="chapterList" parameterType="com.wisewin.api.entity.bo.ChapterBO" resultType="com.wisewin.api.entity.bo.ChapterBO">
         SELECT
 	      `language`.language_name,
 	      `level`.level_name,
