@@ -33,8 +33,7 @@ public class TestController extends BaseCotroller {
 
     @RequestMapping("/test")
     public void test(HttpServletRequest request,HttpServletResponse response) {
-        UserBO loginUser = super.getLoginUser(request);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(loginUser));
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
         super.safeJsonPrint(response, json);
     }
 

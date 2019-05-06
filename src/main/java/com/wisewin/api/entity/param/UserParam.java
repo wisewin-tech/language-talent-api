@@ -14,6 +14,7 @@ public class UserParam {
     private String mobile; //手机号
     private String ageGroup; //年龄段
     private String headPortraitUrl; //头像路径
+    private String learningGoal; //学习目的
     private String sex; //性别
     private Date birthday; //生日
     private String source; //个人/企业
@@ -36,7 +37,7 @@ public class UserParam {
 
     @Override
     public String toString() {
-        return "UserBO{" +
+        return "UserParam{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", nickname='" + nickname + '\'' +
@@ -45,6 +46,7 @@ public class UserParam {
                 ", mobile='" + mobile + '\'' +
                 ", ageGroup='" + ageGroup + '\'' +
                 ", headPortraitUrl='" + headPortraitUrl + '\'' +
+                ", learningGoal='" + learningGoal + '\'' +
                 ", sex='" + sex + '\'' +
                 ", birthday=" + birthday +
                 ", source='" + source + '\'' +
@@ -65,6 +67,14 @@ public class UserParam {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
+    }
+
+    public String getLearningGoal() {
+        return learningGoal;
+    }
+
+    public void setLearningGoal(String learningGoal) {
+        this.learningGoal = learningGoal;
     }
 
     public Integer getId() {

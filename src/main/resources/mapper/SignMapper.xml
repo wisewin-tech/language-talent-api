@@ -8,7 +8,7 @@
     <select id="selectMon" resultType="com.wisewin.api.entity.bo.SignBO"
             parameterType="java.util.Map">
         SELECT
-        id,user_id,DATE_FORMAT(sign_time,'%Y-%m-%d') AS sign_time FROM lt_sign
+        id,user_id, sign_time FROM lt_sign
         WHERE
 	    sign_time BETWEEN #{monstart} AND #{monend}  AND  user_id=#{userId}
     </select>
@@ -23,9 +23,9 @@
     </select>
 
     <!--查询用户表用户签到信息-->
-    <select id="selectUserSign" resultType="com.wisewin.api.entity.bo.UserSignBO"
+    <select id="selectUser" resultType="com.wisewin.api.entity.bo.UserSignBO"
             parameterType="java.lang.Integer">
-        SELECT id,continuous_sign,cumulative_sign,last_sign,integral
+        SELECT id,continuous_sign,cumulative_sign,last_sign,integral,currency
         FROM lt_user
         WHERE id=#{id}
     </select>

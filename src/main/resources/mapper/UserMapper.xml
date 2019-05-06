@@ -31,10 +31,13 @@
         update lt_user
         <set>
 
-            <if test="nickname!=null">nickname=#{nickname},</if>
-            <if test="password!=null">password=#{password},</if>
-            <if test="sex!=null">     sex=#{sex},</if>
-            <if test="birthday!=null">birthday=#{birthday}</if>
+            <if test="nickname!=null">         nickname=#{nickname},</if>
+            <if test="password!=null">         password=#{password},</if>
+            <if test="sex!=null">              sex=#{sex},</if>
+            <if test="ageGroup!=null">         age_group=#{ageGroup},</if>
+            <if test="learningGoal!=null">     learning_goal=#{learningGoal},</if>
+            <if test="birthday!=null">         birthday=#{birthday}</if>
+            <if test="headPortraitUrl!=null">  head_portrait_url=#{headPortraitUrl}</if>
 
         </set>
         where
@@ -43,7 +46,7 @@
     <!--通过id查找用户信息-->
     <select id="selectById" resultType="com.wisewin.api.entity.bo.UserBO">
         select
-        id,`name`,nickname,birthday,sex,mobile
+        id,nickname,birthday,sex,mobile,currency,career,head_portrait_url
         from
         lt_user
         where

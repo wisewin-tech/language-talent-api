@@ -1,6 +1,8 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
+import com.wisewin.api.util.DateUtils;
+import com.wisewin.api.util.date.DateUtil;
 
 import java.util.Date;
 
@@ -14,8 +16,16 @@ public class RecordBO extends BaseModel{
     private Date effectiveDate; //有效截止日期
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
-    private Date createTime; //创建时间
+    private String createTime; //创建时间
     private Date updateTime; //修改时间
+
+    public RecordBO() {
+    }
+
+    public RecordBO(Integer userId, Integer specificAmount) {
+        this.userId = userId;
+        this.specificAmount = specificAmount;
+    }
 
     @Override
     public String toString() {
@@ -106,12 +116,12 @@ public class RecordBO extends BaseModel{
         this.updateId = updateId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        return DateUtil.getStr(createTime);
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = DateUtil.getStr(createTime);
     }
 
     public Date getUpdateTime() {
