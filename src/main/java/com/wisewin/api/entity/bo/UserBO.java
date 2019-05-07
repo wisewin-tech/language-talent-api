@@ -37,6 +37,7 @@ public class UserBO  extends BaseModel{
     private Date lastSign; //上次签到时间
     private Integer continuousLearning; //连续学习天数
     private Integer cumulativeLearning; //累计学习天数
+    private String study_date; //上次学习日期
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
     private Date createTime; //创建时间
@@ -76,6 +77,14 @@ public class UserBO  extends BaseModel{
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
+    }
+
+    public String getStudy_date() {
+        return study_date;
+    }
+
+    public void setStudy_date(String study_date) {
+        this.study_date = study_date;
     }
 
     public String getStatus() {

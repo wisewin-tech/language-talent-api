@@ -93,9 +93,41 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
 
         }
-
-
 }
+
+    /**
+     * 测试专用保存cookie接口
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/login")
+    public void loginCookie(HttpServletResponse response,HttpServletRequest request) {
+        String phone="18631323025";
+        //通过手机号查询表中是否有该用户
+        UserBO userBO = userService.selectByPhone(phone);
+        Map<String,Object> mapUser=new HashMap<String, Object>();
+        if(userBO!=null){
+                //islogin 是否为登录, yes 登录
+                mapUser.put("islogin", UserConstants.Yes.getValue());
+                //user对象存入cookie中
+                this.putUser(response, userBO);
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
+                super.safeJsonPrint(response, json);
+        }else{
+            //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
+            UserBO user=userService.selectById(26);
+            //islogin 是否为登录, yes 登录
+            mapUser.put("islogin",UserConstants.No.getValue());
+            //将只带有手机号的user对象存入cookie中
+            this.putUser(response,user);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
+            super.safeJsonPrint(response, json);
+        }
+    }
+
+
+
+
 
     /**
      * 手机号验证通过,对比用户验证码,登录或添加用户信息

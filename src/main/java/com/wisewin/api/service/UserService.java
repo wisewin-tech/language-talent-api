@@ -7,15 +7,15 @@ import com.wisewin.api.common.constants.UserConstants;
 import com.wisewin.api.dao.UserDAO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.param.UserParam;
-import com.wisewin.api.util.AgeUtil;
-import com.wisewin.api.util.MD5Util;
-import com.wisewin.api.util.RandomUtils;
-import com.wisewin.api.util.StringUtils;
+import com.wisewin.api.util.*;
+import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.util.message.SendMessageUtil;
 import com.wisewin.api.util.redisUtils.RedissonHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 public class UserService {
@@ -56,7 +56,7 @@ public class UserService {
     /**
      * 通过id查询用户信息
      */
-    public UserBO selectById(Integer id) throws Exception {
+    public UserBO selectById(Integer id) {
 //        UserBO userBO=userDAO.selectById(id);
 //        Integer age= AgeUtil.getAge(userBO.getBirthday());
 //        userBO.setAge(age);
@@ -87,6 +87,35 @@ public class UserService {
             userParam.setPassword(MD5Util.digest(password));
         }
         userDAO.updateUser(userParam);
+
+    }
+    /**
+     * 用户学习天数
+     */
+    public UserBO  userLearning( Integer userId) {
+        //通过用户id获取用户信息
+        UserBO userBO=userDAO.selectById(userId);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+        //获取今天学习时间
+        String now =sdf.format(new Date());
+        //获取昨天学习时间
+        String yesterday =sdf.format(TimeUtil.getTimeStart(-1));
+        //连续学习天数
+        Integer continuousLearning=userBO.getContinuousLearning();
+        //累计学习天数
+        Integer cumulativeLearning=userBO.getCumulativeLearning();
+        //上次学习日期
+        String lastDate= DateUtil.getStr(userBO.getStudy_date());
+        if (yesterday.equals(lastDate)){
+            //如果上次学习时间是昨天,连续学习天数+1
+            userBO.setContinuousLearning(continuousLearning+1);
+        }else {
+            //否则,连续学习天数改为1
+            userBO.setContinuousLearning(1);
+        }
+        //累计学习天数+1
+        userBO.setCumulativeLearning(cumulativeLearning+1);
+        return userBO;
 
     }
 
