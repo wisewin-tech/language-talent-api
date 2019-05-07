@@ -48,8 +48,11 @@
     <!--通过id查找用户信息-->
     <select id="selectById" resultType="com.wisewin.api.entity.bo.UserBO">
         select
-        id,nickname,birthday,sex,mobile,currency,career,head_portrait_url,integral,
-        continuous_learning,cumulative_learning,study_date
+        `id` ,`name` ,`nickname` ,`password` ,`email` ,`mobile`,`age_group` ,
+`head_portrait_url`,`sex`,`birthday` ,`source` ,`career` ,`integral` ,`currency` ,`learning_goal` ,`studying_language_id` ,
+`language_like_id` ,`invite_code` ,`by_invite` ,`job`,`qq_openid` ,`wx_openid` ,`continuous_sign` ,`cumulative_sign` ,
+`last_sign` ,`continuous_learning` ,`cumulative_learning` ,`study_date` datetime ,`status` ,
+`create_id`,`update_id` ,`create_time` ,`update_time`
         from
         lt_user
         where
@@ -79,5 +82,21 @@
         where
         name=#{name}
     </select>
+
+    <!--修改正在学习的语言-->
+    <update id="updateLanguage" parameterType="com.wisewin.api.entity.bo.UserBO">
+        update lt_user
+        <set>
+
+            <if test="studyingLanguageId!=null">
+                studying_language_id=#{studyingLanguageId}
+            </if>
+
+        </set>
+        where
+        id=#{id}
+    </update>
+
+
 
 </mapper>

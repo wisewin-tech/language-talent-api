@@ -57,9 +57,6 @@ public class UserService {
      * 通过id查询用户信息
      */
     public UserBO selectById(Integer id) {
-//        UserBO userBO=userDAO.selectById(id);
-//        Integer age= AgeUtil.getAge(userBO.getBirthday());
-//        userBO.setAge(age);
         return userDAO.selectById(id);
 
     }
@@ -118,6 +115,17 @@ public class UserService {
         return userBO;
 
     }
+
+    /**
+     * 修改正在学习的语言id
+     * @param studyingLanguageId
+     * @return
+     */
+    public void  userUpdate( Integer id,Integer studyingLanguageId) {
+        userDAO.updateLanguage(id,studyingLanguageId);
+
+    }
+
 
 
 

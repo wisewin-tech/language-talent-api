@@ -60,7 +60,7 @@ public interface UserDAO {
      * @return
      */
     UserBO  selectUserByUsername(String name);
-
-
+    //修改正在学习的语言
+    void updateLanguage(Integer id,Integer studyingLanguageId);
 
 }
