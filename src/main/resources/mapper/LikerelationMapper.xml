@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 发现内容喜欢-->
+<mapper namespace="com.wisewin.api.dao.LikerelationDAO" >
+
+    <!--查询喜欢关系表-->
+    <select id="findLikerelation" resultType="com.wisewin.api.entity.bo.LikerelationBO">
+
+      SELECT
+          id
+      FROM
+          lt_likerelation
+      WHERE
+          user_id=#{userId}
+      AND
+          dc_id=#{dcId}
+
+    </select>
+
+    <!--添加喜欢关系表里关系-->
+    <insert id="addLikerelation" useGeneratedKeys="true" parameterType="com.wisewin.api.entity.bo.LikerelationBO">
+        INSERT  INTO
+            lt_likerelation(
+            user_id,dc_id,
+            lk_releasetime
+            )VALUES (
+            #{userId},#{dcId},
+            now()
+            )
+    </insert>
+
+    <delete id="deleteLikerelation">
+      DELETE FROM
+         lt_likerelation
+      WHERE
+         id=#{id}
+    </delete>
+
+    <select id="findLikerelationjson" resultType="com.wisewin.api.entity.bo.LikerelationBO">
+        SELECT
+          id
+        FROM
+           lt_likerelation
+         WHERE
+          user_id=#{userId}
+         AND
+          dc_id=#{dcId}
+    </select>
+</mapper>

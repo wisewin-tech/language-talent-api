@@ -29,7 +29,7 @@ public class DiscoverController extends BaseCotroller{
      * Integer id; //发现id
      * String title; //发现标题
      * Integer browse; //浏览人数
-     * Date dcReleasetime; //发布时间
+     * Date createTime; //发布时间
      * String thumbnail; //缩略图url
      * String video; //视频url
      * String type; //类型](课程,新闻,线下活动)
@@ -47,7 +47,7 @@ public class DiscoverController extends BaseCotroller{
         super.safeJsonPrint(response,json);
         return;
     }
-        List<DiscoverJsonBO> list=discoverService.getqueryDiscover(param.getId(),param.getTitle(),param.getBrowse(), DateUtil.getDate(param.getDcReleasetime()),
+        List<DiscoverJsonBO> list=discoverService.getqueryDiscover(param.getId(),param.getTitle(),param.getBrowse(), DateUtil.getDate(param.getCreateTime()),
                 param.getThumbnail(),param.getVideo(),param.getType(),param.getPriority(),param.getStick(),param.getShow(),param.getHomepage(),param.getStrip());
 
         String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
@@ -59,7 +59,7 @@ public class DiscoverController extends BaseCotroller{
      * Integer id; //发现id
      * String title; //发现标题
      * Integer browse; //浏览人数
-     * Date dcReleasetime; //发布时间
+     * Date createTime; //发布时间
      * String thumbnail; //缩略图url
      * String content; //内容
      * String type; //类型](课程,新闻,线下活动)
@@ -80,12 +80,17 @@ public class DiscoverController extends BaseCotroller{
             return;
         }
 
-        List<DiscoverBO> list=discoverService.getqueryDiscoveractivity(param.getId(),param.getTitle(),param.getBrowse(),DateUtil.getDate(param.getDcReleasetime()),
+        DiscoverBO list=discoverService.getqueryDiscoveractivity(param.getId(),param.getTitle(),param.getBrowse(),DateUtil.getDate(param.getCreateTime()),
                 param.getThumbnail(),param.getContent(),param.getType(),param.getLikenum(),param.getParticipation(),DateUtil.getDate(param.getActivitytime()),
                         param.getActivitysite(),param.getPhone(),param.getTicket(),param.getSkip());
-        String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
-        super.safeJsonPrint(response,json);
-        return;
+
+        Integer browse= list.getBrowse()+1;
+        boolean updatediscover=discoverService.getupdateDiscover(param.getId(),browse);
+        if (updatediscover){
+            String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
+            super.safeJsonPrint(response,json);
+            return;
+        }
 
     }
     /**
@@ -108,13 +113,14 @@ public class DiscoverController extends BaseCotroller{
             return;
         }
        // DiscoverBO discoverBO=discoverService.getfindDiscoveractivitybrowse(param.getId());
-
-            List<DiscoverBO> list=discoverService.getqueryDiscoveractivitylist(param.getId(),param.getTitle(),param.getBrowse(),DateUtil.getDate(param.getDcReleasetime()),
+           //根据内容id来查找出内容
+            DiscoverBO list=discoverService.getqueryDiscoveractivitylist(param.getId(),param.getTitle(),param.getBrowse(),DateUtil.getDate(param.getCreateTime()),
                     param.getVideo(),param.getContent(),param.getLikenum());
 
-          //      Integer browse=(Integer) param.getBrowse();
-            //    browse++;
-                boolean updatediscover=discoverService.getupdateDiscover(param.getId(),param.getBrowse());
+            //从刚刚查找方法里面取值
+              Integer browse= list.getBrowse()+1;
+
+                boolean updatediscover=discoverService.getupdateDiscover(param.getId(),browse);
                 if (updatediscover){
                     String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
                     super.safeJsonPrint(response,json);

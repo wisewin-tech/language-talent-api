@@ -1,24 +1,27 @@
-package com.wisewin.api.entity.bo;
+package com.wisewin.api.entity.param;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
 
 import java.util.Date;
 
-public class LikerelationBO extends BaseModel {
+public class LikerelationParam  {
 
     private Integer Id; //喜欢关系id
     private Integer userId; //用户id
     private Integer dcId; //发现id
     private Date lkReleasetime; //创建时间
+    private Integer likenum; //喜欢
 
-    public LikerelationBO(){}
+    public LikerelationParam(){}
 
 
-    public LikerelationBO(Integer userId, Integer dcId) {
-        this.userId = userId;
-        this.dcId = dcId;
+    public Integer getLikenum() {
+        return likenum;
     }
 
+    public void setLikenum(Integer likenum) {
+        this.likenum = likenum;
+    }
 
     public Integer getId() {
         return Id;
@@ -39,6 +42,8 @@ public class LikerelationBO extends BaseModel {
     public void setLkReleasetime(Date lkReleasetime) {
         this.lkReleasetime = lkReleasetime;
     }
+
+
 
     public Integer getUserId() {
         return userId;

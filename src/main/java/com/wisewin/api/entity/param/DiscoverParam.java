@@ -13,9 +13,9 @@ public class DiscoverParam extends BaseModel {
     private String title; //发现标题
     private Integer browse; //浏览人数
     private String dcName; //创建人
-    private String dcReleasetime; //发布时间
+    private String createTime; //发布时间
     private String dcUpdatename; //最后修改人
-    private String dcUpdatetime; //最后修改时间
+    private String updateTime; //最后修改时间
     private String thumbnail; //缩略图url
     private String video; //视频url
     private String content; //内容
@@ -33,6 +33,21 @@ public class DiscoverParam extends BaseModel {
     private Integer homepage; //页数
     private  Integer strip; //每条条数
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Integer getId() {
         return id;
@@ -66,13 +81,7 @@ public class DiscoverParam extends BaseModel {
         this.dcName = dcName;
     }
 
-    public String getDcReleasetime() {
-        return dcReleasetime;
-    }
 
-    public void setDcReleasetime(String dcReleasetime) {
-        this.dcReleasetime = dcReleasetime;
-    }
 
     public String getDcUpdatename() {
         return dcUpdatename;
@@ -82,13 +91,7 @@ public class DiscoverParam extends BaseModel {
         this.dcUpdatename = dcUpdatename;
     }
 
-    public String getDcUpdatetime() {
-        return dcUpdatetime;
-    }
 
-    public void setDcUpdatetime(String dcUpdatetime) {
-        this.dcUpdatetime = dcUpdatetime;
-    }
 
     public String getThumbnail() {
         return thumbnail;

@@ -27,7 +27,7 @@ public class DiscoverService {
      * Integer id; //发现id
      * String title; //发现标题
      * Integer browse; //浏览人数
-     * Date dcReleasetime; //发布时间
+     * Date createTime; //发布时间
      * String thumbnail; //缩略图url
      * String video; //视频url
      * String type; //类型](课程,新闻,线下活动)
@@ -37,9 +37,9 @@ public class DiscoverService {
      * Integer homepage; //页数
       * Integer strip; //每条条数
      */
-    public List<DiscoverJsonBO> getqueryDiscover(Integer id, String title, Integer browse, Date dcReleasetime,String thumbnail,String video,String type,
+    public List<DiscoverJsonBO> getqueryDiscover(Integer id, String title, Integer browse, Date createTime,String thumbnail,String video,String type,
                                              Integer priority,String stick,String show,Integer homepage,Integer strip){
-        DiscoverJsonBO discoverJsonBO=new DiscoverJsonBO(id,title,browse,dcReleasetime,thumbnail,video,type,priority,stick,show,homepage,strip);
+        DiscoverJsonBO discoverJsonBO=new DiscoverJsonBO(id,title,browse,createTime,thumbnail,video,type,priority,stick,show,homepage,strip);
             return  discoverDao.queryDiscover(discoverJsonBO);
     }
     /**
@@ -47,7 +47,7 @@ public class DiscoverService {
      * Integer id; //发现id
      * String title; //发现标题
      * Integer browse; //浏览人数
-     * Date dcReleasetime; //发布时间
+     * Date createTime; //发布时间
      * String thumbnail; //缩略图url
      * String content; //内容
      * String type; //类型](课程,新闻,线下活动)
@@ -59,10 +59,10 @@ public class DiscoverService {
      * double ticket; //在线购票
      * String skip; //跳转url[线下活动]
      */
-    public List<DiscoverBO> getqueryDiscoveractivity(Integer id,String title,Integer browse,Date dcReleasetime,String thumbnail,String content,
+    public DiscoverBO getqueryDiscoveractivity(Integer id,String title,Integer browse,Date createTime,String thumbnail,String content,
                                                      String type,Integer likenum,Integer participation,Date activitytime,String activitysite,
                                                      String phone,double ticket,String skip){
-        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,dcReleasetime,thumbnail,content,type,likenum,participation,activitytime,activitysite,phone,ticket,skip);
+        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,createTime,thumbnail,content,type,likenum,participation,activitytime,activitysite,phone,ticket,skip);
         return  discoverDao.queryDiscoveractivity(discoverBO);
     }
 
@@ -71,15 +71,15 @@ public class DiscoverService {
      * Integer id; //发现id
      * String title; //发现标题
      * Integer browse; //浏览人数
-     * Date dcReleasetime; //发布时间
+     * Date createTime; //发布时间
      * String video; //视频url
      * String content; //内容
      * Integer likenum; //喜欢人数
      *
      */
-    public List<DiscoverBO> getqueryDiscoveractivitylist(Integer id,String title,Integer browse,Date dcReleasetime,String video,String content,Integer likenum){
+    public DiscoverBO getqueryDiscoveractivitylist(Integer id,String title,Integer browse,Date createTime,String video,String content,Integer likenum){
 
-        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,dcReleasetime,video,content,likenum);
+        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,createTime,video,content,likenum);
 
         return  discoverDao.queryDiscoveractivitylist(discoverBO);
     }
@@ -99,5 +99,25 @@ public class DiscoverService {
         map.put("id",id);
         map.put("browse",browse);
         return  discoverDao.updateDiscover(map)>0;
+    }
+
+    /**
+     * 修改喜欢值
+     * 发现 Integer id
+     * Integer likenum; 喜欢
+     */
+    public boolean getupdatelikenumDiscover(Integer id,Integer likenum){
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("id",id);
+        map.put("likenum",likenum);
+        return  discoverDao.updatelikenumDiscover(map)>0;
+    }
+
+
+    /**
+     * 查找喜欢
+     */
+    public DiscoverBO getfindDiscoverlikenum(Integer id){
+        return  discoverDao.findDiscoverlikenum(id);
     }
 }

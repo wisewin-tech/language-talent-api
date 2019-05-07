@@ -10,7 +10,7 @@
 
         SELECT
           id,title,
-          browse,dc_releasetime,
+          browse,create_time,
           thumbnail,video,
           `type`,priority,
           stick,`show`
@@ -28,7 +28,7 @@
     <select id="queryDiscoveractivity" resultType="com.wisewin.api.entity.bo.DiscoverBO">
       SELECT
         id,title,
-        browse,dc_releasetime,
+        browse,create_time,
         thumbnail,content,
         `type`,likenum,
         participation,activitytime,
@@ -45,7 +45,7 @@
     <select id="queryDiscoveractivitylist" resultType="com.wisewin.api.entity.bo.DiscoverBO">
       SELECT
         id,title,
-        browse,dc_releasetime,
+        browse,create_time,
         video,content,
         likenum
       FROM
@@ -73,5 +73,27 @@
         WHERE
          id=#{id}
     </update>
+
+    <!--修改浏览人数值-->
+    <update id="updatelikenumDiscover" parameterType="java.util.Map">
+        UPDATE
+        lt_discover
+        SET
+        likenum=#{likenum}
+        WHERE
+        id=#{id}
+    </update>
+
+
+    <!--查找喜欢方法-->
+    <select id="findDiscoverlikenum" resultType="com.wisewin.api.entity.bo.DiscoverBO">
+ SELECT
+        id,likenum
+      FROM
+        lt_discover
+      WHERE
+        id=#{id}
+    </select>
+
 
 </mapper>
