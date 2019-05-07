@@ -33,7 +33,8 @@ public interface UserDAO {
      * @param id
      * @return
      */
-    UserBO selectById(Integer id);
+    UserBO selectAllById(Integer id);
+
 
         /* 后面的功能留作备用*/
     /**

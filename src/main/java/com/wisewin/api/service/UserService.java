@@ -57,7 +57,7 @@ public class UserService {
      * 通过id查询用户信息
      */
     public UserBO selectById(Integer id) {
-        return userDAO.selectById(id);
+        return userDAO.selectAllById(id);
 
     }
 
@@ -91,7 +91,7 @@ public class UserService {
      */
     public UserBO  userLearning( Integer userId) {
         //通过用户id获取用户信息
-        UserBO userBO=userDAO.selectById(userId);
+        UserBO userBO=userDAO.selectAllById(userId);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
         //获取今天学习时间
         String now =sdf.format(new Date());

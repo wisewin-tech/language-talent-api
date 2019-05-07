@@ -46,7 +46,7 @@
         id=#{id}
     </update>
     <!--通过id查找用户信息-->
-    <select id="selectById" resultType="com.wisewin.api.entity.bo.UserBO">
+    <select id="selectAllById" resultType="com.wisewin.api.entity.bo.UserBO">
         select
         `id` ,`name` ,`nickname` ,`password` ,`email` ,`mobile`,`age_group` ,
 `head_portrait_url`,`sex`,`birthday` ,`source` ,`career` ,`integral` ,`currency` ,`learning_goal` ,`studying_language_id` ,
