@@ -24,6 +24,51 @@ public class ChapterBO extends BaseModel {
     private Date createTime; //创建时间
     private Integer updateUserId; //添加人姓名
     private Date updateTime; //修改时间
+    private String languageName;//语言名称
+    private String courseName;//课程名称
+    private String courseIntro;//课程简介
+    private String levelName;//级别名称
+    private Integer chapterId;//课时id
+
+    public String getLanguageName() {
+        return languageName;
+    }
+
+    public void setLanguageName(String languageName) {
+        this.languageName = languageName;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getCourseIntro() {
+        return courseIntro;
+    }
+
+    public void setCourseIntro(String courseIntro) {
+        this.courseIntro = courseIntro;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
+    }
+
+    public Integer getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(Integer chapterId) {
+        this.chapterId = chapterId;
+    }
 
     public Integer getId() {
         return id;
