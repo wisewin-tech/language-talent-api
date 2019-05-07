@@ -21,6 +21,7 @@ public class UserDTO {
     private String source; //个人/企业
     private Integer integral; //积分
     private Integer kadou; //咖豆
+    private Integer studyingLanguageId; //正在学习的语言id
     private String inviteCode; //邀请码
     private String byInvite; //被邀请码
     private String job; //职业
@@ -68,6 +69,14 @@ public class UserDTO {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
+    }
+
+    public Integer getStudyingLanguageId() {
+        return studyingLanguageId;
+    }
+
+    public void setStudyingLanguageId(Integer studyingLanguageId) {
+        this.studyingLanguageId = studyingLanguageId;
     }
 
     public String getLearningGoal() {

@@ -24,6 +24,7 @@ public class UserBO  extends BaseModel{
     private String source; //个人/企业
     private Integer integral; //积分
     private Integer currency; //咖豆
+    private Integer studyingLanguageId; //正在学习的语言id
     private String isLogin; //是否为登录 Yes:登录 No:注册
     private Integer career; //职业和兴趣
     private String status; //状态,是否被拉黑  yes:拉黑,no:账号正常使用
@@ -77,6 +78,14 @@ public class UserBO  extends BaseModel{
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
+    }
+
+    public Integer getStudyingLanguageId() {
+        return studyingLanguageId;
+    }
+
+    public void setStudyingLanguageId(Integer studyingLanguageId) {
+        this.studyingLanguageId = studyingLanguageId;
     }
 
     public String getStudy_date() {

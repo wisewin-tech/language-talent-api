@@ -10,6 +10,7 @@ public class ChapterDTO {
     private String content;//课时内容
     private String status;//状态
     private String videoPath; //链接地址
+    private String thumbnailUrl;//缩略图
     private String duration; //时长
     private String chapterIntro; //简介
     private String manuscript; //文稿
@@ -19,6 +20,14 @@ public class ChapterDTO {
     private Date createTime; //创建时间
     private Integer updateUserId; //添加人姓名
     private Date updateTime; //修改时间
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
 
     public Integer getId() {
         return id;
