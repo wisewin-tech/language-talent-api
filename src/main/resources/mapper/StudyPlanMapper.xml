@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  -->
+<mapper namespace="com.wisewin.api.dao.StudyPlanDAO" >
+
+    <select id="getStudyPlan" parameterType="java.lang.Integer"
+            resultType="com.wisewin.api.entity.bo.ChapterBO">
+        SELECT
+        `language`.language_name languageName,course.course_name courseName,
+        chapter.chapter_name,course.course_intro courseIntro,
+        chapter.thumbnail_url,`level`.level_name levelName,
+        `language`.id languageId,course.id courseId,
+        `level`.id levelId,
+        chapter.id chapterId,chapter.video_path
+        FROM
+        lt_chapter `chapter`
+        LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
+        LEFT JOIN lt_course `course` ON `level`.course_id = course.id
+        LEFT JOIN lt_language `language` ON course.language_id = `language`.id
+        WHERE
+        `language`.id = #{languageId}
+    </select>
+
+</mapper>
