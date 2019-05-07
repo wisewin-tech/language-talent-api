@@ -70,4 +70,10 @@ AND course.`status` = 'putaway'
 		WHERE sc.user_id =#{userId}
 	</select>
 
+	<!--语言名称列表-->
+	<select id="languageList" resultType="com.wisewin.api.entity.bo.LanguageBO">
+		SELECT la.ensign_image_url,la.language_name
+		FROM lt_language la WHERE la.status = 'putaway' ORDER BY CONVERT(la.language_name USING gbk) COLLATE gbk_chinese_ci
+	</select>
+
 </mapper>

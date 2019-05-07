@@ -59,7 +59,11 @@ public class LanguageController extends BaseCotroller{
         }
         Integer userId = userBO.getId();
         List<LanguageBO> languageBO = languageService.myStudyLanguage(userId);
-        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(languageBO));
+        List<LanguageBO> languageBO1 = languageService.languageList();
+        Map resultMap = new HashMap();
+        resultMap.put("myStudyLanguage",languageBO);
+        resultMap.put("languageList",languageBO1);
+        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
         super.safeJsonPrint(response, result);
 
     }

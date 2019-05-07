@@ -60,4 +60,12 @@ public class LanguageService {
     public List<LanguageBO> myStudyLanguage(Integer userId){
         return languageDAO.myStudyLanguage(userId);
     }
+
+    /**
+     * 语言名称列表
+     * @return
+     */
+    public List<LanguageBO> languageList(){
+        return languageDAO.languageList();
+    }
 }

@@ -31,4 +31,10 @@ public interface LanguageDAO {
      */
     List<LanguageBO> myStudyLanguage(Integer userId);
 
+    /**
+     * 获取语言名称列表
+     * @return
+     */
+    List<LanguageBO> languageList();
+
 }
