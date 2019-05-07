@@ -43,12 +43,13 @@ public class BaseCotroller {
      * @return
      */
     public Integer getId(HttpServletRequest request) {
-        UserBO user =  this.getLoginUser(request);
-        if(user != null) {
-            return user.getId();
-        }else {
-            return null;
-        }
+//        UserBO user =  this.getLoginUser(request);
+////        if(user != null) {
+////            return user.getId();
+////        }else {
+////            return null;
+////        }
+        return 26;
     }
 
     /**

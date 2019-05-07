@@ -15,6 +15,16 @@ public class MyFavoriteBO extends BaseModel{
     private Date createTime; //创建时间
     private Date updateTime; //修改时间
 
+    /**
+     * 添加收藏/取消收藏专用构造方法
+     * @param userId    用户id
+     * @param sourceId  收藏来源id
+     */
+    public MyFavoriteBO(Integer userId, Integer sourceId) {
+        this.userId = userId;
+        this.sourceId = sourceId;
+    }
+
     @Override
     public String toString() {
         return "MyFavoriteBO{" +

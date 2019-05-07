@@ -5,6 +5,7 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.FavoritesService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +23,17 @@ public class FavoritesController extends BaseCotroller {
     @Resource
     private FavoritesService favoritesService;
 
-
+    /**
+     * 查询用户收藏的课程信息
+     * @param pageNo      页数
+     * @param pageSize    每页条数
+     * @param response
+     * @param request
+     */
     @RequestMapping("selectAll")
-    public void selectAll(Integer pageNo, Integer pageSize,HttpServletResponse response, HttpServletRequest request){
+    public void selectAll(Integer pageNo, Integer pageSize,String source,HttpServletResponse response, HttpServletRequest request){
         Integer userId=super.getId(request);
-        if (userId==null){
+        if (userId==null|| StringUtils.isEmpty(source)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -42,11 +49,47 @@ public class FavoritesController extends BaseCotroller {
         }
         //把userId 用户id,放入map集合中
         condition.put("userId",userId);
+        //吧source收藏来源(课时/发现),放入map集合中
+        condition.put("source",source);
 
         List<FavoritesResultBO> list=favoritesService.selectAll(condition);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response, json);
 
+    }
+
+    /**
+     * 添加收藏
+     * @param sourceId 来源id
+     * @param sourceId 来源(课时/发现)
+     * @param response
+     * @param request
+     */
+    @RequestMapping("insertCollect")
+    public void insertCollect(Integer sourceId,String source,HttpServletResponse response, HttpServletRequest request){
+        Integer userId=super.getId(request);
+        if (userId==null||sourceId==null||StringUtils.isEmpty(source)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        favoritesService.insertCollect(userId,sourceId,source);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+        super.safeJsonPrint(response, json);
+    }
+
+    @RequestMapping("delCollect")
+    public void delCollect(Integer sourceId,HttpServletResponse response, HttpServletRequest request){
+        Integer userId=super.getId(request);
+        if (userId==null||sourceId==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+
+        favoritesService.delCollect(userId,sourceId);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+        super.safeJsonPrint(response, json);
     }
 
 }

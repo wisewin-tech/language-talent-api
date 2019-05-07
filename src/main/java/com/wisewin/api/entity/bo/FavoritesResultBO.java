@@ -8,6 +8,7 @@ public class FavoritesResultBO {
     private String  courseName;    //课程名称
     private String  levelName;     //级别名称
     private String  chapterName;   //课时名称
+    private String  thumbnailUrl;   //缩略图
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
     private Date createTime; //创建时间
@@ -21,6 +22,7 @@ public class FavoritesResultBO {
                 ", courseName='" + courseName + '\'' +
                 ", levelName='" + levelName + '\'' +
                 ", chapterName='" + chapterName + '\'' +
+                ", thumbnailUrl='" + thumbnailUrl + '\'' +
                 ", createId=" + createId +
                 ", updateId=" + updateId +
                 ", createTime=" + createTime +
@@ -98,5 +100,13 @@ public class FavoritesResultBO {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

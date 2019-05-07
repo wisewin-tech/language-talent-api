@@ -47,8 +47,8 @@ public class UserService {
      * 通过手机号查询用户信息
      */
     public UserBO selectByPhone(String phone) {
-        System.out.println(phone);
-        System.out.println( "UserBO对象:" +userDAO.selectByPhone(phone));
+//        System.out.println(phone);
+//        System.out.println( "UserBO对象:" +userDAO.selectByPhone(phone));
 
         return userDAO.selectByPhone(phone);
 

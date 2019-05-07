@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.UserScoreDAO">
+
+    <!--查询用户答题分数-->
+    <select id="selectUserScore" resultType="com.wisewin.api.entity.bo.UserScoreRecordBO">
+        select
+        id,user_id,chapter_id,score
+        from
+        lt_user_score_record
+        WHERE user_id=#{userId} AND chapter_id=#{chapterId}
+    </select>
+    <!--添加用户答题记录-->
+    <insert id="addUserScore" parameterType="java.util.Map">
+        INSERT INTO lt_user_score_record
+        <set>
+            user_id=#{userId},
+            chapter_id=#{chapterId},
+            score=#{score},
+            do_exercise_time=#{doExerciseTime},
+            create_time=now()
+        </set>
+
+    </insert>
+
+
+
+
+</mapper>

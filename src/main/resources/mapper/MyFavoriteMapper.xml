@@ -4,19 +4,23 @@
 
 <!-- 【收藏】 -->
 <mapper namespace="com.wisewin.api.dao.FavoritesDAO">
-    <!--查询用户收藏记录-->
+    <!--查询用户课时收藏记录-->
     <select id="selectFavorites" resultType="com.wisewin.api.entity.bo.FavoritesResultBO"
             parameterType="java.util.Map">
      SELECT
-	lmf.user_id,ll.language_name,lc.course_name,lv.level_name,lch.chapter_name
+	  lmf.user_id,lmf.source_id,ll.language_name,lc.course_name,lv.level_name,
+        lch.chapter_name,lch.thumbnail_url
     FROM
       lt_my_favorite AS lmf
     left JOIN `lt_chapter`  AS lch ON lmf.source_id=lch.id
     left JOIN `lt_level`    AS lv ON lch.level_id=lv.id
     left JOIN `lt_course`   AS lc ON lv.course_id=lc.id
     left JOIN `lt_language` AS ll ON lc.language_id=ll.id
-        WHERE
-        lmf.user_id=#{userId}
+
+        <where>
+            lmf.user_id=#{userId}
+            <if test="source!=null">AND source=#{source}</if>
+        </where>
         ORDER BY lmf.create_time DESC
         <include refid="limit" />
     </select>
@@ -24,34 +28,48 @@
         limit #{pageOffset},#{pageSize}
     </sql>
 
-    <!--添加收藏-->
+    <!--查询用户发现收藏记录-->
+    <select id="selectDiscover" resultType="com.wisewin.api.entity.bo.DiscoverResultBO"
+            parameterType="java.util.Map">
+        SELECT mf.user_id,mf.source,mf.source_id,dis.title,dis.thumbnail
+        FROM `lt_my_favorite` AS mf
+        LEFT JOIN lt_discover AS dis
+        ON dis.id=mf.source_id
+        <where>
+            mf.user_id=#{userId}
+            <if test="source!=null">AND mf.source=#{source}</if>
+        </where>
+        ORDER BY mf.create_time DESC
+        <include refid="limit" />
+    </select>
+
     <insert id="insertCollect" parameterType="com.wisewin.api.entity.bo.MyFavoriteBO">
-      INSERT INTO lt_my_favorite  AS lmf
+      INSERT INTO lt_my_favorite
         <set>
-            <if test="userId!=null">AND lmf.user_id=#{userId}</if>
-            <if test="source!=null">AND lmf.source=#{source}</if>
-            <if test="sourceId!=null">AND lmf.source_id=#{sourceId}</if>
-            lmf.createTime=now()
+            <if test="userId!=null">   user_id=#{userId},</if>
+            <if test="source!=null">   source=#{source},</if>
+            <if test="sourceId!=null"> source_id=#{sourceId},</if>
+            create_time=now()
         </set>
 
     </insert>
+    <!--取消收藏-->
+    <delete id="delCollect" parameterType="com.wisewin.api.entity.bo.MyFavoriteBO">
+        DELETE FROM lt_my_favorite
+        WHERE
+        user_id=#{userId}
+        AND source_id=#{sourceId}
+    </delete>
 
-    <!--<update id="updateUserSign" parameterType="com.wisewin.api.entity.bo.UserBO">-->
-        <!--update lt_user-->
-        <!--<set>-->
+    <!--备用-->
+    <!--查询某个课程的收藏状态-->
+    <select id="selectStatus"  resultType="java.lang.String"
+            parameterType="com.wisewin.api.entity.bo.MyFavoriteBO">
+        SELECT status
+        FROM lt_my_favorite
+        WHERE
+        user_id=#{userId} AND source_id=#{sourceId}
 
-            <!--<if test="continuousSign!=null">continuous_sign=#{continuousSign},</if>-->
-            <!--<if test="cumulativeSign!=null">cumulative_sign=#{cumulativeSign},</if>-->
-            <!--<if test="integral!=null">      integral=#{integral},</if>-->
-            <!--last_sign=now()-->
-
-        <!--</set>-->
-        <!--where-->
-        <!--id=#{id}-->
-    <!--</update>-->
-
-
-
-
+    </select>
 
 </mapper>
