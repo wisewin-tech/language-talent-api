@@ -1,6 +1,7 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.LanguageBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.CertificateService;
 import com.wisewin.api.service.LanguageService;
@@ -25,6 +26,12 @@ public class LanguageController extends BaseCotroller{
     @Resource
     private CertificateService certificateService;
 
+    /**
+     * 语言详情
+     * @param id
+     * @param request
+     * @param response
+     */
     @RequestMapping("/languageDetails")
     public void languageDetails(LanguageBO id,HttpServletRequest request, HttpServletResponse response){
 
@@ -35,5 +42,26 @@ public class LanguageController extends BaseCotroller{
         }
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(languageBOList));
         super.safeJsonPrint(response, result);
+    }
+
+    /**
+     * 我学习的语言
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/myStudyLanguage")
+    public void  myStudyLanguage(HttpServletRequest request,HttpServletResponse response){
+        UserBO userBO = super.getLoginUser(request);
+        System.out.println(userBO);
+        if (userBO==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, result);
+            return;
+        }
+        Integer userId = userBO.getId();
+        List<LanguageBO> languageBO = languageService.myStudyLanguage(userId);
+        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(languageBO));
+        super.safeJsonPrint(response, result);
+
     }
 }

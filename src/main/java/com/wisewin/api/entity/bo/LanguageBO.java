@@ -36,6 +36,15 @@ public class LanguageBO extends BaseModel {
     private String certificateOrNot;//是否可以考证
     private Integer certificateId;//证书id
     private String certificateImage;//证书图片
+    private Integer languageId;//语言id
+
+    public Integer getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(Integer languageId) {
+        this.languageId = languageId;
+    }
 
     public String getCertificateImage() {
         return certificateImage;

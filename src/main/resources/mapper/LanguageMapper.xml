@@ -62,4 +62,12 @@ AND course.`status` = 'putaway'
 
     </select>
 
+	<!--我学习的语言-->
+	<select id="myStudyLanguage" resultType="com.wisewin.api.entity.bo.LanguageBO"
+			parameterType="java.lang.Integer">
+		SELECT la.id languageId,la.ensign_image_url,la.language_name
+        FROM lt_language `la` LEFT JOIN lt_study_courses `sc` ON la.id = sc.language_id
+		WHERE sc.user_id =#{userId}
+	</select>
+
 </mapper>

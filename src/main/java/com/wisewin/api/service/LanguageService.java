@@ -51,4 +51,13 @@ public class LanguageService {
         List<LanguageBO> languageBOList = languageDAO.languageDetails(id);
         return languageBOList;
     }
+
+    /**
+     * 我学习的语言
+     * @param userId 用户id
+     * @return
+     */
+    public List<LanguageBO> myStudyLanguage(Integer userId){
+        return languageDAO.myStudyLanguage(userId);
+    }
 }
