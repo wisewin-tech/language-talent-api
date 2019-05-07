@@ -1,4 +1,4 @@
-package com.wisewin.api.entity.bo;
+package com.wisewin.api.entity.param;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
 
@@ -7,17 +7,14 @@ import java.util.Date;
 /**
  * 感兴趣的语言表
  */
-public class CareahangBO extends BaseModel {
+public class CareahangParam  {
 
     private Integer id; //感兴趣的语言id
     private Integer languageId; //语言表id
     private Integer userId; //用户id
     private Date chReleasetime; //创建时间
 
-    public CareahangBO(Integer languageId, Integer userId) {
-        this.languageId = languageId;
-        this.userId = userId;
-    }
+
 
     public void setId(Integer id) {
         this.id = id;

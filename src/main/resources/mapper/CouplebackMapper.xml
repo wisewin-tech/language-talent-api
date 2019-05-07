@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 反馈信息 -->
+<mapper namespace="com.wisewin.api.dao.CouplebacDAO" >
+
+
+    <insert id="addCpupleback" useGeneratedKeys="true" keyProperty="id"  parameterType="com.wisewin.api.entity.bo.CouplebackBO">
+        INSERT  INTO
+          lt_coupleback(
+          user_id,content,
+          contactpattern,picture_url,
+          cb_releasetime,cb_updatetime
+          )VALUES(
+          #{userId},#{content},
+          #{contactpattern},#{pictureUrl},
+          now(),now()
+          )
+    </insert>
+
+
+    <select id="" resultType="com.wisewin.api.entity.bo.CouplebackBO">
+        SELECT
+          id,user_id,
+          content,contactpattern,
+          picture_url,cb_releasetime,
+          cb_updatetime,disposeres_ult,
+          disposeperson
+        FROM
+          lt_coupleback
+        WHERE
+          <if test="user_id!=null or user_id!='' ">
+              user_id=#{userId}
+          </if>
+
+        ORDER  BY
+          cb_updatetime
+        desc
+
+    </select>
+
+
+</mapper>

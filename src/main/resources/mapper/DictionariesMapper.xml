@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 字典 -->
+<mapper namespace="com.wisewin.api.dao.DictionariesDAO" >
+
+    <!--字典表-->
+    <select id="queryDictionaries" resultType="com.wisewin.api.entity.bo.DictionariesBO">
+
+        SELECT
+          id, `key`,
+          `value`
+        FROM
+          lt_dictionaries
+        WHERE
+          `outer`=#{outer}
+        ORDER  BY
+          rank
+        DESC
+
+    </select>
+
+
+</mapper>

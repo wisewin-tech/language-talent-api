@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 发现 -->
+<mapper namespace="com.wisewin.api.dao.DiscoverDao" >
+
+    <!--发现首页显示-->
+    <select id="queryDiscover" resultType="com.wisewin.api.entity.bo.DiscoverJsonBO">
+
+        SELECT
+          id,title,
+          browse,dc_releasetime,
+          thumbnail,video,
+          `type`,priority,
+          stick,`show`
+        FROM
+          lt_discover
+        ORDER  BY
+          priority
+        desc
+          limit #{homepage},#{strip}
+
+    </select>
+
+
+    <!--线下活动-->
+    <select id="queryDiscoveractivity" resultType="com.wisewin.api.entity.bo.DiscoverBO">
+      SELECT
+        id,title,
+        browse,dc_releasetime,
+        thumbnail,content,
+        `type`,likenum,
+        participation,activitytime,
+        activitysite,phone,
+        ticket,skip
+      FROM
+        lt_discover
+      WHERE
+        id=#{id}
+    </select>
+
+
+    <!--文章内容-->
+    <select id="queryDiscoveractivitylist" resultType="com.wisewin.api.entity.bo.DiscoverBO">
+      SELECT
+        id,title,
+        browse,dc_releasetime,
+        video,content,
+        likenum
+      FROM
+        lt_discover
+      WHERE
+        id=#{id}
+    </select>
+
+    <!--浏览人数查询-->
+    <select id="findDiscoveractivitybrowse" resultType="com.wisewin.api.entity.bo.DiscoverBO">
+      SELECT
+        id,browse
+      FROM
+        lt_discover
+      WHERE
+        id=#{id}
+    </select>
+
+    <!--修改浏览人数值-->
+    <update id="updateDiscover" parameterType="java.util.Map">
+        UPDATE
+          lt_discover
+        SET
+          browse=#{browse}
+        WHERE
+         id=#{id}
+    </update>
+
+</mapper>

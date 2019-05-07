@@ -18,24 +18,32 @@ public class DictionariesBO extends BaseModel {
     private String dnName; //创建人
     private Date dnReleasetime; //发布时间
     private Integer updateUserId; //修改用户id
+    private Double rank; //排序
+    private String outer; //连接字典类型表valuename
 
     public  DictionariesBO(){}
 
-    public DictionariesBO(String key, String value, Integer dnId, String dnName, Date dnReleasetime, Integer updateUserId) {
+    public DictionariesBO(Integer id, String key, String value, String outer) {
+        this.id = id;
         this.key = key;
         this.value = value;
-        this.dnId = dnId;
-        this.dnName = dnName;
-        this.dnReleasetime = dnReleasetime;
-        this.updateUserId = updateUserId;
+        this.outer = outer;
     }
 
-    public DictionariesBO(String key, String value, Integer dnId, String dnName, Integer updateUserId) {
-        this.key = key;
-        this.value = value;
-        this.dnId = dnId;
-        this.dnName = dnName;
-        this.updateUserId = updateUserId;
+    public Double getRank() {
+        return rank;
+    }
+
+    public void setRank(Double rank) {
+        this.rank = rank;
+    }
+
+    public String getOuter() {
+        return outer;
+    }
+
+    public void setOuter(String outer) {
+        this.outer = outer;
     }
 
     public Integer getId() {

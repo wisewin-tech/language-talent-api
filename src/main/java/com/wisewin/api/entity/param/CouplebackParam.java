@@ -1,40 +1,19 @@
-package com.wisewin.api.entity.bo;
+package com.wisewin.api.entity.param;
 
-import com.wisewin.api.entity.bo.common.base.BaseModel;
 
 import java.util.Date;
 
-public class CouplebackBO extends BaseModel {
+public class CouplebackParam  {
     private Integer id; //意见反馈id
     private Integer userId; //用户id
     private String content; //反馈内容
+    private String contactWay; //联系方式
     private String contactpattern; //用户联系方式
     private String pictureUrl; //图片url
     private Date cbReleasetime; //创建时间
     private Date cbUpdatetime; //修改时间
     private String disposeresUlt; //处理结果
     private String disposeperson; //处理人
-    private String contactWay; //联系方式
-
-    public CouplebackBO(Integer id, String content, String contactpattern, String pictureUrl, Date cbUpdatetime, String disposeresUlt, String disposeperson) {
-        this.id = id;
-        this.content = content;
-        this.contactpattern = contactpattern;
-        this.pictureUrl = pictureUrl;
-        this.cbUpdatetime = cbUpdatetime;
-        this.disposeresUlt = disposeresUlt;
-        this.disposeperson = disposeperson;
-    }
-
-
-
-    public CouplebackBO(Integer userId,String contactWay, String content, String contactpattern, String pictureUrl) {
-        this.userId = userId;
-        this.contactWay=contactWay;
-        this.content = content;
-        this.contactpattern = contactpattern;
-        this.pictureUrl = pictureUrl;
-    }
 
 
     public String getContactWay() {

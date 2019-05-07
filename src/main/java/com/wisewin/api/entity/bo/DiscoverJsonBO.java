@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by yyh on 2019/4/24* 发现实体类
  */
-public class DiscoverBO extends BaseModel {
+public class DiscoverJsonBO extends BaseModel {
 
     private Integer id; //发现id
     private String title; //发现标题
@@ -30,37 +30,11 @@ public class DiscoverBO extends BaseModel {
     private String stick; //置顶[是与否]
     private String show; //是否显示
     private String skip; //跳转url[线下活动]
+    private Integer homepage; //页数
+    private Integer strip; //每条条数
 
 
-    public DiscoverBO(Integer id, String title, Integer browse, Date dcReleasetime, String video, String content, Integer likenum) {
-        this.id = id;
-        this.title = title;
-        this.browse = browse;
-        this.dcReleasetime = dcReleasetime;
-        this.video = video;
-        this.content = content;
-        this.likenum = likenum;
-    }
-
-    public DiscoverBO(Integer id, String title, Integer browse, Date dcReleasetime, String thumbnail, String content, String type, Integer likenum, Integer participation, Date activitytime, String activitysite, String phone, double ticket, String skip) {
-        this.id = id;
-        this.title = title;
-        this.browse = browse;
-        this.dcReleasetime = dcReleasetime;
-        this.thumbnail = thumbnail;
-        this.content = content;
-        this.type = type;
-        this.likenum = likenum;
-        this.participation = participation;
-        this.activitytime = activitytime;
-        this.activitysite = activitysite;
-        this.phone = phone;
-        this.ticket = ticket;
-        this.skip = skip;
-    }
-
-
-    public DiscoverBO(Integer id, String title, Integer browse, Date dcReleasetime, String thumbnail, String video, String type, Integer priority, String stick, String show) {
+    public DiscoverJsonBO(Integer id, String title, Integer browse, Date dcReleasetime, String thumbnail, String video, String type, Integer priority, String stick, String show,Integer homepage,Integer strip) {
         this.id = id;
         this.title = title;
         this.browse = browse;
@@ -71,12 +45,31 @@ public class DiscoverBO extends BaseModel {
         this.priority = priority;
         this.stick = stick;
         this.show = show;
+        this.homepage=homepage;
+        this.strip=strip;
+
     }
 
 
 
-    public  DiscoverBO(){}
 
+    public DiscoverJsonBO(){}
+
+    public Integer getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(Integer homepage) {
+        this.homepage = homepage;
+    }
+
+    public Integer getStrip() {
+        return strip;
+    }
+
+    public void setStrip(Integer strip) {
+        this.strip = strip;
+    }
 
     public Integer getId() {
         return id;

@@ -1,4 +1,4 @@
-package com.wisewin.api.entity.bo;
+package com.wisewin.api.entity.param;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
 
@@ -7,22 +7,22 @@ import java.util.Date;
 /**
  * Created by yyh on 2019/4/24* 发现实体类
  */
-public class DiscoverBO extends BaseModel {
+public class DiscoverParam extends BaseModel {
 
     private Integer id; //发现id
     private String title; //发现标题
     private Integer browse; //浏览人数
     private String dcName; //创建人
-    private Date dcReleasetime; //发布时间
+    private String dcReleasetime; //发布时间
     private String dcUpdatename; //最后修改人
-    private Date dcUpdatetime; //最后修改时间
+    private String dcUpdatetime; //最后修改时间
     private String thumbnail; //缩略图url
     private String video; //视频url
     private String content; //内容
     private String type; //类型](课程,新闻,线下活动)
     private Integer likenum; //喜欢人数
     private Integer participation; //要参与
-    private Date activitytime; //活动时间
+    private String activitytime; //活动时间
     private String activitysite; //活动地址
     private String phone; //联系电话
     private double ticket; //在线购票
@@ -30,52 +30,8 @@ public class DiscoverBO extends BaseModel {
     private String stick; //置顶[是与否]
     private String show; //是否显示
     private String skip; //跳转url[线下活动]
-
-
-    public DiscoverBO(Integer id, String title, Integer browse, Date dcReleasetime, String video, String content, Integer likenum) {
-        this.id = id;
-        this.title = title;
-        this.browse = browse;
-        this.dcReleasetime = dcReleasetime;
-        this.video = video;
-        this.content = content;
-        this.likenum = likenum;
-    }
-
-    public DiscoverBO(Integer id, String title, Integer browse, Date dcReleasetime, String thumbnail, String content, String type, Integer likenum, Integer participation, Date activitytime, String activitysite, String phone, double ticket, String skip) {
-        this.id = id;
-        this.title = title;
-        this.browse = browse;
-        this.dcReleasetime = dcReleasetime;
-        this.thumbnail = thumbnail;
-        this.content = content;
-        this.type = type;
-        this.likenum = likenum;
-        this.participation = participation;
-        this.activitytime = activitytime;
-        this.activitysite = activitysite;
-        this.phone = phone;
-        this.ticket = ticket;
-        this.skip = skip;
-    }
-
-
-    public DiscoverBO(Integer id, String title, Integer browse, Date dcReleasetime, String thumbnail, String video, String type, Integer priority, String stick, String show) {
-        this.id = id;
-        this.title = title;
-        this.browse = browse;
-        this.dcReleasetime = dcReleasetime;
-        this.thumbnail = thumbnail;
-        this.video = video;
-        this.type = type;
-        this.priority = priority;
-        this.stick = stick;
-        this.show = show;
-    }
-
-
-
-    public  DiscoverBO(){}
+    private Integer homepage; //页数
+    private  Integer strip; //每条条数
 
 
     public Integer getId() {
@@ -110,11 +66,11 @@ public class DiscoverBO extends BaseModel {
         this.dcName = dcName;
     }
 
-    public Date getDcReleasetime() {
+    public String getDcReleasetime() {
         return dcReleasetime;
     }
 
-    public void setDcReleasetime(Date dcReleasetime) {
+    public void setDcReleasetime(String dcReleasetime) {
         this.dcReleasetime = dcReleasetime;
     }
 
@@ -126,11 +82,11 @@ public class DiscoverBO extends BaseModel {
         this.dcUpdatename = dcUpdatename;
     }
 
-    public Date getDcUpdatetime() {
+    public String getDcUpdatetime() {
         return dcUpdatetime;
     }
 
-    public void setDcUpdatetime(Date dcUpdatetime) {
+    public void setDcUpdatetime(String dcUpdatetime) {
         this.dcUpdatetime = dcUpdatetime;
     }
 
@@ -182,11 +138,11 @@ public class DiscoverBO extends BaseModel {
         this.participation = participation;
     }
 
-    public Date getActivitytime() {
+    public String getActivitytime() {
         return activitytime;
     }
 
-    public void setActivitytime(Date activitytime) {
+    public void setActivitytime(String activitytime) {
         this.activitytime = activitytime;
     }
 
@@ -244,5 +200,21 @@ public class DiscoverBO extends BaseModel {
 
     public void setSkip(String skip) {
         this.skip = skip;
+    }
+
+    public Integer getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(Integer homepage) {
+        this.homepage = homepage;
+    }
+
+    public Integer getStrip() {
+        return strip;
+    }
+
+    public void setStrip(Integer strip) {
+        this.strip = strip;
     }
 }
