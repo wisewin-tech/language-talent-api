@@ -49,8 +49,8 @@ public class LanguageController extends BaseCotroller{
      * @param request
      * @param response
      */
-    @RequestMapping("/myStudyLanguage")
-    public void  myStudyLanguage(HttpServletRequest request,HttpServletResponse response){
+    @RequestMapping("/languageList")
+    public void  languageList(HttpServletRequest request,HttpServletResponse response){
         UserBO userBO = super.getLoginUser(request);
         if (userBO==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
