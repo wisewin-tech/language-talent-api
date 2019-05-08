@@ -6,7 +6,7 @@
 <mapper namespace="com.wisewin.api.dao.DiscoverDao" >
 
     <!--发现首页显示-->
-    <select id="queryDiscover" resultType="com.wisewin.api.entity.bo.DiscoverJsonBO">
+    <select id="queryDiscover" resultType="com.wisewin.api.entity.param.DiscoverParam">
 
         SELECT
           id,title,
@@ -45,7 +45,7 @@
 
 
     <!--发现线下活动-->
-    <select id="queryDiscovertype" resultType="com.wisewin.api.entity.bo.DiscoverJsonBO">
+    <select id="queryDiscovertype" resultType="com.wisewin.api.entity.param.DiscoverParam">
 
         SELECT
         id,title,
