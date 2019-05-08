@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.UserStudyDetailsDAO">
+    <!--查询用户学习详情-->
+    <select id="getStudyDetails" parameterType="com.wisewin.api.entity.bo.UserStudyDetailsBO"
+            resultType="com.wisewin.api.entity.bo.UserStudyDetailsBO">
+        SELECT user_id,study_date,study_duration FROM `lt_user_study_details` WHERE user_id=#{userId} AND study_date=#{studyDate}
+    </select>
+    <!--添加时长和日期-->
+    <insert id="insertDuration">
+        INSERT INTO lt_user_study_details (user_id,study_date,study_duration) VALUES(#{userId},now(),1)
+    </insert>
+    <!--修改时长-->
+    <update id="updateDuration" parameterType="com.wisewin.api.entity.bo.UserStudyDetailsBO">
+        UPDATE lt_user_study_details SET study_duration = #{studyDuration} WHERE user_id=#{userId} AND study_date=#{studyDate}
+    </update>
+    <!--最近一周每天学习时长-->
+    <select id="weekStudyDuration" resultType="com.wisewin.api.entity.bo.UserStudyDetailsBO">
+        SELECT ud.study_duration studyDuration,ud.study_date studyDate
+        FROM lt_user_study_details ud
+        WHERE ud.user_id = #{userId}
+        GROUP BY ud.study_date
+        ORDER BY ud.study_date DESC
+        LIMIT 0,7
+    </select>
+
+
+</mapper>
