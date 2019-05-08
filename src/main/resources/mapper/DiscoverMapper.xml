@@ -13,23 +13,66 @@
           browse,create_time,
           thumbnail,video,
           `type`,priority,
-          stick,`show`
+          stick,`show`,
+          way
         FROM
           lt_discover
+        WHERE
+          `type`='journalism'
+        OR
+          `type`='course'
         ORDER  BY
           priority
         desc
-          limit #{homepage},#{strip}
+
+        <include refid="orderLimit" />
 
     </select>
+    <sql id="orderLimit">
+        limit #{pageNo},#{pageSize}
+    </sql>
 
+    <select id="findcoun" resultType="int">
+        SELECT
+         COUNT(`type`)
+        FROM
+        lt_discover
+        WHERE
+          `type`='journalism'
+        OR
+          `type`='course'
+    </select>
+
+
+    <!--发现线下活动-->
+    <select id="queryDiscovertype" resultType="com.wisewin.api.entity.bo.DiscoverJsonBO">
+
+        SELECT
+        id,title,
+        browse,create_time,
+        thumbnail,content,video,
+        createTime,
+        `type`,priority,
+        stick,`show`,
+        way
+        FROM
+        lt_discover
+        WHERE
+        `type`='activity'
+        ORDER  BY
+        priority
+
+
+    </select>
 
     <!--线下活动-->
     <select id="queryDiscoveractivity" resultType="com.wisewin.api.entity.bo.DiscoverBO">
       SELECT
         id,title,
         browse,create_time,
-        thumbnail,content,
+        thumbnail,
+        video,
+        content,
         `type`,likenum,
         participation,activitytime,
         activitysite,phone,
@@ -40,19 +83,6 @@
         id=#{id}
     </select>
 
-
-    <!--文章内容-->
-    <select id="queryDiscoveractivitylist" resultType="com.wisewin.api.entity.bo.DiscoverBO">
-      SELECT
-        id,title,
-        browse,create_time,
-        video,content,
-        likenum
-      FROM
-        lt_discover
-      WHERE
-        id=#{id}
-    </select>
 
     <!--浏览人数查询-->
     <select id="findDiscoveractivitybrowse" resultType="com.wisewin.api.entity.bo.DiscoverBO">

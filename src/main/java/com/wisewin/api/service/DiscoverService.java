@@ -4,6 +4,7 @@ package com.wisewin.api.service;
 import com.wisewin.api.dao.DiscoverDao;
 import com.wisewin.api.entity.bo.DiscoverBO;
 import com.wisewin.api.entity.bo.DiscoverJsonBO;
+import com.wisewin.api.entity.param.DiscoverParam;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,17 +35,18 @@ public class DiscoverService {
      * Integer priority; //优先级
      * String stick; //置顶[是与否]
      * String show; //是否显示
-     * Integer homepage; //页数
-      * Integer strip; //每条条数
+     * String way; //展示方式
+     *Integer pageOffset; //页数
+      Integer pageSize; //每条条数
      */
-    public List<DiscoverJsonBO> getqueryDiscover(Integer id, String title, Integer browse, Date createTime,String thumbnail,String video,String type,
-                                             Integer priority,String stick,String show,Integer homepage,Integer strip){
-        DiscoverJsonBO discoverJsonBO=new DiscoverJsonBO(id,title,browse,createTime,thumbnail,video,type,priority,stick,show,homepage,strip);
-            return  discoverDao.queryDiscover(discoverJsonBO);
+    public List<DiscoverJsonBO> getqueryDiscover(DiscoverParam param){
+
+            return  discoverDao.queryDiscover(param);
     }
+
     /**
-     * 线下活动
-     * Integer id; //发现id
+     * 首页线下活动
+     * * Integer id; //发现id
      * String title; //发现标题
      * Integer browse; //浏览人数
      * Date createTime; //发布时间
@@ -58,31 +60,47 @@ public class DiscoverService {
      * String phone; //联系电话
      * double ticket; //在线购票
      * String skip; //跳转url[线下活动]
+     * String way; //展示方式
      */
-    public DiscoverBO getqueryDiscoveractivity(Integer id,String title,Integer browse,Date createTime,String thumbnail,String content,
-                                                     String type,Integer likenum,Integer participation,Date activitytime,String activitysite,
-                                                     String phone,double ticket,String skip){
-        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,createTime,thumbnail,content,type,likenum,participation,activitytime,activitysite,phone,ticket,skip);
-        return  discoverDao.queryDiscoveractivity(discoverBO);
+    public List<DiscoverJsonBO> getqueryDiscovertype(DiscoverParam param){
+
+        return  discoverDao.queryDiscover(param);
     }
 
+
     /**
-     * 文章内容显示
+     * 线下活动
      * Integer id; //发现id
      * String title; //发现标题
      * Integer browse; //浏览人数
      * Date createTime; //发布时间
-     * String video; //视频url
+     * String thumbnail; //缩略图url
+     * 视频
      * String content; //内容
+     * String type; //类型](课程,新闻,线下活动)
      * Integer likenum; //喜欢人数
-     *
+     * Integer participation; //要参与
+     * Date activitytime; //活动时间
+     * String activitysite; //活动地址
+     * String phone; //联系电话
+     * double ticket; //在线购票
+     * String skip; //跳转url[线下活动]
      */
-    public DiscoverBO getqueryDiscoveractivitylist(Integer id,String title,Integer browse,Date createTime,String video,String content,Integer likenum){
-
-        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,createTime,video,content,likenum);
-
-        return  discoverDao.queryDiscoveractivitylist(discoverBO);
+    public DiscoverBO getqueryDiscoveractivity(Integer id,String title,Integer browse,Date createTime,String thumbnail,String video,String content,
+                                                     String type,Integer likenum,Integer participation,Date activitytime,String activitysite,
+                                                     String phone,double ticket,String skip){
+        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,createTime,thumbnail,video,content,type,likenum,participation,activitytime,activitysite,phone,ticket,skip);
+        return  discoverDao.queryDiscoveractivity(discoverBO);
     }
+
+    /**
+     * 首页分页条件查询总数
+     */
+    public int getfindcoun(int countnum){
+        return  discoverDao.findcoun(countnum);
+    }
+
+
 
     /**
      * 发现内容浏览人数查询
@@ -118,6 +136,7 @@ public class DiscoverService {
      * 查找喜欢
      */
     public DiscoverBO getfindDiscoverlikenum(Integer id){
+
         return  discoverDao.findDiscoverlikenum(id);
     }
 }
