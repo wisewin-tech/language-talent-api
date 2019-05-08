@@ -62,6 +62,6 @@ public interface UserDAO {
      */
     UserBO  selectUserByUsername(String name);
     //修改正在学习的语言
-    void updateLanguage(Integer id,Integer studyingLanguageId);
+    void updateLanguage(@Param("id") Integer id,@Param("studyingLanguageId")Integer studyingLanguageId);
 
 }

@@ -84,17 +84,12 @@
     </select>
 
     <!--修改正在学习的语言-->
-    <update id="updateLanguage" parameterType="com.wisewin.api.entity.bo.UserBO">
-        update lt_user
+    <update id="updateLanguage" parameterType="java.lang.Integer">
+        UPDATE lt_user
         <set>
-
-            <if test="studyingLanguageId!=null">
                 studying_language_id=#{studyingLanguageId}
-            </if>
-
         </set>
-        where
-        id=#{id}
+        WHERE id=#{id}
     </update>
 
 
