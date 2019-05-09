@@ -51,7 +51,20 @@ public class RecordService {
      * @param userId  用户id
      * @param num     兑换的数量
      */
-    public void exchange(Integer userId,Integer num) {
+    public boolean exchange(Integer userId,Integer num) {
+       //查看用户积分是否足够兑换
+        UserSignBO user=signDAO.selectUser(userId);
+        //积分减少
+        int reduce=user.getIntegral()-num;
+        if (reduce<0){ //如果积分不足于兑换数量
+            return false;
+        }
+        user.setIntegral(reduce);
+        //咖豆增加
+        user.setCurrency(user.getCurrency().intValue()+num);
+        //修改用户表积分咖豆情况
+        recordDAO.updateUser(user);
+        //记录表添加积分支出的兑换记录
         RecordBO recordBO=new RecordBO(userId,num);
         //来源--积分
         recordBO.setSource(UserConstants.INTEGRAL.getValue());
@@ -68,14 +81,7 @@ public class RecordService {
         record.setStatus(UserConstants.INCREASE.getValue());
         //添加一条数据,userid用户获取咖豆num
         recordDAO.insertUserAction(record);
-
-        //修改用户表积分咖豆情况
-        UserSignBO user=signDAO.selectUser(userId);
-
-        user.setIntegral(user.getIntegral()-num);
-        user.setCurrency(user.getCurrency().intValue()+num);
-        recordDAO.updateUser(user);
-
+        return true;
     }
 
 }
