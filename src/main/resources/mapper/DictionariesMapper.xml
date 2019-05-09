@@ -13,8 +13,11 @@
           `value`
         FROM
           lt_dictionaries
-        WHERE
-          `outer`=#{outer}
+        <where>
+            <if test="outer!=null and outer!='' ">
+                `outer`=#{outer}
+            </if>
+        </where>
         ORDER  BY
           rank
         DESC

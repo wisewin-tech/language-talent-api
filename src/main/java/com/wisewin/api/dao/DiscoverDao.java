@@ -22,7 +22,7 @@ public interface DiscoverDao {
      * String thumbnail; //缩略图url
      * String video; //视频url
      * String type; //类型](课程,新闻,线下活动)
-     * Integer priority; //优先级
+     * double priority; //优先级
      * String stick; //置顶[是与否]
      * String show; //是否显示
      * * Integer homepage; //页数

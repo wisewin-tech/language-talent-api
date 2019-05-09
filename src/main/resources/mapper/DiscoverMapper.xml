@@ -14,13 +14,13 @@
           thumbnail,video,
           `type`,priority,
           stick,`show`,
-          way
+          way,videoImg
         FROM
           lt_discover
         WHERE
           `type`='journalism'
         OR
-          `type`='course'
+          `type`='curriculum'
         ORDER  BY
           priority
         desc
@@ -40,7 +40,7 @@
         WHERE
           `type`='journalism'
         OR
-          `type`='course'
+          `type`='curriculum'
     </select>
 
 
@@ -54,7 +54,7 @@
         createTime,
         `type`,priority,
         stick,`show`,
-        way
+        way,videoImg
         FROM
         lt_discover
         WHERE
@@ -76,7 +76,7 @@
         `type`,likenum,
         participation,activitytime,
         activitysite,phone,
-        ticket,skip
+        ticket,skip,videoImg
       FROM
         lt_discover
       WHERE

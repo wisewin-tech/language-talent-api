@@ -26,11 +26,12 @@ public class DiscoverBO extends BaseModel {
     private String activitysite; //活动地址
     private String phone; //联系电话
     private double ticket; //在线购票
-    private Integer priority; //优先级
+    private double priority; //优先级
     private String stick; //置顶[是与否]
     private String show; //是否显示
     private String skip; //跳转url[线下活动]
     private String way; //展示方式
+    private String videoImg;//存放视频封面url
 
 
     public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String video, String content, Integer likenum) {
@@ -43,7 +44,7 @@ public class DiscoverBO extends BaseModel {
         this.likenum = likenum;
     }
 
-    public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String thumbnail, String video,String content, String type, Integer likenum, Integer participation, Date activitytime, String activitysite, String phone, double ticket, String skip) {
+    public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String thumbnail, String video,String content, String type, Integer likenum, Integer participation, Date activitytime, String activitysite, String phone, double ticket, String skip,String videoImg) {
         this.id = id;
         this.title = title;
         this.browse = browse;
@@ -59,10 +60,11 @@ public class DiscoverBO extends BaseModel {
         this.phone = phone;
         this.ticket = ticket;
         this.skip = skip;
+        this.videoImg=videoImg;
     }
 
 
-    public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String thumbnail, String video, String type, Integer priority, String stick, String show) {
+    public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String thumbnail, String video, String type, double priority, String stick, String show) {
         this.id = id;
         this.title = title;
         this.browse = browse;
@@ -76,6 +78,13 @@ public class DiscoverBO extends BaseModel {
     }
 
 
+    public String getVideoImg() {
+        return videoImg;
+    }
+
+    public void setVideoImg(String videoImg) {
+        this.videoImg = videoImg;
+    }
 
     public  DiscoverBO(){}
 
@@ -223,9 +232,7 @@ public class DiscoverBO extends BaseModel {
         this.ticket = ticket;
     }
 
-    public Integer getPriority() {
-        return priority;
-    }
+
 
     public void setPriority(Integer priority) {
         this.priority = priority;
@@ -249,6 +256,14 @@ public class DiscoverBO extends BaseModel {
 
     public String getSkip() {
         return skip;
+    }
+
+    public double getPriority() {
+        return priority;
+    }
+
+    public void setPriority(double priority) {
+        this.priority = priority;
     }
 
     public void setSkip(String skip) {

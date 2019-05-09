@@ -5,24 +5,16 @@ import java.util.Date;
 
 public class CouplebackParam  {
     private Integer id; //意见反馈id
-    private Integer userId; //用户id
+    private Integer userid; //用户id
     private String content; //反馈内容
-    private String contactWay; //联系方式
     private String contactpattern; //用户联系方式
-    private String pictureUrl; //图片url
-    private Date cbReleasetime; //创建时间
-    private Date cbUpdatetime; //修改时间
-    private String disposeresUlt; //处理结果
+    private String pattern; //用户联系
+    private String pictureurl; //图片url
+    private Date createTime; //创建时间
+    private Date updateTime; //修改时间
+    private String disposeresult; //处理结果
     private String disposeperson; //处理人
 
-
-    public String getContactWay() {
-        return contactWay;
-    }
-
-    public void setContactWay(String contactWay) {
-        this.contactWay = contactWay;
-    }
 
     public Integer getId() {
         return id;
@@ -32,12 +24,12 @@ public class CouplebackParam  {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public String getContent() {
@@ -56,36 +48,44 @@ public class CouplebackParam  {
         this.contactpattern = contactpattern;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public String getPattern() {
+        return pattern;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 
-    public Date getCbReleasetime() {
-        return cbReleasetime;
+    public String getPictureurl() {
+        return pictureurl;
     }
 
-    public void setCbReleasetime(Date cbReleasetime) {
-        this.cbReleasetime = cbReleasetime;
+    public void setPictureurl(String pictureurl) {
+        this.pictureurl = pictureurl;
     }
 
-    public Date getCbUpdatetime() {
-        return cbUpdatetime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCbUpdatetime(Date cbUpdatetime) {
-        this.cbUpdatetime = cbUpdatetime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getDisposeresUlt() {
-        return disposeresUlt;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setDisposeresUlt(String disposeresUlt) {
-        this.disposeresUlt = disposeresUlt;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getDisposeresult() {
+        return disposeresult;
+    }
+
+    public void setDisposeresult(String disposeresult) {
+        this.disposeresult = disposeresult;
     }
 
     public String getDisposeperson() {
