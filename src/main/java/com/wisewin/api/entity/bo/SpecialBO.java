@@ -11,7 +11,7 @@ import java.util.Date;
 public class SpecialBO extends BaseModel {
 
     private Integer id;
-    private Integer specialId;//专题分类id
+    private Integer classId;//专题分类id
     private String title;//专题标题
     private String describe;//专题描述
     private Date releaseDate;//专题上传日期
@@ -20,6 +20,51 @@ public class SpecialBO extends BaseModel {
     private Integer likeNumber;//喜欢人数
     private String status;//是否展示（yes展示，no不展示）
     private Double sorting;//排序（数值越大 越靠前）
+    private String like;//当前登陆的用户是否喜欢过这个专题 yes / no
+    private Integer createId; //创建人id
+    private Integer updateId; //修改人id
+    private Date createTime; //创建时间
+    private Date updateTime; //修改时间
+
+    public Integer getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
+    }
+
+    public Integer getUpdateId() {
+        return updateId;
+    }
+
+    public void setUpdateId(Integer updateId) {
+        this.updateId = updateId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getLike() {
+        return like;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
 
     public Integer getLikeNumber() {
         return likeNumber;
@@ -61,12 +106,12 @@ public class SpecialBO extends BaseModel {
         this.id = id;
     }
 
-    public Integer getSpecialId() {
-        return specialId;
+    public Integer getClassId() {
+        return classId;
     }
 
-    public void setSpecialId(Integer specialId) {
-        this.specialId = specialId;
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public String getDescribe() {

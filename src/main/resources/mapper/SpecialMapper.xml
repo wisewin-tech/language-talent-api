@@ -8,11 +8,46 @@
     <!-- 根据状态 分类id 分页查看 的专题 -->
     <select id="selectSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
         select * from lt_special
-        where
-        and status='yes'
-        and special_id=#{specialId}
+        where status='yes'
+        and class_id=#{classId}
         order by sorting desc
     </select>
+
+    <!-- 某个用户 点击的某个专题 -->
+    <select id="selectSpecialBOById" resultType="com.wisewin.api.entity.bo.SpecialBO">
+        select * from lt_special
+        where id=#{id}
+    </select>
+
+    <!-- 某个专题添加访问量-->
+    <update id="addSpecialTraffic">
+        update lt_special set traffic=traffic+1 where id =#{id}
+    </update>
+
+    <!-- 查看某个人 是否喜欢了这个专题-->
+    <select id="checkUserLikeSpecial" resultType="java.lang.Integer">
+        select count(*) from lt_special_like_user
+        where user_id=#{userId} and special_id=#{specialId}
+    </select>
+
+    <!-- 喜欢这个专题-->
+    <insert id="addSpecialLikeUser">
+        insert into lt_special_like_user (special_id,user_id) values (#{specialId},#{userId})
+    </insert>
+
+    <!-- 不喜欢这个专题-->
+    <delete id="delSpecialLikeUser">
+        delete from lt_special_like_user where special_id=#{specialId} and user_id=#{userId}
+    </delete>
+
+    <!-- 专题的喜欢数 +1 -1-->
+    <update id="updSpecialLikeCount">
+        update lt_special set like_number=like_number+#{number} where id =#{specialId}
+    </update>
+
+
+
+
 
 
 
