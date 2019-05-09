@@ -237,9 +237,16 @@ public class BaseCotroller {
     }
 
     /** 获取登录用户*/
+//    public UserBO getLoginUser (HttpServletRequest request ) {
+//        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+//    }
+    /** 获取登录用户*/
     public UserBO getLoginUser (HttpServletRequest request ) {
-        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+        UserBO userBO = new UserBO(26,"卡尔萨斯",
+                "死亡颂唱者","18631323025","man","2000-06-14");
+        return  userBO;
     }
+
 
 
     /** putLoginUser*/
