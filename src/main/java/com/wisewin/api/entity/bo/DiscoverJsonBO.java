@@ -26,11 +26,12 @@ public class DiscoverJsonBO extends BaseModel {
     private String activitysite; //活动地址
     private String phone; //联系电话
     private double ticket; //在线购票
-    private Integer priority; //优先级
+    private double priority; //优先级
     private String stick; //置顶[是与否]
     private String show; //是否显示
     private String skip; //跳转url[线下活动]
     private String way; //展示方式
+    private String videoImg;// 存放视频封面url
     private Integer pageNo; //页数
     private Integer pageSize; //每条条数
 
@@ -76,7 +77,7 @@ public class DiscoverJsonBO extends BaseModel {
 
 
 
-    public DiscoverJsonBO(Integer id, String title, Integer browse, String createTime, String thumbnail, String video, String type, Integer priority, String stick, String show, String way, Integer pageNo, Integer pageSize) {
+    public DiscoverJsonBO(Integer id, String title, Integer browse, String createTime, String thumbnail, String video, String type, double priority, String stick, String show, String way, Integer pageNo, Integer pageSize) {
         this.id = id;
         this.title = title;
         this.browse = browse;
@@ -93,7 +94,13 @@ public class DiscoverJsonBO extends BaseModel {
     }
 
 
+    public String getVideoImg() {
+        return videoImg;
+    }
 
+    public void setVideoImg(String videoImg) {
+        this.videoImg = videoImg;
+    }
 
     public DiscoverJsonBO(){}
 
@@ -215,8 +222,12 @@ public class DiscoverJsonBO extends BaseModel {
         this.ticket = ticket;
     }
 
-    public Integer getPriority() {
+    public double getPriority() {
         return priority;
+    }
+
+    public void setPriority(double priority) {
+        this.priority = priority;
     }
 
     public void setPriority(Integer priority) {

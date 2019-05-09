@@ -7,7 +7,7 @@
     <!--为你定制-->
     <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.LanguageBO">
         SELECT
-	      ensign_image_url ensignImageUrl,
+	      ensign_image_url ensignImageUrl,language_name languageName,
 	      `language`.id
         FROM
 	      lt_language `language`
@@ -63,7 +63,7 @@ AND course.`status` = 'putaway'
     </select>
 
 	<!--我学习的语言-->
-	<select id="myStudyLanguage" resultType="com.wisewin.api.entity.bo.LanguageBO"
+	<select id="myStudyLanguage" resultType="com.wisewin.api.entity.bo.MyStudyLanguageBO"
 			parameterType="java.lang.Integer">
 		SELECT la.id languageId,la.ensign_image_url,la.language_name
         FROM lt_language `la` LEFT JOIN lt_study_courses `sc` ON la.id = sc.language_id
@@ -71,8 +71,8 @@ AND course.`status` = 'putaway'
 	</select>
 
 	<!--语言名称列表-->
-	<select id="languageList" resultType="com.wisewin.api.entity.bo.LanguageBO">
-		SELECT la.id,la.ensign_image_url,la.language_name
+	<select id="languageList" resultType="com.wisewin.api.entity.bo.MyStudyLanguageBO">
+		SELECT la.id languageId,la.ensign_image_url,la.language_name
 		FROM lt_language la WHERE la.status = 'putaway' ORDER BY CONVERT(la.language_name USING gbk) COLLATE gbk_chinese_ci
 	</select>
 

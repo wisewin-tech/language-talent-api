@@ -19,33 +19,20 @@ public class CouplebackService {
 
     /**
      * 添加反馈信息
-     * String userId  //用户id
+     *  Integer userid; //用户id
      * String content; //反馈内容
-     * String contactWay//什么方式
-     * String contactpattern; //用户联系方式
-     * String pictureUrl; //图片url
+     *  String contactpattern; //用户联系方式
+     * String pattern; //用户联系
+     *  String pictureurl; //图片url
      */
-    public  boolean getaddCpupleback(Integer userId, String content,String contactWay,String contactpattern, String pictureUrl){
+    public  boolean getaddCpupleback(Integer userid,String content,String contactpattern,String pattern,String pictureurl){
 
-        CouplebackBO couplebackBO=new CouplebackBO(userId, content,contactWay,contactpattern,pictureUrl);
+        CouplebackBO couplebackBO=new CouplebackBO(userid,content,contactpattern,pattern,pictureurl);
 
         return  couplebacDAO.addCpupleback(couplebackBO)>0;
 
     }
 
-    /**
-     * 显示反馈意见
-     *   Integer id; //意见反馈id
-      String content; //反馈内容
-      String contactpattern; //用户联系方式
-      String pictureUrl; //图片url
-      Date cbUpdatetime; //修改时间
-      String disposeresUlt; //处理结果
-      String disposeperson; //处理人
-     */
-    public List<CouplebackBO> getqueryCpupleback(Integer id ,String content,String contactpattern,String pictureUrl,Date cbUpdatetime,String disposeresUlt,String disposeperson){
-        CouplebackBO couplebackBO=new CouplebackBO(id,content,contactpattern,pictureUrl,cbUpdatetime,disposeresUlt,disposeperson);
-        return  couplebacDAO.queryCpupleback(couplebackBO);
-    }
+
 
 }

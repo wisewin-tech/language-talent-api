@@ -2,10 +2,12 @@ package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.BannerBO;
 import com.wisewin.api.entity.bo.LanguageBO;
+import com.wisewin.api.entity.bo.SpecialClassBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.BannerService;
 import com.wisewin.api.service.LanguageService;
 import com.wisewin.api.service.SignService;
+import com.wisewin.api.service.SpecialClassService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ public class IndexController extends BaseCotroller {
     private BannerService bannerService;
     @Resource
     private SignService signService;
+    @Resource
+    private SpecialClassService specialClassService;
 
     @RequestMapping("/showIndex")
     public void showIndex(HttpServletRequest request, HttpServletResponse response){
@@ -35,13 +39,15 @@ public class IndexController extends BaseCotroller {
         List<LanguageBO> flashSales = languageService.getFlashSales();
         List<BannerBO> banner = bannerService.getBanner();
         Integer ContinuousSigndays = signService.getContinuousSign(useId);
+        List<SpecialClassBO> specialClassBOS = specialClassService.selectSpecialClassBO();
         //signService.selectMon()
         Map map = new HashMap();
         //将对象封装到map中
+        map.put("Banner",banner);
         map.put("ContinuousSigndays",ContinuousSigndays);
         map.put("EnsignImage",ensignImage);
         map.put("FlashSales",flashSales);
-        map.put("Banner",banner);
+        map.put("specialClassBOS",specialClassBOS);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response, result);
     }

@@ -37,7 +37,7 @@ public class LanguageController extends BaseCotroller{
      * @param response
      */
     @RequestMapping("/languageDetails")
-    public void languageDetails(LanguageBO id,HttpServletRequest request, HttpServletResponse response){
+    public void languageDetails(Integer id,HttpServletRequest request, HttpServletResponse response){
         if (id==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);

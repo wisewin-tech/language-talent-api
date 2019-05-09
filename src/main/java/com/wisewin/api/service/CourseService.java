@@ -28,7 +28,7 @@ public class CourseService {
      * 课程详情
      * @return
      */
-    public List<CourseBO> courseDetails(CourseBO id){
+    public List<CourseBO> courseDetails(Integer id){
         return courseDAO.courseDetails(id);
     }
     /**

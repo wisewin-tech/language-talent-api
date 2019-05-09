@@ -9,36 +9,18 @@
     <insert id="addCpupleback" useGeneratedKeys="true" keyProperty="id"  parameterType="com.wisewin.api.entity.bo.CouplebackBO">
         INSERT  INTO
           lt_coupleback(
-          user_id,content,
-          contactpattern,picture_url,
-          cb_releasetime,cb_updatetime
+          userid,content,
+          contactpattern,pattern,
+          pictureurl,create_time,
+          update_time
           )VALUES(
-          #{userId},#{content},
-          #{contactpattern},#{pictureUrl},
-          now(),now()
+          #{userid},#{content},
+          #{contactpattern},#{pattern},
+          #{pictureurl},now(),
+          now()
+
           )
     </insert>
-
-
-    <select id="" resultType="com.wisewin.api.entity.bo.CouplebackBO">
-        SELECT
-          id,user_id,
-          content,contactpattern,
-          picture_url,cb_releasetime,
-          cb_updatetime,disposeres_ult,
-          disposeperson
-        FROM
-          lt_coupleback
-        WHERE
-          <if test="user_id!=null or user_id!='' ">
-              user_id=#{userId}
-          </if>
-
-        ORDER  BY
-          cb_updatetime
-        desc
-
-    </select>
 
 
 </mapper>

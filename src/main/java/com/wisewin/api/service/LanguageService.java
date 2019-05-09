@@ -47,7 +47,7 @@ public class LanguageService {
      * 语言详情
      * @return
      */
-    public List<LanguageBO> languageDetails(LanguageBO id){
+    public List<LanguageBO> languageDetails(Integer id){
         List<LanguageBO> languageBOList = languageDAO.languageDetails(id);
         return languageBOList;
     }

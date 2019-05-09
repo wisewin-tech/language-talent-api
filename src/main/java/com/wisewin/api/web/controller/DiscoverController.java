@@ -46,11 +46,6 @@ public class DiscoverController extends BaseCotroller{
     @RequestMapping("/queryDiscover")
     public void queryDiscover(HttpServletRequest request, HttpServletResponse response, DiscoverParam param){
 
-    if (param.getPageNo()==null && param.getPhone()==null){
-        String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-        super.safeJsonPrint(response,json);
-        return;
-    }
 
         //分页
         QueryInfo queryInfo=getQueryInfo(param.getPageNo(),param.getPageSize());
@@ -62,7 +57,6 @@ public class DiscoverController extends BaseCotroller{
          //2.线下活动  全部   list
             //返回一个map     put .list  put.list2
         List<DiscoverJsonBO> discoverPage=discoverService.getqueryDiscover(param);
-
 
 
         List<DiscoverJsonBO> activity=discoverService.getqueryDiscovertype(param);
@@ -110,8 +104,13 @@ public class DiscoverController extends BaseCotroller{
 
         DiscoverBO list=discoverService.getqueryDiscoveractivity(param.getId(),param.getTitle(),param.getBrowse(),DateUtil.getDate(param.getCreateTime()),
                 param.getThumbnail(),param.getVideo(),param.getContent(),param.getType(),param.getLikenum(),param.getParticipation(),DateUtil.getDate(param.getActivitytime()),
-                        param.getActivitysite(),param.getPhone(),param.getTicket(),param.getSkip());
+                        param.getActivitysite(),param.getPhone(),param.getTicket(),param.getSkip(),param.getVideoImg());
 
+        if (list==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
         Integer browse= list.getBrowse()+1;
         boolean updatediscover=discoverService.getupdateDiscover(param.getId(),browse);
         if (updatediscover){
@@ -119,7 +118,9 @@ public class DiscoverController extends BaseCotroller{
             super.safeJsonPrint(response,json);
             return;
         }
-
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+        super.safeJsonPrint(response, json);
+        return;
     }
 
 }

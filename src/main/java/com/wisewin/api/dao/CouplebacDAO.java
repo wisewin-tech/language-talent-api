@@ -19,17 +19,5 @@ public interface CouplebacDAO {
      */
     Integer  addCpupleback(CouplebackBO couplebackBO);
 
-    /**
-     * 显示反馈意见
-     *  private Integer id; //意见反馈id
-        private Integer userId; //用户id
-        private String content; //反馈内容
-         private String contactpattern; //用户联系方式
-         private String pictureUrl; //图片url
-         private Date cbUpdatetime; //修改时间
-         private String disposeresUlt; //处理结果
-         private String disposeperson; //处理人
-     */
 
-    List<CouplebackBO> queryCpupleback(CouplebackBO couplebackBO);
 }

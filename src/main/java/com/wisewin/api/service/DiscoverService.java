@@ -64,7 +64,7 @@ public class DiscoverService {
      */
     public List<DiscoverJsonBO> getqueryDiscovertype(DiscoverParam param){
 
-        return  discoverDao.queryDiscover(param);
+        return  discoverDao.queryDiscovertype(param);
     }
 
 
@@ -88,8 +88,8 @@ public class DiscoverService {
      */
     public DiscoverBO getqueryDiscoveractivity(Integer id,String title,Integer browse,Date createTime,String thumbnail,String video,String content,
                                                      String type,Integer likenum,Integer participation,Date activitytime,String activitysite,
-                                                     String phone,double ticket,String skip){
-        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,createTime,thumbnail,video,content,type,likenum,participation,activitytime,activitysite,phone,ticket,skip);
+                                                     String phone,double ticket,String skip,String videoImg){
+        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,createTime,thumbnail,video,content,type,likenum,participation,activitytime,activitysite,phone,ticket,skip,videoImg);
         return  discoverDao.queryDiscoveractivity(discoverBO);
     }
 
