@@ -38,7 +38,11 @@ public class LanguageController extends BaseCotroller{
      */
     @RequestMapping("/languageDetails")
     public void languageDetails(LanguageBO id,HttpServletRequest request, HttpServletResponse response){
-
+        if (id==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, result);
+            return;
+        }
         List<LanguageBO> languageBOList = languageService.languageDetails(id);
         for (LanguageBO languageBO: languageBOList){
             String image = certificateService.certificateImage(languageBO.getCertificateId());
