@@ -1,6 +1,7 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
+import com.wisewin.api.util.DateUtils;
 
 import java.util.Date;
 
@@ -96,8 +97,8 @@ public class DiscoverBO extends BaseModel {
         this.way = way;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        return DateUtils.getDateStr(createTime);
     }
 
     public void setCreateTime(Date createTime) {
@@ -200,12 +201,13 @@ public class DiscoverBO extends BaseModel {
         this.participation = participation;
     }
 
-    public Date getActivitytime() {
-        return activitytime;
+    public String getActivitytime() {
+        return DateUtils.getDateStr(activitytime);
     }
 
     public void setActivitytime(Date activitytime) {
         this.activitytime = activitytime;
+
     }
 
     public String getActivitysite() {

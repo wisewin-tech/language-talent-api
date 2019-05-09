@@ -51,7 +51,7 @@
         id,title,
         browse,create_time,
         thumbnail,content,video,
-        createTime,
+        createTime,activitytime,
         `type`,priority,
         stick,`show`,
         way,videoImg

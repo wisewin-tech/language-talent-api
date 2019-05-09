@@ -1,6 +1,7 @@
 package com.wisewin.api.entity.param;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
+import com.wisewin.api.util.date.DateUtil;
 
 import java.util.Date;
 
@@ -13,7 +14,7 @@ public class DiscoverParam extends BaseModel {
     private String title; //发现标题
     private Integer browse; //浏览人数
     private String dcName; //创建人
-    private String createTime; //发布时间
+    private Date createTime; //发布时间
     private String dcUpdatename; //最后修改人
     private String updateTime; //最后修改时间
     private String thumbnail; //缩略图url
@@ -22,7 +23,7 @@ public class DiscoverParam extends BaseModel {
     private String type; //类型](课程,新闻,线下活动)
     private Integer likenum; //喜欢人数
     private Integer participation; //要参与
-    private String activitytime; //活动时间
+    private Date activitytime; //活动时间
     private String activitysite; //活动地址
     private String phone; //联系电话
     private double ticket; //在线购票
@@ -62,10 +63,10 @@ public class DiscoverParam extends BaseModel {
     }
 
     public String getCreateTime() {
-        return createTime;
+        return   DateUtil.getDateStr(createTime);
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
@@ -170,10 +171,11 @@ public class DiscoverParam extends BaseModel {
     }
 
     public String getActivitytime() {
-        return activitytime;
+        return   DateUtil.getDateStr(activitytime);
+
     }
 
-    public void setActivitytime(String activitytime) {
+    public void setActivitytime(Date activitytime) {
         this.activitytime = activitytime;
     }
 

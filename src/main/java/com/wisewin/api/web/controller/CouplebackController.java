@@ -2,6 +2,7 @@ package com.wisewin.api.web.controller;
 
 
 import com.wisewin.api.entity.bo.CouplebackBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.CouplebackParam;
 import com.wisewin.api.service.CouplebackService;
@@ -34,14 +35,15 @@ public class CouplebackController  extends BaseCotroller {
      */
     @RequestMapping("/addCpupleback")
     public void addCpupleback(HttpServletRequest request, HttpServletResponse response, CouplebackParam param){
-
-        if (param.getUserid()==null || param.getContent().equals("") || param.getPattern().equals("")){
+        UserBO loginUser = super.getLoginUser(request);
+        Integer id = loginUser.getId();
+        if (id==null || param.getContent().equals("") || param.getPattern().equals("")){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
-        boolean addCpuplebackjson=couplebackService.getaddCpupleback(param.getUserid(),param.getContent(),param.getContactpattern(),param.getPattern(),param.getPictureurl());
+        boolean addCpuplebackjson=couplebackService.getaddCpupleback(id,param.getContent(),param.getContactpattern(),param.getPattern(),param.getPictureurl());
         if (addCpuplebackjson){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("反馈成功"));
             super.safeJsonPrint(response, json);

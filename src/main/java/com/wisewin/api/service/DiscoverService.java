@@ -64,7 +64,7 @@ public class DiscoverService {
      */
     public List<DiscoverJsonBO> getqueryDiscovertype(DiscoverParam param){
 
-        return  discoverDao.queryDiscover(param);
+        return  discoverDao.queryDiscovertype(param);
     }
 
 

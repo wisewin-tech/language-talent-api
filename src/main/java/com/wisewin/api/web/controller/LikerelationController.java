@@ -3,6 +3,7 @@ package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.DiscoverBO;
 import com.wisewin.api.entity.bo.LikerelationBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.LikerelationParam;
 import com.wisewin.api.service.DiscoverService;
@@ -33,15 +34,17 @@ public class LikerelationController extends BaseCotroller{
      */
     @RequestMapping("/findLikerelation")
     public void findLikerelation(HttpServletRequest request, HttpServletResponse response, LikerelationParam param){
-
-     if (param.getUserId()==null && param.getDcId()==null){
+        //获取当前用户id
+        UserBO loginUser = super.getLoginUser(request);
+        Integer id = loginUser.getId();
+        if (id==null && param.getDcId()==null){
          String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
          super.safeJsonPrint(response, json);
          return;
      }
 
      //通过用户id和文章id查询出有数据说明用户已喜欢，如果查出为null说明用户没有喜欢
-        LikerelationBO likerelationjson=likerelatioService.getfindLikerelation(param.getUserId(),param.getDcId());
+        LikerelationBO likerelationjson=likerelatioService.getfindLikerelation(id,param.getDcId());
         if (likerelationjson!=null){
             //查找喜欢的值
             DiscoverBO findDiscoverlikenumjson=discoverService.getfindDiscoverlikenum(param.getDcId());
@@ -66,7 +69,7 @@ public class LikerelationController extends BaseCotroller{
             DiscoverBO findDiscoverlikenumjson=discoverService.getfindDiscoverlikenum(param.getDcId());
             if (findDiscoverlikenumjson.getLikenum()!=null){
                 //添加用户id发现id关系
-                boolean getaddLikerelationjson=likerelatioService.getaddLikerelation(param.getUserId(),param.getDcId());
+                boolean getaddLikerelationjson=likerelatioService.getaddLikerelation(id,param.getDcId());
                 if (getaddLikerelationjson){
                     //这个值是从刚刚查询发现表里取出来的数据
                     Integer likenum=findDiscoverlikenumjson.getLikenum()+1;

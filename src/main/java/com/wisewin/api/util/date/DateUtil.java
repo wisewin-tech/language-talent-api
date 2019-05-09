@@ -87,4 +87,21 @@ public class DateUtil {
         return str;
 
     }
+
+    public  static String getDateStr(Date date) {
+        String thisDate="";
+        //设置要获取到什么样的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            //获取Date类型的时间
+            thisDate = sdf.format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+            return  null;
+        }
+        return thisDate;
+
+    }
+
+
 }
