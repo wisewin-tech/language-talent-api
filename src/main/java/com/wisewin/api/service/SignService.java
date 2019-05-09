@@ -99,30 +99,30 @@ public class SignService {
     }
 
 
-    //用户签到
+    /**
+     * 用户签到
+     * @param userId
+     * @return
+     */
     public boolean signIn(Integer userId) {
-        //获取今天的起始时间
-        Date start= TimeUtil.getTimeStart(0);
-        //获取今天的结束时间
-        Date end= TimeUtil.getTimeEnd(0);
-        //hourMinuteBetween(DateUtil.gainDate(signTime),start,end)
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         //获取今天的日期
-        String now=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String now=dateFormat.format(new Date());
         //查询签到表用户最新记录
         SignBO signBO=signDAO.selectNew(userId);
-        String signTime=signBO.getSignTime();
-        //true在时间段内，false不在时间段内
-        if (now.equals(signTime)){
-            //如果最新记录的签到时间为当天
-            return false;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //获取昨天的起始时间
-        Date startdate= TimeUtil.getTimeStart(-1);
-        //获取昨天的结束时间
-        Date enddate= TimeUtil.getTimeEnd(-1);
         //通过用户id查询用户相关签到信息
-        UserSignBO userBO=signDAO.selectUser(userId);
+        UserSignBO userBO = signDAO.selectUser(userId);
+        //如果用户不是首次签到
+        if (signBO!=null){
+            //用户表上次签到日期
+            String userSignBOTime = userBO.getLastSign();
+            //签到表签到日期
+            String signTime = signBO.getSignTime();
+            //如果最新记录的签到时间为当天或者上次签到时间是今天 false:今天已经签到
+            if (signTime.equals(now) || userSignBOTime.equals(now)) {
+                return false;
+            }
+        }
 
         //连续签到天数
         Integer continuousSign=userBO.getContinuousSign();
@@ -132,9 +132,11 @@ public class SignService {
         String date=userBO.getLastSign();
         //用户积分
         Integer integral=userBO.getIntegral();
+        //获取昨天日期
+        Date yesterday= TimeUtil.getTimeStart(-1);
+        String yesterdays= dateFormat.format(yesterday);
         //true在时间段内，false不在时间段内
-
-        if (!hourMinuteBetween(DateUtil.gainDate(date),startdate,enddate)){
+        if (date.equals(yesterdays)){
             //上次签到日期不在昨天的时间范围内
             //连续签到天数改为1
             userBO.setContinuousSign(1);

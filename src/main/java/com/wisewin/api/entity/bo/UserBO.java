@@ -44,6 +44,18 @@ public class UserBO  extends BaseModel{
     private Date createTime; //创建时间
     private Date updateTime; //修改时间
 
+    public UserBO() {
+    }
+
+    public UserBO(Integer id, String name, String nickname, String mobile, String sex, String birthday) {
+        this.id = id;
+        this.name = name;
+        this.nickname = nickname;
+        this.mobile = mobile;
+        this.sex = sex;
+        this.birthday = birthday;
+    }
+
     @Override
     public String toString() {
         return "UserBO{" +

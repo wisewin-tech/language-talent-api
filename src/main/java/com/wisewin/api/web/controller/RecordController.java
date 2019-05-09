@@ -81,9 +81,14 @@ public class RecordController extends BaseCotroller{
             super.safeJsonPrint(response, json);
             return;
         }
-        recordService.exchange(userId,num);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
-        super.safeJsonPrint(response, json);
+        if (recordService.exchange(userId,num)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+            super.safeJsonPrint(response, json);
+        }else{
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000015"));
+            super.safeJsonPrint(response, json);
+        }
+
     }
 
 }
