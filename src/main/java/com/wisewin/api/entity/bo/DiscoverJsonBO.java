@@ -13,16 +13,16 @@ public class DiscoverJsonBO extends BaseModel {
     private String title; //发现标题
     private Integer browse; //浏览人数
     private String dcName; //创建人
-    private Date dcReleasetime; //发布时间
+    private String createTime; //发布时间
     private String dcUpdatename; //最后修改人
-    private Date dcUpdatetime; //最后修改时间
+    private String updateTime; //最后修改时间
     private String thumbnail; //缩略图url
     private String video; //视频url
     private String content; //内容
     private String type; //类型](课程,新闻,线下活动)
     private Integer likenum; //喜欢人数
     private Integer participation; //要参与
-    private Date activitytime; //活动时间
+    private String activitytime; //活动时间
     private String activitysite; //活动地址
     private String phone; //联系电话
     private double ticket; //在线购票
@@ -30,46 +30,72 @@ public class DiscoverJsonBO extends BaseModel {
     private String stick; //置顶[是与否]
     private String show; //是否显示
     private String skip; //跳转url[线下活动]
-    private Integer homepage; //页数
-    private Integer strip; //每条条数
+    private String way; //展示方式
+    private Integer pageNo; //页数
+    private Integer pageSize; //每条条数
 
 
-    public DiscoverJsonBO(Integer id, String title, Integer browse, Date dcReleasetime, String thumbnail, String video, String type, Integer priority, String stick, String show,Integer homepage,Integer strip) {
+
+    public DiscoverJsonBO(Integer id, String title, Integer browse, String createTime, String thumbnail, String content, String type, Integer likenum, Integer participation, String activitytime, String activitysite, String phone, double ticket, String skip, String way) {
         this.id = id;
         this.title = title;
         this.browse = browse;
-        this.dcReleasetime = dcReleasetime;
+        this.createTime = createTime;
+        this.thumbnail = thumbnail;
+        this.content = content;
+        this.type = type;
+        this.likenum = likenum;
+        this.participation = participation;
+        this.activitytime = activitytime;
+        this.activitysite = activitysite;
+        this.phone = phone;
+        this.ticket = ticket;
+        this.skip = skip;
+        this.way = way;
+    }
+
+    /**
+     * 首页线下活动
+     * * Integer id; //发现id
+     * String title; //发现标题
+     * Integer browse; //浏览人数
+     * Date createTime; //发布时间
+     * String thumbnail; //缩略图url
+     * String content; //内容
+     * String type; //类型](课程,新闻,线下活动)
+     * Integer likenum; //喜欢人数
+     * Integer participation; //要参与
+     * Date activitytime; //活动时间
+     * String activitysite; //活动地址
+     * String phone; //联系电话
+     * double ticket; //在线购票
+     * String skip; //跳转url[线下活动]
+     * String way; //展示方式
+     */
+
+
+
+
+    public DiscoverJsonBO(Integer id, String title, Integer browse, String createTime, String thumbnail, String video, String type, Integer priority, String stick, String show, String way, Integer pageNo, Integer pageSize) {
+        this.id = id;
+        this.title = title;
+        this.browse = browse;
+        this.createTime = createTime;
         this.thumbnail = thumbnail;
         this.video = video;
         this.type = type;
         this.priority = priority;
         this.stick = stick;
         this.show = show;
-        this.homepage=homepage;
-        this.strip=strip;
-
+        this.way = way;
+        this.pageNo = pageNo;
+        this.pageSize = pageSize;
     }
 
 
 
 
     public DiscoverJsonBO(){}
-
-    public Integer getHomepage() {
-        return homepage;
-    }
-
-    public void setHomepage(Integer homepage) {
-        this.homepage = homepage;
-    }
-
-    public Integer getStrip() {
-        return strip;
-    }
-
-    public void setStrip(Integer strip) {
-        this.strip = strip;
-    }
 
     public Integer getId() {
         return id;
@@ -103,13 +129,7 @@ public class DiscoverJsonBO extends BaseModel {
         this.dcName = dcName;
     }
 
-    public Date getDcReleasetime() {
-        return dcReleasetime;
-    }
 
-    public void setDcReleasetime(Date dcReleasetime) {
-        this.dcReleasetime = dcReleasetime;
-    }
 
     public String getDcUpdatename() {
         return dcUpdatename;
@@ -119,13 +139,7 @@ public class DiscoverJsonBO extends BaseModel {
         this.dcUpdatename = dcUpdatename;
     }
 
-    public Date getDcUpdatetime() {
-        return dcUpdatetime;
-    }
 
-    public void setDcUpdatetime(Date dcUpdatetime) {
-        this.dcUpdatetime = dcUpdatetime;
-    }
 
     public String getThumbnail() {
         return thumbnail;
@@ -175,13 +189,7 @@ public class DiscoverJsonBO extends BaseModel {
         this.participation = participation;
     }
 
-    public Date getActivitytime() {
-        return activitytime;
-    }
 
-    public void setActivitytime(Date activitytime) {
-        this.activitytime = activitytime;
-    }
 
     public String getActivitysite() {
         return activitysite;
@@ -237,5 +245,53 @@ public class DiscoverJsonBO extends BaseModel {
 
     public void setSkip(String skip) {
         this.skip = skip;
+    }
+
+    public String getWay() {
+        return way;
+    }
+
+    public void setWay(String way) {
+        this.way = way;
+    }
+
+    public Integer getPageNo() {
+        return pageNo;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getActivitytime() {
+        return activitytime;
+    }
+
+    public void setActivitytime(String activitytime) {
+        this.activitytime = activitytime;
+    }
+
+    public void setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

@@ -2,6 +2,7 @@ package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.DiscoverBO;
 import com.wisewin.api.entity.bo.DiscoverJsonBO;
+import com.wisewin.api.entity.param.DiscoverParam;
 
 import javax.ws.rs.PathParam;
 import java.util.List;
@@ -27,7 +28,12 @@ public interface DiscoverDao {
      * * Integer homepage; //页数
      * Integer strip; //每条条数
      */
-    List<DiscoverJsonBO> queryDiscover(DiscoverJsonBO discoverJsonBO);
+    List<DiscoverJsonBO> queryDiscover(DiscoverParam param);
+
+    /**
+     * 显示线下活动全部
+     */
+    List<DiscoverJsonBO> queryDiscovertype(DiscoverParam param);
 
     /**
      * 线下活动
@@ -49,17 +55,10 @@ public interface DiscoverDao {
     DiscoverBO queryDiscoveractivity(DiscoverBO discoverBO);
 
     /**
-     * 文章内容显示
-     * Integer id; //发现id
-     * String title; //发现标题
-     * Integer browse; //浏览人数
-     * Date createTime; //发布时间
-     * String video; //视频url
-     * String content; //内容
-     * Integer likenum; //喜欢人数
-     *
+     * 首页分页条件查询总数
      */
-    DiscoverBO queryDiscoveractivitylist(DiscoverBO discoverBO);
+    int findcoun(int countnum);
+
 
     /**
      * 查询浏览人数

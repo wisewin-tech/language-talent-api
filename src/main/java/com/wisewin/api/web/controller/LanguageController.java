@@ -5,7 +5,9 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.CertificateService;
 import com.wisewin.api.service.LanguageService;
+import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,8 @@ public class LanguageController extends BaseCotroller{
     private LanguageService languageService;
     @Resource
     private CertificateService certificateService;
+    @Resource
+    private UserService userService;
 
     /**
      * 语言详情
@@ -34,7 +38,11 @@ public class LanguageController extends BaseCotroller{
      */
     @RequestMapping("/languageDetails")
     public void languageDetails(LanguageBO id,HttpServletRequest request, HttpServletResponse response){
-
+        if (id==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, result);
+            return;
+        }
         List<LanguageBO> languageBOList = languageService.languageDetails(id);
         for (LanguageBO languageBO: languageBOList){
             String image = certificateService.certificateImage(languageBO.getCertificateId());
@@ -64,6 +72,25 @@ public class LanguageController extends BaseCotroller{
         resultMap.put("myStudyLanguage",languageBO);
         resultMap.put("languageList",languageBO1);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
+        super.safeJsonPrint(response, result);
+
+    }
+    @RequestMapping("/updateStudyingLanguage")
+    public void updateStudyingLanguage(Integer studyingLanguageId,HttpServletRequest request,HttpServletResponse response){
+        if (studyingLanguageId==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, result);
+            return;
+        }
+        UserBO userBO = super.getLoginUser(request);
+        if (userBO==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, result);
+            return;
+        }
+        Integer id = userBO.getId();
+        userService.userUpdate(id,studyingLanguageId);
+        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改我正在学习的语言成功！"));
         super.safeJsonPrint(response, result);
 
     }

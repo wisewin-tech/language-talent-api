@@ -33,10 +33,16 @@ public class StudyPlanController extends BaseCotroller {
         if(userBO==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
+            return;
         }else {
             UserBO userBO1 = userService.selectById(userId);
             //获取当前登录用户正在学习的语言id
             Integer languageId = userBO1.getStudyingLanguageId();
+            if (languageId==null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000022"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
             //根据语言id查找课时内容
             List<ChapterBO> chapterBOList = studyPlanService.getStudyPlan(languageId);
             for(ChapterBO chapterBO:chapterBOList){

@@ -30,6 +30,7 @@ public class DiscoverBO extends BaseModel {
     private String stick; //置顶[是与否]
     private String show; //是否显示
     private String skip; //跳转url[线下活动]
+    private String way; //展示方式
 
 
     public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String video, String content, Integer likenum) {
@@ -42,12 +43,13 @@ public class DiscoverBO extends BaseModel {
         this.likenum = likenum;
     }
 
-    public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String thumbnail, String content, String type, Integer likenum, Integer participation, Date activitytime, String activitysite, String phone, double ticket, String skip) {
+    public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String thumbnail, String video,String content, String type, Integer likenum, Integer participation, Date activitytime, String activitysite, String phone, double ticket, String skip) {
         this.id = id;
         this.title = title;
         this.browse = browse;
         this.createTime = createTime;
         this.thumbnail = thumbnail;
+        this.video=video;
         this.content = content;
         this.type = type;
         this.likenum = likenum;
@@ -76,6 +78,14 @@ public class DiscoverBO extends BaseModel {
 
 
     public  DiscoverBO(){}
+
+    public String getWay() {
+        return way;
+    }
+
+    public void setWay(String way) {
+        this.way = way;
+    }
 
     public Date getCreateTime() {
         return createTime;

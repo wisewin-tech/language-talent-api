@@ -30,8 +30,26 @@ public class DiscoverParam extends BaseModel {
     private String stick; //置顶[是与否]
     private String show; //是否显示
     private String skip; //跳转url[线下活动]
-    private Integer homepage; //页数
-    private  Integer strip; //每条条数
+    private  String way; // 展示方式
+    private Integer pageNo; //页数
+    private  Integer pageSize; //每条条数
+    private int countnum; // 总数
+
+    public String getWay() {
+        return way;
+    }
+
+    public void setWay(String way) {
+        this.way = way;
+    }
+
+    public int getCountnum() {
+        return countnum;
+    }
+
+    public void setCountnum(int countnum) {
+        this.countnum = countnum;
+    }
 
     public String getCreateTime() {
         return createTime;
@@ -205,19 +223,19 @@ public class DiscoverParam extends BaseModel {
         this.skip = skip;
     }
 
-    public Integer getHomepage() {
-        return homepage;
+    public Integer getPageNo() {
+        return pageNo;
     }
 
-    public void setHomepage(Integer homepage) {
-        this.homepage = homepage;
+    public void setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
     }
 
-    public Integer getStrip() {
-        return strip;
+    public Integer getPageSize() {
+        return pageSize;
     }
 
-    public void setStrip(Integer strip) {
-        this.strip = strip;
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }
