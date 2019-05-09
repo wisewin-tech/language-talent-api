@@ -17,7 +17,7 @@ public interface CourseDAO {
      * 课程详情
      * @return
      */
-    List<CourseBO> courseDetails(CourseBO id);
+    List<CourseBO> courseDetails(Integer id);
 
     /**
      * 模糊查询课程列表

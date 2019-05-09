@@ -11,28 +11,28 @@ public interface ChapterDAO {
      * @param levelId 级别id
      * @return
      */
-    List<ChapterBO> chapterList(ChapterBO levelId);
+    List<ChapterBO> chapterList(Integer levelId);
 
     /**
      * 获取某个级别的课时数
      * @param levelId 级别id
      * @return
      */
-    Integer chapterNum(ChapterBO levelId);
+    Integer chapterNum(Integer levelId);
 
     /**
      * 课时详情
      * @param id
      * @return
      */
-    ChapterBO chapterDetails(ChapterBO id);
+    ChapterBO chapterDetails(Integer id);
 
     /**
      * 获取课时目录
      * @param levelId 级别id
      * @return
      */
-    List<ChapterBO> getChapterCatalogue(ChapterBO levelId);
+    List<ChapterBO> getChapterCatalogue(Integer levelId);
 
 
 }

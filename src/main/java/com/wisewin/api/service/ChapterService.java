@@ -19,7 +19,7 @@ public class ChapterService {
      * @param levelId 级别id
      * @return
      */
-    public List<ChapterBO> chapterList(ChapterBO levelId){
+    public List<ChapterBO> chapterList(Integer levelId){
         return chapterDAO.chapterList(levelId);
     }
 
@@ -28,7 +28,7 @@ public class ChapterService {
      * @param levelId 级别id
      * @return
      */
-    public Integer chapterNum(ChapterBO levelId){
+    public Integer chapterNum(Integer levelId){
         return chapterDAO.chapterNum(levelId);
     }
 
@@ -37,7 +37,7 @@ public class ChapterService {
      * @param id 课时id
      * @return
      */
-    public ChapterBO chapterDetails(ChapterBO id){
+    public ChapterBO chapterDetails(Integer id){
         return chapterDAO.chapterDetails(id);
     }
 
@@ -46,7 +46,7 @@ public class ChapterService {
      * @param levelId 级别id
      * @return
      */
-    public List<ChapterBO> getChapterCatalogue(ChapterBO levelId){
+    public List<ChapterBO> getChapterCatalogue(Integer levelId){
         return chapterDAO.getChapterCatalogue(levelId);
     }
 }

@@ -7,7 +7,7 @@
     <!--为你定制-->
     <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.LanguageBO">
         SELECT
-	      ensign_image_url ensignImageUrl,
+	      ensign_image_url ensignImageUrl,language_name languageName,
 	      `language`.id
         FROM
 	      lt_language `language`

@@ -38,10 +38,10 @@ public class IndexController extends BaseCotroller {
         //signService.selectMon()
         Map map = new HashMap();
         //将对象封装到map中
+        map.put("Banner",banner);
         map.put("ContinuousSigndays",ContinuousSigndays);
         map.put("EnsignImage",ensignImage);
         map.put("FlashSales",flashSales);
-        map.put("Banner",banner);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response, result);
     }

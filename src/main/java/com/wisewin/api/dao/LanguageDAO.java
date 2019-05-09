@@ -22,7 +22,7 @@ public interface LanguageDAO {
      * 语言详情页
      * @return
      */
-    List<LanguageBO> languageDetails(LanguageBO id);
+    List<LanguageBO> languageDetails(Integer id);
 
     /**
      * 我学习的语言

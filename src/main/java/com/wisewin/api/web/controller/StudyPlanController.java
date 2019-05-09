@@ -29,12 +29,12 @@ public class StudyPlanController extends BaseCotroller {
 @RequestMapping("/getStudyPlan")
     public void studyPlan(HttpServletRequest request, HttpServletResponse response){
         UserBO userBO = super.getLoginUser(request);
-        Integer userId = userBO.getId();
         if(userBO==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
-        }else {
+        }
+            Integer userId = userBO.getId();
             UserBO userBO1 = userService.selectById(userId);
             //获取当前登录用户正在学习的语言id
             Integer languageId = userBO1.getStudyingLanguageId();
@@ -52,7 +52,7 @@ public class StudyPlanController extends BaseCotroller {
             }
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBOList));
             super.safeJsonPrint(response, json);
-        }
+
 
 
     }
