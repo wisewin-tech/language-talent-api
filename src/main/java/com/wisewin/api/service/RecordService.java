@@ -1,6 +1,7 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.common.constants.UserConstants;
+import com.wisewin.api.dao.KeyValDAO;
 import com.wisewin.api.dao.RecordDAO;
 import com.wisewin.api.dao.SignDAO;
 import com.wisewin.api.entity.bo.RecordBO;
@@ -9,6 +10,7 @@ import com.wisewin.api.entity.bo.UserSignBO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,8 @@ public class RecordService {
     private RecordDAO recordDAO;
     @Resource
     private SignDAO signDAO;
+    @Resource
+    private KeyValDAO keyValDAO;
 
 
     /**
@@ -59,9 +63,21 @@ public class RecordService {
         if (reduce<0){ //如果积分不足于兑换数量
             return false;
         }
+        //获取配置表积分兑换咖豆比例
+        String val=keyValDAO.selectKey(UserConstants.SCALE.getValue());
+        Integer scale=Integer.parseInt(val);
+        //咖豆增加的数量
+        BigDecimal bd=new BigDecimal(num/scale);
+        //设置小数位数，第一个变量是小数位数，第二个变量是取舍方法(四舍五入)
+        bd=bd.setScale(0, BigDecimal.ROUND_HALF_UP);
+        int add=bd.intValue();
+        if (add<1){
+            return false;
+        }
+        //积分减少
         user.setIntegral(reduce);
-        //咖豆增加
-        user.setCurrency(user.getCurrency().intValue()+num);
+        //咖豆增加   bd咖豆增加的数量
+        user.setCurrency(user.getCurrency()+add);
         //修改用户表积分咖豆情况
         recordDAO.updateUser(user);
         //记录表添加积分支出的兑换记录
@@ -72,13 +88,12 @@ public class RecordService {
         recordBO.setStatus(UserConstants.DECREASE.getValue());
         //添加一条数据,userid用户支出积分num
         recordDAO.insertUserAction(recordBO);
-
-        //积分兑换咖豆比例未定,暂定为1:1  修改则在num处修改
-        RecordBO record=new RecordBO(userId,num);
+        RecordBO record=new RecordBO(userId,bd.intValue());
         //来源--咖豆
         record.setSource(UserConstants.CURRENCY.getValue());
         //状态--获取
         record.setStatus(UserConstants.INCREASE.getValue());
+        record.setDescribe("积分兑换咖豆");
         //添加一条数据,userid用户获取咖豆num
         recordDAO.insertUserAction(record);
         return true;

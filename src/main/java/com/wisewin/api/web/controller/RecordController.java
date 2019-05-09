@@ -76,7 +76,7 @@ public class RecordController extends BaseCotroller{
     public void exchange(Integer num,HttpServletResponse response, HttpServletRequest request)  {
         //判断用户id是否为空,即:用户是否登录
         Integer userId=super.getId(request);
-        if (userId==null||num==null){
+        if (userId==null||num==null||num<0){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;

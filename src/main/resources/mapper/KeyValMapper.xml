@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【记录】 -->
+<mapper namespace="com.wisewin.api.dao.KeyValDAO">
+
+    <!--查询配置表配置属性-->
+    <select id="selectKey" resultType="java.lang.String"
+            parameterType="java.lang.String">
+
+        SELECT `values` FROM lt_key_val
+        where
+          `key`=#{key}
+    </select>
+
+
+</mapper>
