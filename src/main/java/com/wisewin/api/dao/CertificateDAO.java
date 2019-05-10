@@ -1,6 +1,8 @@
 package com.wisewin.api.dao;
 
-import com.wisewin.api.entity.bo.CertificateBO;
+import com.wisewin.api.entity.bo.CertificateResultBO;
+
+import java.util.List;
 
 public interface CertificateDAO {
     /**
@@ -9,4 +11,8 @@ public interface CertificateDAO {
      * @return
      */
     String certificateImage(Integer certificateId);
+    /**
+     * 查询用户证书信息
+     */
+    List<CertificateResultBO> selectUser(Integer userId);
 }
