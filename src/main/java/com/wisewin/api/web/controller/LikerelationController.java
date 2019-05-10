@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/Likerelation")
@@ -42,48 +44,34 @@ public class LikerelationController extends BaseCotroller{
          super.safeJsonPrint(response, json);
          return;
      }
-
-     //通过用户id和文章id查询出有数据说明用户已喜欢，如果查出为null说明用户没有喜欢
-        LikerelationBO likerelationjson=likerelatioService.getfindLikerelation(id,param.getDcId());
-        if (likerelationjson!=null){
-            //查找喜欢的值
-            DiscoverBO findDiscoverlikenumjson=discoverService.getfindDiscoverlikenum(param.getDcId());
-            if (findDiscoverlikenumjson.getLikenum()!=null){
-                //根据用户id和发现id查找出喜欢关系表里的id删除
-                boolean  getdeleteLikerelationjson=likerelatioService.getdeleteLikerelation(likerelationjson.getId());
-                if (getdeleteLikerelationjson){
-                    //这个值是从刚刚查询发现表里取出来的数据
-                    Integer likenum=findDiscoverlikenumjson.getLikenum()-1;
-                    //修改喜欢值
-                    boolean  updatelikenumDiscoverjson=discoverService.getupdatelikenumDiscover(param.getDcId(),likenum);
-                    if (updatelikenumDiscoverjson){
-                        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("取消喜欢"));
-                        super.safeJsonPrint(response, json);
-                        return;
-
-                    }
-                }
-            }
+     //是否真实存在
+            DiscoverBO discoverBO=discoverService.getfindDiscoverlikenum(param.getDcId());
+        if (discoverBO==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
         }
-            //查找喜欢的值
-            DiscoverBO findDiscoverlikenumjson=discoverService.getfindDiscoverlikenum(param.getDcId());
-            if (findDiscoverlikenumjson.getLikenum()!=null){
-                //添加用户id发现id关系
-                boolean getaddLikerelationjson=likerelatioService.getaddLikerelation(id,param.getDcId());
-                if (getaddLikerelationjson){
-                    //这个值是从刚刚查询发现表里取出来的数据
-                    Integer likenum=findDiscoverlikenumjson.getLikenum()+1;
-                    //修改喜欢值
-                    boolean  updatelikenumDiscoverjson=discoverService.getupdatelikenumDiscover(param.getDcId(),likenum);
-                    if (updatelikenumDiscoverjson){
-                        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("喜欢成功"));
-                        super.safeJsonPrint(response, json);
-                        return;
 
-                    }
-                }
-
-
+        Map<String,Object> resultMap=new HashMap<String, Object>();
+       //判断用户有没有喜欢过
+        boolean likerelationjson=likerelatioService.getfindLikerelation(id,param.getDcId());
+        if (likerelationjson){
+            //减少喜欢总数 1
+            discoverService.getupdatelikenumDiscover(param.getDcId(),discoverBO.getLikenum()-1);
+            //删除喜欢关系
+            likerelatioService.getdeleteLikerelation(loginUser.getId(),param.getDcId());
+            resultMap.put("msg","取消喜欢成功");
+        }else{
+            //添加喜欢
+            discoverService.getupdatelikenumDiscover(param.getDcId(),discoverBO.getLikenum()+1);
+            //删除喜欢关系
+            likerelatioService.getaddLikerelation(loginUser.getId(),param.getDcId());
+            resultMap.put("msg","增加喜欢成功");
         }
-    }
+        //喜欢总数 discoverBO
+        int likeCount = likerelatioService.queryLikereCount(param.getDcId());
+        resultMap.put("likeCount",likeCount);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
+        super.safeJsonPrint(response, json);
+        }
 }

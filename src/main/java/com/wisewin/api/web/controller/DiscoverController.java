@@ -123,4 +123,21 @@ public class DiscoverController extends BaseCotroller{
         return;
     }
 
+    /**
+     * 发现更多
+     */
+    @RequestMapping("/queryfindDiscover")
+    public void queryfindDiscover(HttpServletRequest request,HttpServletResponse response,DiscoverParam param){
+
+        List<DiscoverParam> list=discoverService.getqueryfindDiscover(param);
+        if (list.equals("")){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
+        super.safeJsonPrint(response,json);
+        return;
+    }
+
 }

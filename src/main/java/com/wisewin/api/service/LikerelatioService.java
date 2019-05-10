@@ -17,13 +17,12 @@ public class LikerelatioService {
 
     /**
      * 根据发现id和用户id来查找
-     * Integer id;//喜欢id
      * Integer userId; //用户id
      * Integer dcId; //发现id
      */
-    public LikerelationBO getfindLikerelation(Integer userId,Integer dcId){
-        LikerelationBO likerelationBO=new LikerelationBO(userId,dcId);
-        return  likerelationDAO.findLikerelation(likerelationBO);
+    public boolean getfindLikerelation(Integer userId,Integer dcId){
+
+        return  likerelationDAO.findLikerelation(userId,dcId)>0;
     }
 
     /**
@@ -39,8 +38,9 @@ public class LikerelatioService {
     /**
      * 删除用户喜欢文章
      */
-    public boolean getdeleteLikerelation(Integer id){
-        return  likerelationDAO.deleteLikerelation(id)>0;
+    public boolean getdeleteLikerelation(Integer userId,Integer dcId){
+
+        return  likerelationDAO.deleteLikerelation(userId,dcId)>0;
     }
 
     /**
@@ -49,5 +49,14 @@ public class LikerelatioService {
     public LikerelationBO getfindLikerelationjson(Integer userId,Integer dcId){
         LikerelationBO likerelationBO=new LikerelationBO(userId,dcId);
         return  likerelationDAO.findLikerelationjson(likerelationBO);
+    }
+
+
+    /**
+     * param dcId 文章id
+     * return  喜欢总次数
+     */
+    public  int queryLikereCount(Integer dcId){
+        return likerelationDAO.queryLikereCount(dcId);
     }
 }

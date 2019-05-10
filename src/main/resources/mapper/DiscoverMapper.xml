@@ -14,7 +14,8 @@
           thumbnail,video,
           `type`,priority,
           stick,`show`,
-          way,videoImg
+          way,videoImg,
+         likenum
         FROM
           lt_discover
         WHERE
@@ -48,10 +49,12 @@
     <select id="queryDiscovertype" resultType="com.wisewin.api.entity.param.DiscoverParam">
 
         SELECT
-        id,title,
+        id,title,likenum,
+        participation,phone,
+        ticket,
         browse,create_time,
         thumbnail,content,video,
-        createTime,activitytime,
+        activitytime,activitysite,
         `type`,priority,
         stick,`show`,
         way,videoImg
@@ -74,8 +77,8 @@
         video,
         content,
         `type`,likenum,
-        participation,activitytime,
-        activitysite,phone,
+        activitysite,activitytime,
+        phone,
         ticket,skip,videoImg
       FROM
         lt_discover
@@ -117,12 +120,35 @@
 
     <!--查找喜欢方法-->
     <select id="findDiscoverlikenum" resultType="com.wisewin.api.entity.bo.DiscoverBO">
- SELECT
+      SELECT
         id,likenum
       FROM
         lt_discover
       WHERE
         id=#{id}
+    </select>
+
+
+    <!--发现更多-->
+    <select id="queryfindDiscover" resultType="com.wisewin.api.entity.param.DiscoverParam">
+        SELECT
+        id,title,
+        browse,create_time,
+        thumbnail,video,
+        content,`type`,
+        likenum,participation,
+        activitytime,activitysite,
+        phone,ticket,
+        priority,stick,
+        `show`,skip,
+        way,videoImg
+        FROM
+         lt_discover
+        <where>
+            <if test="type!=null and type!='' ">
+                `type`=#{type}
+            </if>
+        </where>
     </select>
 
 
