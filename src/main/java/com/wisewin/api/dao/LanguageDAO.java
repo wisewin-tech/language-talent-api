@@ -1,6 +1,7 @@
 package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.LanguageBO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -36,5 +37,12 @@ public interface LanguageDAO {
      * @return
      */
     List<LanguageBO> languageList();
+
+
+    /**
+     * 单查询语言
+     */
+    LanguageBO selectLanguageG(@Param("id") String id);
+
 
 }

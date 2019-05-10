@@ -4,161 +4,137 @@ package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.common.base.BaseModel;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 public class QuestionBO extends BaseModel {
-    private Integer id; //题库表
-    private String topic; //题目
-    private String option; //选项
-    private String content;//内容
-    private String answer; //答案
-    private String analysis; //解析
-    private String questionType;//题型
-    private BigDecimal score; //分值
-    private String stage; //阶段
-    private Integer chapterId; //课时id
-    private Integer courseId; //课程id
-    private String isCertificateExamination; //是否为证书考试题
-    private Integer serialNumber; //序号
-    private Integer createUserId; //创建人id
-    private Integer updateUserId; //修改人id
-    private Date createTime; //创建时间
-    private Date updateTime; //修改时间
+    //id
+    private Object id;
+    //题目
+    private Object topic;
+    //选项
+    private Object option;
+    //答案和解析
+    private Object answer;
+    //分值
+    private Object score;
+    //判断（judge） 阅读（`read`） 课后测试:常规（common）翻译（translate）
+    // 拼写（`write`） 听力和文本匹配（hearingAndTest）
+    // 听音完成句子（hearingAndSentence） 图文匹配(imageText)
+    private Object questionType;
+    //语言能力测试（languageTest）课程考证题（courseCertificate）课时测试题（chapterTest）
+    private Object testType;
+    //学前热身(warmUp) 课后测试（test）
+    private Object chapterType;
+   //关联id
+    private Object relevanceId;
+    //创建人id
+    private Object createUserId;
+    //修改人id
+    private Object updateUserId;
+    //创建时间
+    private Object createTime;
+    //修改时间
+    private Object updateTime;
 
-    public Integer getId() {
+    public Object getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
     }
 
-    public String getTopic() {
+    public Object getTopic() {
         return topic;
     }
 
-    public void setTopic(String topic) {
+    public void setTopic(Object topic) {
         this.topic = topic;
     }
 
-    public String getOption() {
+    public Object getOption() {
         return option;
     }
 
-    public void setOption(String option) {
+    public void setOption(Object option) {
         this.option = option;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getAnswer() {
+    public Object getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(Object answer) {
         this.answer = answer;
     }
 
-    public String getAnalysis() {
-        return analysis;
-    }
-
-    public void setAnalysis(String analysis) {
-        this.analysis = analysis;
-    }
-
-    public String getQuestionType() {
-        return questionType;
-    }
-
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
-    public BigDecimal getScore() {
+    public Object getScore() {
         return score;
     }
 
-    public void setScore(BigDecimal score) {
+    public void setScore(Object score) {
         this.score = score;
     }
 
-    public String getStage() {
-        return stage;
+    public Object getQuestionType() {
+        return questionType;
     }
 
-    public void setStage(String stage) {
-        this.stage = stage;
+    public void setQuestionType(Object questionType) {
+        this.questionType = questionType;
     }
 
-    public Integer getChapterId() {
-        return chapterId;
+    public Object getTestType() {
+        return testType;
     }
 
-    public void setChapterId(Integer chapterId) {
-        this.chapterId = chapterId;
+    public void setTestType(Object testType) {
+        this.testType = testType;
     }
 
-    public Integer getCourseId() {
-        return courseId;
+    public Object getChapterType() {
+        return chapterType;
     }
 
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
+    public void setChapterType(Object chapterType) {
+        this.chapterType = chapterType;
     }
 
-    public String getIsCertificateExamination() {
-        return isCertificateExamination;
+    public Object getRelevanceId() {
+        return relevanceId;
     }
 
-    public void setIsCertificateExamination(String isCertificateExamination) {
-        this.isCertificateExamination = isCertificateExamination;
+    public void setRelevanceId(Object relevanceId) {
+        this.relevanceId = relevanceId;
     }
 
-    public Integer getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(Integer serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public Integer getCreateUserId() {
+    public Object getCreateUserId() {
         return createUserId;
     }
 
-    public void setCreateUserId(Integer createUserId) {
+    public void setCreateUserId(Object createUserId) {
         this.createUserId = createUserId;
     }
 
-    public Integer getUpdateUserId() {
+    public Object getUpdateUserId() {
         return updateUserId;
     }
 
-    public void setUpdateUserId(Integer updateUserId) {
+    public void setUpdateUserId(Object updateUserId) {
         this.updateUserId = updateUserId;
     }
 
-    public Date getCreateTime() {
+    public Object getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Object createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public Object getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Object updateTime) {
         this.updateTime = updateTime;
     }
 }

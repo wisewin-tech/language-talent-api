@@ -5,7 +5,6 @@ package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.common.base.BaseModel;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class CourseBO extends BaseModel {
@@ -14,8 +13,8 @@ public class CourseBO extends BaseModel {
     private String languageId; //语言id
     private String foreignName; //外国名字
     private String status; //状态
-    private BigDecimal price; //价格
-    private BigDecimal discountPrice; //特惠价
+    private Integer price; //价格
+    private Integer discountPrice; //特惠价
     private Date discountStartTime; //特惠开始时间
     private Date discountEndTime; //特惠结束时间
     private Integer courseValidityPeriod;//课程有效期
@@ -81,19 +80,19 @@ public class CourseBO extends BaseModel {
         this.status = status;
     }
 
-    public BigDecimal getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public BigDecimal getDiscountPrice() {
+    public Integer getDiscountPrice() {
         return discountPrice;
     }
 
-    public void setDiscountPrice(BigDecimal discountPrice) {
+    public void setDiscountPrice(Integer discountPrice) {
         this.discountPrice = discountPrice;
     }
 

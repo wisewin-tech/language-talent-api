@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.QuestionDAO">
+    <select id="queryQuestionList" resultType="com.wisewin.api.entity.bo.QuestionBO" parameterType="java.util.Map">
+        SELECT 	id,
+            topic,
+            `option`,
+            answer,
+            score,
+            question_type as questionType,
+            test_type as testType,
+            chapter_type as chapterType
+            FROM
+            language_talent.lt_question
+
+         <where>
+              <if test="relevanceId !=null and relevanceId != ''">
+                  relevance_id = #{relevanceId}
+              </if>
+                <if test="warmUp != null and warmUp != ''">
+                  and   chapter_type = #{chapterType}
+                </if>
+                <if test="testType != null and testType != ''">
+                  and  test_type = #{testType}
+                </if>
+            </where>
+
+    </select>
+
+
+</mapper>
