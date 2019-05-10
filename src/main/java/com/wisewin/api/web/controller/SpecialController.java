@@ -75,7 +75,7 @@ public class SpecialController extends BaseCotroller {
         }
         Integer userId=this.getId(request);
         if(specialService.updSpecialLikeUser(1,specialId)){
-            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改成功")) ;
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null)) ;
             super.safeJsonPrint(response , result);
         }else {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
