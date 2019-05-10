@@ -39,7 +39,7 @@ public class LikerelationController extends BaseCotroller{
         //获取当前用户id
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
-        if (id==null && param.getDcId()==null){
+        if (id==null || param.getDcId()==null){
          String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
          super.safeJsonPrint(response, json);
          return;
