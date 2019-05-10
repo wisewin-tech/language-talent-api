@@ -15,7 +15,7 @@
           `type`,priority,
           stick,`show`,
           way,videoImg,
-         likenum
+         likenum,skip AS  url
         FROM
           lt_discover
         WHERE
@@ -51,7 +51,7 @@
         SELECT
         id,title,likenum,
         participation,phone,
-        ticket,
+        ticket,skip AS  url,
         browse,create_time,
         thumbnail,content,video,
         activitytime,activitysite,
