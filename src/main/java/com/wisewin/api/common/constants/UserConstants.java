@@ -12,8 +12,8 @@ public enum UserConstants {
         /*  No  */  No("no"),
         /*  增加  */ INCREASE("获取"),
         /*  减少  */  DECREASE("支出"),
-        /*  积分兑换咖豆比例 */  SCALE("积分兑换咖豆比例"),
-        /*  签到增加积分值 */  SIGNNUM("签到获取积分");
+        /*  积分兑换咖豆比例 */  SCALE("integral_proportion"),
+        /*  签到增加积分值 */  SIGNNUM("sign_integral");
 
 
     private UserConstants(String value) {
