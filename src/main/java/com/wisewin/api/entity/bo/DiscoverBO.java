@@ -186,6 +186,9 @@ public class DiscoverBO extends BaseModel {
     }
 
     public Integer getLikenum() {
+        if(likenum==null){
+            return 0;
+        }
         return likenum;
     }
 

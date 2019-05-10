@@ -6,10 +6,10 @@
 <mapper namespace="com.wisewin.api.dao.LikerelationDAO" >
 
     <!--查询喜欢关系表-->
-    <select id="findLikerelation" resultType="com.wisewin.api.entity.bo.LikerelationBO">
+    <select id="findLikerelation" resultType="int">
 
       SELECT
-          id
+         count(id)
       FROM
           lt_likerelation
       WHERE
@@ -35,7 +35,7 @@
       DELETE FROM
          lt_likerelation
       WHERE
-         id=#{id}
+         user_id=#{userId}  AND  dc_id=#{dcId}
     </delete>
 
     <select id="findLikerelationjson" resultType="com.wisewin.api.entity.bo.LikerelationBO">
@@ -46,6 +46,16 @@
          WHERE
           user_id=#{userId}
          AND
+          dc_id=#{dcId}
+    </select>
+
+
+    <select id="queryLikereCount"  parameterType="java.lang.Integer"  resultType="int">
+           SELECT
+          count(id)
+        FROM
+           lt_likerelation
+         WHERE
           dc_id=#{dcId}
     </select>
 </mapper>

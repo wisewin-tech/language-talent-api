@@ -1,6 +1,7 @@
 package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.LikerelationBO;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 发现内容喜欢
@@ -12,7 +13,7 @@ public interface LikerelationDAO {
      * Integer userId; //用户id
      * Integer dcId; //发现id
      */
-    LikerelationBO findLikerelation(LikerelationBO likerelationBO);
+    int findLikerelation(@Param("userId") Integer userId,@Param("dcId") Integer dcId);
 
 
     /**
@@ -25,13 +26,17 @@ public interface LikerelationDAO {
     /**
      * 删除用户喜欢文章
      */
-    Integer deleteLikerelation(Integer id);
+    Integer deleteLikerelation(@Param("userId") Integer userId,@Param("dcId") Integer dcId);
 
     /**
      * 获取id
      */
     LikerelationBO findLikerelationjson(LikerelationBO likerelationBO);
 
-
+    /**
+     * param dcId 文章id
+     * return  喜欢总次数
+     */
+    int queryLikereCount(Integer dcId);
 
 }

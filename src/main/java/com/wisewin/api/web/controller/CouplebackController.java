@@ -54,6 +54,4 @@ public class CouplebackController  extends BaseCotroller {
         super.safeJsonPrint(response, json);
         return;
     }
-
-
 }
