@@ -62,6 +62,24 @@ public class SpecialService {
     }
 
 
+    /**
+     * 如果一个专题分类下 只有这一个专题就显示其他专题分类下的专题
+     * */
+    public List<SpecialBO> selectOtherSpecialBO(Integer classId,Integer id){
+        List<SpecialBO> SpecialBOList=specialDAO.selectSpecialBO(classId);
+        if(SpecialBOList.size()>1){//大于两条 显示当前这个分类
+            for (SpecialBO special:SpecialBOList) {//删除当前点开的专题
+                if(special.getId()==id){
+                    SpecialBOList.remove(special);
+                    return SpecialBOList;
+                }
+            }
+            return SpecialBOList;
+        }else{//小于两条 专题喜欢人数最多的专题
+            return specialDAO.selectOtherSpecialBO();
+        }
+
+    }
 
 
 }

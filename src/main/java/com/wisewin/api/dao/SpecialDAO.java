@@ -12,7 +12,7 @@ import java.util.List;
 public interface SpecialDAO {
 
     /**
-     * 查询所有状态正常专题
+     * 根据状态查询所有状态正常专题
      * */
     List<SpecialBO> selectSpecialBO(@Param("classId") Integer classId);
 
@@ -49,8 +49,12 @@ public interface SpecialDAO {
 
 
     /**
-     * 专题下 要展示出这个专题分类下的其他专题 如果没有就展示其他专题分类的专题
+     * 点进去一条专题的详情页  下的其他专题
+     * 专题分类下有两条以上的一类专题
      * */
+    List<SpecialBO> selectOtherSpecialBO();
+
+
 
 
 

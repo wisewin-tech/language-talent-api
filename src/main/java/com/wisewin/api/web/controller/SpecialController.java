@@ -29,7 +29,7 @@ public class SpecialController extends BaseCotroller {
     SpecialService specialService;
 
     /**
-     * 按展示或者为展示也就是yes no 展示 专题分类
+     * 按展示或者为展示 专题分类
      * */
     @RequestMapping("selectSpecialBO")
     public void selectSpecialBO(HttpServletRequest request, HttpServletResponse response,Integer classId){
@@ -54,8 +54,12 @@ public class SpecialController extends BaseCotroller {
             return;
         }
         Integer userId=this.getId(request);
-        SpecialBO specialBO = specialService.selectSpecialBOById(1,specialId);
-        String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(specialBO));
+        SpecialBO specialBO = specialService.selectSpecialBOById(1,specialId);//点进去查看的专题
+        List<SpecialBO> specialBOList = specialService.selectOtherSpecialBO(specialBO.getClassId(),specialBO.getId());//专题详情页下的其他专题
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("specialBO",specialBO);
+        map.put("specialBOList",specialBOList);
+        String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response,json);
     }
 
@@ -71,19 +75,13 @@ public class SpecialController extends BaseCotroller {
         }
         Integer userId=this.getId(request);
         if(specialService.updSpecialLikeUser(1,specialId)){
-            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改成功")) ;
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null)) ;
             super.safeJsonPrint(response , result);
         }else {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
             super.safeJsonPrint(response , result);
         }
     }
-
-
-
-
-
-
 
 
 }
