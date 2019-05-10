@@ -3,10 +3,14 @@ package com.wisewin.api.web.controller;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.bo.UserStudyDetailsBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.pop.SystemConfig;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.service.UserStudyDetailsService;
 import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.OSSClientUtil;
+import com.wisewin.api.util.env.Env;
+import com.wisewin.api.util.env.ResourceUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +30,7 @@ public class UserStudyDetailsController extends BaseCotroller {
     private UserStudyDetailsService userStudyDetailsService;
     @Resource
     private UserService userService;
+
 
     /**
      * 用户学习详情
@@ -51,7 +55,9 @@ public class UserStudyDetailsController extends BaseCotroller {
             }else {
                 //获取学习时长
                 Integer studyDuration = userStudyDetailsBO.getStudyDuration();
-                studyDuration ++;
+                OSSClientUtil ossClientUtil = new OSSClientUtil();
+                Integer i = Integer.parseInt(ossClientUtil.getPollingFrequency());
+                studyDuration +=i;
                 //修改学习时长
                 userStudyDetailsService.updateDuration(userId, studyDuration,studyDate);
                 UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);

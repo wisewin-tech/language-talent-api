@@ -39,6 +39,7 @@ public class UserStudyDetailsService {
      * @param studyDuration
      */
      public void updateDuration(Integer userId,Integer studyDuration,Date studyDate){
+
         userStudyDetailsDAO.updateDuration(userId,studyDuration,studyDate);
     }
 
