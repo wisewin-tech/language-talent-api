@@ -5,8 +5,20 @@
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.api.dao.CertificateDAO">
     <!--查询证书图片-->
-    <select id="certificateImage" parameterType="java.lang.Integer" resultType="String">
+    <select id="certificateImage" parameterType="java.lang.Integer" resultType="java.lang.String">
         SELECT image_url FROM lt_certificate WHERE id = #{certificateId}
+    </select>
+
+    <select id="selectUser" parameterType="java.lang.Integer"
+            resultType="com.wisewin.api.entity.bo.CertificateResultBO">
+        SELECT
+        ltc.id,ltc.user_id,ltu.nickname,ltc.course_id,ltc.`status`,
+      course.course_name,course.certificate_image_url
+    FROM
+        lt_certificate AS ltc
+    LEFT JOIN lt_user AS ltu ON ltc.user_id=ltu.id
+    LEFT JOIN lt_course AS `course` ON ltc.course_id=course.id
+    WHERE ltc.user_id=#{userId}
     </select>
 
 </mapper>

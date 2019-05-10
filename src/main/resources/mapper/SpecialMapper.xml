@@ -8,7 +8,7 @@
     <!-- 根据状态 分类id 分页查看 的专题 -->
     <select id="selectSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
         select * from lt_special
-        where status='yes'
+        where status='putaway'
         and class_id=#{classId}
         order by sorting desc
     </select>
@@ -16,7 +16,7 @@
     <!-- 某个用户 点击的某个专题 -->
     <select id="selectSpecialBOById" resultType="com.wisewin.api.entity.bo.SpecialBO">
         select * from lt_special
-        where id=#{id}
+        where id=#{id} and status='putaway'
     </select>
 
     <!-- 某个专题添加访问量-->
@@ -45,6 +45,17 @@
         update lt_special set like_number=like_number+#{number} where id =#{specialId}
     </update>
 
+    <!--
+        点进去一条专题的详情页  下的其他专题
+        1.
+        查询专题类下专题最多的专题 select * from lt_special
+        where class_id =
+        (select class_id from lt_special  group by class_id order by count(*) desc limit 1)
+        2.查询喜欢人数最多的专题 不区分类别
+    -->
+    <select id="selectOtherSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
+      select * from lt_special where status='putaway' order by like_number desc limit 5
+    </select>
 
 
 

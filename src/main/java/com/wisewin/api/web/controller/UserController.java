@@ -1,10 +1,12 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.common.constants.UserConstants;
+import com.wisewin.api.entity.bo.CertificateResultBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.bo.common.constants.SysConstants;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.UserParam;
+import com.wisewin.api.service.CertificateService;
 import com.wisewin.api.service.UpPictureService;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.*;
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,7 +36,7 @@ public class UserController extends BaseCotroller {
     @Resource
     private UserService userService;
     @Resource
-    private UpPictureService upPictureService;
+    private CertificateService certificateService;
     /**
      * 手机号格式判断
      */
@@ -279,6 +282,27 @@ public class UserController extends BaseCotroller {
         //根据需求追加....
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
         super.safeJsonPrint(response, json);
+    }
+    /**
+     * 查询用户证书信息
+     * @param response
+     * @param request
+     * @throws Exception
+     */
+    @RequestMapping("/selectUserCert")
+    public void selectUserMedal(HttpServletResponse response, HttpServletRequest request) throws Exception {
+        //从cookie中获取他的user对象的id
+        Integer id = this.getId(request);
+        //如果获取不到,参数异常
+        if (id == null) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+        }
+        //查询用户证书
+        List<CertificateResultBO> certificateResultBOS = certificateService.selectUser(id);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(certificateResultBOS));
+        super.safeJsonPrint(response, json);
+
     }
 
 }

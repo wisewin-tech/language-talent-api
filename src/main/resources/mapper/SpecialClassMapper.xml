@@ -8,7 +8,7 @@
     <!-- 查看专题分类 -->
     <select id="selectSpecialClassBO" resultType="com.wisewin.api.entity.bo.SpecialClassBO">
         select * from lt_special_class
-        where `status`='yes'
+        where `status`='putaway'
         order by sorting desc
         limit 3
     </select>
