@@ -29,8 +29,8 @@ public class SpecialController extends BaseCotroller {
     SpecialService specialService;
 
     /**
-     * 按展示或者为展示 专题分类
-     * */
+     * 按分类 查看专题
+     * * */
     @RequestMapping("selectSpecialBO")
     public void selectSpecialBO(HttpServletRequest request, HttpServletResponse response,Integer classId){
         if(classId==null||classId==0){

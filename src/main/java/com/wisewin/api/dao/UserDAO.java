@@ -45,8 +45,6 @@ public interface UserDAO {
     void updatePassword(@Param("phone") String phone,
                         @Param("password") String newPassword);
 
-
-
     /**
      * 通过手机号发送验证码修改密码
      * @param phone
@@ -64,4 +62,13 @@ public interface UserDAO {
     //修改正在学习的语言
     void updateLanguage(@Param("id") Integer id,@Param("studyingLanguageId")Integer studyingLanguageId);
 
+
+
+
+
+    //获取当前用户
+    UserBO selectUser(@Param("id") Integer id);
+
+    //扣减用户咖豆
+    void updateUserCrrency(@Param("id")String id , @Param("price")Integer price);
 }

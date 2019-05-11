@@ -1,7 +1,7 @@
 package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.CourseBO;
-import com.wisewin.api.entity.bo.LanguageBO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -25,4 +25,10 @@ public interface CourseDAO {
      * @return
      */
     List<CourseBO> courseSearch(String languageName);
+
+    /**
+     * 单查询课程
+     */
+    CourseBO selectCourse(@Param("id") String id);
+
 }

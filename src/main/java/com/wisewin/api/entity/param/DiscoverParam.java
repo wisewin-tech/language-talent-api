@@ -33,10 +33,18 @@ public class DiscoverParam extends BaseModel {
     private String skip; //跳转url[线下活动]
     private  String way; // 展示方式
     private  String videoImg;//存放视频封面url
+    private String url; //跳转链接
     private Integer pageNo; //页数
     private  Integer pageSize; //每条条数
     private int countnum; // 总数
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getVideoImg() {
         return videoImg;

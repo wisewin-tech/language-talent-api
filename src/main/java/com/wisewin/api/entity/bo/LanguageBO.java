@@ -3,7 +3,6 @@ package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.common.base.BaseModel;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class LanguageBO extends BaseModel {
@@ -18,13 +17,13 @@ public class LanguageBO extends BaseModel {
     private String purchaseNotes; //购买须知
     private String videoPath; //视频路径
     private String languageIntro; //语言简介
-    private BigDecimal languagePrice; //价格
-    private BigDecimal languageDiscountPrice; //特惠价
+    private Integer languagePrice; //价格
+    private Integer languageDiscountPrice; //特惠价
     private Date discountStartTime; //特惠开始时间
     private Date discountEndTime; //特惠结束时
     private String courseName;//课程名称
-    private BigDecimal coursePrice;//课程价格
-    private BigDecimal courseDiscountPrice;//课程特惠价格
+    private Integer coursePrice;//课程价格
+    private Integer courseDiscountPrice;//课程特惠价格
     private Integer chapterCount;//课时数
     private Integer levelId;//级别id
     private String levelName;//级别名称
@@ -174,20 +173,28 @@ public class LanguageBO extends BaseModel {
         this.languageIntro = languageIntro;
     }
 
-    public BigDecimal getLanguagePrice() {
+    public Integer getLanguagePrice() {
         return languagePrice;
     }
 
-    public void setLanguagePrice(BigDecimal languagePrice) {
+    public void setLanguagePrice(Integer languagePrice) {
         this.languagePrice = languagePrice;
     }
 
-    public BigDecimal getLanguageDiscountPrice() {
+    public Integer getLanguageDiscountPrice() {
         return languageDiscountPrice;
     }
 
-    public void setLanguageDiscountPrice(BigDecimal languageDiscountPrice) {
+    public void setLanguageDiscountPrice(Integer languageDiscountPrice) {
         this.languageDiscountPrice = languageDiscountPrice;
+    }
+
+    public void setCoursePrice(Integer coursePrice) {
+        this.coursePrice = coursePrice;
+    }
+
+    public void setCourseDiscountPrice(Integer courseDiscountPrice) {
+        this.courseDiscountPrice = courseDiscountPrice;
     }
 
     public Date getDiscountStartTime() {
@@ -214,21 +221,6 @@ public class LanguageBO extends BaseModel {
         this.courseName = courseName;
     }
 
-    public BigDecimal getCoursePrice() {
-        return coursePrice;
-    }
-
-    public void setCoursePrice(BigDecimal coursePrice) {
-        this.coursePrice = coursePrice;
-    }
-
-    public BigDecimal getCourseDiscountPrice() {
-        return courseDiscountPrice;
-    }
-
-    public void setCourseDiscountPrice(BigDecimal courseDiscountPrice) {
-        this.courseDiscountPrice = courseDiscountPrice;
-    }
 
     public Integer getChapterCount() {
         return chapterCount;
@@ -276,5 +268,13 @@ public class LanguageBO extends BaseModel {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getCoursePrice() {
+        return coursePrice;
+    }
+
+    public Integer getCourseDiscountPrice() {
+        return courseDiscountPrice;
     }
 }

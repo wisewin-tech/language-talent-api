@@ -93,5 +93,48 @@
     </update>
 
 
+    <select id="selectUser" resultType="com.wisewin.api.entity.bo.UserBO">
+        SELECT 	id,
+            `name`,
+            email,
+            mobile,
+            age_group as ageGroup,
+            head_portrait_url as headPortraitUrl,
+            sex,
+            birthday,
+            source,
+            career,
+            integral,
+            currency,
+            learning_goal as learningGoal,
+            studying_language_id as studyingLanguageId,
+            invite_code as inviteCode,
+            by_invite as byInvite,
+            job,
+            qq_openid as qqOpenid,
+            wx_openid as wxOpenid,
+            continuous_sign as continuousSign,
+            cumulative_sign as cumulativeSign,
+            last_sign as lastSign,
+            continuous_learning as continuousLearning,
+            cumulative_learning as cumulativeLearning,
+            study_date,
+            `status`,
+            create_id as createId,
+            update_id as updateId,
+            create_time as createTime,
+            update_time as updateTime
+            FROM
+            language_talent.lt_user
+                WHERE id = #{id}
+    </select>
 
+         <!--扣减用户咖豆-->
+    <update id="updateUserCrrency">
+    UPDATE language_talent.lt_user
+        SET
+        currency = currency - #{price}
+        WHERE
+        id = #{id} ;
+    </update>
 </mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wisewin.api.dao.OrderCoursesDAO">
+    <select id="selectOrderCourses" resultType="com.wisewin.api.entity.bo.OrderCoursesBO">
+        SELECT 	id,
+        user_id as userId,
+        order_id as orderId,
+        courses_id as coursesId ,
+        courses_name as coursesName,
+        standby as standby,
+        create_id as createId,
+        update_id as updateId,
+        create_time as createTime,
+        update_time as updateTime
+        FROM
+        language_talent.lt_order_courses
+            WHERE  user_id =  #{userId}   AND   courses_id=#{coursesId}
+
+    </select>
+</mapper>

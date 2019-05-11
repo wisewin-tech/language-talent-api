@@ -56,4 +56,38 @@
 			AND course.`status`='putaway'
 		</where>
 	</select>
+
+	<select id="selectCourse" resultType="com.wisewin.api.entity.bo.CourseBO">
+
+		SELECT 	id,
+			course_name as courseName,
+			language_id as languageId,
+			foreign_name as foreignName,
+			`status` as status,
+			price as price,
+			discount_price as discountPrice,
+			discount_start_time as discountStartTime,
+			discount_end_time as discountEndTime,
+			course_validity_period as courseValidityPeriod,
+			study_number as studyNumber,
+			thumbnail_image_url as thumbnailImageUrl,
+			course_intro as courseIntro,
+			course_lightspot as courseLightspot,
+			purchase_notes as purchaseNotes,
+			popular_sort as popularSort ,
+			hot_or_not as hotOrNot,
+			certificate_or_not as certificateOrNot,
+			certificate_title as certificateTitle,
+			certificate_intro as certificateIntro,
+			certificate_image_url  as certificateImageUrl,
+			create_user_id as createUserId,
+			create_time as createTime,
+			update_user_id as updateUserId,
+			update_time as updateTime
+
+			FROM
+			language_talent.lt_course
+
+			where id =#{id}
+	</select>
 </mapper>

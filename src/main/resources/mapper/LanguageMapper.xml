@@ -76,4 +76,26 @@ AND course.`status` = 'putaway'
 		FROM lt_language la WHERE la.status = 'putaway' ORDER BY CONVERT(la.language_name USING gbk) COLLATE gbk_chinese_ci
 	</select>
 
+	<!--单查询语言表-->
+	<select id="selectLanguageG"  resultType="com.wisewin.api.entity.bo.LanguageBO">
+		SELECT 	id,
+		language_name as languageName,
+		`status`,
+		foreign_language_name as foreignLanguageName,
+		ensign_image_url as ensignImageUrl,
+		thumbnail_image_url as thumbnailImageUrl,
+		popular_sort as thumbnailImageUrl,
+		language_lightspot as languageLightspot,
+		purchase_notes as purchaseNotes,
+		video_path as videoPath,
+		language_intro as languageIntro,
+		price as languagePrice,
+		discount_price as languageDiscountPrice,
+		discount_start_time as discountStartTime,
+		discount_end_time as discountEndTime
+		FROM
+		language_talent.lt_language
+		WHERE id = #{id}
+	</select>
+
 </mapper>
