@@ -232,6 +232,10 @@ public class OSSClientUtil {
         return null;
     }
 
+    /**
+     * 获取轮询频率
+     * @return
+     */
     public String getPollingFrequency() {
         return pollingFrequency;
     }
