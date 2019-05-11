@@ -59,7 +59,7 @@ public class OrderController extends BaseCotroller {
     public void selectDetails(Integer id,HttpServletResponse response, HttpServletRequest request) {
         //判断用户id是否为空,即:用户是否登录
         Integer userId = super.getId(request);
-        if (userId == null ) {
+        if (userId == null||id==null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;

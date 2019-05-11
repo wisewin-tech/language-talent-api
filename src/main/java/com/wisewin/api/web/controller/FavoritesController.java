@@ -1,5 +1,6 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.entity.bo.DiscoverResultBO;
 import com.wisewin.api.entity.bo.FavoritesResultBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
@@ -30,10 +31,10 @@ public class FavoritesController extends BaseCotroller {
      * @param response
      * @param request
      */
-    @RequestMapping("selectAll")
-    public void selectAll(Integer pageNo, Integer pageSize,String source,HttpServletResponse response, HttpServletRequest request){
+    @RequestMapping("selectHour")
+    public void selectHour(Integer pageNo, Integer pageSize,HttpServletResponse response, HttpServletRequest request){
         Integer userId=super.getId(request);
-        if (userId==null|| StringUtils.isEmpty(source)){
+        if (userId==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -49,10 +50,38 @@ public class FavoritesController extends BaseCotroller {
         }
         //把userId 用户id,放入map集合中
         condition.put("userId",userId);
-        //吧source收藏来源(课时/发现),放入map集合中
-        condition.put("source",source);
+        List<FavoritesResultBO> list=favoritesService.selectHour(condition);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
+        super.safeJsonPrint(response, json);
 
-        List<FavoritesResultBO> list=favoritesService.selectAll(condition);
+    }
+    /**
+     * 查询用户收藏的发现信息
+     * @param pageNo      页数
+     * @param pageSize    每页条数
+     * @param response
+     * @param request
+     */
+    @RequestMapping("selectDiscover")
+    public void selectDiscover(Integer pageNo, Integer pageSize,HttpServletResponse response, HttpServletRequest request){
+        Integer userId=super.getId(request);
+        if (userId==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        //封装limit条件,pageNo改为页数
+        QueryInfo queryInfo = getQueryInfo(pageNo,pageSize);
+        //创建一个用于封装sql条件的map集合
+        Map<String, Object> condition = new HashMap<String, Object>();
+        if(queryInfo != null){
+            //把pageOffset 页数,pageSize每页的条数放入map集合中
+            condition.put("pageOffset", queryInfo.getPageOffset());
+            condition.put("pageSize", queryInfo.getPageSize());
+        }
+        //把userId 用户id,放入map集合中
+        condition.put("userId",userId);
+        List<DiscoverResultBO> list=favoritesService.selectDiscover(condition);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response, json);
 

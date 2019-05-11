@@ -19,7 +19,7 @@
 
         <where>
             lmf.user_id=#{userId}
-            <if test="source!=null">AND source=#{source}</if>
+            <if test="source!=null and source!='' ">AND lmf.source=#{source}</if>
         </where>
         ORDER BY lmf.create_time DESC
         <include refid="limit" />
@@ -37,7 +37,7 @@
         ON dis.id=mf.source_id
         <where>
             mf.user_id=#{userId}
-            <if test="source!=null">AND mf.source=#{source}</if>
+            <if test="source!=null and source!='' ">AND mf.source=#{source}</if>
         </where>
         ORDER BY mf.create_time DESC
         <include refid="limit" />

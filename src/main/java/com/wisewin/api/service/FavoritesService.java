@@ -2,6 +2,7 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.common.constants.UserConstants;
 import com.wisewin.api.dao.FavoritesDAO;
+import com.wisewin.api.entity.bo.DiscoverResultBO;
 import com.wisewin.api.entity.bo.FavoritesResultBO;
 import com.wisewin.api.entity.bo.MyFavoriteBO;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,24 @@ public class FavoritesService {
     private FavoritesDAO favoritesDAO;
 
     /**
-     * 查询我的收藏,map封装了用户id,页数,每页行数
+     * 查询课时收藏,map封装了用户id,页数,每页行数
      * @param map
      * @return
      */
-    public List<FavoritesResultBO> selectAll(Map<String,Object> map){
-        Object source=map.get("source");
-        if (source.equals(UserConstants.CHAPTER.getValue())){
-            return favoritesDAO.selectFavorites( map);
-        }else{
+    public List<FavoritesResultBO> selectHour(Map<String,Object> map){
+        map.put("source",UserConstants.CHAPTER.getValue());
+        return favoritesDAO.selectFavorites( map);
+    }
+    /**
+     * 因结果集不同,无法合并为一个方法
+     * 查询发现收藏,map封装了用户id,页数,每页行数
+     * @param map
+     * @return
+     */
+    public List<DiscoverResultBO> selectDiscover(Map<String,Object> map){
+            map.put("source",UserConstants.DISCOVERY.getValue());
             return favoritesDAO.selectDiscover(map);
-        }
+
     }
 
     /**

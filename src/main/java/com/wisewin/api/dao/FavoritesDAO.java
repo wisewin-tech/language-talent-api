@@ -1,5 +1,6 @@
 package com.wisewin.api.dao;
 
+import com.wisewin.api.entity.bo.DiscoverResultBO;
 import com.wisewin.api.entity.bo.FavoritesResultBO;
 import com.wisewin.api.entity.bo.MyFavoriteBO;
 
@@ -18,7 +19,7 @@ public interface FavoritesDAO {
      * @param map 用于存放用户id,第几页,每页行数,source状态发现
      * @return
      */
-    List<FavoritesResultBO> selectDiscover(Map<String,Object> map);
+    List<DiscoverResultBO> selectDiscover(Map<String,Object> map);
 
     /**
      * 添加收藏

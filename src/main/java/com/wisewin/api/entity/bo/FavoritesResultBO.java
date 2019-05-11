@@ -1,5 +1,7 @@
 package com.wisewin.api.entity.bo;
 
+import com.wisewin.api.util.date.DateUtil;
+
 import java.util.Date;
 
 public class FavoritesResultBO {
@@ -11,8 +13,8 @@ public class FavoritesResultBO {
     private String  thumbnailUrl;   //缩略图
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
-    private Date createTime; //创建时间
-    private Date updateTime; //修改时间
+    private String createTime; //创建时间
+    private String updateTime; //修改时间
 
     @Override
     public String toString() {
@@ -86,20 +88,20 @@ public class FavoritesResultBO {
         this.updateId = updateId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        return DateUtil.getStr(createTime);
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = DateUtil.getStr(createTime);
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getUpdateTime() {
+        return DateUtil.getStr(updateTime);
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = DateUtil.getStr(updateTime);
     }
 
     public String getThumbnailUrl() {

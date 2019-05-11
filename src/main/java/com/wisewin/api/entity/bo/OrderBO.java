@@ -1,6 +1,7 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
+import com.wisewin.api.util.date.DateUtil;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -13,13 +14,13 @@ public class OrderBO extends BaseModel {
     private String orderType; //订单类型(购买/充值)
     private String status; //状态(成功/失败)
     private String productName; //商品名称(拼接字段)
-    private Date creationDate; //购买日期
-    private Date courseValidityPeriod; //课程有效期
+    private String creationDate; //购买日期
+    private String courseValidityPeriod; //课程有效期
     private String standby; //备用
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
-    private Date createTime; //创建时间
-    private Date updateTime; //修改时间
+    private String createTime; //创建时间
+    private String updateTime; //修改时间
 
     @Override
     public String toString() {
@@ -97,20 +98,20 @@ public class OrderBO extends BaseModel {
         this.productName = productName;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public String getCreationDate() {
+        return DateUtil.getStr(creationDate);
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationDate(String creationDate) {
+        this.creationDate = DateUtil.getStr(creationDate);
     }
 
-    public Date getCourseValidityPeriod() {
-        return courseValidityPeriod;
+    public String getCourseValidityPeriod() {
+        return DateUtil.getStr(courseValidityPeriod);
     }
 
-    public void setCourseValidityPeriod(Date courseValidityPeriod) {
-        this.courseValidityPeriod = courseValidityPeriod;
+    public void setCourseValidityPeriod(String courseValidityPeriod) {
+        this.courseValidityPeriod = DateUtil.getStr(courseValidityPeriod);
     }
 
     public String getStandby() {
@@ -137,19 +138,19 @@ public class OrderBO extends BaseModel {
         this.updateId = updateId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        return DateUtil.getStr(createTime);
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = DateUtil.getStr(createTime);
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getUpdateTime() {
+        return DateUtil.getStr(updateTime);
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = DateUtil.getStr(updateTime);
     }
 }

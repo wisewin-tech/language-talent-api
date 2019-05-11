@@ -135,18 +135,17 @@ public class SignService {
         //获取昨天日期
         Date yesterday= TimeUtil.getTimeStart(-1);
         String yesterdays= dateFormat.format(yesterday);
-        //true在时间段内，false不在时间段内
+        //true昨天签到，false昨天没签到
         if (date.equals(yesterdays)){
-            //上次签到日期不在昨天的时间范围内
-            //连续签到天数改为1
-            userBO.setContinuousSign(1);
-        }else {
             //连续签到天数改为+1
             userBO.setContinuousSign(continuousSign + 1);
+        }else {
+            //连续签到天数改为1
+            userBO.setContinuousSign(1);
         }
             //累计签到天数+1
             userBO.setCumulativeSign(cumulativeSign+1);
-            //从库里取出"签到获取积分"对应的值
+            //从库里取出"sign_integral"对应的值
             String signIntegral=signDAO.selectSignIntegral(UserConstants.SIGNNUM.getValue());
             Integer signNum=Integer.parseInt(signIntegral);
             //积分+10
