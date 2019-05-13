@@ -18,9 +18,9 @@ public class BannerBO extends BaseModel {
     private String sort; //排序
     private String status; //状态
     private Integer createUserId; //创建人id
-    private Date createTime; //创建时间
+    private String createTime; //创建时间
     private Integer updateUserId; //修改人id
-    private Date updateTime; //修改时间
+    private String updateTime; //修改时间
 
     public Integer getId() {
         return id;
@@ -86,11 +86,11 @@ public class BannerBO extends BaseModel {
         this.createUserId = createUserId;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -102,11 +102,11 @@ public class BannerBO extends BaseModel {
         this.updateUserId = updateUserId;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 }

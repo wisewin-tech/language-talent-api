@@ -28,10 +28,7 @@ public class LanguageBO extends BaseModel {
     private Integer chapterCount;//课时数
     private Integer levelId;//级别id
     private String levelName;//级别名称
-    private Integer createUserId; //创建人id
-    private Date createTime; //创建时间
-    private Integer updateUserId; //修改人id
-    private Date updateTime; //修改时间
+
     private Integer courseId;//课程id
     private String certificateOrNot;//是否可以考证
     private Integer certificateId;//证书id
@@ -214,37 +211,7 @@ public class LanguageBO extends BaseModel {
         this.levelName = levelName;
     }
 
-    public Integer getCreateUserId() {
-        return createUserId;
-    }
 
-    public void setCreateUserId(Integer createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(Integer updateUserId) {
-        this.updateUserId = updateUserId;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
     public Integer getCourseId() {
         return courseId;

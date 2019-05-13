@@ -6,6 +6,7 @@ import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.PruchaseDTO;
+import com.wisewin.api.util.date.DateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
@@ -70,9 +71,9 @@ public class PurchaseService {
         //获取要购买的课程
         CourseBO course  = courseDAO.selectCourse(id);
         //获取特惠开始时间
-        Date dateStart  = course.getDiscountStartTime();
+        Date dateStart  = DateUtil.getDate(course.getDiscountStartTime());
         //获取特惠结束时间
-        Date dateEnd   = course.getDiscountEndTime();
+        Date dateEnd   = DateUtil.getDate(course.getDiscountEndTime());
         //判断是否在特惠时间内
         boolean falg = belongCalendar(new Date(),dateStart,dateEnd);
         PruchaseDTO pruchase = new PruchaseDTO();

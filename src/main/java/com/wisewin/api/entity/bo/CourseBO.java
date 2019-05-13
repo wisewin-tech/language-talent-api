@@ -4,6 +4,7 @@ package com.wisewin.api.entity.bo;
 
 
 import com.wisewin.api.common.base.BaseModel;
+import com.wisewin.api.util.date.DateUtil;
 
 import java.util.Date;
 
@@ -15,8 +16,8 @@ public class CourseBO extends BaseModel {
     private String status; //状态
     private Integer price; //价格
     private Integer discountPrice; //特惠价
-    private Date discountStartTime; //特惠开始时间
-    private Date discountEndTime; //特惠结束时间
+    private String discountStartTime; //特惠开始时间
+    private String discountEndTime; //特惠结束时间
     private Integer courseValidityPeriod;//课程有效期
     private Integer studyNumber; //学习人数
     private String courseIntro; //课程简介
@@ -26,10 +27,7 @@ public class CourseBO extends BaseModel {
     private String hotOrNot; //是否为热门
     private String certificateOrNot;//是否可以考证
     private Integer certificateId;//证书id
-    private Integer createUserId; //创建人id
-    private Date createTime; //创建时间
-    private Integer updateUserId; //修改人id
-    private Date updateTime; //修改时间
+
     private String languageName;//语言名称
     private String thumbnailImageUrl;//国旗图片路径
     private Integer courseId;//课程id
@@ -96,20 +94,20 @@ public class CourseBO extends BaseModel {
         this.discountPrice = discountPrice;
     }
 
-    public Date getDiscountStartTime() {
-        return discountStartTime;
+    public String  getDiscountStartTime() {
+        return DateUtil.getStr(discountEndTime);
     }
 
-    public void setDiscountStartTime(Date discountStartTime) {
-        this.discountStartTime = discountStartTime;
+    public void setDiscountStartTime(String  discountStartTime) {
+        this.discountStartTime = DateUtil.getStr(discountEndTime);
     }
 
-    public Date getDiscountEndTime() {
-        return discountEndTime;
+    public String getDiscountEndTime() {
+        return DateUtil.getStr(discountEndTime);
     }
 
-    public void setDiscountEndTime(Date discountEndTime) {
-        this.discountEndTime = discountEndTime;
+    public void setDiscountEndTime(String discountEndTime) {
+        this.discountEndTime = DateUtil.getStr(discountEndTime);
     }
 
     public Integer getCourseValidityPeriod() {
@@ -184,37 +182,7 @@ public class CourseBO extends BaseModel {
         this.certificateId = certificateId;
     }
 
-    public Integer getCreateUserId() {
-        return createUserId;
-    }
 
-    public void setCreateUserId(Integer createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(Integer updateUserId) {
-        this.updateUserId = updateUserId;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
     public String getLanguageName() {
         return languageName;

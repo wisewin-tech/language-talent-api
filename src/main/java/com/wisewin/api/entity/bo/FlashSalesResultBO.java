@@ -1,6 +1,7 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
+import com.wisewin.api.util.date.DateUtil;
 
 import java.util.Date;
 
@@ -54,11 +55,11 @@ public class FlashSalesResultBO extends BaseModel{
     }
 
     public String getDiscountEndTime() {
-        return discountEndTime;
+        return DateUtil.getStr(discountEndTime);
     }
 
     public void setDiscountEndTime(String discountEndTime) {
-        this.discountEndTime = discountEndTime;
+        this.discountEndTime = DateUtil.getStr(discountEndTime);
     }
 
     public Long getDiscountTimeRemaining() {
