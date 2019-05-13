@@ -3,6 +3,7 @@ package com.wisewin.api.web.controller;
 import com.wisewin.api.dao.TestDAO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.pop.SystemConfig;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
@@ -38,6 +39,7 @@ public class TestController extends BaseCotroller {
     }
 
     public static void main(String[] args) throws ParseException {
+
        String startTime = "2018-11-06 11:00:00";
         String endTime = "2018-11-08 11:15:00";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");

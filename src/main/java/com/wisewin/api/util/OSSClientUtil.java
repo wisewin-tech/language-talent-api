@@ -35,8 +35,6 @@ public class OSSClientUtil {
     private String urlName =env.getProperty("urlName");
     // 文件存储目录		替换成自己的
     private String filedir = env.getProperty("filedir");
-    //轮询频率
-    private String pollingFrequency = env.getProperty("pollingFrequency");
 
     private OSSClient ossClient;
 
@@ -232,12 +230,6 @@ public class OSSClientUtil {
         return null;
     }
 
-    /**
-     * 获取轮询频率
-     * @return
-     */
-    public String getPollingFrequency() {
-        return pollingFrequency;
-    }
+
 }
 

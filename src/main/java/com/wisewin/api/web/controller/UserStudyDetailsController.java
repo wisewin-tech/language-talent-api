@@ -55,9 +55,10 @@ public class UserStudyDetailsController extends BaseCotroller {
             }else {
                 //获取学习时长
                 Integer studyDuration = userStudyDetailsBO.getStudyDuration();
-                OSSClientUtil ossClientUtil = new OSSClientUtil();
-                Integer i = Integer.parseInt(ossClientUtil.getPollingFrequency());
-                studyDuration +=i;
+                Env env = new Env();
+                Integer pollingFrequency = Integer.parseInt(env.getProperty("pollingFrequency"));
+                studyDuration+=pollingFrequency;
+
                 //修改学习时长
                 userStudyDetailsService.updateDuration(userId, studyDuration,studyDate);
                 UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
