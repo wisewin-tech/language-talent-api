@@ -95,11 +95,11 @@ public class CourseBO extends BaseModel {
     }
 
     public String  getDiscountStartTime() {
-        return DateUtil.getStr(discountEndTime);
+        return DateUtil.getStr(discountStartTime);
     }
 
     public void setDiscountStartTime(String  discountStartTime) {
-        this.discountStartTime = DateUtil.getStr(discountEndTime);
+        this.discountStartTime = DateUtil.getStr(getDiscountStartTime());
     }
 
     public String getDiscountEndTime() {

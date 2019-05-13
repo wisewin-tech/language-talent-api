@@ -100,8 +100,27 @@ public class DateUtil {
             return  null;
         }
         return thisDate;
-
     }
 
+    /**
+     * date转换为String类型
+     * yyyy-MM-dd
+     */
+    public  static String getGainStr(String date) {
+        Date thisDate=null;
+        //设置要获取到什么样的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            //获取Date类型的时间
+            thisDate = sdf.parse(date);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return  null;
+        }
+        String str=sdf.format(thisDate);
+        return str;
+
+    }
 
 }
