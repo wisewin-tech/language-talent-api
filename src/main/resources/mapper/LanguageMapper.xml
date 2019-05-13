@@ -8,7 +8,7 @@
     <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.LanguageBO">
         SELECT
 	      ensign_image_url ensignImageUrl,language_name languageName,
-	      `language`.id
+	      `language`.id languageId
         FROM
 	      lt_language `language`
         WHERE
