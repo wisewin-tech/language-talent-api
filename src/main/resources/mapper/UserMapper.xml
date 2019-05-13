@@ -38,8 +38,6 @@
             <if test="learningGoal!=null">     learning_goal=#{learningGoal},</if>
             <if test="birthday!=null">         birthday=#{birthday}</if>
             <if test="headPortraitUrl!=null">  head_portrait_url=#{headPortraitUrl}</if>
-            <if test="headPortraitUrl!=null">  head_portrait_url=#{headPortraitUrl}</if>
-            <if test="headPortraitUrl!=null">  head_portrait_url=#{headPortraitUrl}</if>
 
         </set>
         where

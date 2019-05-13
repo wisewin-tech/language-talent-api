@@ -1,9 +1,11 @@
 package com.wisewin.api.web.controller;
 import com.wisewin.api.entity.bo.RecordBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.RecordService;
 import com.wisewin.api.service.SignService;
+import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,8 @@ import java.util.Map;
 public class RecordController extends BaseCotroller{
     @Resource
     private RecordService recordService;
-
+    @Resource
+    private UserService userService;
     /**
      * 查询积分支出/获取记录
      * @param pageNo    页数
@@ -65,9 +68,32 @@ public class RecordController extends BaseCotroller{
 
 
     }
-
     /**
-     * 兑换积分
+     * 兑换咖币
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/exchangeInfo")
+    public void exchangeInfo(HttpServletResponse response, HttpServletRequest request)  {
+        //判断用户id是否为空,即:用户是否登录
+        Integer userId=super.getId(request);
+        if (userId==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+            UserBO userBO = userService.selectById(userId);
+            //获取用户积分信息
+            Integer integral = userBO.getIntegral();
+            Map<String, Object> map = recordService.exchangeInformation();
+            map.put("integral",integral);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
+            super.safeJsonPrint(response, json);
+
+
+    }
+    /**
+     * 确认兑换
      * @param num   兑换的数量
      * @param response
      * @param request
@@ -82,7 +108,15 @@ public class RecordController extends BaseCotroller{
             return;
         }
         if (recordService.exchange(userId,num)){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+            UserBO userBO = userService.selectById(userId);
+            //获取用户积分信息
+            Integer integral = userBO.getIntegral();
+            //获取用户咖豆信息
+            Integer currency = userBO.getCurrency();
+            Map<String, Object> map = recordService.exchangeInformation(num);
+            map.put("integral",integral);
+            map.put("currency",currency);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
             super.safeJsonPrint(response, json);
         }else{
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000015"));
