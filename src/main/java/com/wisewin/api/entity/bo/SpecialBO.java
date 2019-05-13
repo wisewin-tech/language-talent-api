@@ -15,6 +15,7 @@ public class SpecialBO extends BaseModel {
     private String title;//专题标题
     private String describe;//专题描述
     private Date releaseDate;//专题上传日期
+    private String releaseDateStr;//专题上传日期
     private Integer traffic;//专题访问量
     private String videoUrl;//专题视频地址
     private Integer likeNumber;//喜欢人数
@@ -25,6 +26,14 @@ public class SpecialBO extends BaseModel {
     private Integer updateId; //修改人id
     private Date createTime; //创建时间
     private Date updateTime; //修改时间
+
+    public String getReleaseDateStr() {
+        return releaseDateStr;
+    }
+
+    public void setReleaseDateStr(String releaseDateStr) {
+        this.releaseDateStr = releaseDateStr;
+    }
 
     public Integer getCreateId() {
         return createId;

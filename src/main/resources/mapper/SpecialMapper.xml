@@ -7,7 +7,10 @@
 
     <!-- 根据状态 分类id 分页查看 的专题 -->
     <select id="selectSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
-        select * from lt_special
+        select
+        id,class_id,title,`describe`,release_date as releaseDateStr,
+        traffic,video_url,like_number,status,sorting
+        from lt_special
         where status='putaway'
         and class_id=#{classId}
         order by sorting desc
