@@ -55,11 +55,11 @@ public class FlashSalesResultBO extends BaseModel{
     }
 
     public String getDiscountEndTime() {
-        return DateUtil.getStr(discountEndTime);
+        return DateUtil.getGainStr(discountEndTime);
     }
 
     public void setDiscountEndTime(String discountEndTime) {
-        this.discountEndTime = DateUtil.getStr(discountEndTime);
+        this.discountEndTime = DateUtil.getGainStr(discountEndTime);
     }
 
     public Long getDiscountTimeRemaining() {
