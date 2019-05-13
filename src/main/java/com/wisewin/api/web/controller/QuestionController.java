@@ -1,6 +1,7 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.QuestionBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.QuestionService;
 import com.wisewin.api.util.JsonUtils;
@@ -39,12 +40,12 @@ public class QuestionController extends BaseCotroller{
      */
     @RequestMapping(value = "/listQuestion")
     public void queryWarmUp(HttpServletRequest request, HttpServletResponse response,Integer relevanceId, String chapterType, String testType){
-       /*UserBO userBO = super.getLoginUser(request);
+       UserBO userBO = super.getLoginUser(request);
         if(userBO == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
-        }*/
+        }
        if(relevanceId == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);

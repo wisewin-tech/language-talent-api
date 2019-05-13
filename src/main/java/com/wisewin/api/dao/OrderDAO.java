@@ -15,5 +15,8 @@ public interface OrderDAO {
      */
     List<OrderBO> selectAll(Map<String,Object> map);
     OrderBO selectDetails(@Param("id") Integer id, @Param("userId") Integer userId);
-
+    /**
+     * 插入订单
+     */
+    Integer insertOrder(OrderBO order);
 }

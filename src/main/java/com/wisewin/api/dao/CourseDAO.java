@@ -31,4 +31,12 @@ public interface CourseDAO {
      */
     CourseBO selectCourse(@Param("id") String id);
 
+
+    /**
+     * 根据语言id查询课程
+     * @param id
+     * @return
+     */
+    List<CourseBO>  listCousebyLanguage(@Param("id") String id);
+
 }
