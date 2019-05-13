@@ -1,6 +1,7 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.dao.LanguageDAO;
+import com.wisewin.api.entity.bo.FlashSalesResultBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class LanguageService {
      * 限时特惠
      * @return
      */
-    public List<LanguageBO> getFlashSales(){
+    public List<FlashSalesResultBO> getFlashSales(){
 
         return languageDAO.getFlashSales();
     }

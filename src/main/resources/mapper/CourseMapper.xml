@@ -12,6 +12,8 @@
 	    `language`.thumbnail_image_url,
 	    course.course_name,
 	    course.course_intro,
+		course.price,
+		course.discount_price,
 	    course.certificate_or_not,
 	    course.id
       FROM
