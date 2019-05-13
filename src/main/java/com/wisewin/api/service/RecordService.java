@@ -66,29 +66,39 @@ public class RecordService {
         //获取配置表积分兑换咖豆比例
         String val=keyValDAO.selectKey(UserConstants.SCALE.getValue());
         Integer scale=Integer.parseInt(val);
-        //咖豆增加的数量
-        BigDecimal bd=new BigDecimal(num/scale);
-        //设置小数位数，第一个变量是小数位数，第二个变量是取舍方法(四舍五入)
-        bd=bd.setScale(0, BigDecimal.ROUND_HALF_UP);
-        int add=bd.intValue();
-        if (add<1){
+        //咖豆增加的数量 整数integer
+        Integer integer=num/scale;
+        //咖豆增加数量的余数 remainder
+        Integer remainder=num%scale;
+        if (integer==0){  //如果所兑换数量不足于兑换一个咖豆
+            String error="积分兑换不足";
             return false;
         }
-        //积分减少
-        user.setIntegral(reduce);
-        //咖豆增加   bd咖豆增加的数量
-        user.setCurrency(user.getCurrency()+add);
+        if (remainder!=0){  //如果积分兑换整除有余数
+            // reduce=用户积分-输入的兑换数量
+            //剩余积分=reduce+剩余的余数
+            reduce=reduce+remainder;
+
+            user.setIntegral(reduce);
+        }else{
+            //积分减少  减少的数量为输入的数量
+            user.setIntegral(reduce);
+        }
+
+        //咖豆增加   integer咖豆增加的数量
+        user.setCurrency(user.getCurrency()+integer);
         //修改用户表积分咖豆情况
         recordDAO.updateUser(user);
         //记录表添加积分支出的兑换记录
-        RecordBO recordBO=new RecordBO(userId,num);
+        RecordBO recordBO=new RecordBO(userId,num-remainder);
         //来源--积分
         recordBO.setSource(UserConstants.INTEGRAL.getValue());
         //状态--支出
         recordBO.setStatus(UserConstants.DECREASE.getValue());
-        //添加一条数据,userid用户支出积分num
+        recordBO.setDescribe("积分兑换咖豆");
+        //添加一条数据,userid用户支出积分 num-remainder
         recordDAO.insertUserAction(recordBO);
-        RecordBO record=new RecordBO(userId,bd.intValue());
+        RecordBO record=new RecordBO(userId,integer);
         //来源--咖豆
         record.setSource(UserConstants.CURRENCY.getValue());
         //状态--获取
@@ -99,4 +109,41 @@ public class RecordService {
         return true;
     }
 
+
+    /**
+     * 兑换积分数量  creditsExchange
+     * 兑换咖豆数量  forCoffeeBeans
+     * @param num
+     * @return
+     */
+    public Map<String, Object> exchangeInformation(Integer num){
+        Map<String,Object> map=new HashMap<String, Object>();
+        //获取配置表积分兑换咖豆比例
+        String val=keyValDAO.selectKey(UserConstants.SCALE.getValue());
+        Integer scale=Integer.parseInt(val);
+        //咖豆增加的数量 整数integer
+        Integer integer=num/scale;
+        //咖豆增加数量的余数 remainder
+        Integer remainder=num%scale;
+
+        if (integer==0){
+            map.put("creditsExchange",0);
+        }else{
+            map.put("creditsExchange",num-remainder);
+        }
+        map.put("exchangeRatio",val);
+        map.put("forCoffeeBeans",integer);
+        return map;
+    }
+    /**
+     * 兑换比例  val
+     * @return
+     */
+    public Map<String, Object> exchangeInformation(){
+        Map<String,Object> map=new HashMap<String, Object>();
+        //获取配置表积分兑换咖豆比例
+        String val=keyValDAO.selectKey(UserConstants.SCALE.getValue());
+        map.put("exchangeRatio",val);
+        return map;
+    }
 }
