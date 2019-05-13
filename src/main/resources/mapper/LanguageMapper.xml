@@ -5,7 +5,7 @@
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.api.dao.LanguageDAO">
     <!--为你定制-->
-    <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.LanguageBO">
+    <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.EnsignImageResultBO">
         SELECT
 	      ensign_image_url ensignImageUrl,language_name languageName,
 	      `language`.id languageId
