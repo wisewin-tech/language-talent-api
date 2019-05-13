@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,10 @@ public class IndexController extends BaseCotroller {
         Integer useId = super.getId(request);
         List<LanguageBO> ensignImage = languageService.selectEnsignImage();
         List<LanguageBO> flashSales = languageService.getFlashSales();
+        for (LanguageBO languageBO: flashSales){
+            Long discountTimeRemaining =languageBO.getDiscountEndTime().getTime()- new Date().getTime();
+            languageBO.setDiscountTimeRemaining(discountTimeRemaining);
+        }
         List<BannerBO> banner = bannerService.getBanner();
         Integer ContinuousSigndays = signService.getContinuousSign(useId);
         List<SpecialClassBO> specialClassBOS = specialClassService.selectSpecialClassBO();

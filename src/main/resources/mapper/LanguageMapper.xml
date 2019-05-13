@@ -20,10 +20,10 @@
 	    `language`.thumbnail_image_url,
 	    `language`.language_name,
 	    `language`.language_intro,
-	    `language`.price,
-	    `language`.discount_price,
-	    `language`.discount_end_time,
-	    course.id courseId
+	    `language`.price languagePrice,
+	    `language`.discount_price languageDiscountPrice,
+	    `language`.discount_end_time discountEndTime,
+	    `course`.id courseId
       FROM
 	    lt_language `language`
 	    LEFT JOIN lt_course course ON `language`.id = course.language_id
