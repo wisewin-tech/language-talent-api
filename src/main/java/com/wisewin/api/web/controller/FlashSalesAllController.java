@@ -27,7 +27,9 @@ public class FlashSalesAllController extends BaseCotroller{
         List<FlashSalesResultBO> flashSalesResultBOS = languageService.getAllFlashSales();
         for (FlashSalesResultBO flashSalesResultBO: flashSalesResultBOS){
             Long discountTimeRemaining = DateUtils.parseDate(flashSalesResultBO.getDiscountEndTime(),"yyyy-MM-dd HH:mm:ss").getTime()- new Date().getTime();
-            flashSalesResultBO.setDiscountTimeRemaining(discountTimeRemaining);
+            flashSalesResultBO.setDiscountTimeRemaining(discountTimeRemaining.toString());
+           Long discountStartTime = DateUtils.parseDate(flashSalesResultBO.getDiscountStartTime(),"yyyy-MM-dd HH:mm:ss").getTime();
+           flashSalesResultBO.setDiscountStartTime(discountStartTime.toString());
         }
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(flashSalesResultBOS));
         super.safeJsonPrint(response, result);

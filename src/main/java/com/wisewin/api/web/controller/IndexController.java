@@ -42,7 +42,7 @@ public class IndexController extends BaseCotroller {
         List<FlashSalesResultBO> flashSales = languageService.getFlashSales();
         for (FlashSalesResultBO flashSalesResultBO: flashSales){
             Long discountTimeRemaining =DateUtils.parseDate(flashSalesResultBO.getDiscountEndTime(),"yyyy-MM-dd HH:mm:ss").getTime()- new Date().getTime();
-            flashSalesResultBO.setDiscountTimeRemaining(discountTimeRemaining);
+            flashSalesResultBO.setDiscountTimeRemaining(discountTimeRemaining.toString());
         }
         List<BannerBO> banner = bannerService.getBanner();
         Integer ContinuousSigndays = signService.getContinuousSign(useId);

@@ -8,8 +8,10 @@ public class FlashSalesResultBO extends BaseModel{
     private String languageIntro; //语言简介
     private Integer languagePrice; //价格
     private Integer languageDiscountPrice; //特惠价格
+    private String discountStartTime;//特惠开始时间（毫秒值）
     private String discountEndTime; //特惠结束时间
-    private Long discountTimeRemaining;//特惠剩余时间
+    private String discountTimeRemaining;//特惠剩余时间
+    private String certificateOrNot;//是否可以考证
 
     public String getThumbnailImageUrl() {
         return thumbnailImageUrl;
@@ -50,6 +52,15 @@ public class FlashSalesResultBO extends BaseModel{
     public void setLanguageDiscountPrice(Integer languageDiscountPrice) {
         this.languageDiscountPrice = languageDiscountPrice;
     }
+
+    public String getDiscountStartTime() {
+        return discountStartTime;
+    }
+
+    public void setDiscountStartTime(String discountStartTime) {
+        this.discountStartTime = discountStartTime;
+    }
+
     public String getDiscountEndTime() {
         return discountEndTime;
     }
@@ -57,10 +68,20 @@ public class FlashSalesResultBO extends BaseModel{
     public void setDiscountEndTime(String discountEndTime) {
         this.discountEndTime = discountEndTime;
     }
-    public Long getDiscountTimeRemaining() {
+
+    public String getDiscountTimeRemaining() {
         return discountTimeRemaining;
     }
-    public void setDiscountTimeRemaining(Long discountTimeRemaining) {
+
+    public void setDiscountTimeRemaining(String discountTimeRemaining) {
         this.discountTimeRemaining = discountTimeRemaining;
+    }
+
+    public String getCertificateOrNot() {
+        return certificateOrNot;
+    }
+
+    public void setCertificateOrNot(String certificateOrNot) {
+        this.certificateOrNot = certificateOrNot;
     }
 }
