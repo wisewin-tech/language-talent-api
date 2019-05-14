@@ -1,12 +1,7 @@
 package com.wisewin.api.entity.bo;
 
 
-
-
 import com.wisewin.api.common.base.BaseModel;
-import com.wisewin.api.util.date.DateUtil;
-
-import java.util.Date;
 
 public class CourseBO extends BaseModel {
     private Integer id; //课程分类表
@@ -94,20 +89,20 @@ public class CourseBO extends BaseModel {
         this.discountPrice = discountPrice;
     }
 
-    public String  getDiscountStartTime() {
-        return DateUtil.getStr(discountStartTime);
+    public String getDiscountStartTime() {
+        return discountStartTime;
     }
 
-    public void setDiscountStartTime(String  discountStartTime) {
-        this.discountStartTime = DateUtil.getStr(getDiscountStartTime());
+    public void setDiscountStartTime(String discountStartTime) {
+        this.discountStartTime = discountStartTime;
     }
 
     public String getDiscountEndTime() {
-        return DateUtil.getStr(discountEndTime);
+        return discountEndTime;
     }
 
     public void setDiscountEndTime(String discountEndTime) {
-        this.discountEndTime = DateUtil.getStr(discountEndTime);
+        this.discountEndTime = discountEndTime;
     }
 
     public Integer getCourseValidityPeriod() {
@@ -182,8 +177,6 @@ public class CourseBO extends BaseModel {
         this.certificateId = certificateId;
     }
 
-
-
     public String getLanguageName() {
         return languageName;
     }
@@ -256,3 +249,4 @@ public class CourseBO extends BaseModel {
         this.levelId = levelId;
     }
 }
+

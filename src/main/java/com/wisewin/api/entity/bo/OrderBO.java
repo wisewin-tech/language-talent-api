@@ -1,7 +1,6 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
-import com.wisewin.api.util.date.DateUtil;
 
 public class OrderBO extends BaseModel {
     private Integer id; //订单表
@@ -19,32 +18,6 @@ public class OrderBO extends BaseModel {
     private String createTime; //创建时间
     private String updateTime; //修改时间
 
-    @Override
-    public String toString() {
-        return "OrderBO{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", price=" + price +
-                ", orderNumber='" + orderNumber + '\'' +
-                ", orderType='" + orderType + '\'' +
-                ", status='" + status + '\'' +
-                ", productName='" + productName + '\'' +
-                ", creationDate=" + creationDate +
-                ", courseValidityPeriod=" + courseValidityPeriod +
-                ", standby='" + standby + '\'' +
-                ", createId=" + createId +
-                ", updateId=" + updateId +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
-    }
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
     public Integer getId() {
         return id;
     }
@@ -59,6 +32,14 @@ public class OrderBO extends BaseModel {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public String getOrderNumber() {
@@ -94,19 +75,19 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreationDate() {
-        return DateUtil.getStr(creationDate);
+        return creationDate;
     }
 
     public void setCreationDate(String creationDate) {
-        this.creationDate = DateUtil.getStr(creationDate);
+        this.creationDate = creationDate;
     }
 
     public String getCourseValidityPeriod() {
-        return DateUtil.getStr(courseValidityPeriod);
+        return courseValidityPeriod;
     }
 
     public void setCourseValidityPeriod(String courseValidityPeriod) {
-        this.courseValidityPeriod = DateUtil.getStr(courseValidityPeriod);
+        this.courseValidityPeriod = courseValidityPeriod;
     }
 
     public String getStandby() {
@@ -134,18 +115,18 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreateTime() {
-        return DateUtil.getStr(createTime);
+        return createTime;
     }
 
     public void setCreateTime(String createTime) {
-        this.createTime = DateUtil.getStr(createTime);
+        this.createTime = createTime;
     }
 
     public String getUpdateTime() {
-        return DateUtil.getStr(updateTime);
+        return updateTime;
     }
 
     public void setUpdateTime(String updateTime) {
-        this.updateTime = DateUtil.getStr(updateTime);
+        this.updateTime = updateTime;
     }
 }
