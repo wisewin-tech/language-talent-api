@@ -2,6 +2,7 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.dao.CourseDAO;
 import com.wisewin.api.entity.bo.CourseBO;
+import com.wisewin.api.entity.bo.HotCourseResultBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,5 +39,13 @@ public class CourseService {
      */
     public List<CourseBO> courseSearch(String languageName){
         return courseDAO.courseSearch(languageName);
+    }
+
+    /**
+     * 热门课程
+     * @return
+     */
+    public List<HotCourseResultBO> hotCourse(){
+        return courseDAO.hotCourse();
     }
 }
