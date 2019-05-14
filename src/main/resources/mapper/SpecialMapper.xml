@@ -9,7 +9,7 @@
     <select id="selectSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
         select
         id,class_id,title,`describe`,release_date as releaseDateStr,
-        traffic,video_url,like_number,status,sorting,video_cover
+        traffic,video_url,like_number,status,sorting,video_cover,video_length
         from lt_special
         where status='putaway'
         and class_id=#{classId}
@@ -20,7 +20,7 @@
     <select id="selectSpecialBOById" resultType="com.wisewin.api.entity.bo.SpecialBO">
         select
          id,class_id,title,`describe`,release_date as releaseDateStr,
-        traffic,video_url,like_number,status,sorting
+        traffic,video_url,like_number,status,sorting,video_cover,video_length
          from lt_special
         where id=#{id} and status='putaway'
     </select>
@@ -62,7 +62,7 @@
     <select id="selectOtherSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
       select
        id,class_id,title,`describe`,release_date as releaseDateStr,
-        traffic,video_url,like_number,status,sorting
+        traffic,video_url,like_number,status,sorting,video_cover,video_length
        from lt_special where status='putaway' order by like_number desc limit 5
     </select>
 

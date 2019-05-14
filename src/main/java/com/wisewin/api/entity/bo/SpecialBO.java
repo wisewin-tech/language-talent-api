@@ -18,6 +18,25 @@ public class SpecialBO extends BaseModel {
     private String releaseDateStr;//专题上传日期
     private Integer traffic;//专题访问量
     private String videoUrl;//专题视频地址
+    private String videoLength;//视频时长
+    private String videoCover;//视频
+
+    public String getVideoLength() {
+        return videoLength;
+    }
+
+    public void setVideoLength(String videoLength) {
+        this.videoLength = videoLength;
+    }
+
+    public String getVideoCover() {
+        return videoCover;
+    }
+
+    public void setVideoCover(String videoCover) {
+        this.videoCover = videoCover;
+    }
+
     private Integer likeNumber;//喜欢人数
     private String status;//是否展示（yes展示，no不展示）
     private Double sorting;//排序（数值越大 越靠前）
