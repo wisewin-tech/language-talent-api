@@ -9,7 +9,7 @@
     <select id="selectSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
         select
         id,class_id,title,`describe`,release_date as releaseDateStr,
-        traffic,video_url,like_number,status,sorting
+        traffic,video_url,like_number,status,sorting,video_cover
         from lt_special
         where status='putaway'
         and class_id=#{classId}
