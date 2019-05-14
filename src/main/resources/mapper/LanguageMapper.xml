@@ -57,7 +57,7 @@
     `level`.level_name levelName,`level`.id levelId,
 	course.id courseId,course.certificate_or_not certificateOrNot,
 	course.certificate_title certificateTitle,
-	course.certificate_image_url certificateImageUrl,
+	course.certificate_image_url certificateImage,
 	course.certificate_intro certificateIntro,
 	course.course_name courseName,
 	course.price coursePrice,
