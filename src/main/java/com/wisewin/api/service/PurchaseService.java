@@ -3,6 +3,7 @@ package com.wisewin.api.service;
 import com.wisewin.api.dao.*;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.PruchaseDTO;
+import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.date.DateUtil;
 import org.springframework.stereotype.Service;
@@ -221,10 +222,9 @@ public class PurchaseService {
         order.setStatus("成功");
         order.setOrderType("购买");
         order.setProductName(pruchase.getTitle());
-        order.setCreateTime(new Date()+"");
 
-        order.setCreateTime(new Date()+"");
-        order.setUpdateTime(new Date()+"");
+        order.setCreateTime(DateUtil.getDateStr(new Date()));
+        order.setUpdateTime(DateUtil.getDateStr(new Date()));
         //获取返回的主订单id
         orderDAO.insertOrder(order);
         System.out.println(order.getId());
@@ -259,7 +259,7 @@ public class PurchaseService {
     public void insertOrderlanguage(String languageId,String userId,PruchaseDTO pruchase){
         //获取购买的语言
         List<CourseBO> list =  courseDAO.listCousebyLanguage(languageId);
-        CourseBO courseBO = list.get(0);
+        System.out.println(list);
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
         order.setPrice(pruchase.getCoursePrice());
@@ -269,9 +269,8 @@ public class PurchaseService {
         order.setStatus("成功");
         order.setOrderType("购买");
         order.setProductName(pruchase.getTitle());
-        order.setCreateTime(new Date()+"");
-        order.setCreateTime(new Date()+"");
-        order.setUpdateTime(new Date()+"");
+        order.setCreateTime(DateUtil.getDateStr(new Date()));
+        order.setUpdateTime(DateUtil.getDateStr(new Date()));
         //获取返回的主订单id
         orderDAO.insertOrder(order);
 
@@ -285,7 +284,7 @@ public class PurchaseService {
             orderCourses.setUserId(Integer.parseInt(userId));
             orderCourses.setCreateTime(new Date());
             orderCourses.setUpdateTime(new Date());
-
+            //有效日期
             Date date1 =  overDate( course.getCourseValidityPeriod()) ;
             orderCourses.setCourseValidityPeriod(date1);
             lists.add(orderCourses);

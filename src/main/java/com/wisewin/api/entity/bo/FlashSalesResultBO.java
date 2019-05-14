@@ -1,9 +1,6 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
-import com.wisewin.api.util.date.DateUtil;
-
-import java.util.Date;
 
 public class FlashSalesResultBO extends BaseModel{
     private String thumbnailImageUrl; //缩略图
@@ -13,7 +10,6 @@ public class FlashSalesResultBO extends BaseModel{
     private Integer languageDiscountPrice; //特惠价格
     private String discountEndTime; //特惠结束时间
     private Long discountTimeRemaining;//特惠剩余时间
-    private String certificateOrNot;//是否可以考证
 
     public String getThumbnailImageUrl() {
         return thumbnailImageUrl;
@@ -54,28 +50,17 @@ public class FlashSalesResultBO extends BaseModel{
     public void setLanguageDiscountPrice(Integer languageDiscountPrice) {
         this.languageDiscountPrice = languageDiscountPrice;
     }
-
     public String getDiscountEndTime() {
-        return DateUtil.getGainStr(discountEndTime);
+        return discountEndTime;
     }
 
     public void setDiscountEndTime(String discountEndTime) {
-        this.discountEndTime = DateUtil.getGainStr(discountEndTime);
+        this.discountEndTime = discountEndTime;
     }
-
     public Long getDiscountTimeRemaining() {
         return discountTimeRemaining;
     }
-
     public void setDiscountTimeRemaining(Long discountTimeRemaining) {
         this.discountTimeRemaining = discountTimeRemaining;
-    }
-
-    public String getCertificateOrNot() {
-        return certificateOrNot;
-    }
-
-    public void setCertificateOrNot(String certificateOrNot) {
-        this.certificateOrNot = certificateOrNot;
     }
 }
