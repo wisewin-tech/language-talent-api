@@ -14,6 +14,12 @@ public interface LanguageDAO {
     List<FlashSalesResultBO> getFlashSales();
 
     /**
+     * 获取全部限时特惠
+     * @return
+     */
+    List<FlashSalesResultBO> getAllFlashSales();
+
+    /**
      * 查询语言
      * @param id
      * @return

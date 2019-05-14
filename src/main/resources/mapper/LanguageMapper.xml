@@ -30,6 +30,20 @@
       AND NOW() BETWEEN `language`.discount_start_time
       AND `language`.discount_end_time
     </select>
+
+	<!--查看全部显示特惠-->
+	<select id="getAllFlashSales" resultType="com.wisewin.api.entity.bo.FlashSalesResultBO">
+		SELECT
+	    `language`.thumbnail_image_url,`language`.language_name,
+	    `language`.language_intro,`language`.price languagePrice,
+	    `language`.discount_price languageDiscountPrice,
+	    `language`.discount_end_time discountEndTime,
+		lc.certificate_or_not
+      FROM lt_language `language` LEFT JOIN lt_course lc ON lc.language_id = `language`.id
+      WHERE `language`.`status` = 'putaway' AND lc.`status`='putaway'
+      AND NOW() BETWEEN `language`.discount_start_time AND `language`.discount_end_time
+      GROUP BY `language`.language_name
+	</select>
     <!--语言详情页-->
     <select id="languageDetails" parameterType="com.wisewin.api.entity.bo.LanguageBO" resultType="com.wisewin.api.entity.bo.LanguageBO">
        SELECT

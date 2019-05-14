@@ -35,6 +35,14 @@ public class LanguageService {
 
         return languageDAO.getFlashSales();
     }
+
+    /**
+     * 获取全部限时特惠
+     * @return
+     */
+    public List<FlashSalesResultBO> getAllFlashSales(){
+        return languageDAO.getAllFlashSales();
+    }
      /**
      * 查询语言
      * @param id
