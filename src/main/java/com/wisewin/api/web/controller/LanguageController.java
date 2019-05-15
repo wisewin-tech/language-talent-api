@@ -1,6 +1,8 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.LanguageBO;
+import com.wisewin.api.entity.bo.LanguageDetailsCourseResultBO;
+import com.wisewin.api.entity.bo.LanguageDetailsResultBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.CertificateService;
@@ -43,12 +45,12 @@ public class LanguageController extends BaseCotroller{
             super.safeJsonPrint(response, result);
             return;
         }
-        List<LanguageBO> languageBOList = languageService.languageDetails(id);
-        for (LanguageBO languageBO: languageBOList){
-            String image = certificateService.certificateImage(languageBO.getCertificateId());
-            languageBO.setCertificateImage(image);
-        }
-        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(languageBOList));
+        LanguageDetailsResultBO languageBO = languageService.languageDetails(id);
+        List<LanguageDetailsCourseResultBO> languageDetailsCourseResultBOS = languageService.languageDetailsCourse(id);
+        Map resultmap = new HashMap();
+        resultmap.put("language",languageBO);
+        resultmap.put("course",languageDetailsCourseResultBOS);
+        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultmap));
         super.safeJsonPrint(response, result);
     }
 

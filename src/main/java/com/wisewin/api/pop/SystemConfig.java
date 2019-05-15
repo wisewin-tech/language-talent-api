@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
  * Created by wangyubo on 2018/3/18.
  */
 public class SystemConfig {
-    private static final String BUNDLE_NAME = "conf/locale/system_config";
+    private static final String BUNDLE_NAME = "system_config";
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
             .getBundle(BUNDLE_NAME);

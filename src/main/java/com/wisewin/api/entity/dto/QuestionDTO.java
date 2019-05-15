@@ -12,7 +12,7 @@ public class QuestionDTO {
     private String answer; //答案
     private String analysis; //解析
     private String questionType;//题型
-    private BigDecimal score; //分值
+    private String score; //分值
     private String stage; //阶段
     private Integer chapterId; //课时id
     private Integer courseId; //课程id
@@ -79,11 +79,11 @@ public class QuestionDTO {
         this.questionType = questionType;
     }
 
-    public BigDecimal getScore() {
+    public String getScore() {
         return score;
     }
 
-    public void setScore(BigDecimal score) {
+    public void setScore(String score) {
         this.score = score;
     }
 

@@ -128,4 +128,12 @@
 
 		where language_id = #{id}
 	</select>
+
+	<!--热门搜索-->
+	<select id="hotCourse" resultType="com.wisewin.api.entity.bo.HotCourseResultBO">
+		SELECT
+	    	lc.id courseId,lc.course_name
+		FROM lt_course lc
+		WHERE lc.hot_or_not = 'yes' AND lc.`status` = 'putaway'
+	</select>
 </mapper>

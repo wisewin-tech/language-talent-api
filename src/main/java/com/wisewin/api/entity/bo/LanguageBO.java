@@ -28,12 +28,19 @@ public class LanguageBO extends BaseModel {
     private Integer chapterCount;//课时数
     private Integer levelId;//级别id
     private String levelName;//级别名称
-
     private Integer courseId;//课程id
     private String certificateOrNot;//是否可以考证
-    private Integer certificateId;//证书id
     private String certificateImage;//证书图片
     private Integer languageId;//语言id
+    private String  certificateTitle;//证书标题
+
+    public String getCertificateTitle() {
+        return certificateTitle;
+    }
+
+    public void setCertificateTitle(String certificateTitle) {
+        this.certificateTitle = certificateTitle;
+    }
 
     public Integer getId() {
         return id;
@@ -227,14 +234,6 @@ public class LanguageBO extends BaseModel {
 
     public void setCertificateOrNot(String certificateOrNot) {
         this.certificateOrNot = certificateOrNot;
-    }
-
-    public Integer getCertificateId() {
-        return certificateId;
-    }
-
-    public void setCertificateId(Integer certificateId) {
-        this.certificateId = certificateId;
     }
 
     public String getCertificateImage() {

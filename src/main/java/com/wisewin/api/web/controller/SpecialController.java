@@ -74,13 +74,12 @@ public class SpecialController extends BaseCotroller {
             return;
         }
         Integer userId=this.getId(request);
-        if(specialService.updSpecialLikeUser(1,specialId)){
-            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null)) ;
-            super.safeJsonPrint(response , result);
-        }else {
-            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
-            super.safeJsonPrint(response , result);
-        }
+        Integer type=specialService.updSpecialLikeUser(1,specialId);
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("type",type);
+        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map)) ;
+        super.safeJsonPrint(response , result);
+
     }
 
 

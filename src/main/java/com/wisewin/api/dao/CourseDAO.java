@@ -1,6 +1,7 @@
 package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.CourseBO;
+import com.wisewin.api.entity.bo.HotCourseResultBO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -39,4 +40,9 @@ public interface CourseDAO {
      */
     List<CourseBO>  listCousebyLanguage(@Param("id") String id);
 
+    /**
+     * 热门课程
+     * @return
+     */
+    List<HotCourseResultBO> hotCourse();
 }

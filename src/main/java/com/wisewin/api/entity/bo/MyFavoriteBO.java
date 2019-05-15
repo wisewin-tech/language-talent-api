@@ -20,9 +20,10 @@ public class MyFavoriteBO extends BaseModel{
      * @param userId    用户id
      * @param sourceId  收藏来源id
      */
-    public MyFavoriteBO(Integer userId, Integer sourceId) {
+    public MyFavoriteBO(Integer userId, Integer sourceId,String source) {
         this.userId = userId;
         this.sourceId = sourceId;
+        this.source = source;
     }
 
     @Override
