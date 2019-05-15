@@ -1,6 +1,7 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.CourseBO;
+import com.wisewin.api.entity.bo.HotCourseResultBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.CourseService;
@@ -44,6 +45,18 @@ public class CourseController extends BaseCotroller {
         }
         List<CourseBO> courseBOList = courseService.courseSearch(languageName);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(courseBOList));
+        super.safeJsonPrint(response, json);
+    }
+
+    /**
+     * 热门课程
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/getHotCourse")
+    public void getHotCourse(HttpServletRequest request,HttpServletResponse response){
+        List<HotCourseResultBO> hotCourseResultBOS = courseService.hotCourse();
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(hotCourseResultBOS));
         super.safeJsonPrint(response, json);
     }
 }

@@ -19,4 +19,42 @@
             WHERE  user_id =  #{userId}   AND   courses_id=#{coursesId}
 
     </select>
+    
+    <insert id="insetOrderCourse" parameterType="com.wisewin.api.entity.bo.OrderCoursesBO">
+
+    INSERT INTO language_talent.lt_order_courses
+            (
+            user_id,
+            order_id,
+            courses_id,
+            courses_name,
+            create_time,
+            update_time,
+            course_validity_period
+            )
+            VALUES
+            (
+            #{userId},
+            #{orderId},
+            #{coursesId},
+            #{coursesName},
+            #{createTime},
+            #{updateTime},
+            #{courseValidityPeriod}
+            );
+    </insert>
+
+    <!--批量插入-->
+    <insert id="insetListOrderCourse" parameterType="java.util.List">
+        INSERT INTO language_talent.lt_order_courses  (  user_id, order_id, courses_id, courses_name, create_time,
+        update_time,course_validity_period) VALUE
+        <foreach collection ="list" item="orderCourses" separator =",">
+            (
+            #{orderCourses.userId}, #{orderCourses.orderId},
+            #{orderCourses.coursesId}, #{orderCourses.coursesName}, #{orderCourses.createTime},
+            #{orderCourses.updateTime},#{orderCourses.courseValidityPeriod}
+            )
+        </foreach >
+            ;
+    </insert>
 </mapper>

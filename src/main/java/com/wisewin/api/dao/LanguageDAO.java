@@ -1,5 +1,6 @@
 package com.wisewin.api.dao;
 
+import com.wisewin.api.entity.bo.FlashSalesResultBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +11,13 @@ public interface LanguageDAO {
     List<LanguageBO> selectEnsignImage();
 
     //限时特惠
-    List<LanguageBO> getFlashSales();
+    List<FlashSalesResultBO> getFlashSales();
+
+    /**
+     * 获取全部限时特惠
+     * @return
+     */
+    List<FlashSalesResultBO> getAllFlashSales();
 
     /**
      * 查询语言

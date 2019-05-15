@@ -1,16 +1,19 @@
 package com.wisewin.api.service;
-import com.wisewin.api.dao.CourseDAO;
-import com.wisewin.api.dao.LanguageDAO;
-import com.wisewin.api.dao.UserDAO;
-import com.wisewin.api.entity.bo.CourseBO;
-import com.wisewin.api.entity.bo.LanguageBO;
-import com.wisewin.api.entity.bo.UserBO;
+
+import com.wisewin.api.dao.*;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.PruchaseDTO;
+import com.wisewin.api.util.DateUtils;
+import com.wisewin.api.util.IDBuilder;
+import com.wisewin.api.util.date.DateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -26,9 +29,17 @@ public class PurchaseService {
     @Resource
     private CourseDAO courseDAO;
 
-
     @Resource
     private LanguageDAO languageDAO;
+
+    @Resource
+    private OrderDAO orderDAO;
+
+    @Resource
+    private OrderCoursesDAO orderCoursesDAO;
+
+    @Resource
+    private RecordDAO recordDAO;
 
     //获取当前用户
     //获取要购买课程的id
@@ -70,9 +81,9 @@ public class PurchaseService {
         //获取要购买的课程
         CourseBO course  = courseDAO.selectCourse(id);
         //获取特惠开始时间
-        Date dateStart  = course.getDiscountStartTime();
+        Date dateStart  = DateUtil.getDate(course.getDiscountStartTime());
         //获取特惠结束时间
-        Date dateEnd   = course.getDiscountEndTime();
+        Date dateEnd   = DateUtil.getDate(course.getDiscountEndTime());
         //判断是否在特惠时间内
         boolean falg = belongCalendar(new Date(),dateStart,dateEnd);
         PruchaseDTO pruchase = new PruchaseDTO();
@@ -196,5 +207,109 @@ public class PurchaseService {
     }
 
 
+    /**
+     * 插入订单(课程)
+     */
+    public void insertOrderCouse(String Courseid,String userId,PruchaseDTO pruchase){
+        //获取购买课程
+        CourseBO course  =  courseDAO.selectCourse(Courseid);
+        OrderBO order = new OrderBO();
+        order.setUserId(Integer.parseInt(userId));
+        order.setPrice(pruchase.getCoursePrice());
+        //生成订单号
+        IDBuilder idBuilder  =  new IDBuilder(10,10);
+        order.setOrderNumber(idBuilder.nextId()+"");
+        order.setStatus("成功");
+        order.setOrderType("购买");
+        order.setProductName(pruchase.getTitle());
+
+        order.setCreateTime(DateUtil.getDateStr(new Date()));
+        order.setUpdateTime(DateUtil.getDateStr(new Date()));
+        //获取返回的主订单id
+        orderDAO.insertOrder(order);
+        System.out.println(order.getId());
+        OrderCoursesBO orderCourses = new OrderCoursesBO();
+        orderCourses.setUserId(Integer.parseInt(userId));
+        orderCourses.setOrderId(order.getId());
+        orderCourses.setCoursesId(course.getId());
+        orderCourses.setCoursesName(course.getCourseName());
+        orderCourses.setCreateTime(new Date());
+        orderCourses.setUpdateTime(new Date());
+        orderCourses.setCourseValidityPeriod(overDate(course.getCourseValidityPeriod()));
+        orderCoursesDAO.insetOrderCourse(orderCourses);
+
+        //扣减咖豆
+        deleteCurrencyCourse(userId,pruchase.getCoursePrice());
+
+        //添加用户消费记录
+        RecordBO record = new RecordBO();
+        record.setUserId(Integer.parseInt(userId));
+        record.setSource("咖豆");
+        record.setStatus("支出");
+        record.setSpecificAmount(-pruchase.getCoursePrice());
+        record.setDescribe("用户购买课程");
+        recordDAO.insertUserAction(record);
+    }
+
+    /**
+     * 下订单（语言）
+     * @param
+     * @return
+     */
+    public void insertOrderlanguage(String languageId,String userId,PruchaseDTO pruchase){
+        //获取购买的语言
+        List<CourseBO> list =  courseDAO.listCousebyLanguage(languageId);
+        System.out.println(list);
+        OrderBO order = new OrderBO();
+        order.setUserId(Integer.parseInt(userId));
+        order.setPrice(pruchase.getCoursePrice());
+        //生成订单号
+        IDBuilder idBuilder  =  new IDBuilder(10,10);
+        order.setOrderNumber(idBuilder.nextId()+"");
+        order.setStatus("成功");
+        order.setOrderType("购买");
+        order.setProductName(pruchase.getTitle());
+        order.setCreateTime(DateUtil.getDateStr(new Date()));
+        order.setUpdateTime(DateUtil.getDateStr(new Date()));
+        //获取返回的主订单id
+        orderDAO.insertOrder(order);
+
+        List<OrderCoursesBO> lists = new ArrayList<OrderCoursesBO>();
+        for (int i = 0; i < list.size(); i++) {
+            CourseBO course  =  list.get(i);
+            OrderCoursesBO orderCourses = new OrderCoursesBO();
+            orderCourses.setCoursesId(course.getId());
+            orderCourses.setCoursesName(course.getCourseName());
+            orderCourses.setOrderId(order.getId());
+            orderCourses.setUserId(Integer.parseInt(userId));
+            orderCourses.setCreateTime(new Date());
+            orderCourses.setUpdateTime(new Date());
+            //有效日期
+            Date date1 =  overDate( course.getCourseValidityPeriod()) ;
+            orderCourses.setCourseValidityPeriod(date1);
+            lists.add(orderCourses);
+        }
+        orderCoursesDAO.insetListOrderCourse(lists);
+
+        //扣减咖豆
+        deleteCurrencyCourse(userId,pruchase.getCoursePrice());
+
+        //添加用户消费记录
+        RecordBO record = new RecordBO();
+        record.setUserId(Integer.parseInt(userId));
+        record.setSource("咖豆");
+        record.setStatus("支出");
+        record.setSpecificAmount(-pruchase.getCoursePrice());
+        record.setDescribe("用户购买语言");
+        recordDAO.insertUserAction(record);
+    }
+
+    //获取到期时间
+    public Date overDate(Integer in){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + in);
+        Date today = calendar.getTime();
+        return today;
+    }
 
 }

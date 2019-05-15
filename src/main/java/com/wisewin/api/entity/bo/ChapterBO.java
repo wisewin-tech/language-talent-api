@@ -20,10 +20,6 @@ public class ChapterBO extends BaseModel {
     private String freeOrNot; //是否免费观看
     private Integer serialNumber; //序号
     private Integer score;//分数
-    private Integer createUserId; //添加人id
-    private Date createTime; //创建时间
-    private Integer updateUserId; //添加人姓名
-    private Date updateTime; //修改时间
     private String languageName;//语言名称
     private String courseName;//课程名称
     private String courseIntro;//课程简介
@@ -182,35 +178,5 @@ public class ChapterBO extends BaseModel {
         this.score = score;
     }
 
-    public Integer getCreateUserId() {
-        return createUserId;
-    }
 
-    public void setCreateUserId(Integer createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(Integer updateUserId) {
-        this.updateUserId = updateUserId;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

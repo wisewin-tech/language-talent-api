@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 /**
  * Created by 王彬 on 2019/5/9.
  */
@@ -31,7 +30,7 @@ public class PurchaseController extends BaseCotroller {
      */
     @RequestMapping("/querypurchase")
     public void purchaseCurriculum(HttpServletRequest request, HttpServletResponse response, String id, String state){
-      /*   UserBO userBO = super.getLoginUser(request);*/
+       UserBO userBO = super.getLoginUser(request);
         if(StringUtils.isEmpty(id)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -43,15 +42,14 @@ public class PurchaseController extends BaseCotroller {
             return;
         }
 
-     /*if(userBO==null){
+       if(userBO==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
        }
-       */
 
        //查询当前用户
-        UserBO user  =  purchaseService.selectUser(1);
+        UserBO user  =  purchaseService.selectUser(userBO.getId());
         if(user == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000016"));
             super.safeJsonPrint(response, json);
@@ -81,13 +79,14 @@ public class PurchaseController extends BaseCotroller {
 
     /**
      * 待完成
-     * @param request
+     * @param request       下订单
      * @param response
      * @param id        语言或课程id
-     * @param state      状态  用来区分语言还是课程
+     * @param state      状态  用来区分语言还是课程  语言language       课程curriculum
      */
     @RequestMapping("/purchaseOder")
     public void purchaseOder(HttpServletRequest request, HttpServletResponse response, String id, String state){
+        UserBO userBO = super.getLoginUser(request);
         if(StringUtils.isEmpty(id)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -99,9 +98,15 @@ public class PurchaseController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+        if(userBO==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+
 
         //查询当前用户
-        UserBO user  =  purchaseService.selectUser(1);
+        UserBO user  =  purchaseService.selectUser(userBO.getId());
         if(user == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000016"));
             super.safeJsonPrint(response, json);
@@ -118,12 +123,23 @@ public class PurchaseController extends BaseCotroller {
              }
              //扣咖豆
             purchaseService.deleteCurrencyCourse(user.getId()+"",pruchase.getCoursePrice());
-             //
-             //
-             //
-             //
-             //
-             //
+             //生成订单
+            purchaseService.insertOrderCouse(id,user.getId()+"",pruchase);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
+            super.safeJsonPrint(response, json);
+        }
+        if(state.equals("language")){
+            PruchaseDTO pruchase  =  purchaseService.isLanguage(id,user);
+            //如果咖豆不足，返回
+            if(!pruchase.getState()){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000018"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            //生成订单
+            purchaseService.insertOrderlanguage(id,user.getId()+"",pruchase);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
+            super.safeJsonPrint(response, json);
         }
     }
 }

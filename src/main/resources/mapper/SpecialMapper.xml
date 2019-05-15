@@ -7,7 +7,10 @@
 
     <!-- 根据状态 分类id 分页查看 的专题 -->
     <select id="selectSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
-        select * from lt_special
+        select
+        id,class_id,title,`describe`,release_date as releaseDateStr,
+        traffic,video_url,like_number,status,sorting,video_cover,video_length
+        from lt_special
         where status='putaway'
         and class_id=#{classId}
         order by sorting desc
@@ -15,7 +18,10 @@
 
     <!-- 某个用户 点击的某个专题 -->
     <select id="selectSpecialBOById" resultType="com.wisewin.api.entity.bo.SpecialBO">
-        select * from lt_special
+        select
+         id,class_id,title,`describe`,release_date as releaseDateStr,
+        traffic,video_url,like_number,status,sorting,video_cover,video_length
+         from lt_special
         where id=#{id} and status='putaway'
     </select>
 
@@ -54,7 +60,10 @@
         2.查询喜欢人数最多的专题 不区分类别
     -->
     <select id="selectOtherSpecialBO" resultType="com.wisewin.api.entity.bo.SpecialBO">
-      select * from lt_special where status='putaway' order by like_number desc limit 5
+      select
+       id,class_id,title,`describe`,release_date as releaseDateStr,
+        traffic,video_url,like_number,status,sorting,video_cover,video_length
+       from lt_special where status='putaway' order by like_number desc limit 5
     </select>
 
 

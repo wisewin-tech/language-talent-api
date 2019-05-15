@@ -5,33 +5,46 @@
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.api.dao.LanguageDAO">
     <!--为你定制-->
-    <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.LanguageBO">
+    <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.EnsignImageResultBO">
         SELECT
 	      ensign_image_url ensignImageUrl,language_name languageName,
-	      `language`.id
+	      `language`.id languageId
         FROM
 	      lt_language `language`
         WHERE
 	      `language`.`status` = 'putaway' AND `language`.hot_or_not = 'yes'
     </select>
     <!--限时特惠-->
-    <select id="getFlashSales" resultType="com.wisewin.api.entity.bo.LanguageBO">
+    <select id="getFlashSales" resultType="com.wisewin.api.entity.bo.FlashSalesResultBO">
        SELECT
 	    `language`.thumbnail_image_url,
 	    `language`.language_name,
 	    `language`.language_intro,
 	    `language`.price languagePrice,
 	    `language`.discount_price languageDiscountPrice,
-	    `language`.discount_end_time discountEndTime,
-	    `course`.id courseId
+	    `language`.discount_end_time discountEndTime
       FROM
 	    lt_language `language`
-	    LEFT JOIN lt_course course ON `language`.id = course.language_id
       WHERE
 	    `language`.`status` = 'putaway'
       AND NOW() BETWEEN `language`.discount_start_time
       AND `language`.discount_end_time
     </select>
+
+	<!--查看全部限时特惠-->
+	<select id="getAllFlashSales" resultType="com.wisewin.api.entity.bo.FlashSalesResultBO">
+		SELECT
+	    `language`.thumbnail_image_url,`language`.language_name,
+	    `language`.language_intro,`language`.price languagePrice,
+	    `language`.discount_price languageDiscountPrice,
+	    `language`.discount_end_time discountEndTime,
+	    `language`.discount_start_time discountStartTime,
+		lc.certificate_or_not
+      FROM lt_language `language` LEFT JOIN lt_course lc ON lc.language_id = `language`.id
+      WHERE `language`.`status` = 'putaway' AND lc.`status`='putaway'
+      AND NOW() BETWEEN `language`.discount_start_time AND `language`.discount_end_time
+      GROUP BY `language`.language_name
+	</select>
     <!--语言详情页-->
     <select id="languageDetails" parameterType="com.wisewin.api.entity.bo.LanguageBO" resultType="com.wisewin.api.entity.bo.LanguageBO">
        SELECT
@@ -45,7 +58,7 @@
     `level`.level_name levelName,`level`.id levelId,
 	course.id courseId,course.certificate_or_not certificateOrNot,
 	course.certificate_title certificateTitle,
-	course.certificate_image_url certificateImageUrl,
+	course.certificate_image_url certificateImage,
 	course.certificate_intro certificateIntro,
 	course.course_name courseName,
 	course.price coursePrice,

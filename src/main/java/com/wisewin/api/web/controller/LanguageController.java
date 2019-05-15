@@ -44,10 +44,6 @@ public class LanguageController extends BaseCotroller{
             return;
         }
         List<LanguageBO> languageBOList = languageService.languageDetails(id);
-        for (LanguageBO languageBO: languageBOList){
-            String image = certificateService.certificateImage(languageBO.getCertificateId());
-            languageBO.setCertificateImage(image);
-        }
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(languageBOList));
         super.safeJsonPrint(response, result);
     }

@@ -37,5 +37,37 @@
 
     </select>
 
-
+    <!--插入订单-->
+    <insert id="insertOrder" parameterType="com.wisewin.api.entity.bo.OrderBO" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO language_talent.lt_order
+        (
+        user_id,
+        price,
+        order_number,
+        order_type,
+        `status`,
+        product_name,
+        creation_date,
+        standby,
+        create_id,
+        update_id,
+        create_time,
+        update_time
+        )
+        VALUES
+        (
+        #{userId},
+        #{price},
+        #{orderNumber},
+        #{orderType},
+        #{status},
+        #{productName},
+        #{creationDate},
+        #{standby},
+        #{createId},
+        #{updateId},
+        #{createTime},
+        #{updateTime}
+        );
+    </insert>
 </mapper>

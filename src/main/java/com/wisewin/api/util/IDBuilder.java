@@ -56,6 +56,7 @@ public class IDBuilder {
 
     /** 上次生成ID的时间截 */
     private long lastTimestamp = -1L;
+    public IDBuilder(){}
 
     //==============================Constructors=====================================
     /**
