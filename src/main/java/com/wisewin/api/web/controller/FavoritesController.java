@@ -2,6 +2,7 @@ package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.DiscoverResultBO;
 import com.wisewin.api.entity.bo.FavoritesResultBO;
+import com.wisewin.api.entity.bo.SpecialResultBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.FavoritesService;
@@ -86,9 +87,39 @@ public class FavoritesController extends BaseCotroller {
         super.safeJsonPrint(response, json);
 
     }
-
     /**
-     * 添加收藏
+     * 查询用户收藏的专题信息
+     * @param pageNo      页数
+     * @param pageSize    每页条数
+     * @param response
+     * @param request
+     */
+    @RequestMapping("selectSubject")
+    public void selectSubject(Integer pageNo, Integer pageSize,HttpServletResponse response, HttpServletRequest request){
+        Integer userId=super.getId(request);
+        if (userId==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        //封装limit条件,pageNo改为页数
+        QueryInfo queryInfo = getQueryInfo(pageNo,pageSize);
+        //创建一个用于封装sql条件的map集合
+        Map<String, Object> condition = new HashMap<String, Object>();
+        if(queryInfo != null){
+            //把pageOffset 页数,pageSize每页的条数放入map集合中
+            condition.put("pageOffset", queryInfo.getPageOffset());
+            condition.put("pageSize", queryInfo.getPageSize());
+        }
+        //把userId 用户id,放入map集合中
+        condition.put("userId",userId);
+        List<SpecialResultBO> list=favoritesService.selectSubject(condition);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
+        super.safeJsonPrint(response, json);
+
+    }
+    /**
+     * 添加收藏/取消收藏
      * @param sourceId 来源id
      * @param sourceId 来源(课时/发现)
      * @param response
@@ -102,23 +133,16 @@ public class FavoritesController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        favoritesService.insertCollect(userId,sourceId,source);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
-        super.safeJsonPrint(response, json);
-    }
 
-    @RequestMapping("delCollect")
-    public void delCollect(Integer sourceId,HttpServletResponse response, HttpServletRequest request){
-        Integer userId=super.getId(request);
-        if (userId==null||sourceId==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+        if (favoritesService.insertCollect(userId,sourceId,source)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("添加收藏成功"));
             super.safeJsonPrint(response, json);
-            return;
+        }else{
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("取消收藏成功"));
+            super.safeJsonPrint(response, json);
         }
 
-        favoritesService.delCollect(userId,sourceId);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
-        super.safeJsonPrint(response, json);
+
     }
 
 }

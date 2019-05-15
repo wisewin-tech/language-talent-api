@@ -20,6 +20,15 @@ public class SpecialBO extends BaseModel {
     private String videoUrl;//专题视频地址
     private String videoLength;//视频时长
     private String videoCover;//视频
+    private String skip;//跳转url
+
+    public String getSkip() {
+        return skip;
+    }
+
+    public void setSkip(String skip) {
+        this.skip = skip;
+    }
 
     public String getVideoLength() {
         return videoLength;

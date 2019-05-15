@@ -5,6 +5,7 @@ import com.wisewin.api.dao.FavoritesDAO;
 import com.wisewin.api.entity.bo.DiscoverResultBO;
 import com.wisewin.api.entity.bo.FavoritesResultBO;
 import com.wisewin.api.entity.bo.MyFavoriteBO;
+import com.wisewin.api.entity.bo.SpecialResultBO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,31 +37,39 @@ public class FavoritesService {
             return favoritesDAO.selectDiscover(map);
 
     }
+    /**
+     * 因结果集不同,无法合并为一个方法
+     * 查询发现收藏,map封装了用户id,页数,每页行数
+     * @param map
+     * @return
+     */
+    public List<SpecialResultBO> selectSubject(Map<String,Object> map){
+        map.put("source",UserConstants.SUBJECT.getValue());
+        return favoritesDAO.selectSubject(map);
+
+    }
 
     /**
      * 添加收藏  Source---收藏来源(这里为课时的收藏)
      * @param userId    用户id
      * @param sourceId  收藏来源id
      */
-    public void insertCollect(Integer userId,Integer sourceId,String source ){
+    public boolean insertCollect(Integer userId,Integer sourceId,String source ){
         //创建 收藏表对象,把用户id和收藏来源id放进去
-        MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,sourceId);
-        //设置收藏来源用户传过来的值(课时/发现)
-        favoriteBO.setSource(source);
-        //添加收藏
-        favoritesDAO.insertCollect(favoriteBO);
+        MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,sourceId,source);
+       Integer i=favoritesDAO.selectAll(favoriteBO);
+       if (i>0){  //如果收藏表已经有这个记录
+           favoritesDAO.delCollect(favoriteBO);
+           return false;
+       }else{
+           favoritesDAO.insertCollect(favoriteBO);
+           return true;
+       }
+
     }
 
 
-    /**
-     * 取消收藏
-     * @param userId
-     */
-    public void delCollect(Integer userId,Integer sourceId){
-        //创建 收藏表对象,把用户id和收藏来源id放进去
-        MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,sourceId);
-        favoritesDAO.delCollect(favoriteBO);
-    }
+
 
 
 }

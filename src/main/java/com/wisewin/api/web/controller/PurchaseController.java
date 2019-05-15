@@ -1,4 +1,6 @@
 package com.wisewin.api.web.controller;
+import com.wisewin.api.entity.bo.CourseBO;
+import com.wisewin.api.entity.bo.LanguageBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.PruchaseDTO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
@@ -57,6 +59,13 @@ public class PurchaseController extends BaseCotroller {
         }
 
         if(state.equals("curriculum")){
+         CourseBO course =  purchaseService.queryCouse(id);
+         //判断有无此课程
+            if(course == null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000019"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
            //判断当前用户是否购买过此课程
           /* boolean bl = purchaseService.purchase(user.getId(),id);
             if(bl){
@@ -64,21 +73,28 @@ public class PurchaseController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }*/
-            PruchaseDTO pruchase = purchaseService.isCourse(id,user);
+            PruchaseDTO pruchase = purchaseService.isCourse(course,user);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(pruchase));
             super.safeJsonPrint(response, json);
             }
 
         if(state.equals("language")){
-            PruchaseDTO pruchase = purchaseService.isLanguage(id,user);
+          LanguageBO language  =  purchaseService.queryLanguare(id);
+            if(language == null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000020"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            PruchaseDTO pruchase = purchaseService.isLanguage(language,user);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(pruchase));
             super.safeJsonPrint(response, json);
            }
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+        super.safeJsonPrint(response, json);
+        return;
         }
-
-
-    /**
-     * 待完成
+    /*
+     *
      * @param request       下订单
      * @param response
      * @param id        语言或课程id
@@ -114,22 +130,33 @@ public class PurchaseController extends BaseCotroller {
         }
 
         if(state.equals("curriculum")){
-             PruchaseDTO pruchase  =  purchaseService.isCourse(id,user);
+            CourseBO course =  purchaseService.queryCouse(id);
+            //判断有无此课程
+            if(course == null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000019"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+             PruchaseDTO pruchase  =  purchaseService.isCourse(course,user);
              //如果咖豆不足，返回
              if(!pruchase.getState()){
                  String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000018"));
                  super.safeJsonPrint(response, json);
                  return;
              }
-             //扣咖豆
-            purchaseService.deleteCurrencyCourse(user.getId()+"",pruchase.getCoursePrice());
              //生成订单
-            purchaseService.insertOrderCouse(id,user.getId()+"",pruchase);
+            purchaseService.insertOrderCouse(course,user.getId()+"",pruchase);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
             super.safeJsonPrint(response, json);
         }
         if(state.equals("language")){
-            PruchaseDTO pruchase  =  purchaseService.isLanguage(id,user);
+            LanguageBO language  =  purchaseService.queryLanguare(id);
+            if(language == null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000020"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            PruchaseDTO pruchase  =  purchaseService.isLanguage(language,user);
             //如果咖豆不足，返回
             if(!pruchase.getState()){
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000018"));
@@ -137,7 +164,7 @@ public class PurchaseController extends BaseCotroller {
                 return;
             }
             //生成订单
-            purchaseService.insertOrderlanguage(id,user.getId()+"",pruchase);
+            purchaseService.insertOrderlanguage(language.getId()+"",user.getId()+"",pruchase);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
             super.safeJsonPrint(response, json);
         }

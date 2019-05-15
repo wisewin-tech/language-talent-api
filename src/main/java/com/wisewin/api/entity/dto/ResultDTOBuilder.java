@@ -21,6 +21,9 @@ public class ResultDTOBuilder {
         }
     }
 
+    public static <T> Result success(String msg) {
+            return   getInstance("0000000",msg,new Object());
+    }
 
     public static Result failure(String errCode) {
         Env env = new Env();

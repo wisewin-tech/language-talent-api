@@ -53,6 +53,30 @@ public class TimeUtil {
         }
         return list;
     }
+    /**
+     *
+     * @param nowDate   要比较的时间
+     * @param startDate   开始时间
+     * @param endDate   结束时间
+     * @return   true在时间段内，false不在时间段内
+     * @throws Exception
+     */
+    public static boolean hourMinuteBetween(Date nowDate, Date startDate, Date endDate)  {
+        if (nowDate==null||startDate==null||endDate==null){
+            return false;
+        }
+        /*
+            compareTo方法
+            如果指定的数与参数相等返回0。
+            如果指定的数小于参数返回 -1。
+            如果指定的数大于参数返回 1。
+         */
+
+        if (nowDate.compareTo(startDate)==1&&nowDate.compareTo(endDate)==-1){
+            return true;
+        }
+        return false;
+    }
 
 
 }

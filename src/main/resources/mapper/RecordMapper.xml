@@ -23,7 +23,7 @@
     <!--查询用户行为记录-->
     <select id="selectUserAction" resultType="com.wisewin.api.entity.bo.RecordBO">
         select
-        `id`,`user_id`,`source`,`status`,`specific_amount`,`describe` ,`effective_date`,
+        `id`,`user_id`,`source`,`status`,`specific_amount`,`describe` ,
         `create_time`
         from
          `lt_record`

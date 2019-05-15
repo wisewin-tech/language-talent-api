@@ -12,6 +12,11 @@ import java.util.List;
 public interface SpecialDAO {
 
     /**
+     * 查看这个专题有多少人喜欢
+     * */
+    Integer selectSpecialBOLike(@Param("specialId") Integer specialId);
+
+    /**
      * 根据状态查询所有状态正常专题
      * */
     List<SpecialBO> selectSpecialBO(@Param("classId") Integer classId);
