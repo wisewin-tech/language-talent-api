@@ -27,6 +27,16 @@ public class RecordBO extends BaseModel{
         this.specificAmount = specificAmount;
     }
 
+
+    public RecordBO(Integer userId, String source, String status, Integer specificAmount, String describe, Integer createId) {
+        this.userId = userId;
+        this.source = source;
+        this.status = status;
+        this.specificAmount = specificAmount;
+        this.describe = describe;
+        this.createId = createId;
+    }
+
     @Override
     public String toString() {
         return "RecordDTO{" +

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -126,7 +128,12 @@ public class UserService {
 
     }
 
-
-
+    //用户充值咖豆
+    public boolean updateUserAugment(Integer id,Integer currency){
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("id",id);
+        map.put("currency",currency);
+        return  userDAO.updateUserAugment(map)>0;
+    }
 
 }

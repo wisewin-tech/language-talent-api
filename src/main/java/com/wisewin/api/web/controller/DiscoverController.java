@@ -114,8 +114,8 @@ public class DiscoverController extends BaseCotroller{
         Integer browse= list.getBrowse()+1;
         boolean updatediscover=discoverService.getupdateDiscover(param.getId(),browse);
         if (updatediscover){
-            String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
-            super.safeJsonPrint(response,json);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
+            super.safeJsonPrint(response, json);
             return;
         }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
