@@ -20,7 +20,12 @@ public class SpecialService {
      * 所有专题的查询
      * */
     public List<SpecialBO> selectSpecialBO(Integer classId){
-        return specialDAO.selectSpecialBO(classId);
+        List<SpecialBO> specialBOList=specialDAO.selectSpecialBO(classId);
+        for (SpecialBO specialBO:specialBOList) {
+            String date=specialBO.getReleaseDateStr();
+            specialBO.setReleaseDateStr(date.substring(0,date.lastIndexOf(".")));
+        }
+        return specialBOList;
     }
 
     /**
@@ -43,22 +48,20 @@ public class SpecialService {
     /**
      * 把这个专题点为喜欢或者取消喜欢 类似于点赞 可以取消点赞
      * */
-    public boolean updSpecialLikeUser(Integer userId,Integer specialId){
-        boolean bool=false;//没修改成功
-
+    public Integer updSpecialLikeUser(Integer userId,Integer specialId){
         //判断用户是否喜欢过
         if(specialDAO.checkUserLikeSpecial(userId,specialId)>0){//false
             //喜欢了的话 取消喜欢
-            bool=specialDAO.delSpecialLikeUser(userId,specialId)>0;
+            specialDAO.delSpecialLikeUser(userId,specialId);
             specialDAO.updSpecialLikeCount(-1,specialId);
+            return 0;
 
         }else{
             //添加喜欢
             specialDAO.updSpecialLikeCount(1,specialId);
-            bool=specialDAO.addSpecialLikeUser(userId,specialId)>0;
+            specialDAO.addSpecialLikeUser(userId,specialId);
+            return 1;
         }
-
-        return bool;
     }
 
 
