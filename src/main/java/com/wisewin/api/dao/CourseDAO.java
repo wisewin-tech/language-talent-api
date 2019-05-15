@@ -1,7 +1,6 @@
 package com.wisewin.api.dao;
 
-import com.wisewin.api.entity.bo.CourseBO;
-import com.wisewin.api.entity.bo.HotCourseResultBO;
+import com.wisewin.api.entity.bo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,10 +14,13 @@ public interface CourseDAO {
     List<CourseBO> getHotCourse(Map<String,Object> map);
 
     /**
-     * 课程详情
+     * 课程详情课程模块
      * @return
      */
-    List<CourseBO> courseDetails(Integer id);
+    CourseDetailsResultBO courseDetailsCourse(Integer id);
+    //课程详情级别模块
+    List<CourseDetailsLevelResultBO> courseDetailsLevel(Integer id);
+
 
     /**
      * 模糊查询课程列表

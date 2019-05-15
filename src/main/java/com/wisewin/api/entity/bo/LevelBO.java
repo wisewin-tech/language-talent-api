@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class LevelBO extends BaseModel {
     private Integer id; //级别表
-    private Integer levelName; //级别名称
+    private String levelName; //级别名称
     private Integer courseId; //课程id
     private String status;//状态
     private String levelIntro; //简介
@@ -26,11 +26,11 @@ public class LevelBO extends BaseModel {
         this.id = id;
     }
 
-    public Integer getLevelName() {
+    public String getLevelName() {
         return levelName;
     }
 
-    public void setLevelName(Integer levelName) {
+    public void setLevelName(String levelName) {
         this.levelName = levelName;
     }
 

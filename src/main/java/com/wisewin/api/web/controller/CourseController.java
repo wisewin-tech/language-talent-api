@@ -1,8 +1,6 @@
 package com.wisewin.api.web.controller;
 
-import com.wisewin.api.entity.bo.CourseBO;
-import com.wisewin.api.entity.bo.HotCourseResultBO;
-import com.wisewin.api.entity.bo.LanguageBO;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.CourseService;
 import com.wisewin.api.util.JsonUtils;
@@ -14,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/course")
@@ -30,8 +30,12 @@ public class CourseController extends BaseCotroller {
             return;
         }
         //查看课程详情
-        List<CourseBO> courseBOList = courseService.courseDetails(id);
-        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(courseBOList));
+        CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
+        List<CourseDetailsLevelResultBO> levelBOS= courseService.courseDetailsLevel(id);
+        Map map = new HashMap();
+        map.put("courseDetailsResultBO",courseDetailsResultBO);
+        map.put("CourseDetailsLevelResultBO",levelBOS);
+        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response, result);
 
     }

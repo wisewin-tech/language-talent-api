@@ -1,9 +1,7 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.dao.CourseDAO;
-import com.wisewin.api.entity.bo.CourseBO;
-import com.wisewin.api.entity.bo.HotCourseResultBO;
-import com.wisewin.api.entity.bo.LanguageBO;
+import com.wisewin.api.entity.bo.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,11 +24,15 @@ public class CourseService {
     }
 
     /**
-     * 课程详情
+     * 课程详情课程模块
      * @return
      */
-    public List<CourseBO> courseDetails(Integer id){
-        return courseDAO.courseDetails(id);
+    public CourseDetailsResultBO courseDetailsCourse(Integer id){
+        return courseDAO.courseDetailsCourse(id);
+    }
+    //课程详情级别模块
+    public List<CourseDetailsLevelResultBO> courseDetailsLevel(Integer id){
+        return courseDAO.courseDetailsLevel(id);
     }
     /**
      * 模糊查询课程列表
