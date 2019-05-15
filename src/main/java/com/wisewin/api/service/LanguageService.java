@@ -3,6 +3,8 @@ package com.wisewin.api.service;
 import com.wisewin.api.dao.LanguageDAO;
 import com.wisewin.api.entity.bo.FlashSalesResultBO;
 import com.wisewin.api.entity.bo.LanguageBO;
+import com.wisewin.api.entity.bo.LanguageDetailsCourseResultBO;
+import com.wisewin.api.entity.bo.LanguageDetailsResultBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,12 +55,19 @@ public class LanguageService {
     }
 
     /**
-     * 语言详情
+     * 语言详情语言模块
      * @return
      */
-    public List<LanguageBO> languageDetails(Integer id){
-        List<LanguageBO> languageBOList = languageDAO.languageDetails(id);
+    public LanguageDetailsResultBO languageDetails(Integer id){
+        LanguageDetailsResultBO languageBOList = languageDAO.languageDetails(id);
         return languageBOList;
+    }
+    /**
+     * 语言详情课程模块
+     * @return
+     */
+    public List<LanguageDetailsCourseResultBO> languageDetailsCourse(Integer id){
+        return languageDAO.languageDetailsCourse(id);
     }
 
     /**

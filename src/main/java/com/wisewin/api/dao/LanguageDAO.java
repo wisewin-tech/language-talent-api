@@ -2,6 +2,8 @@ package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.FlashSalesResultBO;
 import com.wisewin.api.entity.bo.LanguageBO;
+import com.wisewin.api.entity.bo.LanguageDetailsCourseResultBO;
+import com.wisewin.api.entity.bo.LanguageDetailsResultBO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -27,10 +29,12 @@ public interface LanguageDAO {
     LanguageBO selectLanguage(Integer id);
 
     /**
-     * 语言详情页
+     * 语言详情页语言模块
      * @return
      */
-    List<LanguageBO> languageDetails(Integer id);
+    LanguageDetailsResultBO languageDetails(Integer id);
+    //语言详情页课程模块
+    List<LanguageDetailsCourseResultBO> languageDetailsCourse(Integer id);
 
     /**
      * 我学习的语言
