@@ -3,6 +3,7 @@ package com.wisewin.api.dao;
 import com.wisewin.api.entity.bo.DiscoverResultBO;
 import com.wisewin.api.entity.bo.FavoritesResultBO;
 import com.wisewin.api.entity.bo.MyFavoriteBO;
+import com.wisewin.api.entity.bo.SpecialResultBO;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,13 @@ public interface FavoritesDAO {
     List<DiscoverResultBO> selectDiscover(Map<String,Object> map);
 
     /**
+     * 查询我的收藏(专题)
+     * @param map
+     * @return
+     */
+    List<SpecialResultBO> selectSubject(Map<String,Object> map);
+
+    /**
      * 添加收藏
      * @param favoriteBO
      */
@@ -31,6 +39,13 @@ public interface FavoritesDAO {
      * @param favoriteBO
      */
     void delCollect(MyFavoriteBO favoriteBO);
+
+    /**
+     * 查询用户收藏信息
+     * @param favoriteBO
+     * @return
+     */
+    Integer selectAll(MyFavoriteBO favoriteBO);
 
 
 }

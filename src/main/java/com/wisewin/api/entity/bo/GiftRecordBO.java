@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * 礼品记录表
  */
-public class GiftrecordBO extends BaseModel {
+public class GiftRecordBO extends BaseModel {
     private Integer id; //礼品记录id
     private Integer giftid; //礼品卡iD
     private Integer  userid; //用户id

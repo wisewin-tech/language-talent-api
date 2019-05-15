@@ -42,7 +42,22 @@
         ORDER BY mf.create_time DESC
         <include refid="limit" />
     </select>
-
+    <!--查询用户专题收藏记录-->
+    <select id="selectSubject" resultType="com.wisewin.api.entity.bo.SpecialResultBO"
+            parameterType="java.util.Map">
+        SELECT mf.user_id,mf.source,mf.source_id,
+        ls.title,ls.describe,ls.video_cover,
+        FROM `lt_my_favorite` AS mf
+        LEFT JOIN lt_special AS ls
+        ON ls.id=mf.source_id
+        <where>
+            mf.user_id=#{userId}
+            <if test="source!=null and source!='' ">AND mf.source=#{source}</if>
+        </where>
+        ORDER BY mf.create_time DESC
+        <include refid="limit" />
+    </select>
+        <!--添加收藏-->
     <insert id="insertCollect" parameterType="com.wisewin.api.entity.bo.MyFavoriteBO">
       INSERT INTO lt_my_favorite
         <set>
@@ -59,17 +74,26 @@
         WHERE
         user_id=#{userId}
         AND source_id=#{sourceId}
+        AND source=#{source}
     </delete>
-
-    <!--备用-->
-    <!--查询某个课程的收藏状态-->
-    <select id="selectStatus"  resultType="java.lang.String"
-            parameterType="com.wisewin.api.entity.bo.MyFavoriteBO">
-        SELECT status
-        FROM lt_my_favorite
+    <!--查询用户收藏-->
+    <select id="selectAll" parameterType="com.wisewin.api.entity.bo.MyFavoriteBO"
+            resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM lt_my_favorite
         WHERE
-        user_id=#{userId} AND source_id=#{sourceId}
-
+        user_id=#{userId}
+        AND source_id=#{sourceId}
+        AND source=#{source}
     </select>
+    <!--备用-->
+    <!--&lt;!&ndash;查询某个课程的收藏状态&ndash;&gt;-->
+    <!--<select id="selectStatus"  resultType="java.lang.String"-->
+            <!--parameterType="com.wisewin.api.entity.bo.MyFavoriteBO">-->
+        <!--SELECT status-->
+        <!--FROM lt_my_favorite-->
+        <!--WHERE-->
+        <!--user_id=#{userId} AND source_id=#{sourceId}-->
+
+    <!--</select>-->
 
 </mapper>
