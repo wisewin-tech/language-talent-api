@@ -135,4 +135,14 @@
         WHERE
         id = #{id} ;
     </update>
+
+    <!--用户充值咖豆-->
+    <update id="updateUserAugment" parameterType="java.util.Map">
+        UPDATE
+           lt_user
+        SET
+           currency=currency+#{currency}
+        WHERE
+          id=#{id}
+    </update>
 </mapper>

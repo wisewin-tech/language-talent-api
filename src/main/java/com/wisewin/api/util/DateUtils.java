@@ -648,6 +648,9 @@ public class DateUtils {
 	}
 	//格式化日期  2019-5-1
 	public static String  getDateStr(Date date){
+    	if(date==null){
+    		return null;
+		}
 		String dayBefore=new SimpleDateFormat("yyyy-M-d").format(date);
 		return dayBefore;
 	}

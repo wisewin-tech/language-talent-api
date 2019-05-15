@@ -5,6 +5,8 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.param.UserParam;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Map;
+
 public interface UserDAO {
 
 
@@ -71,4 +73,7 @@ public interface UserDAO {
 
     //扣减用户咖豆
     void updateUserCrrency(@Param("id")String id , @Param("price")Integer price);
+
+    //用户充值咖豆
+    Integer updateUserAugment(Map<String,Object> map);
 }
