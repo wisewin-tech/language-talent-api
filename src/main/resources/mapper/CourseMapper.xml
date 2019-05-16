@@ -26,25 +26,31 @@
 		limit #{pageOffset},#{pageSize}
 	</sql>
 
-    <!--课程详情页-->
-    <select id="courseDetails" parameterType="com.wisewin.api.entity.bo.CourseBO" resultType="com.wisewin.api.entity.bo.CourseBO">
+    <!--课程详情页课程模块-->
+    <select id="courseDetailsCourse" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.CourseDetailsResultBO">
         SELECT
 			`language`.language_name languageName,
 			course.thumbnail_image_url courseThumbnail,
 			course.course_name,course.course_intro,
-			course.certificate_or_not,course.certificate_title certificateTitle,
-			course.certificate_image_url certificateImageUrl,
-			course.certificate_intro certificateIntro,
-			`level`.level_name levelName,`level`.id levelId,
 			course.course_lightspot,course.purchase_notes,
-			course.price,course.discount_price,course.id
+			course.price coursePrice,course.discount_price courseDiscountPrice,
+			course.id courseId
 		FROM
 			lt_course `course`
 		LEFT JOIN lt_language `language` ON course.language_id = `language`.id
-		LEFT JOIN lt_level `level` ON course.id = `level`.course_id
 		WHERE
 			course.`status` = 'putaway' AND course.id = #{id}
     </select>
+	<!--课程详情页级别模块-->
+	<select id="courseDetailsLevel" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.CourseDetailsLevelResultBO">
+		SELECT
+		`level`.level_name levelName,`level`.id levelId
+		FROM
+			lt_course `course`
+		LEFT JOIN lt_level `level` ON course.id = `level`.course_id
+		WHERE
+			course.`status` = 'putaway' AND course.id = #{id}
+	</select>
 	<!--搜索课程-->
 	<select id="courseSearch" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.CourseBO">
 		SELECT

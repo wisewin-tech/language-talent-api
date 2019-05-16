@@ -146,4 +146,13 @@ public class RecordService {
         map.put("exchangeRatio",val);
         return map;
     }
+
+    /**
+     * 用户充值咖豆，添加充值信息
+     */
+    public  void getinsertUserAction(Integer userId,String source,String status,Integer specificAmount,String describe,Integer createId){
+    RecordBO  recordBO=new RecordBO(userId,source,status,specificAmount,describe,createId);
+      recordDAO.insertUserAction(recordBO);
+    }
+
 }

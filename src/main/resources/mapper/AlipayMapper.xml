@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 支付宝 -->
+<mapper namespace="com.wisewin.api.dao.AlipayDAO" >
+
+   <insert id="addAlipay" parameterType="java.util.Map">
+       INSERT INTO
+          lt_alipay(
+          out_trade_no,trade_status,
+          `timestamp`
+       )VALUES(
+          #{out_trade_no},#{trade_status},
+          now()
+          )
+   </insert>
+
+
+</mapper>

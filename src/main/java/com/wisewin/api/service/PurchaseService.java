@@ -3,13 +3,15 @@ package com.wisewin.api.service;
 import com.wisewin.api.dao.*;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.PruchaseDTO;
-import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.IDBuilder;
+
 import com.wisewin.api.util.date.DateUtil;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,21 +74,37 @@ public class PurchaseService {
    }*/
 
     /**
+     * 查询课程
+     */
+    public CourseBO queryCouse(String id){
+      return   courseDAO.selectCourse(id);
+    }
+
+    /**
+     * 查询语言
+     */
+    public LanguageBO queryLanguare(String id){
+      return   languageDAO.selectLanguageG(id);
+    }
+
+
+    /**
      *  课程购买
-     * @param id  课程id
+     * @param course  课程
      * @param user 当前用户
      * @return
      */
-    public PruchaseDTO isCourse(String id,UserBO user){
+    public PruchaseDTO isCourse( CourseBO course , UserBO user){
+        PruchaseDTO pruchase = new PruchaseDTO();
         //获取要购买的课程
-        CourseBO course  = courseDAO.selectCourse(id);
+
         //获取特惠开始时间
         Date dateStart  = DateUtil.getDate(course.getDiscountStartTime());
         //获取特惠结束时间
         Date dateEnd   = DateUtil.getDate(course.getDiscountEndTime());
         //判断是否在特惠时间内
         boolean falg = belongCalendar(new Date(),dateStart,dateEnd);
-        PruchaseDTO pruchase = new PruchaseDTO();
+
         StringBuffer  sbf = new StringBuffer();
         sbf.append(course.getForeignName());
         sbf.append(" | ");
@@ -129,13 +147,12 @@ public class PurchaseService {
 
     /**
      *
-     * @param id    语言id
+     * @param language    语言
      * @param user  当前用户
      * @return
      */
-    public PruchaseDTO isLanguage(String id,UserBO user){
-        //获取购买的语言语言
-        LanguageBO language  =  languageDAO.selectLanguageG(id);
+    public PruchaseDTO isLanguage(LanguageBO language,UserBO user){
+
         //获取特惠开始时间
         Date dateStart  = language.getDiscountStartTime();
         //获取特惠结束时间
@@ -210,9 +227,8 @@ public class PurchaseService {
     /**
      * 插入订单(课程)
      */
-    public void insertOrderCouse(String Courseid,String userId,PruchaseDTO pruchase){
-        //获取购买课程
-        CourseBO course  =  courseDAO.selectCourse(Courseid);
+    public void insertOrderCouse(CourseBO course ,String userId,PruchaseDTO pruchase){
+
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
         order.setPrice(pruchase.getCoursePrice());
@@ -274,22 +290,24 @@ public class PurchaseService {
         //获取返回的主订单id
         orderDAO.insertOrder(order);
 
-        List<OrderCoursesBO> lists = new ArrayList<OrderCoursesBO>();
-        for (int i = 0; i < list.size(); i++) {
-            CourseBO course  =  list.get(i);
-            OrderCoursesBO orderCourses = new OrderCoursesBO();
-            orderCourses.setCoursesId(course.getId());
-            orderCourses.setCoursesName(course.getCourseName());
-            orderCourses.setOrderId(order.getId());
-            orderCourses.setUserId(Integer.parseInt(userId));
-            orderCourses.setCreateTime(new Date());
-            orderCourses.setUpdateTime(new Date());
-            //有效日期
-            Date date1 =  overDate( course.getCourseValidityPeriod()) ;
-            orderCourses.setCourseValidityPeriod(date1);
-            lists.add(orderCourses);
+        if(list!=null){
+            List<OrderCoursesBO> lists = new ArrayList<OrderCoursesBO>();
+            for (int i = 0; i < list.size(); i++) {
+                CourseBO course  =  list.get(i);
+                OrderCoursesBO orderCourses = new OrderCoursesBO();
+                orderCourses.setCoursesId(course.getId());
+                orderCourses.setCoursesName(course.getCourseName());
+                orderCourses.setOrderId(order.getId());
+                orderCourses.setUserId(Integer.parseInt(userId));
+                orderCourses.setCreateTime(new Date());
+                orderCourses.setUpdateTime(new Date());
+                //有效日期
+                Date date1 =  overDate( course.getCourseValidityPeriod()) ;
+                orderCourses.setCourseValidityPeriod(date1);
+                lists.add(orderCourses);
+            }
+            orderCoursesDAO.insetListOrderCourse(lists);
         }
-        orderCoursesDAO.insetListOrderCourse(lists);
 
         //扣减咖豆
         deleteCurrencyCourse(userId,pruchase.getCoursePrice());

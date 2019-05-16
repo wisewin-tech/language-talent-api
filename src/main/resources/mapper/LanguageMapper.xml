@@ -45,35 +45,38 @@
       AND NOW() BETWEEN `language`.discount_start_time AND `language`.discount_end_time
       GROUP BY `language`.language_name
 	</select>
-    <!--语言详情页-->
-    <select id="languageDetails" parameterType="com.wisewin.api.entity.bo.LanguageBO" resultType="com.wisewin.api.entity.bo.LanguageBO">
+    <!--语言详情页语言模块-->
+    <select id="languageDetails" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.LanguageDetailsResultBO">
        SELECT
 	`language`.video_path,`language`.id,
 	`language`.language_name,
 	`language`.language_intro,
 	`language`.language_lightspot,
 	`language`.purchase_notes,
-	`language`.price languserPrice,
-	`language`.discount_price languageDiscountPrice,
-    `level`.level_name levelName,`level`.id levelId,
-	course.id courseId,course.certificate_or_not certificateOrNot,
-	course.certificate_title certificateTitle,
-	course.certificate_image_url certificateImage,
-	course.certificate_intro certificateIntro,
-	course.course_name courseName,
-	course.price coursePrice,
-	course.discount_price courseDiscountPrice
+	`language`.price languagePrice,
+	`language`.discount_price languageDiscountPrice
 FROM
 	lt_language `language`
-LEFT JOIN lt_course `course` ON `language`.id = course.language_id
-LEFT JOIN lt_level `level` ON course.id = `level`.course_id
-LEFT JOIN lt_chapter `chapter` ON `level`.id = chapter.level_id
 WHERE
 	`language`.`status` = 'putaway'
-AND course.`status` = 'putaway'
 	AND `language`.id = #{id}
 
     </select>
+	<select id="languageDetailsCourse" parameterType="java.lang.Integer"
+			resultType="com.wisewin.api.entity.bo.LanguageDetailsCourseResultBO">
+		SELECT
+			course.id courseId,course.certificate_or_not certificateOrNot,
+			course.course_name courseName,
+			course.price coursePrice,
+			course.discount_price courseDiscountPrice
+		FROM
+	lt_language `language`
+LEFT JOIN lt_course `course` ON `language`.id = course.language_id
+WHERE
+	`language`.`status` = 'putaway'
+	AND course.`status` = 'putaway'
+	AND `language`.id = #{id}
+	</select>
 
 	<!--我学习的语言-->
 	<select id="myStudyLanguage" resultType="com.wisewin.api.entity.bo.MyStudyLanguageBO"
