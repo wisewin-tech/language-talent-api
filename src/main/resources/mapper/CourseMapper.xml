@@ -33,6 +33,8 @@
 			course.thumbnail_image_url courseThumbnail,
 			course.course_name,course.course_intro,
 			course.course_lightspot,course.purchase_notes,
+			course.certificate_or_not certificateOrNot,course.certificate_title certificateTitle,
+			course.certificate_image_url certificateImageUrl,
 			course.price coursePrice,course.discount_price courseDiscountPrice,
 			course.id courseId
 		FROM

@@ -13,6 +13,24 @@ public class CourseDetailsResultBO extends BaseModel {
     private Integer courseDiscountPrice; //特惠价
     private Integer courseId; //课程id
     private String certificateOrNot;//是否可以考证
+    private String certificateTitle;//证书标题
+    private String certificateImageUrl;//证书图片
+
+    public String getCertificateTitle() {
+        return certificateTitle;
+    }
+
+    public void setCertificateTitle(String certificateTitle) {
+        this.certificateTitle = certificateTitle;
+    }
+
+    public String getCertificateImageUrl() {
+        return certificateImageUrl;
+    }
+
+    public void setCertificateImageUrl(String certificateImageUrl) {
+        this.certificateImageUrl = certificateImageUrl;
+    }
 
     public String getCertificateOrNot() {
         return certificateOrNot;
