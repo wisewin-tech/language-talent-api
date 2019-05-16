@@ -42,6 +42,9 @@ public class SpecialService {
         //查看这个用户是否喜欢过这个专题
         specialBO.setLike(specialDAO.checkUserLikeSpecial(userId,id)>0?"yes":"no");
 
+        String date=specialBO.getReleaseDateStr();
+        specialBO.setReleaseDateStr(date.substring(0,date.lastIndexOf(".")));
+
         return specialBO;
     }
 
@@ -74,12 +77,21 @@ public class SpecialService {
             for (SpecialBO special:SpecialBOList) {//删除当前点开的专题
                 if(special.getId()==id){
                     SpecialBOList.remove(special);
-                    return SpecialBOList;
+                    break;
                 }
+            }
+            for (SpecialBO special:SpecialBOList) {//删除当前点开的专题
+                String date=special.getReleaseDateStr();
+                special.setReleaseDateStr(date.substring(0,date.lastIndexOf(".")));
             }
             return SpecialBOList;
         }else{//小于两条 专题喜欢人数最多的专题
-            return specialDAO.selectOtherSpecialBO();
+            List<SpecialBO> otherSpecialBOList=specialDAO.selectOtherSpecialBO();
+            for (SpecialBO special:otherSpecialBOList) {
+                String date=special.getReleaseDateStr();
+                special.setReleaseDateStr(date.substring(0,date.lastIndexOf(".")));
+            }
+            return otherSpecialBOList;
         }
 
     }

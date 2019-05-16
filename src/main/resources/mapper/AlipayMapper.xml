@@ -5,16 +5,19 @@
 <!-- 支付宝 -->
 <mapper namespace="com.wisewin.api.dao.AlipayDAO" >
 
-   <insert id="addAlipay" parameterType="java.util.Map">
-       INSERT INTO
-          lt_alipay(
-          out_trade_no,trade_status,
-          `timestamp`
-       )VALUES(
-          #{out_trade_no},#{trade_status},
-          now()
-          )
-   </insert>
+    <insert id="addAlipay" parameterType="com.wisewin.api.entity.bo.OrderBO">
+        INSERT INTO
+            lt_order(
+            user_id,order_number,
+            order_type,
+            creation_date
+        )VALUES(
+            #{userId},#{orderNumber},
+          #{orderType},now()
+        )
+    </insert>
+
+
 
 
 </mapper>
