@@ -52,16 +52,22 @@
 			course.`status` = 'putaway' AND course.id = #{id}
 	</select>
 	<!--搜索课程-->
-	<select id="courseSearch" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.CourseBO">
+	<select id="courseSearch" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.CourseDetailsResultBO">
 		SELECT
-			`language`.language_name,course.course_name,
-			course.course_intro,course.thumbnail_image_url,
-			course.certificate_or_not,course.id courseId
+			`language`.language_name languageName,course.course_name courseName,
+			course.course_intro courseIntro,course.thumbnail_image_url courseThumbnail,
+			course.certificate_or_not certificateOrNot,course.id courseId
 		FROM lt_course `course`
 		LEFT JOIN lt_language `language` ON course.language_id = `language`.id
 		<where>
-			`language`.language_name LIKE concat('%',#{languageName},'%')
-			AND course.`status`='putaway'
+			course.`status`='putaway' AND `language`.`status`='putaway'
+			<if test="languageName!=null || languageName!=''">
+				AND `language`.language_name LIKE '%${languageName}%'
+			</if>
+			<if test="courseName!=null || courseName!=''">
+				AND course.course_name LIKE '%${courseName}%'
+			</if>
+
 		</where>
 	</select>
 

@@ -12,7 +12,15 @@ public class CourseDetailsResultBO extends BaseModel {
     private Integer coursePrice; //价格
     private Integer courseDiscountPrice; //特惠价
     private Integer courseId; //课程id
+    private String certificateOrNot;//是否可以考证
 
+    public String getCertificateOrNot() {
+        return certificateOrNot;
+    }
+
+    public void setCertificateOrNot(String certificateOrNot) {
+        this.certificateOrNot = certificateOrNot;
+    }
 
     public String getLanguageName() {
         return languageName;

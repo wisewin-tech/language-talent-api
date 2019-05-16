@@ -39,8 +39,8 @@ public class CourseService {
      * @param languageName
      * @return
      */
-    public List<CourseBO> courseSearch(String languageName){
-        return courseDAO.courseSearch(languageName);
+    public List<CourseDetailsResultBO> courseSearch(String languageName,String courseName){
+        return courseDAO.courseSearch(languageName,courseName);
     }
 
     /**
