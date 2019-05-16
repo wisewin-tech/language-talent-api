@@ -102,9 +102,7 @@ public class DiscoverController extends BaseCotroller{
             return;
         }
 
-        DiscoverBO list=discoverService.getqueryDiscoveractivity(param.getId(),param.getTitle(),param.getBrowse(),DateUtil.getDate(param.getCreateTime()),
-                param.getThumbnail(),param.getVideo(),param.getContent(),param.getType(),param.getLikenum(),param.getParticipation(),DateUtil.getDate(param.getActivitytime()),
-                        param.getActivitysite(),param.getPhone(),param.getTicket(),param.getSkip(),param.getVideoImg());
+        DiscoverBO list=discoverService.getqueryDiscoveractivity(param.getId());
 
         if (list==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));

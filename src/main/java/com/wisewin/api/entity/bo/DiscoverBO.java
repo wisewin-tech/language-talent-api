@@ -34,6 +34,9 @@ public class DiscoverBO extends BaseModel {
     private String way; //展示方式
     private String videoImg;//存放视频封面url
 
+    public DiscoverBO(Integer id) {
+        this.id = id;
+    }
 
     public DiscoverBO(Integer id, String title, Integer browse, Date createTime, String video, String content, Integer likenum) {
         this.id = id;

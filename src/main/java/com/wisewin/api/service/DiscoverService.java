@@ -86,10 +86,8 @@ public class DiscoverService {
      * double ticket; //在线购票
      * String skip; //跳转url[线下活动]
      */
-    public DiscoverBO getqueryDiscoveractivity(Integer id,String title,Integer browse,Date createTime,String thumbnail,String video,String content,
-                                                     String type,Integer likenum,Integer participation,Date activitytime,String activitysite,
-                                                     String phone,double ticket,String skip,String videoImg){
-        DiscoverBO discoverBO=new DiscoverBO(id,title,browse,createTime,thumbnail,video,content,type,likenum,participation,activitytime,activitysite,phone,ticket,skip,videoImg);
+    public DiscoverBO getqueryDiscoveractivity(Integer id){
+        DiscoverBO discoverBO=new DiscoverBO(id);
         return  discoverDao.queryDiscoveractivity(discoverBO);
     }
 

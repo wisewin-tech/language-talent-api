@@ -10,14 +10,84 @@
             lt_order(
             user_id,order_number,
             order_type,
-            creation_date
+            creation_date,status
         )VALUES(
             #{userId},#{orderNumber},
-          #{orderType},now()
+            #{orderType},now(),
+            #{status}
         )
     </insert>
 
+    <insert id="addAlipayPayment"  parameterType="java.util.Map">
+      INSERT  INTO
+          lt_alipay(
+            out_trade_no,trade_no,
+            trade_status,out_request_no,
+            refund_amount,refund_fee,
+            bill_type,bill_date,
+            bill_download_url,app_id,
+            method,charset,
+            sign_type,sign,
+            `timestamp`,version,
+            biz_content,code,
+            msg,total_amount,
+            receipt_amount
+       )VALUES (
+            #{out_trade_no},#{trade_no},
+            #{trade_status},#{out_request_no},
+            #{refund_amount},#{refund_fee},
+            #{bill_type},#{bill_date},
+            #{bill_download_url},#{app_id},
+            #{method},#{charset},
+            #{sign_type},#{sign},
+            #{timestamp},#{version},
+            #{biz_content},#{code},
+            #{msg},#{total_amount},
+            #{receipt_amount}
+          )
 
+    </insert>
+
+    <!--修改订单状态-->
+    <update id="updateOrder" parameterType="java.util.Map">
+        UPDATE
+          lt_order
+        SET
+          status=#{status}
+        WHERE
+          order_number=#{order_number}
+
+    </update>
+
+    <!--修改用户咖豆-->
+    <update id="updateUserCoffee" parameterType="java.util.Map">
+        UPDATE
+          lt_user
+        SET
+          currency=#{currency}
+        WHERE
+          id=#{id}
+    </update>
+
+    <!--查询当前用户的咖豆-->
+    <select id="queryUserCoffee" resultType="com.wisewin.api.entity.bo.UserBO">
+        SELECT
+          currency
+        FROM
+          lt_user
+        WHERE
+        id=#{id}
+    </select>
+
+    <!--订单号查找出用户id-->
+    <select id="queryOrderIndent" resultType="com.wisewin.api.entity.bo.OrderBO">
+        SELECT
+          user_id,status
+        FROM
+          lt_order
+        WHERE
+          order_number=#{order_number}
+    </select>
 
 
 </mapper>

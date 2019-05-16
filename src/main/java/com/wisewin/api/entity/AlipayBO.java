@@ -30,8 +30,8 @@ public class AlipayBO extends BaseModel {
     private String  bizContent;//请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递，具体参照各产品快速接入文档
     private String code;//网关返回码,详见文档  40004
     private String msg;//网关返回码描述,详见文档  Business Failed
-    private String total_amount;//本次交易支付的订单金额，单位为人民币（元）
-    private String receiptAmount;//商家在交易中实际收到的款项，单位为元
+    private Double total_amount;//本次交易支付的订单金额，单位为人民币（元）
+    private Double receiptAmount;//商家在交易中实际收到的款项，单位为元
 
 
     public  AlipayBO(){}
@@ -202,19 +202,19 @@ public class AlipayBO extends BaseModel {
         this.msg = msg;
     }
 
-    public String getTotal_amount() {
+    public Double getTotal_amount() {
         return total_amount;
     }
 
-    public void setTotal_amount(String total_amount) {
+    public void setTotal_amount(Double total_amount) {
         this.total_amount = total_amount;
     }
 
-    public String getReceiptAmount() {
+    public Double getReceiptAmount() {
         return receiptAmount;
     }
 
-    public void setReceiptAmount(String receiptAmount) {
+    public void setReceiptAmount(Double receiptAmount) {
         this.receiptAmount = receiptAmount;
     }
 }
