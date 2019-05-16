@@ -30,7 +30,7 @@ public class CourseController extends BaseCotroller {
             return;
         }
         //查看课程详情
-        CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
+        List<CourseDetailsResultBO> courseDetailsResultBO = courseService.courseDetailsCourse(id);
         List<CourseDetailsLevelResultBO> levelBOS= courseService.courseDetailsLevel(id);
         Map map = new HashMap();
         map.put("courseDetailsResultBO",courseDetailsResultBO);

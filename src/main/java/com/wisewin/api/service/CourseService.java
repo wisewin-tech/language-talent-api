@@ -27,7 +27,7 @@ public class CourseService {
      * 课程详情课程模块
      * @return
      */
-    public CourseDetailsResultBO courseDetailsCourse(Integer id){
+    public List<CourseDetailsResultBO> courseDetailsCourse(Integer id){
         return courseDAO.courseDetailsCourse(id);
     }
     //课程详情级别模块
