@@ -51,7 +51,7 @@
         SELECT
         id,title,likenum,
         participation,phone,
-        ticket,skip AS  url,
+        ticket,skip,
         browse,create_time,
         thumbnail,content,video,
         activitytime,activitysite,
@@ -74,7 +74,7 @@
         id,title,
         browse,create_time,
         thumbnail,
-        video,
+        video,stick,
         content,
         `type`,likenum,
         activitysite,activitytime,
