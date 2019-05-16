@@ -11,10 +11,19 @@ public class FavoritesResultBO {
     private String  levelName;     //级别名称
     private String  chapterName;   //课时名称
     private String  thumbnailUrl;   //缩略图
+    private String  chapterIntro;   //课时简介
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
     private String createTime; //创建时间
     private String updateTime; //修改时间
+
+    public String getChapterIntro() {
+        return chapterIntro;
+    }
+
+    public void setChapterIntro(String chapterIntro) {
+        this.chapterIntro = chapterIntro;
+    }
 
     @Override
     public String toString() {

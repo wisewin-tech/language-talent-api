@@ -10,10 +10,73 @@ public class DiscoverResultBO {
     private String  sourceId;    //收藏来源id'
     private String  title;        //发现标题
     private String  thumbnail;    //缩略图url
+    private String  video;       //视频url
+    private String  content;    //内容(新闻发现描述)
+    private String  type;       //类型(新闻journalism 视频curriculum 线下活动activity)
+    private String  activitytime;    //活动时间
+    private String  ticket;       //在线购票价格double(20,0)
+    private String  skip;       //跳转url
+    private String  videoImg;   //存放视频封面url
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
     private String createTime; //创建时间
     private String updateTime; //修改时间
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getActivitytime() {
+        return activitytime;
+    }
+
+    public void setActivitytime(String activitytime) {
+        this.activitytime = activitytime;
+    }
+
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+
+    public String getSkip() {
+        return skip;
+    }
+
+    public void setSkip(String skip) {
+        this.skip = skip;
+    }
+
+    public String getVideoImg() {
+        return videoImg;
+    }
+
+    public void setVideoImg(String videoImg) {
+        this.videoImg = videoImg;
+    }
 
     public Integer getUserId() {
         return userId;

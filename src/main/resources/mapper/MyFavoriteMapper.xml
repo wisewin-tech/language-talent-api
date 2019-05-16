@@ -9,7 +9,7 @@
             parameterType="java.util.Map">
      SELECT
 	  lmf.user_id,lmf.source_id,ll.language_name,lc.course_name,lv.level_name,
-        lch.chapter_name,lch.thumbnail_url
+        lch.chapter_name,lch.thumbnail_url,lch.chapter_intro
     FROM
       lt_my_favorite AS lmf
     left JOIN `lt_chapter`  AS lch ON lmf.source_id=lch.id
@@ -31,7 +31,8 @@
     <!--查询用户发现收藏记录-->
     <select id="selectDiscover" resultType="com.wisewin.api.entity.bo.DiscoverResultBO"
             parameterType="java.util.Map">
-        SELECT mf.user_id,mf.source,mf.source_id,dis.title,dis.thumbnail
+        SELECT mf.user_id,mf.source,mf.source_id,dis.title,dis.thumbnail,
+        dis.video,dis.content,dis.`type`,dis.activitytime,dis.ticket,dis.skip,dis.videoImg
         FROM `lt_my_favorite` AS mf
         LEFT JOIN lt_discover AS dis
         ON dis.id=mf.source_id
@@ -45,8 +46,8 @@
     <!--查询用户专题收藏记录-->
     <select id="selectSubject" resultType="com.wisewin.api.entity.bo.SpecialResultBO"
             parameterType="java.util.Map">
-        SELECT mf.user_id,mf.source,mf.source_id,
-        ls.title,ls.describe,ls.video_cover,
+        SELECT mf.user_id,mf.source_id,mf.source,
+        ls.title,ls.describe,ls.video_cover
         FROM `lt_my_favorite` AS mf
         LEFT JOIN lt_special AS ls
         ON ls.id=mf.source_id
