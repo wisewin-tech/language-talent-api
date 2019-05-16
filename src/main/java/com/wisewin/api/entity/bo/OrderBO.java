@@ -18,6 +18,17 @@ public class OrderBO extends BaseModel {
     private String createTime; //创建时间
     private String updateTime; //修改时间
 
+
+
+    public  OrderBO(){}
+
+    public OrderBO(Integer userId, String orderNumber, String status) {
+        this.userId = userId;
+        this.orderNumber = orderNumber;
+        this.status = status;
+
+    }
+
     public Integer getId() {
         return id;
     }

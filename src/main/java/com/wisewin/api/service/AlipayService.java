@@ -2,6 +2,8 @@ package com.wisewin.api.service;
 
 
 import com.wisewin.api.dao.AlipayDAO;
+import com.wisewin.api.entity.AlipayBO;
+import com.wisewin.api.entity.bo.OrderBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,18 +22,18 @@ public class AlipayService {
 
     /**
      * 添加订单号
-     * out_trade_no    支付时传入的商户订单号
-     * trade_status	 交易当前状态
-     * timestamp    发送请求的时间
+     * private Integer userId; //用户id
+     * private String orderNumber; //订单号
+     * private String orderType; //订单类型(购买/充值
+     *  private String creationDate; //购买日期
      * String out_trade_no, String trade_status, Date timestamp
      * @return
      */
-    public boolean getaddAlipay(String out_trade_no, String trade_status){
-        Map<String,Object> map=new HashMap<String, Object>();
-        map.put("out_trade_no",out_trade_no);
-        map.put("trade_status",trade_status);
 
+    public boolean getaddAlipay(Integer userid,String orderNumber,String orderType){
 
-        return  alipayDAO.addAlipay(map);
+        return alipayDAO.addAlipay(userid,orderNumber,orderType)>0;
     }
+
+
 }
