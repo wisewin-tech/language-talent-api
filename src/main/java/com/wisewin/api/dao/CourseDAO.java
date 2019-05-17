@@ -17,7 +17,7 @@ public interface CourseDAO {
      * 课程详情课程模块
      * @return
      */
-    List<CourseDetailsResultBO> courseDetailsCourse(Integer id);
+    CourseDetailsResultBO courseDetailsCourse(Integer id);
     //课程详情级别模块
     List<CourseDetailsLevelResultBO> courseDetailsLevel(Integer id);
 

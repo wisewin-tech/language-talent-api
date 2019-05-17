@@ -48,8 +48,8 @@
 		SELECT
 		`level`.level_name levelName,`level`.id levelId
 		FROM
-			lt_course `course`
-		LEFT JOIN lt_level `level` ON course.id = `level`.course_id
+			lt_level `level`
+		LEFT JOIN lt_course `course` ON course.id = `level`.course_id
 		WHERE
 			course.`status` = 'putaway' AND course.id = #{id}
 	</select>
