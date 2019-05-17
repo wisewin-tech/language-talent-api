@@ -35,9 +35,20 @@ public class UserService {
         //发送验证码
         SendMessageUtil.sendSignInCodeMessage(phone, number);
         // 保存验证码信息到Redis
-        RedissonHandler.getInstance().set(phone + UserConstants.VERIFY.getValue(), number, 180L);
+        RedissonHandler.getInstance().set(phone + UserConstants.VERIFY.getValue(), number, 300L);
         //缓存验证码失效标识
         RedissonHandler.getInstance().set(phone + UserConstants.VERIFY_LOSE.getValue(), number, 60L);
+        //次数
+        String count = RedissonHandler.getInstance().get(phone + UserConstants.DEGREE.getValue());
+        if(count!=null){
+            //累加
+            Integer coun=Integer.parseInt(count);
+            coun=coun+1;
+            RedissonHandler.getInstance().set(phone + UserConstants.DEGREE.getValue(), coun.toString(), 86400L);
+        }else{
+            //添加
+            RedissonHandler.getInstance().set(phone + UserConstants.DEGREE.getValue(), "1", 86400L);
+        }
 
         //获取缓存中验证码
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
