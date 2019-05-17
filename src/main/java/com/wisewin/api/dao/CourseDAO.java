@@ -27,7 +27,7 @@ public interface CourseDAO {
      * @param languageName
      * @return
      */
-    List<CourseDetailsResultBO> courseSearch(@Param("languageName") String languageName,@Param("courseName") String courseName);
+    List<CourseDetailsResultBO> courseSearch(@Param("languageName") String languageName);
 
     /**
      * 单查询课程

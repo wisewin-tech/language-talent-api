@@ -41,13 +41,13 @@ public class CourseController extends BaseCotroller {
     }
 
     @RequestMapping("/courseSearch")
-    public void courseSearch(String languageName,String courseName, HttpServletRequest request, HttpServletResponse response){
+    public void courseSearch(String languageName, HttpServletRequest request, HttpServletResponse response){
         //验证参数
-        if (StringUtils.isEmpty(languageName)&&StringUtils.isEmpty(courseName)){
+        if (StringUtils.isEmpty(languageName)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
-        List<CourseDetailsResultBO> courseBOList = courseService.courseSearch(languageName,courseName);
+        List<CourseDetailsResultBO> courseBOList = courseService.courseSearch(languageName);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(courseBOList));
         super.safeJsonPrint(response, json);
     }

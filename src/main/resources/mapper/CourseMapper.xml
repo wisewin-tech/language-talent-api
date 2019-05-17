@@ -54,7 +54,8 @@
 			course.`status` = 'putaway' AND course.id = #{id}
 	</select>
 	<!--搜索课程-->
-	<select id="courseSearch" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.CourseDetailsResultBO">
+	<select id="courseSearch" parameterType="com.wisewin.api.entity.bo.CourseDetailsResultBO"
+			resultType="com.wisewin.api.entity.bo.CourseDetailsResultBO">
 		SELECT
 			`language`.language_name languageName,course.course_name courseName,
 			course.course_intro courseIntro,course.thumbnail_image_url courseThumbnail,
@@ -65,10 +66,9 @@
 			course.`status`='putaway' AND `language`.`status`='putaway'
 			<if test="languageName!=null || languageName!=''">
 				AND `language`.language_name LIKE '%${languageName}%'
+				OR course.course_name LIKE '%${languageName}%'
 			</if>
-			<if test="courseName!=null || courseName!=''">
-				AND course.course_name LIKE '%${courseName}%'
-			</if>
+
 
 		</where>
 	</select>
