@@ -10,6 +10,7 @@ import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,7 +101,7 @@ public class PurchaseController extends BaseCotroller {
      * @param id        语言或课程id
      * @param state      状态  用来区分语言还是课程  语言language       课程curriculum
      */
-    @RequestMapping("/purchaseOder")
+    @RequestMapping( "/purchaseOder")
     public void purchaseOder(HttpServletRequest request, HttpServletResponse response, String id, String state){
         UserBO userBO = super.getLoginUser(request);
         if(StringUtils.isEmpty(id)){

@@ -5,23 +5,23 @@
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.api.dao.QuestionDAO">
     <select id="queryQuestionList" resultType="com.wisewin.api.entity.bo.QuestionBO" parameterType="java.util.Map">
-        SELECT 	id,
+           SELECT
             topic,
             `option`,
             answer,
             score,
+            relevance_id as relevanceId,
             question_type as questionType,
-            test_type as testType,
-            chapter_type as chapterType
+            test_type as testType
             FROM
             language_talent.lt_question
 
-         <where>
-              <if test="relevanceId !=null and relevanceId != ''">
+        <where>
+                <if test="relevanceId !=null and relevanceId != ''">
                   relevance_id = #{relevanceId}
-              </if>
-                <if test="warmUp != null and warmUp != ''">
-                  and   chapter_type = #{chapterType}
+                </if>
+                <if test="questionType != null and questionType != ''">
+                  and  question_type = #{questionType}
                 </if>
                 <if test="testType != null and testType != ''">
                   and  test_type = #{testType}

@@ -5,7 +5,6 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.QuestionService;
 import com.wisewin.api.util.JsonUtils;
-import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,32 +38,32 @@ public class QuestionController extends BaseCotroller{
      *  testType        语言能力测试（languageTest）课程考证题（courseCertificate）课时测试题（chapterTest）
      */
     @RequestMapping(value = "/listQuestion")
-    public void queryWarmUp(HttpServletRequest request, HttpServletResponse response,Integer relevanceId, String chapterType, String testType){
+    public void queryWarmUp(HttpServletRequest request, HttpServletResponse response,Integer relevanceId, String questionType, String testType){
        UserBO userBO = super.getLoginUser(request);
         if(userBO == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
-       if(relevanceId == null){
+      /* if(relevanceId == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
-        if(StringUtils.isEmpty(chapterType)){
+        if(StringUtils.isEmpty(questionType)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeJsonPrint(response, json);
+            super.safeJsonPrint(response, json);    q
             return;
         }
         if(StringUtils.isEmpty(testType)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
-        }
+        }*/
 
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("relevanceId",relevanceId);
-        map.put("chapterType",chapterType);
+        map.put("questionType",questionType);
         map.put("testType",testType);
         List<QuestionBO> list = questionService.queryQuestionList(map);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
