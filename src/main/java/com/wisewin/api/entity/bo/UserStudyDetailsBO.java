@@ -1,6 +1,8 @@
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
+import com.wisewin.api.util.DateUtils;
+import com.wisewin.api.util.date.DateUtil;
 
 import java.util.Date;
 
@@ -27,8 +29,9 @@ public class UserStudyDetailsBO extends BaseModel{
         this.userId = userId;
     }
 
-    public Date getStudyDate() {
-        return studyDate;
+    public String getStudyDate() {
+        String dateStr = DateUtil.getDateStr(this.studyDate);
+        return dateStr;
     }
 
     public void setStudyDate(Date studyDate) {
@@ -42,6 +45,4 @@ public class UserStudyDetailsBO extends BaseModel{
     public void setStudyDuration(Integer studyDuration) {
         this.studyDuration = studyDuration;
     }
-
-
 }

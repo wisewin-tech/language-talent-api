@@ -9,6 +9,7 @@ import com.wisewin.api.service.UserStudyDetailsService;
 import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.OSSClientUtil;
+import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.util.env.Env;
 import com.wisewin.api.util.env.ResourceUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -48,13 +49,14 @@ public class UserStudyDetailsController extends BaseCotroller {
         }
             //获取当前登录用户id
             Integer userId = userBO.getId();
-            Date studyDate = DateUtils.getDateByType(new Date(),"yyyy-MM-dd");
+            String studyDate= DateUtil.getDateStr(new Date());
             UserStudyDetailsBO userStudyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
             if (userStudyDetailsBO==null){
                 userStudyDetailsService.insertDuration(userId);
             }else {
                 //获取学习时长
                 Integer studyDuration = userStudyDetailsBO.getStudyDuration();
+
                 Integer pollingFrequency = Integer.parseInt(SystemConfig.getString("pollingFrequency"));
                 studyDuration+=pollingFrequency;
 
@@ -62,11 +64,7 @@ public class UserStudyDetailsController extends BaseCotroller {
                 userStudyDetailsService.updateDuration(userId, studyDuration,studyDate);
                 UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
                 UserBO userBO1 = userService.selectById(userId);
-                List<UserStudyDetailsBO> weekweekStudyDuration = userStudyDetailsService.weekStudyDuration(userId);
-                for (UserStudyDetailsBO userStudyDetailsBO1:weekweekStudyDuration){
-                    Date weekStudyDate = DateUtils.getDateByType(userStudyDetailsBO1.getStudyDate(),"MM-dd");
-                    userStudyDetailsBO1.setStudyDate(weekStudyDate);
-                }
+                List<UserStudyDetailsBO> weekStudyDuration = userStudyDetailsService.weekStudyDuration(userId);
 
                 //连续学习天数
                 Integer continuousLearning = userBO1.getContinuousLearning();
@@ -77,7 +75,7 @@ public class UserStudyDetailsController extends BaseCotroller {
                 resultMap.put("studyDetailsBO",studyDetailsBO);
                 resultMap.put("cumulativeLearning",cumulativeLearning);
                 resultMap.put("continuousLearning",continuousLearning);
-                resultMap.put("weekweekStudyDuration",weekweekStudyDuration);
+                resultMap.put("weekStudyDuration",weekStudyDuration);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
                 super.safeJsonPrint(response, json);
             }

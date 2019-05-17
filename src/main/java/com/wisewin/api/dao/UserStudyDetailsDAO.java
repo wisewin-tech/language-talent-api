@@ -12,7 +12,7 @@ public interface UserStudyDetailsDAO {
      * @param userId
      * @return
      */
-    UserStudyDetailsBO getStudyDetails(@Param("userId") Integer userId, @Param("studyDate") Date studyDate);
+    UserStudyDetailsBO getStudyDetails(@Param("userId") Integer userId, @Param("studyDate") String studyDate);
 
     /**
      * 添加时长
@@ -27,7 +27,7 @@ public interface UserStudyDetailsDAO {
      * @param studyDuration
      */
     void updateDuration(@Param("userId") Integer userId, @Param("studyDuration") Integer studyDuration,
-                        @Param("studyDate") Date studyDate);
+                        @Param("studyDate") String studyDate);
 
     /**
      * 最近一周每天学习时长

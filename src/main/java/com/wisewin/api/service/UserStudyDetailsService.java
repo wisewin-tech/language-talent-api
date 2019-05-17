@@ -20,7 +20,7 @@ public class UserStudyDetailsService {
      * @param userId
      * @return
      */
-    public UserStudyDetailsBO getStudyDetails(Integer userId,Date studyDate){
+    public UserStudyDetailsBO getStudyDetails(Integer userId,String studyDate){
         return userStudyDetailsDAO.getStudyDetails(userId,studyDate);
     }
 
@@ -38,7 +38,7 @@ public class UserStudyDetailsService {
      * @param userId
      * @param studyDuration
      */
-     public void updateDuration(Integer userId,Integer studyDuration,Date studyDate){
+     public void updateDuration(Integer userId,Integer studyDuration,String studyDate){
 
         userStudyDetailsDAO.updateDuration(userId,studyDuration,studyDate);
     }

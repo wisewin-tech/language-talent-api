@@ -18,7 +18,7 @@
         UPDATE lt_user_study_details SET study_duration = #{studyDuration} WHERE user_id=#{userId} AND study_date=#{studyDate}
     </update>
     <!--最近一周每天学习时长-->
-    <select id="weekStudyDuration" resultType="com.wisewin.api.entity.bo.UserStudyDetailsBO">
+    <select id="weekStudyDuration" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.UserStudyDetailsBO">
         SELECT ud.study_duration studyDuration,ud.study_date studyDate
         FROM lt_user_study_details ud
         WHERE ud.user_id = #{userId}

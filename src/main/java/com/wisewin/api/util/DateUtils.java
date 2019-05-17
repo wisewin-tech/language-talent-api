@@ -651,7 +651,7 @@ public class DateUtils {
     	if(date==null){
     		return null;
 		}
-		String dayBefore=new SimpleDateFormat("yyyy-M-d").format(date);
+		String dayBefore=new SimpleDateFormat("yyyy-MM-dd").format(date);
 		return dayBefore;
 	}
 

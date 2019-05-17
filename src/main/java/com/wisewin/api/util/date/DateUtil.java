@@ -54,7 +54,7 @@ public class DateUtil {
     public  static String getStrDate(String date){
         Date thisDate=null;
         //设置要获取到什么样的时间
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             //获取Date类型的时间
             thisDate = sdf.parse(date);
@@ -89,6 +89,9 @@ public class DateUtil {
     }
 
     public  static String getDateStr(Date date) {
+        if(date==null){
+            return null;
+        }
         String thisDate="";
         //设置要获取到什么样的时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
