@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Shibo Sun
@@ -90,6 +87,15 @@ public class UserController extends BaseCotroller {
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000012"));
                 super.safeJsonPrint(response, json);
                 return;
+            }
+            String count = RedissonHandler.getInstance().get(phone + UserConstants.DEGREE.getValue());
+            if(count!=null){
+                int coun=Integer.valueOf(count);
+                if(coun>=20) {
+                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000025"));
+                    super.safeJsonPrint(response, json);
+                    return;
+                }
             }
             userService.send(phone);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));

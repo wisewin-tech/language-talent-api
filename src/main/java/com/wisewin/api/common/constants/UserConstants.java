@@ -3,7 +3,9 @@ package com.wisewin.api.common.constants;
 public enum UserConstants {
 
         /*  验证码标识` */  VERIFY("verify"),
+        /*  手机发送验证码记录  */RECORD("record"),
         /*  验证码失效标识` */ VERIFY_LOSE("verify_lose"),
+        /*  发送验证码次数` */ DEGREE("degree"),
         /*  积分  */  INTEGRAL("积分"),
         /*  咖豆  */  CURRENCY("currency"),
         /*  课时  */  CHAPTER("hour"),
