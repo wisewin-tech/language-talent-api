@@ -55,8 +55,7 @@ public class UserStudyDetailsController extends BaseCotroller {
             }else {
                 //获取学习时长
                 Integer studyDuration = userStudyDetailsBO.getStudyDuration();
-                Env env = new Env();
-                Integer pollingFrequency = Integer.parseInt(env.getProperty("pollingFrequency"));
+                Integer pollingFrequency = Integer.parseInt(SystemConfig.getString("pollingFrequency"));
                 studyDuration+=pollingFrequency;
 
                 //修改学习时长
