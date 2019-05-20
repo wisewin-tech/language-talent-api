@@ -16,8 +16,8 @@
         <result column="`language`.id" property="languageId"/>
         <result column="course.id" property="courseId"/>
         <result column="`level`.id" property="id"/>
-        <collection  property="chapterBOList" ofType="com.wisewin.api.entity.bo.ChapterBO">
-            <id column="chapterId" property="id"/>
+        <collection  property="chapterBOList" ofType="com.wisewin.api.entity.bo.ChapterResultBO">
+            <!--<id column="chapterId" property="id"/>-->
             <result column="chapter_name" property="chapterName"/>
             <result column="free_or_not" property="freeOrNot"/>
             <result column="chapter.id" property="chapterId"/>
