@@ -31,10 +31,6 @@ td {
 body {
     background: #fff;
 }
-img {
-    border: none;
-    vertical-align: middle;
-}
 
 html {
     overflow-y: scroll;
