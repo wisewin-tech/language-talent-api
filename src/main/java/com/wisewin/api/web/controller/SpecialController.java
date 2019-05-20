@@ -54,7 +54,12 @@ public class SpecialController extends BaseCotroller {
             return;
         }
         Integer userId=this.getId(request);
-        SpecialBO specialBO = specialService.selectSpecialBOById(1,specialId);//点进去查看的专题
+        SpecialBO specialBO = specialService.selectSpecialBOById(userId,specialId);//点进去查看的专题
+        if(specialBO==null||specialBO.getVideoCover()==null){
+            String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000026"));
+            super.safeHtmlPrint(response,languagejson);
+            return;
+        }
         List<SpecialBO> specialBOList = specialService.selectOtherSpecialBO(specialBO.getClassId(),specialBO.getId());//专题详情页下的其他专题
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("specialBO",specialBO);
@@ -74,7 +79,7 @@ public class SpecialController extends BaseCotroller {
             return;
         }
         Integer userId=this.getId(request);
-        Integer type=specialService.updSpecialLikeUser(1,specialId);
+        Integer type=specialService.updSpecialLikeUser(userId,specialId);
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("type",type);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map)) ;
