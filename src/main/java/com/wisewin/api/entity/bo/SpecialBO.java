@@ -14,6 +14,7 @@ public class SpecialBO extends BaseModel {
     private Integer classId;//专题分类id
     private String title;//专题标题
     private String describe;//专题描述
+    private String content;//专题内容
     private Date releaseDate;//专题上传日期
     private String releaseDateStr;//专题上传日期
     private Integer traffic;//专题访问量
@@ -21,6 +22,14 @@ public class SpecialBO extends BaseModel {
     private String videoLength;//视频时长
     private String videoCover;//视频
     private String skip;//跳转url
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getSkip() {
         return skip;

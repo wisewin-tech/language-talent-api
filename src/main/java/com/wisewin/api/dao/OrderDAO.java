@@ -19,4 +19,11 @@ public interface OrderDAO {
      * 插入订单
      */
     Integer insertOrder(OrderBO order);
+
+    /**
+     * 插入预支付订单
+     */
+    Integer insertPreOrder(OrderBO order);
+
+
 }
