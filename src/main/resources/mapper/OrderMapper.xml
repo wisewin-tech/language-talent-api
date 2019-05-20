@@ -70,4 +70,20 @@
         #{updateTime}
         );
     </insert>
+
+    <!--插入预支付订单-->
+    <insert id="insertPreOrder" parameterType="com.wisewin.api.entity.bo.OrderBO">
+        insert into lt_order
+        (user_id,price,order_number,order_type,`status`,product_name,creation_date)
+        values
+        (#{userId},#{price},#{orderNumber},#{orderType},#{status},#{productName},now())
+    </insert>
+
+    <update id="updOrderStatus" parameterType="java.lang.String">
+        update
+    </update>
+
+
+
+
 </mapper>

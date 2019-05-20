@@ -2,10 +2,12 @@ package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
 
+import java.math.BigDecimal;
+
 public class OrderBO extends BaseModel {
     private Integer id; //订单表
     private Integer userId; //用户id
-    private Integer price; //价格
+    private BigDecimal price; //价格
     private String orderNumber; //订单号
     private String orderType; //订单类型(购买/充值)
     private String status; //状态(成功/失败)
@@ -45,13 +47,14 @@ public class OrderBO extends BaseModel {
         this.userId = userId;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
 
     public String getOrderNumber() {
         return orderNumber;

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -229,7 +230,7 @@ public class PurchaseService {
 
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
-        order.setPrice(pruchase.getCoursePrice());
+        order.setPrice(new BigDecimal(pruchase.getCoursePrice()));
         //生成订单号
         IDBuilder idBuilder  =  new IDBuilder(10,10);
         order.setOrderNumber(idBuilder.nextId()+"");
@@ -276,7 +277,7 @@ public class PurchaseService {
         System.out.println(list);
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
-        order.setPrice(pruchase.getCoursePrice());
+        order.setPrice(new BigDecimal(pruchase.getCoursePrice()));
         //生成订单号
         IDBuilder idBuilder  =  new IDBuilder(10,10);
         order.setOrderNumber(idBuilder.nextId()+"");

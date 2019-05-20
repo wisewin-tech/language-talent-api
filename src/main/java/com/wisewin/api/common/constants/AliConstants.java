@@ -6,12 +6,11 @@ public enum AliConstants {
     /*未支付*/nopay("TRADE_CLOSED"),
 
     /**
-     * 订单表里的订单是否成功 yes/no
+     * 订单表里的订单是否成功 SUCCESS/no
      * @param value
      */
-    /*订单成功*/Theorder("yse"),
-    /*未支付*/Didnotpay("no");
-
+    /*订单成功*/Theorder("SUCCESS"),
+    /*未支付*/Didnotpay("NOTPAY");
 
     private AliConstants(String value) {
         this.value = value;
@@ -26,5 +25,4 @@ public enum AliConstants {
     public void setValue(String value) {
         this.value = value;
     }
-
 }
