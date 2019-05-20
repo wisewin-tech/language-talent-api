@@ -33,7 +33,7 @@ public class WXPayService {
         WXMsg wxMsg = new WXMsg();
 
         //获取请求参数
-        Map<String, String> map = wxMsg.getWXPayParams(orderNumber, new BigDecimal(orderBO.getPrice()));
+        Map<String, String> map = wxMsg.getWXPayParams(orderNumber, orderBO.getPrice());
 
         //获取包含sign的 请求参数Map
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
