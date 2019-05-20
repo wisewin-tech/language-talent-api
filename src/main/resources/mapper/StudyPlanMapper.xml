@@ -5,18 +5,50 @@
 <!--  -->
 <mapper namespace="com.wisewin.api.dao.StudyPlanDAO" >
 
+    <resultMap id="chapters" type="com.wisewin.api.entity.bo.ChapterBO">
+        <id column="id" property="id"/>
+        <result column="languang_name" property="languageName"/>
+        <result column="ensign_image_url" property="ensignImageUrl"/>
+        <result column="course_name" property="courseName"/>
+        <result column="course_intro" property="courseIntro"/>
+        <result column="thumbnail_url" property="thumbnailUrl"/>
+        <result column="level_name" property="levelName"/>
+        <result column="`language`.id" property="languageId"/>
+        <result column="course.id" property="courseId"/>
+        <result column="`level`.id" property="id"/>
+        <collection  property="chapterBOList" ofType="com.wisewin.api.entity.bo.ChapterBO">
+            <id column="chapterId" property="id"/>
+            <result column="chapter_name" property="chapterName"/>
+            <result column="free_or_not" property="freeOrNot"/>
+            <result column="chapter.id" property="chapterId"/>
+            <result column="video_path" property="videoPath"/>
+        </collection>
+        
+
+    </resultMap>
     <select id="getStudyPlan" parameterType="java.lang.Integer"
-            resultType="com.wisewin.api.entity.bo.ChapterBO">
+            resultMap="chapters">
         SELECT
-        `language`.language_name languageName,course.course_name courseName,
+        `language`.language_name languageName,`language`.ensign_image_url ensignImageUrl,
+        course.course_name courseName,
         chapter.chapter_name,course.course_intro courseIntro,
-        chapter.thumbnail_url,`level`.level_name levelName,
+        chapter.thumbnail_url thumbnailUrl,`level`.level_name levelName,
         `language`.id languageId,course.id courseId,
-        `level`.id levelId,
+        `level`.id levelId,chapter.free_or_not freeOrNot,
         chapter.id chapterId,chapter.video_path
         FROM
         lt_chapter `chapter`
         LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
+        LEFT JOIN lt_course `course` ON `level`.course_id = course.id
+        LEFT JOIN lt_language `language` ON course.language_id = `language`.id
+        WHERE
+        `language`.id = #{languageId}
+    </select>
+
+    <select id="getLevelId" resultType="com.wisewin.api.entity.bo.LevelBO">
+        SELECT id
+        FROM
+        lt_level `level`
         LEFT JOIN lt_course `course` ON `level`.course_id = course.id
         LEFT JOIN lt_language `language` ON course.language_id = `language`.id
         WHERE
