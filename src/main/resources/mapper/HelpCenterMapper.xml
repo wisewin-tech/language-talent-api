@@ -16,7 +16,7 @@
     <!--查看文本内容-->
     <select id="getparticulars" parameterType="com.wisewin.api.entity.bo.HelpCenterBO"
      resultType="com.wisewin.api.entity.bo.HelpCenterBO">
-        SELECT content FROM lt_help_center WHERE id=#{id}
+        SELECT content,id FROM lt_help_center WHERE id=#{id}
     </select>
 
 
