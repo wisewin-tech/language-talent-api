@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("WXPay")
+@RequestMapping("/WXPay")
 public class WXPayController extends BaseCotroller {
 
     @Resource
@@ -33,7 +33,7 @@ public class WXPayController extends BaseCotroller {
 
     //获取预订单信息
     //需要传入 价格 订单类型:购买/充值 商品名称
-    @RequestMapping("unifiedOrder")
+    @RequestMapping("/unifiedOrder")
     public void unifiedOrder(HttpServletRequest request, HttpServletResponse response, OrderBO orderBO) throws Exception {
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
@@ -64,7 +64,7 @@ public class WXPayController extends BaseCotroller {
 
     }
 
-    @RequestMapping("orderResult")
+    @RequestMapping("/orderResult")
     public void orderResult(HttpServletRequest request,HttpServletResponse response) throws IOException {
         Map<String,String> resultMap=wxPayService.getOrderResult(request);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));

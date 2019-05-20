@@ -31,7 +31,7 @@ public class SpecialController extends BaseCotroller {
     /**
      * 按分类 查看专题
      * * */
-    @RequestMapping("selectSpecialBO")
+    @RequestMapping("/selectSpecialBO")
     public void selectSpecialBO(HttpServletRequest request, HttpServletResponse response,Integer classId){
         if(classId==null||classId==0){
             String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -46,7 +46,7 @@ public class SpecialController extends BaseCotroller {
     /**
      * 用户点进去了一个专题
      * */
-    @RequestMapping("selectSpecialBOById")
+    @RequestMapping("/selectSpecialBOById")
     public void selectSpecialBOById(HttpServletRequest request, HttpServletResponse response,Integer specialId){
         if(specialId==null||specialId==0){
             String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -71,7 +71,7 @@ public class SpecialController extends BaseCotroller {
     /**
      * 用户点击了喜欢 可以喜欢或者取消喜欢
      * */
-    @RequestMapping("updSpecialLikeUser")
+    @RequestMapping("/updSpecialLikeUser")
     public void updSpecialLikeUser(HttpServletRequest request, HttpServletResponse response,Integer specialId){
         if(specialId==null||specialId==0){
             String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
