@@ -1,6 +1,7 @@
 
 package com.wisewin.api.dao;
 
+import com.wisewin.api.common.constants.AliConstants;
 import com.wisewin.api.entity.bo.OrderBO;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,6 +25,12 @@ public interface OrderDAO {
      * 插入预支付订单
      */
     Integer insertPreOrder(OrderBO order);
+
+    /**
+     * 修改订单状态为成功
+     */
+    Integer updOrderStatus(String orderNumber);
+
 
 
 }

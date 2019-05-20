@@ -51,6 +51,7 @@ public class WXPayService {
         //统一下单结果
         if (resultMap != null && !resultMap.isEmpty()) {
             orderBO.setOrderNumber(orderNumber);
+            orderBO.setStatus("");
             //成功获取到预订单之后
             //插入数据库 订单信息
 
@@ -67,11 +68,11 @@ public class WXPayService {
             Map<String,String> resultMap=inStreamToMap(inStream);
             //处理业务逻辑
             String return_code = resultMap.get("return_code");//状态
-            String out_trade_no = resultMap.get("out_trade_no");//订单号
+            String out_trade_no = resultMap.get("out_trade_no");//商户订单号
             String trade_state = resultMap.get("trade_state");//交易状态
             if (return_code.equals("SUCCESS")) {//交易标识
                 if (out_trade_no != null) {//商户订单号
-                    if (trade_state.equals("SUCCESS")) {//交易成功
+                    if (trade_state.equals("SUCCESS")) {//支付成功
                         //后续逻辑处理
                         //1.订单表状态改为yes
                         //2.user表咖豆增加

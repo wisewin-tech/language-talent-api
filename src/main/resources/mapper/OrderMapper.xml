@@ -76,8 +76,12 @@
         insert into lt_order
         (user_id,price,order_number,order_type,`status`,product_name,creation_date)
         values
-        (#{userId},#{price},#{orderNumber},#{orderType},'未支付',#{productName},now())
+        (#{userId},#{price},#{orderNumber},#{orderType},#{status},#{productName},now())
     </insert>
+
+    <update id="updOrderStatus" parameterType="java.lang.String">
+        update
+    </update>
 
 
 
