@@ -15,6 +15,7 @@ public class CourseDetailsResultBO extends BaseModel {
     private String certificateOrNot;//是否可以考证
     private String certificateTitle;//证书标题
     private String certificateImageUrl;//证书图片
+    private String buyOrNOt;//是否已经购买
 
     public String getCertificateTitle() {
         return certificateTitle;
@@ -112,5 +113,11 @@ public class CourseDetailsResultBO extends BaseModel {
         this.courseId = courseId;
     }
 
+    public String getBuyOrNOt() {
+        return buyOrNOt;
+    }
 
+    public void setBuyOrNOt(String buyOrNOt) {
+        this.buyOrNOt = buyOrNOt;
+    }
 }

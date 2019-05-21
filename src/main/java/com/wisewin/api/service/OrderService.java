@@ -2,6 +2,7 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.dao.OrderDAO;
 import com.wisewin.api.entity.bo.OrderBO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,4 +30,7 @@ public class OrderService {
         return orderDAO.selectDetails(id,userId);
     }
 
+    public String getStatusByCourseId (@Param("userId") Integer userId, @Param("courseId") Integer courseId){
+        return orderDAO.getStatusByCourseId(userId,courseId);
+    }
 }

@@ -11,6 +11,7 @@ public class LanguageDetailsResultBO extends BaseModel {
     private String languageIntro; //语言简介
     private Integer languagePrice; //价格
     private Integer languageDiscountPrice; //特惠价格
+    private String buyOrNot;//是否已购买
 
     public Integer getId() {
         return id;
@@ -74,5 +75,13 @@ public class LanguageDetailsResultBO extends BaseModel {
 
     public void setLanguageDiscountPrice(Integer languageDiscountPrice) {
         this.languageDiscountPrice = languageDiscountPrice;
+    }
+
+    public String getBuyOrNot() {
+        return buyOrNot;
+    }
+
+    public void setBuyOrNot(String buyOrNot) {
+        this.buyOrNot = buyOrNot;
     }
 }

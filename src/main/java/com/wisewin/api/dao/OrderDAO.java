@@ -36,6 +36,6 @@ public interface OrderDAO {
      */
     OrderBO getOrderByOrderNumber(String orderNumber);
 
-
+    String getStatusByCourseId (@Param("userId") Integer userId,@Param("courseId") Integer courseId);
 
 }

@@ -50,4 +50,12 @@ public class CourseService {
     public List<HotCourseResultBO> hotCourse(){
         return courseDAO.hotCourse();
     }
+    /**
+     * 通过语言id查课程id
+     * @param languageId
+     * @return
+     */
+    public List<CourseBO> getCourseIdById(Integer languageId){
+        return courseDAO.getCourseIdById(languageId);
+    }
 }
