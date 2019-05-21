@@ -36,8 +36,16 @@ public class DiscoverParam extends BaseModel {
     private Integer pageNo; //页数
     private  Integer pageSize; //每条条数
     private int countnum; // 总数
+    private String description; //内容描述
 
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getVideoImg() {
         return videoImg;

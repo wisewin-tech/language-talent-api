@@ -1,18 +1,13 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.common.constants.AliConstants;
-import com.wisewin.api.common.constants.AlipayConstants;
-import com.wisewin.api.entity.AlipayBO;
 import com.wisewin.api.entity.bo.OrderBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
-import com.wisewin.api.entity.param.AlipayParam;
 import com.wisewin.api.query.PageObjectUtil;
-import com.wisewin.api.query.Paytreasure;
 import com.wisewin.api.service.AlipayService;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.JsonUtils;
-import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 @Controller
@@ -52,7 +45,7 @@ public class AlipayController extends BaseCotroller {
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
         if (id == null) {
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
@@ -107,11 +100,6 @@ public class AlipayController extends BaseCotroller {
             //查找出来的咖豆和充值价格相加
             boolean updateUserCoffee = alipayService.getupdateUserCoffee(userBO.getCurrency() + request.getParameter("total_amount"), orderBO.getUserId());
             alipayService.addAlipayPayment(getvalues);
-
-
-
-
-
 
         }
 

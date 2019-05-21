@@ -43,8 +43,8 @@ public class LikerelationController extends BaseCotroller{
          String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
          super.safeJsonPrint(response, json);
          return;
-     }
-     //是否真实存在
+      }
+      //是否真实存在
             DiscoverBO discoverBO=discoverService.getfindDiscoverlikenum(param.getDcId());
         if (discoverBO==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));

@@ -35,6 +35,7 @@ public class CouplebackController  extends BaseCotroller {
      */
     @RequestMapping("/addCpupleback")
     public void addCpupleback(HttpServletRequest request, HttpServletResponse response, CouplebackParam param){
+        //获取当前用户
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
         if (id==null || param.getContent().equals("") || param.getPattern().equals("")){
@@ -42,7 +43,7 @@ public class CouplebackController  extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-
+        //进行添加反馈内容
         boolean addCpuplebackjson=couplebackService.getaddCpupleback(id,param.getContent(),param.getContactpattern(),param.getPattern(),param.getPictureurl());
         if (addCpuplebackjson){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("反馈成功"));

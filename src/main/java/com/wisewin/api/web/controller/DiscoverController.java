@@ -42,10 +42,10 @@ public class DiscoverController extends BaseCotroller{
      * Integer pageNo; //页数
      * Integer pageSize; //每条条数
      * int  countnum;//总数
+     *
      */
     @RequestMapping("/queryDiscover")
     public void queryDiscover(HttpServletRequest request, HttpServletResponse response, DiscoverParam param){
-
 
         //分页
         QueryInfo queryInfo=getQueryInfo(param.getPageNo(),param.getPageSize());
@@ -53,14 +53,14 @@ public class DiscoverController extends BaseCotroller{
             param.setPageNo(queryInfo.getPageOffset());
             param.setPageSize(queryInfo.getPageSize());
         }
+
          //查询文章 视频  做分页   list
-         //2.线下活动  全部   list
-            //返回一个map     put .list  put.list2
         List<DiscoverJsonBO> discoverPage=discoverService.getqueryDiscover(param);
 
-
+        //线下活动
         List<DiscoverJsonBO> activity=discoverService.getqueryDiscovertype(param);
 
+        //首页分页条件查询总数
         int count=discoverService.getfindcoun(param.getCountnum());
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("discoverPage",discoverPage);
@@ -102,6 +102,8 @@ public class DiscoverController extends BaseCotroller{
             return;
         }
 
+        //根据id来查找发现详情
+        //线下活动和文章二为合一
         DiscoverBO list=discoverService.getqueryDiscoveractivity(param.getId());
 
         if (list==null){
@@ -109,7 +111,9 @@ public class DiscoverController extends BaseCotroller{
             super.safeJsonPrint(response, json);
             return;
         }
+        //浏览次数加一
         Integer browse= list.getBrowse()+1;
+        //进行修改浏览次数
         boolean updatediscover=discoverService.getupdateDiscover(param.getId(),browse);
         if (updatediscover){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
@@ -127,6 +131,8 @@ public class DiscoverController extends BaseCotroller{
     @RequestMapping("/queryfindDiscover")
     public void queryfindDiscover(HttpServletRequest request,HttpServletResponse response,DiscoverParam param){
 
+        //根据类型查找
+        //显示更多，以防发现更多里面出现现在浏览的文章，在sql里面做处理
         List<DiscoverParam> list=discoverService.getqueryfindDiscover(param);
         if (list.equals("")){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));

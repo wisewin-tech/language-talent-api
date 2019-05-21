@@ -9,21 +9,22 @@
     <select id="queryDiscover" resultType="com.wisewin.api.entity.param.DiscoverParam">
 
         SELECT
-          id,title,
-          browse,create_time,
-          thumbnail,video,
-          `type`,priority,
-          stick,`show`,
-          way,videoImg,
-         likenum,skip AS  url
+        id,title,
+        browse,create_time,
+        thumbnail,video,
+        `type`,priority,
+        stick,`show`,
+        way,videoImg,
+        likenum,skip,
+        description
         FROM
-          lt_discover
+        lt_discover
         WHERE
-          `type`='journalism'
+        `type`='journalism'
         OR
-          `type`='curriculum'
+        `type`='curriculum'
         ORDER  BY
-          priority
+        priority
         desc
 
         <include refid="orderLimit" />
@@ -35,13 +36,13 @@
 
     <select id="findcoun" resultType="int">
         SELECT
-         COUNT(`type`)
+        COUNT(`type`)
         FROM
         lt_discover
         WHERE
-          `type`='journalism'
+        `type`='journalism'
         OR
-          `type`='curriculum'
+        `type`='curriculum'
     </select>
 
 
@@ -49,21 +50,22 @@
     <select id="queryDiscovertype" resultType="com.wisewin.api.entity.param.DiscoverParam">
 
         SELECT
-        id,title,likenum,
-        participation,phone,
-        ticket,skip,
-        browse,create_time,
-        thumbnail,content,video,
-        activitytime,activitysite,
-        `type`,priority,
-        stick,`show`,
-        way,videoImg
+            id,title,likenum,
+            participation,phone,
+            ticket,skip,
+            browse,create_time,
+            thumbnail,content,video,
+            activitytime,activitysite,
+            `type`,priority,
+            stick,`show`,
+            way,videoImg,
+            description
         FROM
-        lt_discover
+            lt_discover
         WHERE
-        `type`='activity'
+          `type`='activity'
         ORDER  BY
-        priority
+           priority
 
 
     </select>
@@ -89,12 +91,12 @@
 
     <!--浏览人数查询-->
     <select id="findDiscoveractivitybrowse" resultType="com.wisewin.api.entity.bo.DiscoverBO">
-      SELECT
-        id,browse
-      FROM
-        lt_discover
-      WHERE
-        id=#{id}
+        SELECT
+          id,browse
+        FROM
+          lt_discover
+        WHERE
+         id=#{id}
     </select>
 
     <!--修改浏览人数值-->
@@ -102,9 +104,9 @@
         UPDATE
           lt_discover
         SET
-          browse=#{browse}
+         browse=#{browse}
         WHERE
-         id=#{id}
+          id=#{id}
     </update>
 
     <!--修改浏览人数值-->
@@ -120,11 +122,11 @@
 
     <!--查找喜欢方法-->
     <select id="findDiscoverlikenum" resultType="com.wisewin.api.entity.bo.DiscoverBO">
-      SELECT
+        SELECT
         id,likenum
-      FROM
+        FROM
         lt_discover
-      WHERE
+        WHERE
         id=#{id}
     </select>
 
@@ -132,22 +134,23 @@
     <!--发现更多-->
     <select id="queryfindDiscover" resultType="com.wisewin.api.entity.param.DiscoverParam">
         SELECT
-        id,title,
-        browse,create_time,
-        thumbnail,video,
-        content,`type`,
-        likenum,participation,
-        activitytime,activitysite,
-        phone,ticket,
-        priority,stick,
-        `show`,skip,
-        way,videoImg
+            id,title,
+            browse,create_time,
+            thumbnail,video,
+            content,`type`,
+            likenum,participation,
+            activitytime,activitysite,
+            phone,ticket,
+            priority,stick,
+            `show`,skip,
+            way,videoImg,
+            description
         FROM
-         lt_discover
+           lt_discover
         <where>
 
             <if test="id!=null">
-              id!=#{id}
+                id!=#{id}
             </if>
 
             <if test="type!=null and type!='' ">

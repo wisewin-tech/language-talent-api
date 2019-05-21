@@ -69,7 +69,7 @@ public class DiscoverService {
 
 
     /**
-     * 线下活动
+     * 根据id查找发现详情
      * Integer id; //发现id
      * String title; //发现标题
      * Integer browse; //浏览人数
@@ -160,11 +160,10 @@ public class DiscoverService {
      * String skip; //跳转url[线下活动]
      * String way; //展示方式
      * String videoImg;//存放视频封面url
+     *
      */
     public List<DiscoverParam> getqueryfindDiscover(DiscoverParam param){
 
         return discoverDao.queryfindDiscover(param);
     }
-
-
 }
