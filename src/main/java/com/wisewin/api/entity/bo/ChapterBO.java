@@ -28,15 +28,8 @@ public class ChapterBO extends BaseModel {
     private Integer chapterId;//课时id
     private String ensignImageUrl;//语言国旗图片地址
     private String thumbnailUrl;//缩略图
-    private List<ChapterBO> chapterBOList;
 
-    public List<ChapterBO> getChapterBOList() {
-        return chapterBOList;
-    }
 
-    public void setChapterBOList(List<ChapterBO> chapterBOList) {
-        this.chapterBOList = chapterBOList;
-    }
 
     public String getThumbnailUrl() {
         return thumbnailUrl;

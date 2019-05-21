@@ -3,27 +3,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--  -->
-<mapper namespace="com.wisewin.api.dao.StudyPlanDAO" >
+<mapper namespace="com.wisewin.api.dao.StudyPlanDAO">
 
-    <resultMap id="chapters" type="com.wisewin.api.entity.bo.ChapterBO">
-        <id column="id" property="id"/>
-        <result column="languang_name" property="languageName"/>
-        <result column="ensign_image_url" property="ensignImageUrl"/>
-        <result column="course_name" property="courseName"/>
-        <result column="course_intro" property="courseIntro"/>
-        <result column="thumbnail_url" property="thumbnailUrl"/>
-        <result column="level_name" property="levelName"/>
-        <result column="`language`.id" property="languageId"/>
-        <result column="course.id" property="courseId"/>
-        <result column="`level`.id" property="id"/>
-        <collection  property="chapterBOList" ofType="com.wisewin.api.entity.bo.ChapterResultBO">
-            <!--<id column="chapterId" property="id"/>-->
+    <resultMap id="chapters" type="com.wisewin.api.entity.bo.LevelBO">
+        <result column="languageName" property="languageName"/>
+        <result column="ensignImageUrl" property="ensignImageUrl"/>
+        <result column="courseName" property="courseName"/>
+        <result column="courseIntro" property="courseIntro"/>
+        <result column="levelName" property="levelName"/>
+        <result column="levelId" property="id"/>
+        <collection property="chapterBOList" ofType="com.wisewin.api.entity.bo.ChapterResultBO">
+            <id column="chapterId" property="chapterId"/>
             <result column="chapter_name" property="chapterName"/>
-            <result column="free_or_not" property="freeOrNot"/>
-            <result column="chapter.id" property="chapterId"/>
+            <result column="freeOrNot" property="freeOrNot"/>
             <result column="video_path" property="videoPath"/>
+            <result column="thumbnailUrl" property="thumbnailUrl"/>
         </collection>
-        
+
 
     </resultMap>
     <select id="getStudyPlan" parameterType="java.lang.Integer"
@@ -42,11 +38,29 @@
         LEFT JOIN lt_course `course` ON `level`.course_id = course.id
         LEFT JOIN lt_language `language` ON course.language_id = `language`.id
         WHERE
-        `language`.id = #{languageId}
+        `language`.id = #{languageId} AND `level`.id = #{levelId}
     </select>
 
-    <select id="getLevelId" resultType="com.wisewin.api.entity.bo.LevelBO">
-        SELECT id
+    <resultMap id="levelList" type="com.wisewin.api.entity.bo.LanguageResultBO">
+        <result column="languageId" property="id"/>
+        <result column="languageName" property="languageName"/>
+        <collection property="courseList" ofType="com.wisewin.api.entity.bo.CourseResultBO">
+            <id column="courseId" property="courseId"/>
+            <result column="courseName" property="courseName"/>
+            <collection property="levelList" ofType="com.wisewin.api.entity.bo.LevelResultBO">
+                <id column="levelId" property="levelId"/>
+                <result column="levelName" property="levelName"/>
+
+            </collection>
+
+        </collection>
+
+    </resultMap>
+    <!--获取首页右侧栏级别列表-->
+    <select id="getLevelList" resultMap="levelList">
+        SELECT `language`.id languageId,`language`.language_name languageName,
+        course.id courseId,course.course_name courseName,
+        `level`.id levelId,`level`.level_name levelName
         FROM
         lt_level `level`
         LEFT JOIN lt_course `course` ON `level`.course_id = course.id
@@ -54,5 +68,16 @@
         WHERE
         `language`.id = #{languageId}
     </select>
+    <!--查询某个级别下的课时数-->
+    <select id="getLevelCount" resultType="java.lang.Integer">
+        SELECT
+        count(ch.id) chapterCount
+        FROM
+        lt_level `le`
+        LEFT JOIN lt_chapter ch ON ch.level_id = le.id
+        WHERE
+        `le`.id = #{levelId}
+    </select>
+
 
 </mapper>

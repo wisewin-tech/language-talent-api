@@ -7,6 +7,24 @@ public class ChapterResultBO extends BaseModel{
     private String freeOrNot; //是否免费观看
     private Integer chapterId;//课时id
     private String videoPath; //链接地址
+    private String thumbnailUrl;//缩略图
+    private Integer score;//分数
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
 
     public String getChapterName() {
         return chapterName;

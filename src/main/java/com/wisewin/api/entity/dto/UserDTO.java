@@ -16,6 +16,8 @@ public class UserDTO {
     private String ageGroup; //年龄段
     private String headPortraitUrl; //头像路径
     private String learningGoal; //学习目的
+    private String occupation; //职业
+    private String interest; //兴趣
     private String sex; //性别
     private Date birthday; //生日
     private String source; //个人/企业
@@ -39,7 +41,7 @@ public class UserDTO {
 
     @Override
     public String toString() {
-        return "UserBO{" +
+        return "UserDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", nickname='" + nickname + '\'' +
@@ -49,11 +51,14 @@ public class UserDTO {
                 ", ageGroup='" + ageGroup + '\'' +
                 ", headPortraitUrl='" + headPortraitUrl + '\'' +
                 ", learningGoal='" + learningGoal + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", interest='" + interest + '\'' +
                 ", sex='" + sex + '\'' +
                 ", birthday=" + birthday +
                 ", source='" + source + '\'' +
                 ", integral=" + integral +
                 ", kadou=" + kadou +
+                ", studyingLanguageId=" + studyingLanguageId +
                 ", inviteCode='" + inviteCode + '\'' +
                 ", byInvite='" + byInvite + '\'' +
                 ", job='" + job + '\'' +
@@ -70,23 +75,6 @@ public class UserDTO {
                 ", updateTime=" + updateTime +
                 '}';
     }
-
-    public Integer getStudyingLanguageId() {
-        return studyingLanguageId;
-    }
-
-    public void setStudyingLanguageId(Integer studyingLanguageId) {
-        this.studyingLanguageId = studyingLanguageId;
-    }
-
-    public String getLearningGoal() {
-        return learningGoal;
-    }
-
-    public void setLearningGoal(String learningGoal) {
-        this.learningGoal = learningGoal;
-    }
-
 
     public Integer getId() {
         return id;
@@ -152,6 +140,30 @@ public class UserDTO {
         this.headPortraitUrl = headPortraitUrl;
     }
 
+    public String getLearningGoal() {
+        return learningGoal;
+    }
+
+    public void setLearningGoal(String learningGoal) {
+        this.learningGoal = learningGoal;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
+    }
+
     public String getSex() {
         return sex;
     }
@@ -190,6 +202,14 @@ public class UserDTO {
 
     public void setKadou(Integer kadou) {
         this.kadou = kadou;
+    }
+
+    public Integer getStudyingLanguageId() {
+        return studyingLanguageId;
+    }
+
+    public void setStudyingLanguageId(Integer studyingLanguageId) {
+        this.studyingLanguageId = studyingLanguageId;
     }
 
     public String getInviteCode() {

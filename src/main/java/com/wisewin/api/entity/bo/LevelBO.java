@@ -20,7 +20,7 @@ public class LevelBO extends BaseModel {
     private String courseIntro;//课程简介
     private String thumbnailUrl;//缩略图
     private Integer languageId;//语言id
-    private List<ChapterBO> chapterBOList;
+    private List<ChapterResultBO> chapterBOList;
 
 
     public Integer getId() {
@@ -136,11 +136,11 @@ public class LevelBO extends BaseModel {
         this.languageId = languageId;
     }
 
-    public List<ChapterBO> getChapterBOList() {
+    public List<ChapterResultBO> getChapterBOList() {
         return chapterBOList;
     }
 
-    public void setChapterBOList(List<ChapterBO> chapterBOList) {
+    public void setChapterBOList(List<ChapterResultBO> chapterBOList) {
         this.chapterBOList = chapterBOList;
     }
 }
