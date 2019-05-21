@@ -1,7 +1,11 @@
 package com.wisewin.api.service;
 
+import com.wisewin.api.common.constants.AliConstants;
 import com.wisewin.api.dao.OrderDAO;
+import com.wisewin.api.dao.RecordDAO;
+import com.wisewin.api.dao.UserDAO;
 import com.wisewin.api.entity.bo.OrderBO;
+import com.wisewin.api.entity.bo.RecordBO;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.wxUtil.WXMsg;
 import com.wisewin.api.util.wxUtil.WXPayUtil;
@@ -23,73 +27,95 @@ public class WXPayService {
     @Resource
     OrderDAO orderDAO;
 
-    //获取预支付下单结果
-    public Map<String, String> getUnifiedOrder(OrderBO orderBO) throws Exception {
-        //生成订单号
+    @Resource
+    UserDAO userDAO;
+
+    @Resource
+    RecordDAO recordDAO;
+
+    //充值咖豆  获取预支付下单结果
+    public Map<String, String> getUnifiedOrder(Integer id, Integer currency, BigDecimal price) throws Exception {
+        //1.实例化对象
+        WXMsg wxMsg = new WXMsg();
+
+        //2.生成订单号
         IDBuilder idBuilder = new IDBuilder(10, 10);
         String orderNumber = idBuilder.nextId() + "";
 
-        //实例化对象
-        WXMsg wxMsg = new WXMsg();
+        //2.获取请求参数
+        Map<String, String> map = wxMsg.getWXPayParams(orderNumber, price);
 
-        //获取请求参数
-        Map<String, String> map = wxMsg.getWXPayParams(orderNumber, orderBO.getPrice());
+        //2.自定义参数 购买咖豆的数量
+        map.put("attach", currency + "");
 
-        //获取包含sign的 请求参数Map
+        //2.用户id
+        map.put("openid",id+"");
+        //3.获取包含sign的参数Ma 请求 签名
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
 
-        //发送请求
+        //4.发送请求 获取到预支付订单信息
         String result = wxMsg.getCodeUrl(mapStr);
         System.out.println(result);
 
-        //结果转为Map给安卓
+        //结果转为Map
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
 
+        //补充信息给 前端
         //把自己生成的商户订单号
         resultMap.put("orderNumber", orderNumber);
 
         //统一下单结果
         if (resultMap != null && !resultMap.isEmpty()) {
+            //实例化订单对象 完成插入订单操作
+            OrderBO orderBO = new OrderBO();
+            orderBO.setUserId(id);
+            orderBO.setPrice(price);
             orderBO.setOrderNumber(orderNumber);
-            orderBO.setStatus("");
-            //成功获取到预订单之后
+            orderBO.setOrderType("充值");
+            //未支付
+            orderBO.setStatus(AliConstants.Didnotpay.getValue());
+            orderBO.setProductName(currency + ".咖豆");
             //插入数据库 订单信息
-
             orderDAO.insertPreOrder(orderBO);
         }
 
         return resultMap;
     }
 
-    //获取支付过后的回调
-    public Map<String, String> getOrderResult(HttpServletRequest request) {
-        try {
-            InputStream inStream = request.getInputStream();
-            Map<String,String> resultMap=inStreamToMap(inStream);
-            //处理业务逻辑
-            String return_code = resultMap.get("return_code");//状态
-            String out_trade_no = resultMap.get("out_trade_no");//商户订单号
-            String trade_state = resultMap.get("trade_state");//交易状态
-            if (return_code.equals("SUCCESS")) {//交易标识
-                if (out_trade_no != null) {//商户订单号
-                    if (trade_state.equals("SUCCESS")) {//支付成功
-                        //后续逻辑处理
-                        //1.订单表状态改为yes
-                        //2.user表咖豆增加
-                        //3.记录表添加记录
-                    } else {
-                        //交易失败
-                    }
-                } else {//不存在这个订单
+    //充值咖豆  获取支付过后的回调
+    public Map<String, String> getOrderResult(HttpServletRequest request) throws Exception {
+        InputStream inStream = request.getInputStream();
+        Map<String, String> resultMap = inStreamToMap(inStream);
+        //处理业务逻辑
+        String return_code = resultMap.get("return_code");//状态
+        String out_trade_no = resultMap.get("out_trade_no");//商户订单号
+        String trade_state = resultMap.get("trade_state");//交易状态
+        if (return_code.equals("SUCCESS")) {//交易标识
+            if (out_trade_no != null) {//商户订单号
+                if (trade_state.equals("SUCCESS")) {//支付成功
+
+                    //订单表状态修改为yes
+                    orderDAO.updOrderStatus(out_trade_no, AliConstants.success.getValue());
+
+                    //修改剩余咖豆数量
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("currency", resultMap.get("attach"));
+                    map.put("id",resultMap.get("openid"));
+                    userDAO.updateUserAugment(map);
+
+                    //记录表添加记录
+                    RecordBO recordBO=new RecordBO();
+                    recordBO.setUserId(new Integer(resultMap.get("openid")));
+                    recordBO.setSource("咖豆");
+                    recordBO.setStatus("增加");
+                    recordBO.setSpecificAmount(new Integer(resultMap.get("attach")));
+                    recordBO.setDescribe("充值"+resultMap.get("attach")+"咖豆");
+                    recordDAO.insertUserAction(recordBO);
 
                 }
             }
-
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
-        return null;
+                return resultMap;
     }
 
     //将InputStream转换为Map
