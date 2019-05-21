@@ -48,9 +48,7 @@ public class WXPayService {
         //2.自定义参数 购买咖豆的数量
         map.put("attach", currency + "");
 
-        //2.用户id
-        map.put("openid",id+"");
-        //3.获取包含sign的参数Ma 请求 签名
+        //3.获取包含sign的Map 请求 签名
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
 
         //4.发送请求 获取到预支付订单信息
@@ -60,9 +58,22 @@ public class WXPayService {
         //结果转为Map
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
 
-        //补充信息给 前端
-        //把自己生成的商户订单号
-        resultMap.put("orderNumber", orderNumber);
+        //补充的信息貌似不需要
+        resultMap.put("orderNumber", orderNumber);//自己生成的商户订单号
+
+        //5.二次签名 补充信息给mch_id 前端partnerid
+        Map<String,String> twoMap=new HashMap<String, String>();
+        twoMap.put("appid",resultMap.get("appid"));
+        twoMap.put("partnerid",resultMap.get("mch_id"));
+        twoMap.put("prepayid",resultMap.get("prepay_id"));//第一次发送请求拿到的预支付id
+        twoMap.put("noncestr",resultMap.get("nonce_str"));
+        twoMap.put("timestamp",WXPayUtil.getCurrentTimestamp()+"");//时间戳
+        twoMap.put("package","Sign=WXPay");
+
+        String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
+        twoMap=WXPayUtil.xmlToMap(twoMapStr);
+        System.out.println(twoMap);
+
 
         //统一下单结果
         if (resultMap != null && !resultMap.isEmpty()) {
@@ -79,7 +90,7 @@ public class WXPayService {
             orderDAO.insertPreOrder(orderBO);
         }
 
-        return resultMap;
+        return twoMap;
     }
 
     //充值咖豆  获取支付过后的回调
@@ -93,6 +104,8 @@ public class WXPayService {
         if (return_code.equals("SUCCESS")) {//交易标识
             if (out_trade_no != null) {//商户订单号
                 if (trade_state.equals("SUCCESS")) {//支付成功
+                    //获取到订单信息
+                    OrderBO orderBO = orderDAO.getOrderByOrderNumber(resultMap.get("out_trade_no"));
 
                     //订单表状态修改为yes
                     orderDAO.updOrderStatus(out_trade_no, AliConstants.success.getValue());
@@ -100,12 +113,12 @@ public class WXPayService {
                     //修改剩余咖豆数量
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("currency", resultMap.get("attach"));
-                    map.put("id",resultMap.get("openid"));
+                    map.put("id",orderBO.getUserId());
                     userDAO.updateUserAugment(map);
 
                     //记录表添加记录
                     RecordBO recordBO=new RecordBO();
-                    recordBO.setUserId(new Integer(resultMap.get("openid")));
+                    recordBO.setUserId(orderBO.getUserId());
                     recordBO.setSource("咖豆");
                     recordBO.setStatus("增加");
                     recordBO.setSpecificAmount(new Integer(resultMap.get("attach")));
