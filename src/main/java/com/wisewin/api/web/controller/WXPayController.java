@@ -34,10 +34,11 @@ public class WXPayController extends BaseCotroller {
     //获取预订单信息
     //需要传入 价格 订单类型:购买/充值 商品名称
     @RequestMapping("/unifiedOrder")
-    public void unifiedOrder(HttpServletRequest request, HttpServletResponse response, OrderBO orderBO) throws Exception {
+    public void unifiedOrder(HttpServletRequest request, HttpServletResponse response,BigDecimal price,Integer currency) throws Exception {
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
+
         if (id == null) {
             //用户登陆过期
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
@@ -46,14 +47,13 @@ public class WXPayController extends BaseCotroller {
         }
 
         //判断参数
-        if (orderBO==null||orderBO.getPrice() == null || orderBO.getOrderType()==null || orderBO.getProductName()==null || orderBO.getPrice() .equals("")||orderBO.getOrderType().equals("")||orderBO.getProductName().equals("")) {
+        if (currency==null||price == null || currency.equals("")||price.equals("")) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
-        orderBO.setUserId(id);
-        Map<String,String> resultMap=wxPayService.getUnifiedOrder(orderBO);
+        Map<String,String> resultMap=wxPayService.getUnifiedOrder(id,currency,price);
 
         //统一下单结果
         if (resultMap!=null&&!resultMap.isEmpty()) {
@@ -66,8 +66,8 @@ public class WXPayController extends BaseCotroller {
 
     @RequestMapping("/orderResult")
     public void orderResult(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        Map<String,String> resultMap=wxPayService.getOrderResult(request);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
+        //Map<String,String> resultMap=wxPayService.getOrderResult(request);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
         super.safeJsonPrint(response, json);
     }
 

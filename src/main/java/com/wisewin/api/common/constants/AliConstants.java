@@ -9,8 +9,8 @@ public enum AliConstants {
      * 订单表里的订单是否成功 SUCCESS/no
      * @param value
      */
-    /*订单成功*/Theorder("SUCCESS"),
-    /*未支付*/Didnotpay("NOTPAY");
+    /*订单成功*/Theorder("yes"),
+    /*未支付*/Didnotpay("no");
 
     private AliConstants(String value) {
         this.value = value;

@@ -79,10 +79,15 @@
         (#{userId},#{price},#{orderNumber},#{orderType},#{status},#{productName},now())
     </insert>
 
+    <!--订单支付成功-->
     <update id="updOrderStatus" parameterType="java.lang.String">
-        update
+        update lt_order set status=#{status} where order_number=#{orderNumber}
     </update>
 
+    <!--查询单条订单-->
+    <select id="getOrderByOrderNumber" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.OrderBO">
+        select * from lt_order where order_number=#{orderNumber}
+    </select>
 
 
 

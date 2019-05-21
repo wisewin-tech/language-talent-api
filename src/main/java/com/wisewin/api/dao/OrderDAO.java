@@ -29,7 +29,12 @@ public interface OrderDAO {
     /**
      * 修改订单状态为成功
      */
-    Integer updOrderStatus(String orderNumber);
+    Integer updOrderStatus(String orderNumber,String status);
+
+    /**
+     * 查询一条订单信息
+     */
+    OrderBO getOrderByOrderNumber(String orderNumber);
 
 
 
