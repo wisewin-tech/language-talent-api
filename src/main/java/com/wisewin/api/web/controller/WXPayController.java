@@ -57,6 +57,7 @@ public class WXPayController extends BaseCotroller {
 
         //统一下单结果
         if (resultMap!=null&&!resultMap.isEmpty()) {
+            System.out.println(resultMap);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
             super.safeJsonPrint(response, json);
             return;
@@ -65,8 +66,8 @@ public class WXPayController extends BaseCotroller {
     }
 
     @RequestMapping("/orderResult")
-    public void orderResult(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        //Map<String,String> resultMap=wxPayService.getOrderResult(request);
+    public void orderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Map<String,String> resultMap=wxPayService.getOrderResult(request);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
         super.safeJsonPrint(response, json);
     }

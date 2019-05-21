@@ -2,8 +2,10 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.common.constants.AliConstants;
 import com.wisewin.api.dao.OrderDAO;
+import com.wisewin.api.dao.RecordDAO;
 import com.wisewin.api.dao.UserDAO;
 import com.wisewin.api.entity.bo.OrderBO;
+import com.wisewin.api.entity.bo.RecordBO;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.wxUtil.WXMsg;
 import com.wisewin.api.util.wxUtil.WXPayUtil;
@@ -28,7 +30,10 @@ public class WXPayService {
     @Resource
     UserDAO userDAO;
 
-    //获取预支付下单结果
+    @Resource
+    RecordDAO recordDAO;
+
+    //充值咖豆  获取预支付下单结果
     public Map<String, String> getUnifiedOrder(Integer id, Integer currency, BigDecimal price) throws Exception {
         //1.实例化对象
         WXMsg wxMsg = new WXMsg();
@@ -43,6 +48,8 @@ public class WXPayService {
         //2.自定义参数 购买咖豆的数量
         map.put("attach", currency + "");
 
+        //2.用户id
+        map.put("openid",id+"");
         //3.获取包含sign的参数Ma 请求 签名
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
 
@@ -75,8 +82,8 @@ public class WXPayService {
         return resultMap;
     }
 
-    //获取支付过后的回调
-    public void getOrderResult(HttpServletRequest request) throws Exception {
+    //充值咖豆  获取支付过后的回调
+    public Map<String, String> getOrderResult(HttpServletRequest request) throws Exception {
         InputStream inStream = request.getInputStream();
         Map<String, String> resultMap = inStreamToMap(inStream);
         //处理业务逻辑
@@ -93,14 +100,22 @@ public class WXPayService {
                     //修改剩余咖豆数量
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("currency", resultMap.get("attach"));
+                    map.put("id",resultMap.get("openid"));
                     userDAO.updateUserAugment(map);
 
                     //记录表添加记录
+                    RecordBO recordBO=new RecordBO();
+                    recordBO.setUserId(new Integer(resultMap.get("openid")));
+                    recordBO.setSource("咖豆");
+                    recordBO.setStatus("增加");
+                    recordBO.setSpecificAmount(new Integer(resultMap.get("attach")));
+                    recordBO.setDescribe("充值"+resultMap.get("attach")+"咖豆");
+                    recordDAO.insertUserAction(recordBO);
 
                 }
             }
         }
-
+                return resultMap;
     }
 
     //将InputStream转换为Map

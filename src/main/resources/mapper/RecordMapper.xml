@@ -16,7 +16,6 @@
             <if test="specificAmount!=null">`specific_amount`=#{specificAmount},</if>
             <if test="describe!=null">`describe`=#{describe},</if>
             `create_time`=now()
-
         </set>
 
     </insert>
