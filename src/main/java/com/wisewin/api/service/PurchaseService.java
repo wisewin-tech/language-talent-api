@@ -52,11 +52,11 @@ public class PurchaseService {
     /**
      * 获取当前用户信息
      */
-    public UserBO  selectUser(Integer id){
+    public UserBO selectUser(Integer id) {
         return userDAO.selectUser(id);
     }
 
-     /**
+    /**
      * '判断当前用户是否购买当前课程
      * @param userId
      * @param coursesId
@@ -75,36 +75,37 @@ public class PurchaseService {
     /**
      * 查询课程
      */
-    public CourseBO queryCouse(String id){
-      return   courseDAO.selectCourse(id);
+    public CourseBO queryCouse(String id) {
+        return courseDAO.selectCourse(id);
     }
 
     /**
      * 查询语言
      */
-    public LanguageBO queryLanguare(String id){
-      return   languageDAO.selectLanguageG(id);
+    public LanguageBO queryLanguare(String id) {
+        return languageDAO.selectLanguageG(id);
     }
 
 
     /**
-     *  课程购买
-     * @param course  课程
-     * @param user 当前用户
+     * 课程购买
+     *
+     * @param course 课程
+     * @param user   当前用户
      * @return
      */
-    public PruchaseDTO isCourse( CourseBO course , UserBO user){
+    public PruchaseDTO isCourse(CourseBO course, UserBO user) {
         PruchaseDTO pruchase = new PruchaseDTO();
         //获取要购买的课程
 
         //获取特惠开始时间
-        Date dateStart  = DateUtil.getDate(course.getDiscountStartTime());
+        Date dateStart = DateUtil.getDate(course.getDiscountStartTime());
         //获取特惠结束时间
-        Date dateEnd   = DateUtil.getDate(course.getDiscountEndTime());
+        Date dateEnd = DateUtil.getDate(course.getDiscountEndTime());
         //判断是否在特惠时间内
-        boolean falg = belongCalendar(new Date(),dateStart,dateEnd);
+        boolean falg = belongCalendar(new Date(), dateStart, dateEnd);
 
-        StringBuffer  sbf = new StringBuffer();
+        StringBuffer sbf = new StringBuffer();
         sbf.append(course.getForeignName());
         sbf.append(" | ");
         sbf.append(course.getCourseName());
@@ -112,14 +113,14 @@ public class PurchaseService {
         //传入当前用户的咖豆
         pruchase.setUserCurrency(user.getCurrency());
         //是特惠时间
-        if(falg){
+        if (falg) {
             //获取课程优惠价
             pruchase.setCoursePrice(course.getDiscountPrice());
             //判断用户咖豆是否能够买当前课程
-            if(user.getCurrency()>=course.getDiscountPrice()){
+            if (user.getCurrency() >= course.getDiscountPrice()) {
                 pruchase.setState(true);
                 return pruchase;
-            }else{
+            } else {
                 pruchase.setState(false);
                 return pruchase;
             }
@@ -127,10 +128,10 @@ public class PurchaseService {
         //获取课程正常价
         pruchase.setCoursePrice(course.getPrice());
         //判断用户咖豆是否大于等于课程正常价
-        if(user.getCurrency()>=course.getPrice()){
+        if (user.getCurrency() >= course.getPrice()) {
             pruchase.setState(true);
             return pruchase;
-        }else{
+        } else {
             pruchase.setState(false);
             return pruchase;
         }
@@ -145,32 +146,31 @@ public class PurchaseService {
     //判断当前用户的咖豆是否足够购买当前课程
 
     /**
-     *
-     * @param language    语言
-     * @param user  当前用户
+     * @param language 语言
+     * @param user     当前用户
      * @return
      */
-    public PruchaseDTO isLanguage(LanguageBO language,UserBO user){
+    public PruchaseDTO isLanguage(LanguageBO language, UserBO user) {
 
         //获取特惠开始时间
-        Date dateStart  = language.getDiscountStartTime();
+        Date dateStart = language.getDiscountStartTime();
         //获取特惠结束时间
-        Date dateEnd   = language.getDiscountEndTime();
+        Date dateEnd = language.getDiscountEndTime();
         //判断是否在特惠时间内
-        boolean falg = belongCalendar(new Date(),dateStart,dateEnd);
+        boolean falg = belongCalendar(new Date(), dateStart, dateEnd);
         PruchaseDTO pruchase = new PruchaseDTO();
-        pruchase.setTitle( language.getLanguageName());
+        pruchase.setTitle(language.getLanguageName());
         //传入当前用户的咖豆
         pruchase.setUserCurrency(user.getCurrency());
         //是特惠时间
-        if(falg){
+        if (falg) {
             //获取语言优惠价
             pruchase.setCoursePrice(language.getLanguageDiscountPrice());
             //判断用户咖豆是否能够买当前语言
-            if(user.getCurrency()>=language.getLanguageDiscountPrice()){
+            if (user.getCurrency() >= language.getLanguageDiscountPrice()) {
                 pruchase.setState(true);
                 return pruchase;
-            }else{
+            } else {
                 pruchase.setState(false);
                 return pruchase;
             }
@@ -178,10 +178,10 @@ public class PurchaseService {
         //获取语言正常价
         pruchase.setCoursePrice(language.getLanguagePrice());
         //判断用户咖豆是否大于等于语言正常价
-        if(user.getCurrency()>=language.getLanguagePrice()){
+        if (user.getCurrency() >= language.getLanguagePrice()) {
             pruchase.setState(true);
             return pruchase;
-        }else{
+        } else {
             pruchase.setState(false);
             return pruchase;
         }
@@ -190,6 +190,7 @@ public class PurchaseService {
 
     /**
      * 判断时间是否在某一区间内
+     *
      * @param nowTime
      * @param beginTime
      * @param endTime
@@ -215,26 +216,27 @@ public class PurchaseService {
 
     /**
      * 扣减用户咖豆
+     *
      * @param price  价格
      * @param userId 用户id
      */
-    public void  deleteCurrencyCourse(String userId, Integer price){
-        userDAO.updateUserCrrency(userId,price);
+    public void deleteCurrencyCourse(String userId, Integer price) {
+        userDAO.updateUserCrrency(userId, price);
     }
 
 
     /**
      * 插入订单(课程)
      */
-    public void insertOrderCouse(CourseBO course ,String userId,PruchaseDTO pruchase){
+    public void insertOrderCouse(CourseBO course, String userId, PruchaseDTO pruchase) {
 
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
         order.setPrice(new BigDecimal(pruchase.getCoursePrice()));
         //生成订单号
-        IDBuilder idBuilder  =  new IDBuilder(10,10);
-        order.setOrderNumber(idBuilder.nextId()+"");
-        order.setStatus("成功");
+        IDBuilder idBuilder = new IDBuilder(10, 10);
+        order.setOrderNumber(idBuilder.nextId() + "");
+        order.setStatus("yes");
         order.setOrderType("购买");
         order.setProductName(pruchase.getTitle());
 
@@ -254,7 +256,7 @@ public class PurchaseService {
         orderCoursesDAO.insetOrderCourse(orderCourses);
 
         //扣减咖豆
-        deleteCurrencyCourse(userId,pruchase.getCoursePrice());
+        deleteCurrencyCourse(userId, pruchase.getCoursePrice());
 
         //添加用户消费记录
         RecordBO record = new RecordBO();
@@ -268,20 +270,21 @@ public class PurchaseService {
 
     /**
      * 下订单（语言）
+     *
      * @param
      * @return
      */
-    public void insertOrderlanguage(String languageId,String userId,PruchaseDTO pruchase){
+    public void insertOrderlanguage(String languageId, String userId, PruchaseDTO pruchase) {
         //获取购买的语言
-        List<CourseBO> list =  courseDAO.listCousebyLanguage(languageId);
+        List<CourseBO> list = courseDAO.listCousebyLanguage(languageId);
         System.out.println(list);
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
         order.setPrice(new BigDecimal(pruchase.getCoursePrice()));
         //生成订单号
-        IDBuilder idBuilder  =  new IDBuilder(10,10);
-        order.setOrderNumber(idBuilder.nextId()+"");
-        order.setStatus("成功");
+        IDBuilder idBuilder = new IDBuilder(10, 10);
+        order.setOrderNumber(idBuilder.nextId() + "");
+        order.setStatus("yes");
         order.setOrderType("购买");
         order.setProductName(pruchase.getTitle());
         order.setCreateTime(DateUtil.getDateStr(new Date()));
@@ -289,10 +292,10 @@ public class PurchaseService {
         //获取返回的主订单id
         orderDAO.insertOrder(order);
 
-        if(list!=null){
+        if (list != null) {
             List<OrderCoursesBO> lists = new ArrayList<OrderCoursesBO>();
             for (int i = 0; i < list.size(); i++) {
-                CourseBO course  =  list.get(i);
+                CourseBO course = list.get(i);
                 OrderCoursesBO orderCourses = new OrderCoursesBO();
                 orderCourses.setCoursesId(course.getId());
                 orderCourses.setCoursesName(course.getCourseName());
@@ -301,7 +304,7 @@ public class PurchaseService {
                 orderCourses.setCreateTime(new Date());
                 orderCourses.setUpdateTime(new Date());
                 //有效日期
-                Date date1 =  overDate( course.getCourseValidityPeriod()) ;
+                Date date1 = overDate(course.getCourseValidityPeriod());
                 orderCourses.setCourseValidityPeriod(date1);
                 lists.add(orderCourses);
             }
@@ -309,7 +312,7 @@ public class PurchaseService {
         }
 
         //扣减咖豆
-        deleteCurrencyCourse(userId,pruchase.getCoursePrice());
+        deleteCurrencyCourse(userId, pruchase.getCoursePrice());
 
         //添加用户消费记录
         RecordBO record = new RecordBO();
@@ -322,11 +325,10 @@ public class PurchaseService {
     }
 
     //获取到期时间
-    public Date overDate(Integer in){
+    public Date overDate(Integer in) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + in);
         Date today = calendar.getTime();
         return today;
     }
-
 }
