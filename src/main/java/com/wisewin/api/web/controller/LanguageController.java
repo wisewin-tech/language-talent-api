@@ -1,13 +1,8 @@
 package com.wisewin.api.web.controller;
 
-import com.wisewin.api.entity.bo.LanguageBO;
-import com.wisewin.api.entity.bo.LanguageDetailsCourseResultBO;
-import com.wisewin.api.entity.bo.LanguageDetailsResultBO;
-import com.wisewin.api.entity.bo.UserBO;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
-import com.wisewin.api.service.CertificateService;
-import com.wisewin.api.service.LanguageService;
-import com.wisewin.api.service.UserService;
+import com.wisewin.api.service.*;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -28,9 +23,11 @@ public class LanguageController extends BaseCotroller{
     @Resource
     private LanguageService languageService;
     @Resource
-    private CertificateService certificateService;
+    private CourseService courseService;
     @Resource
     private UserService userService;
+    @Resource
+    private OrderService orderService;
 
     /**
      * 语言详情
@@ -45,8 +42,25 @@ public class LanguageController extends BaseCotroller{
             super.safeJsonPrint(response, result);
             return;
         }
+        //获取登录用户信息
+        UserBO userBO = super.getLoginUser(request);
+        Integer userId = userBO.getId();
+
+
         LanguageDetailsResultBO languageBO = languageService.languageDetails(id);
         List<LanguageDetailsCourseResultBO> languageDetailsCourseResultBOS = languageService.languageDetailsCourse(id);
+
+        List<CourseBO> courseBOS = courseService.getCourseIdById(id);
+        for (CourseBO courseBO:courseBOS){
+            Integer courseId = courseBO.getCourseId();
+            String status = orderService.getStatusByCourseId(userId,courseId);
+            if ("yes".equals(status)){
+                languageBO.setBuyOrNot("yes");
+            }else {
+                languageBO.setBuyOrNot("no");
+            }
+        }
+
         Map resultmap = new HashMap();
         resultmap.put("language",languageBO);
         resultmap.put("course",languageDetailsCourseResultBOS);

@@ -3,6 +3,7 @@ package com.wisewin.api.web.controller;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.CourseService;
+import com.wisewin.api.service.OrderService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -21,6 +22,8 @@ import java.util.Map;
 public class CourseController extends BaseCotroller {
     @Resource
     private CourseService courseService;
+    @Resource
+    private OrderService orderService;
 
     @RequestMapping("/courseDetails")
     public void courseDetails(Integer id,HttpServletRequest request, HttpServletResponse response) {
@@ -29,9 +32,13 @@ public class CourseController extends BaseCotroller {
             super.safeJsonPrint(response, result);
             return;
         }
+        UserBO userBO = super.getLoginUser(request);
+        Integer userId = userBO.getId();
         //查看课程详情
         CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
         List<CourseDetailsLevelResultBO> levelBOS= courseService.courseDetailsLevel(id);
+        String status = orderService.getStatusByCourseId(userId,id);
+        courseDetailsResultBO.setBuyOrNOt(status);
         Map map = new HashMap();
         map.put("courseDetailsResultBO",courseDetailsResultBO);
         map.put("CourseDetailsLevelResultBO",levelBOS);

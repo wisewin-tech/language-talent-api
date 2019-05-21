@@ -2,6 +2,8 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.dao.StudyPlanDAO;
 import com.wisewin.api.entity.bo.ChapterBO;
+import com.wisewin.api.entity.bo.LanguageResultBO;
+import com.wisewin.api.entity.bo.LevelBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +21,25 @@ public class StudyPlanService {
      * @param languageId
      * @return
      */
-    public List<ChapterBO> getStudyPlan(Integer languageId){
-        return studyPlanDAO.getStudyPlan(languageId);
+    public List<LevelBO> getStudyPlan(Integer languageId,Integer levelId){
+        return studyPlanDAO.getStudyPlan(languageId,levelId);
+    }
+    /**
+     * 获取首页右侧栏级别列表
+     * @param languageId
+     * @return
+     */
+    public LanguageResultBO getLevelList(Integer languageId){
+        return studyPlanDAO.getLevelList(languageId);
     }
 
-
+    /**
+     * 获取某个级别下的课时数
+     * @param levelId
+     * @return
+     */
+    public Integer getLevelCount(Integer levelId){
+        return studyPlanDAO.getLevelCount(levelId);
+    }
 
 }

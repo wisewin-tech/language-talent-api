@@ -79,11 +79,27 @@
         (#{userId},#{price},#{orderNumber},#{orderType},#{status},#{productName},now())
     </insert>
 
+    <!--订单支付成功-->
     <update id="updOrderStatus" parameterType="java.lang.String">
-        update
+        update lt_order set status=#{status} where order_number=#{orderNumber}
     </update>
 
-
+    <!--查询单条订单-->
+    <select id="getOrderByOrderNumber" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.OrderBO">
+        select * from lt_order where order_number=#{orderNumber}
+    </select>
+    <!--查询某个用户的某个课程是否购买-->
+    <select id="getStatusByCourseId" resultType="java.lang.String">
+        SELECT
+        `or`.`status`
+        FROM
+        lt_order_courses oc
+        LEFT JOIN lt_order `or` ON oc.order_id = `or`.id
+        WHERE
+        oc.user_id = #{userId}
+        AND oc.courses_id = #{courseId}
+        AND NOW() &lt; oc.course_validity_period
+    </select>
 
 
 </mapper>

@@ -27,7 +27,8 @@
 	</sql>
 
     <!--课程详情页课程模块-->
-    <select id="courseDetailsCourse" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.CourseDetailsResultBO">
+    <select id="courseDetailsCourse" parameterType="java.lang.Integer"
+			resultType="com.wisewin.api.entity.bo.CourseDetailsResultBO">
         SELECT
 			`language`.language_name languageName,
 			course.thumbnail_image_url courseThumbnail,
@@ -149,5 +150,13 @@
 	    	lc.id courseId,lc.course_name
 		FROM lt_course lc
 		WHERE lc.hot_or_not = 'yes' AND lc.`status` = 'putaway'
+	</select>
+
+	<!--通过语言id查课程id-->
+	<select id="getCourseIdById" resultType="com.wisewin.api.entity.bo.CourseBO">
+		SELECT co.id courseId
+		FROM lt_course co
+		LEFT JOIN lt_language la ON co.language_id = la.id
+		WHERE la.id = #{languageId}
 	</select>
 </mapper>

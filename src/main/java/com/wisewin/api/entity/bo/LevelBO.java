@@ -3,6 +3,7 @@ package com.wisewin.api.entity.bo;
 import com.wisewin.api.common.base.BaseModel;
 
 import java.util.Date;
+import java.util.List;
 
 public class LevelBO extends BaseModel {
     private Integer id; //级别表
@@ -13,10 +14,14 @@ public class LevelBO extends BaseModel {
     private Integer serialNumber; //序号
     private String medalImageUrl;//勋章图片地址
     private String medalName;//勋章名称
-    private Integer createUserId; //添加人id
-    private Integer updateUserId; //添加人姓名
-    private Date createTime; //创建时间
-    private Date updateTime; //修改时间
+    private String languageName;//语言名称
+    private String ensignImageUrl;//语言国旗图片地址
+    private String courseName;//课程名称
+    private String courseIntro;//课程简介
+    private String thumbnailUrl;//缩略图
+    private Integer languageId;//语言id
+    private List<ChapterResultBO> chapterBOList;
+
 
     public Integer getId() {
         return id;
@@ -82,35 +87,60 @@ public class LevelBO extends BaseModel {
         this.medalName = medalName;
     }
 
-    public Integer getCreateUserId() {
-        return createUserId;
+
+    public String getLanguageName() {
+        return languageName;
     }
 
-    public void setCreateUserId(Integer createUserId) {
-        this.createUserId = createUserId;
+    public void setLanguageName(String languageName) {
+        this.languageName = languageName;
     }
 
-    public Integer getUpdateUserId() {
-        return updateUserId;
+    public String getEnsignImageUrl() {
+        return ensignImageUrl;
     }
 
-    public void setUpdateUserId(Integer updateUserId) {
-        this.updateUserId = updateUserId;
+    public void setEnsignImageUrl(String ensignImageUrl) {
+        this.ensignImageUrl = ensignImageUrl;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getCourseIntro() {
+        return courseIntro;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setCourseIntro(String courseIntro) {
+        this.courseIntro = courseIntro;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public Integer getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(Integer languageId) {
+        this.languageId = languageId;
+    }
+
+    public List<ChapterResultBO> getChapterBOList() {
+        return chapterBOList;
+    }
+
+    public void setChapterBOList(List<ChapterResultBO> chapterBOList) {
+        this.chapterBOList = chapterBOList;
     }
 }

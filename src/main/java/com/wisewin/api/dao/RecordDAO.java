@@ -30,4 +30,5 @@ public interface RecordDAO {
     Integer selectUserRecord(Map<String, Object> map);
     //修改用户表积分咖豆信息
     void updateUser(UserSignBO userBO);
+
 }

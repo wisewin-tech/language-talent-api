@@ -282,7 +282,8 @@ public class UserController extends BaseCotroller {
         mapUser.put("sex", userBO.getSex());
         mapUser.put("mobile", userBO.getMobile());
         mapUser.put("currency", userBO.getCurrency());
-        mapUser.put("career", userBO.getCareer());
+        mapUser.put("occupation", userBO.getOccupation());
+        mapUser.put("interest", userBO.getInterest());
         mapUser.put("integral", userBO.getIntegral());
         mapUser.put("head_portrait_url", userBO.getHeadPortraitUrl());
         //根据需求追加....
