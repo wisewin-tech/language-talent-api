@@ -45,7 +45,7 @@ public class WXPayService {
         //2.获取请求参数
         Map<String, String> map = wxMsg.getWXPayParams(orderNumber, price);
 
-        //2.自定义参数 购买咖豆的数量
+        //2.自定义请求参数 购买咖豆的数量
         map.put("attach", currency + "");
 
         //3.获取包含sign的Map 请求 签名
@@ -55,13 +55,10 @@ public class WXPayService {
         String result = wxMsg.getCodeUrl(mapStr);
         System.out.println(result);
 
-        //结果转为Map
+        //预支付订单信息Map
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
 
-        //补充的信息貌似不需要
-        resultMap.put("orderNumber", orderNumber);//自己生成的商户订单号
-
-        //5.二次签名 补充信息给mch_id 前端partnerid
+        //5.用第一次拿到的prepayid 二次签名
         Map<String,String> twoMap=new HashMap<String, String>();
         twoMap.put("appid",resultMap.get("appid"));
         twoMap.put("partnerid",resultMap.get("mch_id"));
@@ -70,13 +67,14 @@ public class WXPayService {
         twoMap.put("timestamp",WXPayUtil.getCurrentTimestamp()+"");//时间戳
         twoMap.put("package","Sign=WXPay");
 
+        //6.第二次签名
         String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
         twoMap=WXPayUtil.xmlToMap(twoMapStr);
         System.out.println(twoMap);
 
 
         //统一下单结果
-        if (resultMap != null && !resultMap.isEmpty()) {
+        if (twoMap != null && !twoMap.isEmpty()) {
             //实例化订单对象 完成插入订单操作
             OrderBO orderBO = new OrderBO();
             orderBO.setUserId(id);
