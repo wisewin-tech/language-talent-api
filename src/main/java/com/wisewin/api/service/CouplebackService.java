@@ -23,9 +23,9 @@ public class CouplebackService {
      * String pattern; //用户联系
      *  String pictureurl; //图片url
      */
-    public  boolean getaddCpupleback(Integer userid,String content,String contactpattern,String pattern,String pictureurl){
+    public  boolean getaddCpupleback(Integer userid,String content){
 
-        CouplebackBO couplebackBO=new CouplebackBO(userid,content,contactpattern,pattern,pictureurl);
+        CouplebackBO couplebackBO=new CouplebackBO(userid,content);
 
         return  couplebacDAO.addCpupleback(couplebackBO)>0;
 

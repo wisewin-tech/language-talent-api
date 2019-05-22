@@ -19,12 +19,9 @@ public class CouplebackBO extends BaseModel {
 
     public  CouplebackBO(){}
 
-    public CouplebackBO(Integer userid, String content, String contactpattern, String pattern, String pictureurl) {
+    public CouplebackBO(Integer userid, String content) {
         this.userid = userid;
         this.content = content;
-        this.contactpattern = contactpattern;
-        this.pattern = pattern;
-        this.pictureurl = pictureurl;
     }
 
     public String getContactpattern() {
