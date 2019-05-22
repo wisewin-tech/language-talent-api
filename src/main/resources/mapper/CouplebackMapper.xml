@@ -10,14 +10,12 @@
         INSERT  INTO
           lt_coupleback(
           userid,content,
-          contactpattern,pattern,
-          pictureurl,create_time,
-          update_time
+          create_time
+
           )VALUES(
           #{userid},#{content},
-          #{contactpattern},#{pattern},
-          #{pictureurl},now(),
           now()
+
 
           )
     </insert>

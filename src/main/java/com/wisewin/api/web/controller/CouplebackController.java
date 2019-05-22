@@ -38,13 +38,14 @@ public class CouplebackController  extends BaseCotroller {
         //获取当前用户
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
-        if (id==null || param.getContent().equals("") || param.getPattern().equals("")){
+
+        if (id==null || param.getContent().equals("")){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
         //进行添加反馈内容
-        boolean addCpuplebackjson=couplebackService.getaddCpupleback(id,param.getContent(),param.getContactpattern(),param.getPattern(),param.getPictureurl());
+        boolean addCpuplebackjson=couplebackService.getaddCpupleback(id,param.getContent());
         if (addCpuplebackjson){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("反馈成功"));
             super.safeJsonPrint(response, json);
