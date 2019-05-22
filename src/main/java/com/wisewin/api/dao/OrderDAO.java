@@ -36,7 +36,7 @@ public interface OrderDAO {
      */
     OrderBO getOrderByOrderNumber(String orderNumber);
 
-    String getStatusByCourseId(Integer userId,Integer courseId);
+    String getStatusByCourseId(@Param("userId")Integer userId,@Param("courseId")Integer courseId);
 
     /**
      * 查询用户未过期是否购买

@@ -2,6 +2,7 @@ package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.service.OrderService;
 import com.wisewin.api.service.StudyPlanService;
 import com.wisewin.api.service.UserScoreRecordService;
 import com.wisewin.api.service.UserService;
@@ -24,6 +25,8 @@ public class StudyPlanController extends BaseCotroller {
     private UserScoreRecordService userScoreRecordService;
     @Resource
     private UserService userService;
+    @Resource
+    private OrderService orderService;
 
     @RequestMapping("/getStudyPlan")
     public void studyPlan(Integer levelId, HttpServletRequest request, HttpServletResponse response) {
@@ -52,6 +55,7 @@ public class StudyPlanController extends BaseCotroller {
         if (levelBO==null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO));
             super.safeJsonPrint(response, json);
+            return;
         }
             List<ChapterResultBO> chapterResultBOS = levelBO.getChapterBOList();
             for (ChapterResultBO chapterResultBO : chapterResultBOS) {
@@ -73,10 +77,27 @@ public class StudyPlanController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+        //获取登录对象
+        UserBO userBO = super.getLoginUser(request);
+
         LanguageResultBO languageResultBO = studyPlanService.getLevelList(languageId);
+        if (languageResultBO==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(languageResultBO));
+            super.safeJsonPrint(response, json);
+            return;
+        }
         List<CourseResultBO> courseResultBOS = languageResultBO.getCourseList();
         for (CourseResultBO courseResultBO:courseResultBOS){
-               List<LevelResultBO> levelResultBOS =  courseResultBO.getLevelList();
+            //获取用户id
+            Integer userId = userBO.getId();
+            Integer courseId = courseResultBO.getCourseId();
+            String status = orderService.getStatusByCourseId(userId,courseId);
+            if ("yes".equals(status)){
+                courseResultBO.setBuyOrNot("yes");
+            }else {
+                courseResultBO.setBuyOrNot("no");
+            }
+            List<LevelResultBO> levelResultBOS =  courseResultBO.getLevelList();
                for (LevelResultBO levelResultBO:levelResultBOS){
                    Integer i = studyPlanService.getLevelCount(levelResultBO.getLevelId());
                    levelResultBO.setChapterCount(i);
