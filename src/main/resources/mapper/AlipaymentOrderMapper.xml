@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.api.dao.AlipaymentOrderDAO">
+
+ <select id="selectByOutTradeNo" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.AlipaymentOrder">
+    SELECT * FROM lt_alipay WHERE trade_no = #{outTradeNo};
+ </select>
+
+    <insert id="insetAlipaymentOrder" parameterType="com.wisewin.api.entity.bo.AlipaymentOrder">
+        INSERT INTO language_talent.lt_alipay
+        (
+        out_trade_no,
+        trade_no,
+        trade_status,
+        out_request_no,
+        refund_amount,
+        refund_fee,
+        bill_type,
+        bill_date,
+        bill_download_url,
+        app_id,
+        method,
+        `charset`,
+        sign_type,
+        `sign`,
+        `timestamp`,
+        `version`,
+        biz_content,
+        `code`,
+        msg,
+        total_amount,
+        receipt_amount
+        )
+        VALUES
+        (
+        #{outTradeNo},
+        #{tradeNo},
+        #{tradeStatus},
+        #{outRequestNo},
+        #{refundAmount},
+        #{refundFee},
+        #{billType},
+        #{billDate},
+        #{billDownloadUrl},
+        #{appId},
+        #{method},
+        #{charset},
+        #{signType},
+        #{sign},
+        #{timestamp},
+        #{version},
+        #{bizContent},
+        #{code},
+        #{msg},
+        #{totalAmount},
+        #{receiptAmount}
+        );
+    </insert>
+</mapper>
