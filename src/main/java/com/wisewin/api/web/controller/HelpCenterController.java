@@ -40,7 +40,7 @@ public class HelpCenterController extends BaseCotroller {
     @RequestMapping("/getparticulars")
     public void getparticulars(Integer id, HttpServletRequest request, HttpServletResponse response) {
         //参数验证
-        if (StringUtils.isEmpty(String.valueOf(id))) {
+        if (id==null) {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);
             return;
