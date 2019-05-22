@@ -29,7 +29,7 @@ public interface OrderDAO {
     /**
      * 修改订单状态为成功
      */
-    Integer updOrderStatus(String orderNumber,String status);
+    Integer updOrderStatus(@Param("orderNumber") String orderNumber,@Param("status") String status);
 
     /**
      * 获取订单信息

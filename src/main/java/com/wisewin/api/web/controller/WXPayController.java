@@ -67,6 +67,13 @@ public class WXPayController extends BaseCotroller {
 
     @RequestMapping("/orderResult")
     public void orderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        //测试
+//        Map<String,String> map=new HashMap<String, String>();
+//        map.put("return_code","SUCCESS");
+//        map.put("out_trade_no","580749871235244032");
+//        map.put("trade_state","SUCCESS");
+//        map.put("attach","66");
+        //
         Map<String,String> resultMap=wxPayService.getOrderResult(request);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
         super.safeJsonPrint(response, json);

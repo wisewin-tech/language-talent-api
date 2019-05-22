@@ -80,7 +80,7 @@
     </insert>
 
     <!--订单支付成功-->
-    <update id="updOrderStatus" parameterType="java.lang.String">
+    <update id="updOrderStatus">
         update lt_order set status=#{status} where order_number=#{orderNumber}
     </update>
 

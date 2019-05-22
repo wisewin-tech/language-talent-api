@@ -95,8 +95,18 @@ public class WXPayService {
 
     //充值咖豆  获取支付过后的回调
     public Map<String, String> getOrderResult(HttpServletRequest request) throws Exception {
+        //接受微信回调参数
         InputStream inStream = request.getInputStream();
+        //转换为map
         Map<String, String> resultMap = inStreamToMap(inStream);
+
+        //测试
+        System.out.println(resultMap.get("return_code"));
+        System.out.println(resultMap.get("out_trade_no"));
+        System.out.println(resultMap.get("trade_state"));
+        System.out.println(resultMap.get("attach"));
+
+
         //处理业务逻辑
         String return_code = resultMap.get("return_code");//状态
         String out_trade_no = resultMap.get("out_trade_no");//商户订单号
