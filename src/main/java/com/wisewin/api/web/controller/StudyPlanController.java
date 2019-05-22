@@ -49,16 +49,19 @@ public class StudyPlanController extends BaseCotroller {
         }
         //根据语言id查找课时内容
         LevelBO levelBO = studyPlanService.getStudyPlan(languageId, levelId);
-
+        if (levelBO==null) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO));
+            super.safeJsonPrint(response, json);
+        }
             List<ChapterResultBO> chapterResultBOS = levelBO.getChapterBOList();
             for (ChapterResultBO chapterResultBO : chapterResultBOS) {
                 Integer chapterId = chapterResultBO.getChapterId();
                 Integer score = userScoreRecordService.getScore(userId, chapterId);
                 chapterResultBO.setScore(score);
 
-        }
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO));
-        super.safeJsonPrint(response, json);
+            }
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO));
+            super.safeJsonPrint(response, json);
 
 
     }
