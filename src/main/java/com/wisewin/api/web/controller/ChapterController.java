@@ -40,6 +40,12 @@ public class ChapterController extends BaseCotroller {
         super.safeJsonPrint(response, result);
     }
 
+    /**
+     * 课时详情
+     * @param id
+     * @param request
+     * @param response
+     */
     @RequestMapping("/chapterDetails")
     public void chapterDetails(Integer id, HttpServletRequest request, HttpServletResponse response) {
         //参数验证

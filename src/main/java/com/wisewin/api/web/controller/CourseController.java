@@ -25,6 +25,12 @@ public class CourseController extends BaseCotroller {
     @Resource
     private OrderService orderService;
 
+    /**
+     * 课程详情
+     * @param id
+     * @param request
+     * @param response
+     */
     @RequestMapping("/courseDetails")
     public void courseDetails(Integer id,HttpServletRequest request, HttpServletResponse response) {
         if (id==null){
@@ -51,6 +57,12 @@ public class CourseController extends BaseCotroller {
 
     }
 
+    /**
+     * 课程搜索
+     * @param languageName
+     * @param request
+     * @param response
+     */
     @RequestMapping("/courseSearch")
     public void courseSearch(String languageName, HttpServletRequest request, HttpServletResponse response){
         //验证参数

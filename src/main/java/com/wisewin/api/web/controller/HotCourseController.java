@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/hotCourse")
-public class HotCourseControlle extends BaseCotroller{
+public class HotCourseController extends BaseCotroller{
     @Resource
     private CourseService courseService;
 

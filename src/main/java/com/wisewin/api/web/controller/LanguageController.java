@@ -91,6 +91,13 @@ public class LanguageController extends BaseCotroller{
         super.safeJsonPrint(response, result);
 
     }
+
+    /**
+     * 修改正在学习的语言id
+     * @param studyingLanguageId
+     * @param request
+     * @param response
+     */
     @RequestMapping("/updateStudyingLanguage")
     public void updateStudyingLanguage(Integer studyingLanguageId,HttpServletRequest request,HttpServletResponse response){
         if (studyingLanguageId==null){

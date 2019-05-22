@@ -28,6 +28,12 @@ public class StudyPlanController extends BaseCotroller {
     @Resource
     private OrderService orderService;
 
+    /**
+     * 获取学习计划
+     * @param levelId 级别id
+     * @param request
+     * @param response
+     */
     @RequestMapping("/getStudyPlan")
     public void studyPlan(Integer levelId, HttpServletRequest request, HttpServletResponse response) {
         if (levelId == null) {
@@ -70,6 +76,12 @@ public class StudyPlanController extends BaseCotroller {
 
     }
 
+    /**
+     * 学习计划右侧边栏获取语言下的级别列表
+     * @param languageId 语言id
+     * @param request
+     * @param response
+     */
     @RequestMapping("/getLevelList")
     public void getLevelList(Integer languageId,HttpServletRequest request,HttpServletResponse response){
         if (languageId==null){

@@ -35,6 +35,11 @@ public class IndexController extends BaseCotroller {
     @Resource
     private SpecialClassService specialClassService;
 
+    /**
+     * 首页展示
+     * @param request
+     * @param response
+     */
     @RequestMapping("/showIndex")
     public void showIndex(HttpServletRequest request, HttpServletResponse response){
         Integer useId = super.getId(request);
