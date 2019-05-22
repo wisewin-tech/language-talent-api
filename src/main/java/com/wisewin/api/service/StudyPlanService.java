@@ -21,7 +21,7 @@ public class StudyPlanService {
      * @param languageId
      * @return
      */
-    public List<LevelBO> getStudyPlan(Integer languageId,Integer levelId){
+    public LevelBO getStudyPlan(Integer languageId,Integer levelId){
         return studyPlanDAO.getStudyPlan(languageId,levelId);
     }
     /**
