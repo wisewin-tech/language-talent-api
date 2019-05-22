@@ -57,4 +57,13 @@
 	    `level`.id = #{levelId}
     </select>
 
+
+    <!--获取课程id通过课时id-->
+    <select id="getSourceId"  parameterType="java.lang.Integer"  resultType="java.lang.Integer"  >
+        SELECT te.id FROM lt_chapter tr LEFT JOIN lt_level  ll  ON ll.id=tr.level_id
+        LEFT JOIN lt_clause  te  ON  te.id=ll.course_id
+        WHERE  tr.id=#{chapterId}
+    </select>
+
+
 </mapper>

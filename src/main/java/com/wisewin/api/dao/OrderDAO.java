@@ -38,5 +38,11 @@ public interface OrderDAO {
 
     String getStatusByCourseId(Integer userId,Integer courseId);
 
-
+    /**
+     * 查询用户未过期是否购买
+     * @param userId
+     * @param course
+     * @return
+     */
+    int queryOrderCount(@Param("userId") Integer userId,@Param("courseId")Integer course);
 }

@@ -102,4 +102,9 @@
     </select>
 
 
+    <!--查询是否购买该课程-->
+    <select id="queryOrderCount" resultType="int" >
+        SELECT count(tr.id) FROM lt_order  tr LEFT JOIN lt_order_courses  ts ON ts.order_id = tr.id
+        WHERE  ts.course_validity_period >= now()  AND  tr.user_id=#{userId} AND tr.`status`='yes'  AND ts.courses_id=#{courseId}
+    </select>
 </mapper>

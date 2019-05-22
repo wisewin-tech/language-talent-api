@@ -49,4 +49,13 @@ public class ChapterService {
     public List<ChapterBO> getChapterCatalogue(Integer levelId){
         return chapterDAO.getChapterCatalogue(levelId);
     }
+
+    /**
+     * 获取课程id
+     * @Pram chapterId
+     */
+    public Integer getSourceId(Integer chapterId){
+        return chapterDAO.getSourceId(chapterId);
+    }
+
 }

@@ -13,6 +13,8 @@ import java.util.Map;
 public class OrderService {
     @Resource
     private OrderDAO orderDAO;
+    @Resource
+    private ChapterService  chapterService;
     /**
      * 查询我的交易记录(包括订单,充值)
      * @param map
@@ -33,4 +35,21 @@ public class OrderService {
     public String getStatusByCourseId (@Param("userId") Integer userId, @Param("courseId") Integer courseId){
         return orderDAO.getStatusByCourseId(userId,courseId);
     }
+
+
+    /**
+     * 查询课时是否能观看
+     * @param userId 用户id
+     * @param hourId 课时id
+     * @return
+     */
+    public boolean isItWatch(Integer userId,Integer hourId){
+        //查询课时所在的课程id
+        Integer course=chapterService.getSourceId(hourId);
+        //查询订单
+        return  orderDAO.queryOrderCount(userId,course)>0;
+    }
+
+
+
 }

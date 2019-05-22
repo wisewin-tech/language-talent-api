@@ -35,4 +35,10 @@ public interface ChapterDAO {
     List<ChapterBO> getChapterCatalogue(Integer levelId);
 
 
+    /**
+     * 通过课时id查询课程id
+     * @param chapterId
+     * @return
+     */
+    Integer getSourceId(Integer chapterId);
 }
