@@ -1,6 +1,5 @@
 package com.wisewin.api.entity.dto;
 
-
 import com.wisewin.api.common.base.BaseModel;
 
 import java.util.Date;
