@@ -31,21 +31,21 @@
         update lt_user
         <set>
 
-            <if test="nickname!=null">         nickname=#{nickname},</if>
-            <if test="password!=null">         password=#{password},</if>
-            <if test="sex!=null">              sex=#{sex},</if>
-            <if test="ageGroup!=null">         age_group=#{ageGroup},</if>
-            <if test="learningGoal!=null">     learning_goal=#{learningGoal},</if>
-            <if test="birthday!=null">         birthday=#{birthday}</if>
-            <if test="headPortraitUrl!=null">  head_portrait_url=#{headPortraitUrl}</if>
-            <if test="occupation!=null">  occupation=#{occupation}</if>
-            <if test="interest!=null">  interest=#{interest}</if>
-            <if test="qqOpenid!=null">  qq_openid=#{wxOpenid}</if>
-            <if test="wxOpenid!=null">  wx_openid=#{wxOpenid}</if>
+            <if test="nickname!=null and nickname!=''">         nickname=#{nickname},</if>
+            <if test="password!=null and password!=''">         password=#{password},</if>
+            <if test="sex!=null and sex!=''">              sex=#{sex},</if>
+            <if test="ageGroup!=null and ageGroup!=''">         age_group=#{ageGroup},</if>
+            <if test="learningGoal!=null and learningGoal!=''">     learning_goal=#{learningGoal},</if>
+            <if test="birthday!=null and birthday!=''">         birthday=#{birthday},</if>
+            <if test="headPortraitUrl!=null and headPortraitUrl!=''">  head_portrait_url=#{headPortraitUrl},</if>
+            <if test="occupation!=null and occupation!=''">  occupation=#{occupation},</if>
+            <if test="interest!=null and interest!=''">  interest=#{interest},</if>
+            <if test="qqOpenid!=null and qqOpenid!=''">  qq_openid=#{qqOpenid},</if>
+            <if test="wxOpenid!=null and wxOpenid!=''">  wx_openid=#{wxOpenid},</if>
 
         </set>
         where
-        id=#{id}
+        id=5
     </update>
     <!--通过id查找用户信息-->
     <select id="selectAllById" resultType="com.wisewin.api.entity.bo.UserBO">

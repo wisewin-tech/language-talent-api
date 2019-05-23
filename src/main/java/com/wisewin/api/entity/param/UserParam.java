@@ -1,5 +1,7 @@
 package com.wisewin.api.entity.param;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -18,6 +20,7 @@ public class UserParam {
     private String occupation; //职业
     private String interest; //兴趣
     private String sex; //性别
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday; //生日
     private String source; //个人/企业
     private Integer integral; //积分
