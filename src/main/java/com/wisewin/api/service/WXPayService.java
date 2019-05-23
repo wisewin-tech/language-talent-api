@@ -6,6 +6,7 @@ import com.wisewin.api.dao.RecordDAO;
 import com.wisewin.api.dao.UserDAO;
 import com.wisewin.api.entity.bo.OrderBO;
 import com.wisewin.api.entity.bo.RecordBO;
+import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.wxUtil.WXMsg;
 import com.wisewin.api.util.wxUtil.WXPayUtil;
@@ -33,8 +34,8 @@ public class WXPayService {
     @Resource
     RecordDAO recordDAO;
 
-    //充值咖豆  获取预支付下单结果
-    public Map<String, String> getUnifiedOrder(Integer id, Integer currency, BigDecimal price) throws Exception {
+    //预支付下单
+    public Map<String, String> getUnifiedOrder(OrderParam orderParam) throws Exception {
         //1.实例化对象
         WXMsg wxMsg = new WXMsg();
 
@@ -42,13 +43,28 @@ public class WXPayService {
         IDBuilder idBuilder = new IDBuilder(10, 10);
         String orderNumber = idBuilder.nextId() + "";
 
-        //2.获取请求参数
-        Map<String, String> map = wxMsg.getWXPayParams(orderNumber, price);
+        //3.获取请求参数
+        Map<String, String> map = wxMsg.getWXPayParams(orderNumber, orderParam.getPrice());
 
-        //2.自定义请求参数 购买咖豆的数量
-        map.put("attach", currency + "");
+        //判断购买类型 添加后续请求参数
+        if(orderParam.getProductType().equals("咖豆")){
+            //自定义请求参数 购买咖豆的数量
+            map.put("attach", orderParam.getCurrency() + "");
+            //回调地址
+            map.put("notify_url",WXConfig.NOTIFY_URL_CURRENCY);
+        }else if(orderParam.getProductType().equals("课程")){
+            //自定义请求参数 购买咖豆的数量
+            map.put("attach", orderParam.getCourseId() + "");
+            //回调地址
+            map.put("notify_url",WXConfig.NOTIFY_URL_COURSE);
+        }else if(orderParam.getProductType().equals("语言")) {
+            //自定义请求参数 购买咖豆的数量
+            map.put("attach", orderParam.getLanguageId() + "");
+            //回调地址
+            map.put("notify_url",WXConfig.NOTIFY_URL_LANGUAGE);
+        }
 
-        //3.获取包含sign的Map 请求 签名
+        //3.第一次签名
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
 
         //4.发送请求 获取到预支付订单信息
@@ -58,7 +74,7 @@ public class WXPayService {
         //预支付订单信息Map
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
 
-        //5.用第一次拿到的prepayid 二次签名
+        //5.用第一次请求拿到的信息中的prepayid 二次签名
         Map<String,String> twoMap=new HashMap<String, String>();
         twoMap.put("appid",resultMap.get("appid"));
         twoMap.put("partnerid",resultMap.get("mch_id"));
@@ -67,23 +83,27 @@ public class WXPayService {
         twoMap.put("timestamp",WXPayUtil.getCurrentTimestamp()+"");//时间戳
         twoMap.put("package","Sign=WXPay");
 
-        //6.第二次签名
+        //6.第二次签名 把这个签名给安卓拉起支付请求
         String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
         twoMap=WXPayUtil.xmlToMap(twoMapStr);
         System.out.println(twoMap);
 
-
-        //统一下单结果
+        //存入自己的数据库
         if (twoMap != null && !twoMap.isEmpty()) {
             //实例化订单对象 完成插入订单操作
             OrderBO orderBO = new OrderBO();
-            orderBO.setUserId(id);
-            orderBO.setPrice(price);
+            orderBO.setUserId(orderParam.getUserId());
+            orderBO.setPrice(orderParam.getPrice());
             orderBO.setOrderNumber(orderNumber);
-            orderBO.setOrderType("充值");
+            if(orderParam.getProductType().equals("咖豆")){
+                orderBO.setOrderType("充值");
+            }else{
+                orderBO.setOrderType("购买");
+            }
+            orderBO.setProductName(orderParam.getProductName());
             //未支付
             orderBO.setStatus(AliConstants.Didnotpay.getValue());
-            orderBO.setProductName(currency + ".咖豆");
+
             //插入数据库 订单信息
             orderDAO.insertPreOrder(orderBO);
         }

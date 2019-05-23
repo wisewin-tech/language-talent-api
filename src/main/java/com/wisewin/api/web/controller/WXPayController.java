@@ -3,6 +3,7 @@ package com.wisewin.api.web.controller;
 import com.wisewin.api.entity.bo.OrderBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.service.WXPayService;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.JsonUtils;
@@ -34,7 +35,7 @@ public class WXPayController extends BaseCotroller {
     //获取预订单信息
     //需要传入 价格 订单类型:购买/充值 商品名称
     @RequestMapping("/unifiedOrder")
-    public void unifiedOrder(HttpServletRequest request, HttpServletResponse response,BigDecimal price,Integer currency) throws Exception {
+    public void unifiedOrder(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam) throws Exception {
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
@@ -47,13 +48,13 @@ public class WXPayController extends BaseCotroller {
         }
 
         //判断参数
-        if (currency==null||price == null || currency.equals("")||price.equals("")) {
+        if (orderParam.getPrice()==null||orderParam.getProductName()==null||orderParam.getProductType()==null||(orderParam.getCurrency()==null&&orderParam.getCourseId()==null&&orderParam.getLanguageId()==null)) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
-
-        Map<String,String> resultMap=wxPayService.getUnifiedOrder(id,currency,price);
+        orderParam.setUserId(id);
+        Map<String,String> resultMap=wxPayService.getUnifiedOrder(orderParam);
 
         //统一下单结果
         if (resultMap!=null&&!resultMap.isEmpty()) {
@@ -65,8 +66,9 @@ public class WXPayController extends BaseCotroller {
 
     }
 
-    @RequestMapping("/orderResult")
-    public void orderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    //充值咖豆回调
+    @RequestMapping("/currencyOrderResult")
+    public void currencyOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
         //测试
 //        Map<String,String> map=new HashMap<String, String>();
 //        map.put("return_code","SUCCESS");
@@ -78,5 +80,36 @@ public class WXPayController extends BaseCotroller {
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
         super.safeJsonPrint(response, json);
     }
+
+    //购买语言回调
+    @RequestMapping("/languageOrderResult")
+    public void languageOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+//        Map<String,String> map=new HashMap<String, String>();
+//        map.put("return_code","SUCCESS");
+//        map.put("out_trade_no","580749871235244032");
+//        map.put("trade_state","SUCCESS");
+//        map.put("attach","66");
+        //
+        Map<String,String> resultMap=wxPayService.getOrderResult(request);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
+        super.safeJsonPrint(response, json);
+    }
+
+
+    //购买课程回调
+    @RequestMapping("/courseOrderResult")
+    public void courseOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        //测试
+//        Map<String,String> map=new HashMap<String, String>();
+//        map.put("return_code","SUCCESS");
+//        map.put("out_trade_no","580749871235244032");
+//        map.put("trade_state","SUCCESS");
+//        map.put("attach","66");
+        //
+        Map<String,String> resultMap=wxPayService.getOrderResult(request);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
+        super.safeJsonPrint(response, json);
+    }
+
 
 }

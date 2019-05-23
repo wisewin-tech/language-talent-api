@@ -28,8 +28,14 @@ public class WXConfig {
     //商户号
     public  static String  MCHID_JSAPI;
 
-    //通知地址
-    private static String  NOTIFY_URL;
+    //咖豆通知地址
+    public static String  NOTIFY_URL_CURRENCY;
+
+    //语言通知地址
+    public static String  NOTIFY_URL_LANGUAGE;
+
+    //课程通知地址
+    public static String  NOTIFY_URL_COURSE;
 
     //服务器地址
     private static String  SPBILL_CREATE_IP;
@@ -49,7 +55,9 @@ public class WXConfig {
             APPID_JSAPI=prop.getProperty("APPID_JSAPI");
             BODY=prop.getProperty("BODY");
             MCHID_JSAPI=prop.getProperty("MCHID_JSAPI");
-            NOTIFY_URL=prop.getProperty("NOTIFY_URL");
+            NOTIFY_URL_CURRENCY=prop.getProperty("NOTIFY_URL_CURRENCY");
+            NOTIFY_URL_LANGUAGE=prop.getProperty("NOTIFY_URL_LANGUAGE");
+            NOTIFY_URL_COURSE=prop.getProperty("NOTIFY_URL_COURSE");
             SPBILL_CREATE_IP=prop.getProperty("SPBILL_CREATE_IP");
             THE_CERTIFICATE_OF_JSAPI=prop.getProperty("THE_CERTIFICATE_OF_JSAPI");
         } catch (IOException e) {
@@ -66,7 +74,6 @@ public class WXConfig {
         map.put("nonce_str", WXPayUtil.generateNonceStr());//随机字符串
         map.put("body",BODY);//商品描述
         map.put("spbill_create_ip",SPBILL_CREATE_IP);//终端ip地址
-        map.put("notify_url",NOTIFY_URL);//通知地址
         map.put("trade_type","APP");//交易类型
         return  map;
     }
