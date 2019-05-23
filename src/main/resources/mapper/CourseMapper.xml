@@ -154,7 +154,7 @@
 
 	<!--通过语言id查课程id-->
 	<select id="getCourseIdById" resultType="com.wisewin.api.entity.bo.CourseBO">
-		SELECT co.id courseId
+		SELECT co.id courseId,co.certificate_or_not certificateOrNot
 		FROM lt_course co
 		LEFT JOIN lt_language la ON co.language_id = la.id
 		WHERE la.id = #{languageId}

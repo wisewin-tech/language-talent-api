@@ -1,8 +1,10 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.FlashSalesResultBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.pop.SystemConfig;
+import com.wisewin.api.service.CourseService;
 import com.wisewin.api.service.LanguageService;
 import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.JsonUtils;
@@ -21,6 +23,8 @@ import java.util.List;
 public class FlashSalesAllController extends BaseCotroller{
     @Resource
     private LanguageService languageService;
+    @Resource
+    private CourseService courseService;
 
     @RequestMapping("/getAllFlashSales")
     public void getAllFlashSales(HttpServletRequest request, HttpServletResponse response){
@@ -30,7 +34,19 @@ public class FlashSalesAllController extends BaseCotroller{
             flashSalesResultBO.setDiscountTimeRemaining(discountTimeRemaining.toString());
            Long discountStartTime = DateUtils.parseDate(flashSalesResultBO.getDiscountStartTime(),"yyyy-MM-dd HH:mm:ss").getTime();
            flashSalesResultBO.setDiscountStartTime(discountStartTime.toString());
+            List<CourseBO> courseBOS = courseService.getCourseIdById(flashSalesResultBO.getLanguageId());
+            if (courseBOS.size()==0){
+                flashSalesResultBO.setCertificateOrNot("no");
+            }
+            for (CourseBO courseBO:courseBOS){
+                if ("yes".equals(courseBO.getCertificateOrNot())){
+                    flashSalesResultBO.setCertificateOrNot("yes");
+                }
+            }
+
         }
+
+
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(flashSalesResultBOS));
         super.safeJsonPrint(response, result);
     }
