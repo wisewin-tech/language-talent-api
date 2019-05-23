@@ -76,4 +76,7 @@ public interface UserDAO {
 
     //用户充值咖豆
     Integer updateUserAugment(Map<String,Object> map);
+
+    //修改绑定手机号
+    Integer updatePhone(@Param("userId") Integer userId,@Param("phone") String phone);
 }

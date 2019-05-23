@@ -4,12 +4,20 @@ import java.math.BigDecimal;
 
 public class OrderParam {
     private Integer userId;//用户id
-    private BigDecimal price;//价格
     private String productName ;//商品名称
     private String productType ;//商品类型
-    private Integer currency ;//咖豆数量
+    private BigDecimal price;//购买咖豆金额
     private Integer languageId;//语言id
     private Integer courseId;//课程
+    private String orderNumber;//订单号
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -43,13 +51,6 @@ public class OrderParam {
         this.productType = productType;
     }
 
-    public Integer getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Integer currency) {
-        this.currency = currency;
-    }
 
     public Integer getLanguageId() {
         return languageId;

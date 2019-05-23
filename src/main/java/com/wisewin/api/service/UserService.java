@@ -147,4 +147,9 @@ public class UserService {
         return  userDAO.updateUserAugment(map)>0;
     }
 
+    //修改绑定手机号
+    public boolean updatePhone(Integer userId,String phone){
+        return userDAO.updatePhone(userId,phone)>0;
+    }
+
 }

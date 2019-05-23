@@ -48,7 +48,7 @@ public class WXPayController extends BaseCotroller {
         }
 
         //判断参数
-        if (orderParam.getPrice()==null||orderParam.getProductName()==null||orderParam.getProductType()==null||(orderParam.getCurrency()==null&&orderParam.getCourseId()==null&&orderParam.getLanguageId()==null)) {
+        if (orderParam.getProductName()==null||orderParam.getProductType()==null||(orderParam.getPrice()==null&&orderParam.getCourseId()==null&&orderParam.getLanguageId()==null)) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -69,6 +69,12 @@ public class WXPayController extends BaseCotroller {
     //充值咖豆回调
     @RequestMapping("/currencyOrderResult")
     public void currencyOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+
+        Map<String,String> map=new HashMap<String, String>();
+        map.put("return_code","SUCCESS");
+        map.put("out_trade_no","581148304160890880");
+        map.put("trade_state","SUCCESS");
+        map.put("attach","100");
         Map<String,String> resultMap=wxPayService.getOrderResult(request);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("充值成功"));
         super.safeJsonPrint(response, json);
@@ -77,12 +83,12 @@ public class WXPayController extends BaseCotroller {
     //购买语言回调
     @RequestMapping("/languageOrderResult")
     public void languageOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-//        //测试
+        //测试
 //        Map<String,String> map=new HashMap<String, String>();
 //        map.put("return_code","SUCCESS");
-//        map.put("out_trade_no","581115019460386816");
+//        map.put("out_trade_no","581158428850036736");
 //        map.put("trade_state","SUCCESS");
-//        map.put("attach","7");
+//        map.put("attach","1");
         Map<String,String> resultMap=wxPayService.languageOrderResult(request);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
@@ -93,11 +99,11 @@ public class WXPayController extends BaseCotroller {
     @RequestMapping("/courseOrderResult")
     public void courseOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
         //测试
-//        Map<String,String> map=new HashMap<String, String>();
-//        map.put("return_code","SUCCESS");
-//        map.put("out_trade_no","581115019460386816");
-//        map.put("trade_state","SUCCESS");
-//        map.put("attach","1");
+        Map<String,String> map=new HashMap<String, String>();
+        map.put("return_code","SUCCESS");
+        map.put("out_trade_no","581157268286119936");
+        map.put("trade_state","SUCCESS");
+        map.put("attach","1");
 
         Map<String,String> resultMap=wxPayService.courseOrderResult(request);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));

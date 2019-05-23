@@ -149,4 +149,16 @@
         WHERE
           id=#{id}
     </update>
+
+    <!--用户充值咖豆-->
+    <update id="updatePhone">
+        UPDATE
+           lt_user
+        SET
+           mobile=#{phone}
+        WHERE
+          id=#{userId}
+    </update>
+
+
 </mapper>

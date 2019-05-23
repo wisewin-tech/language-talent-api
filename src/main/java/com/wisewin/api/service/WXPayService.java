@@ -2,15 +2,14 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.common.constants.AliConstants;
 import com.wisewin.api.dao.*;
-import com.wisewin.api.entity.bo.CourseBO;
-import com.wisewin.api.entity.bo.OrderBO;
-import com.wisewin.api.entity.bo.OrderCoursesBO;
-import com.wisewin.api.entity.bo.RecordBO;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.wxUtil.WXMsg;
+import com.wisewin.api.util.wxUtil.WXPayRequest;
 import com.wisewin.api.util.wxUtil.WXPayUtil;
 import com.wisewin.api.util.wxUtil.config.WXConfig;
+import com.wisewin.api.util.wxUtil.config.WXRequestConfig;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -40,47 +40,27 @@ public class WXPayService {
     @Resource
     CourseDAO courseDAO;
 
+    @Resource
+    LanguageDAO languageDAO;
+
     //预支付下单
+    //给安卓返回预支付信息调用支付
+    //插入未支付订单
     public Map<String, String> getUnifiedOrder(OrderParam orderParam) throws Exception {
-        //1.实例化对象
-        WXMsg wxMsg = new WXMsg();
-
-        //2.生成订单号
-        IDBuilder idBuilder = new IDBuilder(10, 10);
-        String orderNumber = idBuilder.nextId() + "";
-
-        //3.获取请求参数
-        Map<String, String> map = wxMsg.getWXPayParams(orderNumber, orderParam.getPrice());
-
-        //判断购买类型 添加后续请求参数
-        if(orderParam.getProductType().equals("咖豆")){
-            //自定义请求参数 购买咖豆的数量
-            map.put("attach", orderParam.getCurrency() + "");
-            //回调地址
-            map.put("notify_url",WXConfig.NOTIFY_URL_CURRENCY);
-        }else if(orderParam.getProductType().equals("课程")){
-            //自定义请求参数 购买咖豆的数量
-            map.put("attach", orderParam.getCourseId() + "");
-            //回调地址
-            map.put("notify_url",WXConfig.NOTIFY_URL_COURSE);
-        }else if(orderParam.getProductType().equals("语言")) {
-            //自定义请求参数 购买咖豆的数量
-            map.put("attach", orderParam.getLanguageId() + "");
-            //回调地址
-            map.put("notify_url",WXConfig.NOTIFY_URL_LANGUAGE);
-        }
-
-        //3.第一次签名
+        //1.获取请求参数
+        Map<String, String> map = getWXPayParams(orderParam);
+        map.put("attach", "0.01");
+        //2.第一次签名
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
 
-        //4.发送请求 获取到预支付订单信息
-        String result = wxMsg.getCodeUrl(mapStr);
+        //3.发送请求 获取到预支付信息  partnerid
+        String result = getCodeUrl(mapStr);
         System.out.println(result);
 
         //预支付订单信息Map
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
 
-        //5.用第一次请求拿到的信息中的prepayid 二次签名
+        //4.初始化二次签名信息 用第一次请求拿到的信息中的prepayid
         Map<String,String> twoMap=new HashMap<String, String>();
         twoMap.put("appid",resultMap.get("appid"));
         twoMap.put("partnerid",resultMap.get("mch_id"));
@@ -91,16 +71,17 @@ public class WXPayService {
 
         //6.第二次签名 把这个签名给安卓拉起支付请求
         String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
+        //给前端调用的Map
         twoMap=WXPayUtil.xmlToMap(twoMapStr);
-        System.out.println(twoMap);
+        System.out.println(twoMapStr);
 
         //存入自己的数据库
         if (twoMap != null && !twoMap.isEmpty()) {
             //实例化订单对象 完成插入订单操作
             OrderBO orderBO = new OrderBO();
             orderBO.setUserId(orderParam.getUserId());
-            orderBO.setPrice(orderParam.getPrice());
-            orderBO.setOrderNumber(orderNumber);
+            orderBO.setPrice(new BigDecimal(map.get("total_fee")));
+            orderBO.setOrderNumber(map.get("out_trade_no"));
             if(orderParam.getProductType().equals("咖豆")){
                 orderBO.setOrderType("充值");
             }else{
@@ -109,7 +90,6 @@ public class WXPayService {
             orderBO.setProductName(orderParam.getProductName());
             //未支付
             orderBO.setStatus(AliConstants.Didnotpay.getValue());
-
             //插入数据库 订单信息
             orderDAO.insertPreOrder(orderBO);
         }
@@ -117,7 +97,7 @@ public class WXPayService {
         return twoMap;
     }
 
-    //充值咖豆
+    //充值咖豆回调
     public Map<String, String> getOrderResult(HttpServletRequest request) throws Exception {
         //接受微信回调参数
         InputStream inStream = request.getInputStream();
@@ -163,7 +143,7 @@ public class WXPayService {
                 return resultMap;
     }
 
-    //购买课程
+    //购买课程回调
     public Map<String,String> courseOrderResult(HttpServletRequest request) throws Exception{
         //接受微信回调参数
         InputStream inStream = request.getInputStream();
@@ -183,7 +163,7 @@ public class WXPayService {
                     orderDAO.updOrderStatus(out_trade_no, AliConstants.Theorder.getValue());
 
                     //查询购买的课程信息
-                    CourseBO courseBO=courseDAO.getCurseNameById(new Integer(resultMap.get("attach")));
+                    CourseBO courseBO=courseDAO.getCourseById(new Integer(resultMap.get("attach")));
 
                     //实例化子订单信息
                     OrderCoursesBO orderCoursesBO=new OrderCoursesBO();
@@ -209,7 +189,7 @@ public class WXPayService {
         return resultMap;
     }
 
-    //购买语言
+    //购买语言回调
     public Map<String,String> languageOrderResult(HttpServletRequest request) throws Exception{
         //接受微信回调参数
         InputStream inStream = request.getInputStream();
@@ -229,7 +209,7 @@ public class WXPayService {
                     orderDAO.updOrderStatus(out_trade_no, AliConstants.Theorder.getValue());
 
                     //查询购买的课程信息 因为是购买语言，课程可能有多个
-                    List<CourseBO> courseBOList=courseDAO.getCourseById(new Integer(resultMap.get("attach")));
+                    List<CourseBO> courseBOList=courseDAO.getCoursesById(new Integer(resultMap.get("attach")));
 
                     //添加 订单 子订单表
                     List<OrderCoursesBO> orderCoursesBOList=new ArrayList<OrderCoursesBO>();
@@ -245,19 +225,15 @@ public class WXPayService {
                         Calendar c = Calendar.getInstance();
                         c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
                         orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
-
                         orderCoursesBOList.add(orderCoursesBO);
                     }
 
                     orderCoursesDAO.addCourses(orderCoursesBOList);
-
                 }
             }
         }
         return resultMap;
     }
-
-
 
     //将InputStream转换为Map
     public Map<String, String> inStreamToMap(InputStream inStream) throws Exception {
@@ -279,5 +255,101 @@ public class WXPayService {
 
         }
         return resultMap;
+    }
+
+    //判断是否是优惠时间
+    public boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
+        if (nowTime.getTime() == startTime.getTime()
+                || nowTime.getTime() == endTime.getTime()) {
+            return true;
+        }
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(nowTime);
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startTime);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+
+        if (date.after(begin) && date.before(end)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //生成请求参数的map
+    public Map<String,String> getWXPayParams(OrderParam orderParam) throws ParseException {
+        //生成订单号
+        IDBuilder idBuilder = new IDBuilder(10, 10);
+        String orderNumber = idBuilder.nextId() + "";
+
+        //获取请求参数
+        Map<String, String> map = WXConfig.toMapJSAPI();
+
+        //传入剩余请求参数
+        map.put("out_trade_no",orderNumber);//订单号
+        //判断购买类型 添加后续请求参数
+        if(orderParam.getProductType().equals("咖豆")){
+            map.put("total_fee",orderParam.getPrice()+"");//订单价格
+            //自定义请求参数 购买咖豆的数量
+            map.put("attach", "100");//！！！！！！！！！！！
+            //回调地址
+            map.put("notify_url",WXConfig.NOTIFY_URL_CURRENCY);
+        }else if(orderParam.getProductType().equals("课程")){
+            //自定义请求参数 课程id
+            map.put("attach", orderParam.getCourseId() + "");
+            //要购买的课程
+            CourseBO courseBO = courseDAO.getCourseById(orderParam.getCourseId());
+            //当前时间
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            //判断是否是优惠时间
+            boolean bool=isEffectiveDate(df.parse((df.format(new Date()))),df.parse(courseBO.getDiscountStartTime()),df.parse(courseBO.getDiscountEndTime()));
+            //价格
+            if(bool){
+                //自定义请求参数 价格
+                map.put("total_fee",courseBO.getDiscountPrice()+"");
+            }else{
+                //自定义请求参数 价格
+                map.put("total_fee",courseBO.getPrice()+"");
+            }
+
+            //回调地址
+            map.put("notify_url",WXConfig.NOTIFY_URL_COURSE);
+        }else if(orderParam.getProductType().equals("语言")) {
+            //自定义请求参数 语言id
+            map.put("attach", orderParam.getLanguageId() + "");
+            //要购买的语言
+            LanguageBO languageBO = languageDAO.selectLanguageG(orderParam.getLanguageId()+"");
+            //当前时间
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            //判断是否是优惠时间
+            boolean bool=isEffectiveDate(df.parse(df.format(new Date())),languageBO.getDiscountStartTime(),languageBO.getDiscountEndTime());
+            //价格
+            if(bool){
+                //自定义请求参数 价格
+                map.put("total_fee",languageBO.getLanguageDiscountPrice()+"");
+            }else{
+                //自定义请求参数 价格
+                map.put("total_fee",languageBO.getLanguagePrice()+"");
+            }
+            //回调地址
+            map.put("notify_url",WXConfig.NOTIFY_URL_LANGUAGE);
+        }
+        return map;
+
+    }
+
+    //请求统一下单
+    public String getCodeUrl(String mapStr) throws Exception {
+        WXRequestConfig wxPayConfig=new WXRequestConfig();
+        WXPayRequest wxPayRequest=new WXPayRequest(wxPayConfig);
+        //方法形参中需要带个uuid 不清楚干啥的随机生成了
+        UUID uuid = UUID.randomUUID();
+        String uuidStr = uuid.toString();
+        String resultXml = wxPayRequest.requestWithoutCert(WXConfig.PLACE_AN_ORDERAPI,uuidStr,mapStr,false);
+        return resultXml;
     }
 }

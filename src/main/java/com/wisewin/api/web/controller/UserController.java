@@ -135,15 +135,47 @@ public class UserController extends BaseCotroller {
     }
 
 
+    /**
+     * 手机号验证通过,对比用户验证码,修改绑定手机号
+     * @param phone
+     * @param verify 用户验证码
+     */
+    @RequestMapping("/updatePhone")
+    public void updatePhone(String phone,String verify,HttpServletResponse response,HttpServletRequest request) {
+        //手机号非空+格式判断
+        this.phoneFormt(phone,response);
+        //用户传参非空判断
+        if (StringUtils.isEmpty(verify)) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        //获取Redis中的用户验证码
+        String mobileAuthCode =  RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
+        System.out.println(mobileAuthCode);
+        if(verify.equals(mobileAuthCode)) {
+            //获取当前登陆用户
+            UserBO loginUser = super.getLoginUser(request);
+            Integer id = loginUser.getId();
+            boolean bool=userService.updatePhone(id,phone);
+            if(bool){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+                super.safeJsonPrint(response, json);
+            }
 
+        }else{
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000011"));
+            super.safeJsonPrint(response, json);
+        }
 
+    }
 
     /**
+     *
      * 手机号验证通过,对比用户验证码,登录或添加用户信息
      * @param phone
      * @param verify 用户验证码
      */
-    //用户注册或者登录
     @RequestMapping("/register")
     public void register(String phone,String verify,HttpServletResponse response,HttpServletRequest request){
         //手机号非空+格式判断
