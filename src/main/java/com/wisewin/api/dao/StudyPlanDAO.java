@@ -17,6 +17,13 @@ public interface StudyPlanDAO {
     LevelBO getStudyPlan(@Param("languageId") Integer languageId,@Param("levelId") Integer levelId);
 
     /**
+     * 当levelId为0时的学习计划
+     * @param languageId
+     * @return
+     */
+    LevelBO getStudyPlan1(@Param("languageId") Integer languageId);
+
+    /**
      * 获取首页右侧栏级别列表
      * @param languageId
      * @return

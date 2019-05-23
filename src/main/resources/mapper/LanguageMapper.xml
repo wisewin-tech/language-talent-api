@@ -17,6 +17,7 @@
     <!--限时特惠-->
     <select id="getFlashSales" resultType="com.wisewin.api.entity.bo.FlashSalesResultBO">
        SELECT
+       `language`.id languageId,
 	    `language`.thumbnail_image_url,
 	    `language`.language_name,
 	    `language`.language_intro,

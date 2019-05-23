@@ -4,6 +4,7 @@ import com.wisewin.api.dao.StudyPlanDAO;
 import com.wisewin.api.entity.bo.ChapterBO;
 import com.wisewin.api.entity.bo.LanguageResultBO;
 import com.wisewin.api.entity.bo.LevelBO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,14 @@ public class StudyPlanService {
      */
     public LevelBO getStudyPlan(Integer languageId,Integer levelId){
         return studyPlanDAO.getStudyPlan(languageId,levelId);
+    }
+    /**
+     * 当levelId为0时的学习计划
+     * @param languageId
+     * @return
+     */
+    public LevelBO getStudyPlan1( Integer languageId){
+        return studyPlanDAO.getStudyPlan1(languageId);
     }
     /**
      * 获取首页右侧栏级别列表

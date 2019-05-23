@@ -3,6 +3,7 @@ package com.wisewin.api.entity.bo;
 import com.wisewin.api.entity.bo.common.base.BaseModel;
 
 public class FlashSalesResultBO extends BaseModel{
+    private Integer languageId;//语言id
     private String thumbnailImageUrl; //缩略图
     private String languageName; //语言名称
     private String languageIntro; //语言简介
@@ -12,6 +13,14 @@ public class FlashSalesResultBO extends BaseModel{
     private String discountEndTime; //特惠结束时间
     private String discountTimeRemaining;//特惠剩余时间
     private String certificateOrNot;//是否可以考证
+
+    public Integer getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(Integer languageId) {
+        this.languageId = languageId;
+    }
 
     public String getThumbnailImageUrl() {
         return thumbnailImageUrl;
