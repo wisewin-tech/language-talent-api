@@ -45,7 +45,7 @@
 
         </set>
         where
-        id=5
+          id=#{id}
     </update>
     <!--通过id查找用户信息-->
     <select id="selectAllById" resultType="com.wisewin.api.entity.bo.UserBO">
