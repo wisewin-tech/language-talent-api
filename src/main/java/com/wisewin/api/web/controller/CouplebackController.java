@@ -29,9 +29,6 @@ public class CouplebackController  extends BaseCotroller {
      * 添加反馈信息
      *  Integer userid; //用户id
      * String content; //反馈内容
-     *  String contactpattern; //用户联系方式
-     * String pattern; //用户联系
-     *  String pictureurl; //图片url
      */
     @RequestMapping("/addCpupleback")
     public void addCpupleback(HttpServletRequest request, HttpServletResponse response, CouplebackParam param){

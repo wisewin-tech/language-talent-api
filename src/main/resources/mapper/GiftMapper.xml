@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 礼品卡兑换 -->
+<mapper namespace="com.wisewin.api.dao.GiftDAO">
+
+    <!--根据礼品卡兑换码查询-->
+    <select id="queryGift" resultType="com.wisewin.api.entity.bo.GiftBO">
+        SELECT
+          id,
+          `value`,exchangeyard,
+          starttime,finishtime,
+          cause,status
+        FROM
+          lt_gift
+        WHERE
+          exchangeyard=#{exchangeyard}
+    </select>
+
+    <!--添加礼品卡兑换码兑换记录-->
+    <insert id="addGiftrecord" parameterType="com.wisewin.api.entity.bo.GiftRecordBO">
+
+        INSERT  INTO
+          lt_giftrecord(
+              gift_id,user_id,
+              gr_releasetime,
+              exchangevalue,
+              create_time
+         )VALUES (
+              #{giftid},#{userid},
+              now(),#{exchangevalue},
+              now()
+         )
+
+    </insert>
+
+    <!--修改礼品卡状态-->
+    <update id="updateGift" parameterType="java.util.Map">
+        UPDATE
+          lt_gift
+        SET
+          status=#{status}
+        WHERE
+          id=#{id}
+    </update>
+
+    <update id="updateUserGift" parameterType="java.util.Map">
+
+        UPDATE
+          lt_user
+        SET
+          currency=#{currency}
+        WHERE
+          id=#{id}
+
+    </update>
+</mapper>

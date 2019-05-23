@@ -16,6 +16,22 @@ public class GiftRecordBO extends BaseModel {
     private Integer exchangevalue; //兑换值
     private String statecase; //状态（兑换时间或获取礼品卡时间）
     private String annotation; //备注
+    private Date createTime; //创建时间
+
+
+    public GiftRecordBO(Integer giftid, Integer userid, Integer exchangevalue) {
+        this.giftid = giftid;
+        this.userid = userid;
+        this.exchangevalue = exchangevalue;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public void setId(Integer id) {
         this.id = id;
