@@ -43,40 +43,13 @@
         <if test="levelId==null"> ORDER BY `level`.create_time DESC LIMIT 0,1 </if>
     </select>
 
-    <resultMap id="chapters1" type="com.wisewin.api.entity.bo.LevelBO">
-        <result column="languageName" property="languageName"/>
-        <result column="ensignImageUrl" property="ensignImageUrl"/>
-        <result column="courseName" property="courseName"/>
-        <result column="courseIntro" property="courseIntro"/>
-        <result column="levelName" property="levelName"/>
-        <result column="levelId" property="id"/>
-        <collection property="chapterBOList" ofType="com.wisewin.api.entity.bo.ChapterResultBO">
-            <id column="chapterId" property="chapterId"/>
-            <result column="chapter_name" property="chapterName"/>
-            <result column="freeOrNot" property="freeOrNot"/>
-            <result column="video_path" property="videoPath"/>
-            <result column="thumbnailUrl" property="thumbnailUrl"/>
-        </collection>
 
-        <!--获取学习计划，当用户第一次进来时默认第一个级别-->
-    </resultMap>
-    <select id="getStudyPlan1" parameterType="java.lang.Integer"
-            resultMap="chapters1">
-        SELECT
-        `language`.language_name languageName,`language`.ensign_image_url ensignImageUrl,
-        course.course_name courseName,
-        chapter.chapter_name,course.course_intro courseIntro,
-        chapter.thumbnail_url thumbnailUrl,`level`.level_name levelName,
-        `language`.id languageId,course.id courseId,
-        `level`.id levelId,chapter.free_or_not freeOrNot,
-        chapter.id chapterId,chapter.video_path
-        FROM
-        lt_chapter `chapter`
-        LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
-        LEFT JOIN lt_course `course` ON `level`.course_id = course.id
-        LEFT JOIN lt_language `language` ON course.language_id = `language`.id
-        WHERE
-        `language`.id = #{languageId} ORDER BY `level`.create_time ASC LIMIT 0,1
+
+    <!--获取学习计划，当用户第一次进来时默认第一个级别-->
+    <select id="getLevelIdByOne" resultType="java.lang.Integer" >
+        SELECT id
+        FROM lt_level
+        ORDER BY create_time ASC LIMIT 0,1
     </select>
 
     <resultMap id="levelList" type="com.wisewin.api.entity.bo.LanguageResultBO">

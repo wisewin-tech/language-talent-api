@@ -59,7 +59,8 @@ public class StudyPlanController extends BaseCotroller {
         //根据语言id查找课时内容
         LevelBO levelBO = studyPlanService.getStudyPlan(languageId, levelId);
         if (levelBO==null) {
-            LevelBO levelBO1 = studyPlanService.getStudyPlan1(languageId);
+            Integer levelId1 = studyPlanService.getLevelIdByOne();
+            LevelBO levelBO1 = studyPlanService.getStudyPlan(languageId,levelId1);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO1));
             super.safeJsonPrint(response, json);
             return;

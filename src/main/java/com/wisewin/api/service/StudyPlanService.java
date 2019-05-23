@@ -26,12 +26,11 @@ public class StudyPlanService {
         return studyPlanDAO.getStudyPlan(languageId,levelId);
     }
     /**
-     * 当levelId为0时的学习计划
-     * @param languageId
+     * 当levelId为0时查询默认的级别id
      * @return
      */
-    public LevelBO getStudyPlan1( Integer languageId){
-        return studyPlanDAO.getStudyPlan1(languageId);
+    public Integer getLevelIdByOne(){
+        return studyPlanDAO.getLevelIdByOne();
     }
     /**
      * 获取首页右侧栏级别列表
