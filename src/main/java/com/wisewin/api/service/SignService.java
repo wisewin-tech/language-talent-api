@@ -119,7 +119,7 @@ public class SignService {
             //签到表签到日期
             String signTime = signBO.getSignTime();
             //如果最新记录的签到时间为当天或者上次签到时间是今天 false:今天已经签到
-            if (signTime.equals(now) || userSignBOTime.equals(now)) {
+            if (now.equals(signTime) || now.equals(userSignBOTime)) {
                 return false;
             }
         }
@@ -136,7 +136,7 @@ public class SignService {
         Date yesterday= TimeUtil.getTimeStart(-1);
         String yesterdays= dateFormat.format(yesterday);
         //true昨天签到，false昨天没签到
-        if (date.equals(yesterdays)){
+        if (yesterdays.equals(date)){
             //连续签到天数改为+1
             userBO.setContinuousSign(continuousSign + 1);
         }else {
