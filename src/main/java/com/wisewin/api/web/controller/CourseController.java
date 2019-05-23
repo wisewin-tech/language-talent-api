@@ -44,10 +44,13 @@ public class CourseController extends BaseCotroller {
         CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
         List<CourseDetailsLevelResultBO> levelBOS= courseService.courseDetailsLevel(id);
         String status = orderService.getStatusByCourseId(userId,id);
-        if ("yes".equals(status)){
-            courseDetailsResultBO.setBuyOrNot("yes");
-        }else {
-            courseDetailsResultBO.setBuyOrNot("no");
+        if (courseDetailsResultBO!=null) {
+            if ("yes".equals(status)) {
+                courseDetailsResultBO.setBuyOrNot("yes");
+            }else {
+                courseDetailsResultBO.setBuyOrNot("no");
+            }
+
         }
         Map map = new HashMap();
         map.put("courseDetailsResultBO",courseDetailsResultBO);
