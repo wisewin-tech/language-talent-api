@@ -1,10 +1,10 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.common.constants.AliConstants;
-import com.wisewin.api.dao.OrderDAO;
-import com.wisewin.api.dao.RecordDAO;
-import com.wisewin.api.dao.UserDAO;
+import com.wisewin.api.dao.*;
+import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.OrderBO;
+import com.wisewin.api.entity.bo.OrderCoursesBO;
 import com.wisewin.api.entity.bo.RecordBO;
 import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.util.IDBuilder;
@@ -19,8 +19,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class WXPayService {
@@ -33,6 +33,12 @@ public class WXPayService {
 
     @Resource
     RecordDAO recordDAO;
+
+    @Resource
+    OrderCoursesDAO orderCoursesDAO;
+
+    @Resource
+    CourseDAO courseDAO;
 
     //预支付下单
     public Map<String, String> getUnifiedOrder(OrderParam orderParam) throws Exception {
@@ -111,7 +117,7 @@ public class WXPayService {
         return twoMap;
     }
 
-    //充值咖豆  获取支付过后的回调
+    //充值咖豆
     public Map<String, String> getOrderResult(HttpServletRequest request) throws Exception {
         //接受微信回调参数
         InputStream inStream = request.getInputStream();
@@ -123,8 +129,6 @@ public class WXPayService {
         System.out.println(resultMap.get("out_trade_no"));
         System.out.println(resultMap.get("trade_state"));
         System.out.println(resultMap.get("attach"));
-
-
         //处理业务逻辑
         String return_code = resultMap.get("return_code");//状态
         String out_trade_no = resultMap.get("out_trade_no");//商户订单号
@@ -136,7 +140,7 @@ public class WXPayService {
                     OrderBO orderBO = orderDAO.getOrderByOrderNumber(resultMap.get("out_trade_no"));
 
                     //订单表状态修改为yes
-                    orderDAO.updOrderStatus(out_trade_no, AliConstants.success.getValue());
+                    orderDAO.updOrderStatus(out_trade_no, AliConstants.Theorder.getValue());
 
                     //修改剩余咖豆数量
                     Map<String, Object> map = new HashMap<String, Object>();
@@ -158,6 +162,102 @@ public class WXPayService {
         }
                 return resultMap;
     }
+
+    //购买课程
+    public Map<String,String> courseOrderResult(HttpServletRequest request) throws Exception{
+        //接受微信回调参数
+        InputStream inStream = request.getInputStream();
+        //转换为map
+        Map<String, String> resultMap = inStreamToMap(inStream);
+        //处理业务逻辑
+        String return_code = resultMap.get("return_code");//状态
+        String out_trade_no = resultMap.get("out_trade_no");//商户订单号
+        String trade_state = resultMap.get("trade_state");//交易状态
+        if (return_code.equals("SUCCESS")) {//交易标识
+            if (out_trade_no != null) {//商户订单号
+                if (trade_state.equals("SUCCESS")) {//支付成功
+                    //获取到订单信息
+                    OrderBO orderBO = orderDAO.getOrderByOrderNumber(resultMap.get("out_trade_no"));
+
+                    //订单表状态修改为yes
+                    orderDAO.updOrderStatus(out_trade_no, AliConstants.Theorder.getValue());
+
+                    //查询购买的课程信息
+                    CourseBO courseBO=courseDAO.getCurseNameById(new Integer(resultMap.get("attach")));
+
+                    //实例化子订单信息
+                    OrderCoursesBO orderCoursesBO=new OrderCoursesBO();
+                    orderCoursesBO.setUserId(orderBO.getUserId());
+                    orderCoursesBO.setOrderId(orderBO.getId());
+                    orderCoursesBO.setCoursesId(courseBO.getId());
+                    orderCoursesBO.setCoursesName(courseBO.getCourseName());
+
+                    //课程有效期
+                    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
+                    orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
+
+                    //添加 订单 子订单表
+                    List<OrderCoursesBO> orderCoursesBOList=new ArrayList<OrderCoursesBO>();
+                    orderCoursesBOList.add(orderCoursesBO);
+                    orderCoursesDAO.addCourses(orderCoursesBOList);
+
+                }
+            }
+        }
+        return resultMap;
+    }
+
+    //购买语言
+    public Map<String,String> languageOrderResult(HttpServletRequest request) throws Exception{
+        //接受微信回调参数
+        InputStream inStream = request.getInputStream();
+        //转换为map
+        Map<String, String> resultMap = inStreamToMap(inStream);
+        //处理业务逻辑
+        String return_code = resultMap.get("return_code");//状态
+        String out_trade_no = resultMap.get("out_trade_no");//商户订单号
+        String trade_state = resultMap.get("trade_state");//交易状态
+        if (return_code.equals("SUCCESS")) {//交易标识
+            if (out_trade_no != null) {//商户订单号
+                if (trade_state.equals("SUCCESS")) {//支付成功
+                    //获取到订单信息
+                    OrderBO orderBO = orderDAO.getOrderByOrderNumber(resultMap.get("out_trade_no"));
+
+                    //订单表状态修改为yes
+                    orderDAO.updOrderStatus(out_trade_no, AliConstants.Theorder.getValue());
+
+                    //查询购买的课程信息 因为是购买语言，课程可能有多个
+                    List<CourseBO> courseBOList=courseDAO.getCourseById(new Integer(resultMap.get("attach")));
+
+                    //添加 订单 子订单表
+                    List<OrderCoursesBO> orderCoursesBOList=new ArrayList<OrderCoursesBO>();
+                    for (CourseBO courseBO:courseBOList) {
+                        //实例化子订单信息
+                        OrderCoursesBO orderCoursesBO=new OrderCoursesBO();
+                        orderCoursesBO.setUserId(orderBO.getUserId());
+                        orderCoursesBO.setOrderId(orderBO.getId());
+                        orderCoursesBO.setCoursesId(courseBO.getId());
+                        orderCoursesBO.setCoursesName(courseBO.getCourseName());
+                        //课程有效期
+                        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+                        Calendar c = Calendar.getInstance();
+                        c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
+                        orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
+
+                        orderCoursesBOList.add(orderCoursesBO);
+                    }
+
+                    orderCoursesDAO.addCourses(orderCoursesBOList);
+
+                }
+            }
+        }
+        return resultMap;
+    }
+
+
 
     //将InputStream转换为Map
     public Map<String, String> inStreamToMap(InputStream inStream) throws Exception {

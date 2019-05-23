@@ -54,4 +54,20 @@ public interface CourseDAO {
      * @return
      */
     List<CourseBO> getCourseIdById(Integer languageId);
+
+    /**
+     * 通过课程id查课程name
+     * @param id
+     * @return
+     */
+    CourseBO getCurseNameById(Integer id);
+
+    /**
+     * 通过语言id查课程id name
+     * @param languageId
+     * @return
+     */
+    List<CourseBO> getCourseById(Integer languageId);
+
+
 }

@@ -159,4 +159,19 @@
 		LEFT JOIN lt_language la ON co.language_id = la.id
 		WHERE la.id = #{languageId}
 	</select>
+
+	<!--通过语言id查课程id name-->
+	<select id="getCourseById" resultType="com.wisewin.api.entity.bo.CourseBO">
+		select co.id,co.course_name,course_validity_period
+		from lt_course co
+		left join lt_language la on co.language_id = la.id
+		where la.id = #{languageId}
+	</select>
+
+	<!--通过id查name-->
+	<select id="getCurseNameById" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.CourseBO">
+		select id,course_name,course_validity_period from lt_course where id=#{id}
+	</select>
+
+
 </mapper>

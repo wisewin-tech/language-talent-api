@@ -57,4 +57,14 @@
         </foreach >
             ;
     </insert>
+
+    <!--批量插入购买的课程-->
+    <insert id="addCourses" parameterType="java.util.List">
+        insert into lt_order_courses
+        (user_id,order_id,courses_id,courses_name,course_validity_period)
+        values
+        <foreach collection ="orderCoursesBOS" item="orderCourses" separator =",">
+            (#{orderCourses.userId},#{orderCourses.orderId},#{orderCourses.coursesId},#{orderCourses.coursesName},#{orderCourses.courseValidityPeriod})
+        </foreach >
+    </insert>
 </mapper>

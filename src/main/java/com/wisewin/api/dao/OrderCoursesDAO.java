@@ -23,4 +23,10 @@ public interface OrderCoursesDAO {
      * 批量插入
      */
     void insetListOrderCourse(List<OrderCoursesBO> list);
+
+    /**
+     * 添加多条子课程
+     */
+    Integer addCourses(@Param("orderCoursesBOS") List<OrderCoursesBO> orderCoursesBOS);
+
 }

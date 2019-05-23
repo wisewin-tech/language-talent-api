@@ -69,29 +69,22 @@ public class WXPayController extends BaseCotroller {
     //充值咖豆回调
     @RequestMapping("/currencyOrderResult")
     public void currencyOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        //测试
-//        Map<String,String> map=new HashMap<String, String>();
-//        map.put("return_code","SUCCESS");
-//        map.put("out_trade_no","580749871235244032");
-//        map.put("trade_state","SUCCESS");
-//        map.put("attach","66");
-        //
         Map<String,String> resultMap=wxPayService.getOrderResult(request);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("充值成功"));
         super.safeJsonPrint(response, json);
     }
 
     //购买语言回调
     @RequestMapping("/languageOrderResult")
     public void languageOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+//        //测试
 //        Map<String,String> map=new HashMap<String, String>();
 //        map.put("return_code","SUCCESS");
-//        map.put("out_trade_no","580749871235244032");
+//        map.put("out_trade_no","581115019460386816");
 //        map.put("trade_state","SUCCESS");
-//        map.put("attach","66");
-        //
-        Map<String,String> resultMap=wxPayService.getOrderResult(request);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
+//        map.put("attach","7");
+        Map<String,String> resultMap=wxPayService.languageOrderResult(request);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
     }
 
@@ -102,12 +95,12 @@ public class WXPayController extends BaseCotroller {
         //测试
 //        Map<String,String> map=new HashMap<String, String>();
 //        map.put("return_code","SUCCESS");
-//        map.put("out_trade_no","580749871235244032");
+//        map.put("out_trade_no","581115019460386816");
 //        map.put("trade_state","SUCCESS");
-//        map.put("attach","66");
-        //
-        Map<String,String> resultMap=wxPayService.getOrderResult(request);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
+//        map.put("attach","1");
+
+        Map<String,String> resultMap=wxPayService.courseOrderResult(request);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
     }
 
