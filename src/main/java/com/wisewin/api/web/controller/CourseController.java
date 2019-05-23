@@ -43,9 +43,9 @@ public class CourseController extends BaseCotroller {
         //查看课程详情
         CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
         List<CourseDetailsLevelResultBO> levelBOS= courseService.courseDetailsLevel(id);
-        String status = orderService.getStatusByCourseId(userId,id);
+        Integer count = orderService.getStatusByCourseId(userId,id);
         if (courseDetailsResultBO!=null) {
-            if ("yes".equals(status)) {
+            if (count>0) {
                 courseDetailsResultBO.setBuyOrNot("yes");
             }else {
                 courseDetailsResultBO.setBuyOrNot("no");

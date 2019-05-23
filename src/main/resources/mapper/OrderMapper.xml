@@ -89,9 +89,9 @@
         select * from lt_order where order_number=#{orderNumber}
     </select>
     <!--查询某个用户的某个课程是否购买-->
-    <select id="getStatusByCourseId" resultType="java.lang.String">
+    <select id="getStatusByCourseId" resultType="java.lang.Integer">
         SELECT
-        `or`.`status`
+        count(status)
         FROM
         lt_order_courses oc
         LEFT JOIN lt_order `or` ON oc.order_id = `or`.id

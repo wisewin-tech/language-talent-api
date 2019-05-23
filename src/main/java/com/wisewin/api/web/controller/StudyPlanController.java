@@ -106,8 +106,8 @@ public class StudyPlanController extends BaseCotroller {
             //获取用户id
             Integer userId = userBO.getId();
             Integer courseId = courseResultBO.getCourseId();
-            String status = orderService.getStatusByCourseId(userId,courseId);
-            if ("yes".equals(status)){
+            Integer count = orderService.getStatusByCourseId(userId,courseId);
+            if (count>0){
                 courseResultBO.setBuyOrNot("yes");
             }else {
                 courseResultBO.setBuyOrNot("no");

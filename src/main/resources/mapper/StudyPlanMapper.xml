@@ -74,8 +74,8 @@
         `level`.id levelId,`level`.level_name levelName
         FROM
         lt_level `level`
-        LEFT JOIN lt_course `course` ON `level`.course_id = course.id
-        LEFT JOIN lt_language `language` ON course.language_id = `language`.id
+        RIGHT JOIN lt_course `course` ON `level`.course_id = course.id
+        RIGHT JOIN lt_language `language` ON course.language_id = `language`.id
         WHERE
         `language`.id = #{languageId}
     </select>

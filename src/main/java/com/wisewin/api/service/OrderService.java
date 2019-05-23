@@ -32,7 +32,7 @@ public class OrderService {
         return orderDAO.selectDetails(id,userId);
     }
 
-    public String getStatusByCourseId (Integer userId,Integer courseId){
+    public Integer getStatusByCourseId (Integer userId,Integer courseId){
         return orderDAO.getStatusByCourseId(userId,courseId);
     }
 
