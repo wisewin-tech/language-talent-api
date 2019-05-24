@@ -39,7 +39,7 @@ public class GiftController extends BaseCotroller{
         Integer id = loginUser.getId();
 
         if (param.getExchangeyard().equals("") || id==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000029"));
             super.safeJsonPrint(response, json);
             return;
         }
@@ -56,7 +56,7 @@ public class GiftController extends BaseCotroller{
 
         //判断是否为空
         if (gift==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000029"));
             super.safeJsonPrint(response, json);
             return;
 
@@ -87,7 +87,7 @@ public class GiftController extends BaseCotroller{
                     //修改用户咖豆值
                     Integer updateUserGiftjion=giftService.getupdateUserGift(id,userBO.getCurrency()+gift.getValue());
                     if (updateGiftjsin){
-                        resulmap.put("smg","使用成功");
+                        resulmap.put("state","使用成功");
                         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resulmap));
                         super.safeJsonPrint(response, json);
                         return;
@@ -97,7 +97,7 @@ public class GiftController extends BaseCotroller{
             }
 
         }
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000027"));
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000028"));
         super.safeJsonPrint(response, json);
         return;
     }
