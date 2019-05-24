@@ -8,6 +8,7 @@ import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.wxUtil.WXMsg;
 import com.wisewin.api.util.wxUtil.WXPayRequest;
 import com.wisewin.api.util.wxUtil.WXPayUtil;
+import com.wisewin.api.util.wxUtil.WXPayXmlUtil;
 import com.wisewin.api.util.wxUtil.config.WXConfig;
 import com.wisewin.api.util.wxUtil.config.WXRequestConfig;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class WXPayService {
 
     @Resource
     PayService payService;
+
+    @Resource
+    OrderDAO orderDAO;
     //预支付下单
     //给安卓返回预支付信息调用支付
     //插入未支付订单
@@ -62,16 +66,10 @@ public class WXPayService {
         String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
         //给前端调用的Map
         twoMap = WXPayUtil.xmlToMap(twoMapStr);
-        System.out.println(twoMapStr);
-
         //存入自己的数据库
         if (twoMap != null && !twoMap.isEmpty()) {
-            System.err.println("TwoMap不是空的");
             payService.prepaid(orderParam);
-        }else{
-            System.err.println("TwoMap是空的");
         }
-
         return twoMap;
     }
 
@@ -94,29 +92,35 @@ public class WXPayService {
         Map<String, String> resultMap = inStreamToMap(inStream);
         //处理业务逻辑
         String return_code = resultMap.get("return_code");//状态
+        String result_code=resultMap.get("result_code");//交易结果
         String out_trade_no = resultMap.get("out_trade_no");//商户订单号
-        System.err.println("商户号==================="+out_trade_no);
+        String sign=resultMap.get("sign");
+        //验证签名
+        if(WXPayUtil.isSignatureValid(resultMap,WXConfig.KEY)){
+            if (return_code.equals("SUCCESS")&&result_code.equals("SUCCESS")) {//交易成功
+                if (out_trade_no != null) {//商户订单号
+                    //订单状态为未支付
+                    String status=orderDAO.getOrderByOrderNumber(out_trade_no).getStatus();
+                    if(!status.equals("yes")){
+                        if (productType.equals("咖豆")) {
+                            //调用充值咖豆的方法
+                            payService.rechargeKaDou(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
+                        } else if (productType.equals("课程")) {
+                            //购买课程
+                            payService.buyCourse(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
+                        } else if (productType.equals("语言")) {
+                            //购买语言
+                            payService.buyLanguage(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
+                        }
+                    }
 
-        if (return_code.equals("SUCCESS")) {//交易标识
-            if (out_trade_no != null) {//商户订单号
-
-                if (productType.equals("咖豆")) {
-                    //调用充值咖豆的方法
-                    payService.rechargeKaDou(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
-                } else if (productType.equals("课程")) {
-                    //购买课程
-                    payService.buyCourse(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
-                } else if (productType.equals("课程")) {
-                    //购买语言
-                    payService.buyLanguage(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
+                } else {
+                    System.err.println("支付失败");
                 }
 
             } else {
-                System.err.println("支付失败");
+                System.err.println("交易标识不正确");
             }
-
-        } else {
-            System.err.println("交易标识不正确");
         }
         return resultMap;
     }
