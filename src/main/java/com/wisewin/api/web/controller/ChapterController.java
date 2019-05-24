@@ -63,10 +63,12 @@ public class ChapterController extends BaseCotroller {
         }
         ChapterBO chapterBO = chapterService.chapterDetails(id);
         Integer count = orderService.getStatusByCourseId(userId,courseId);
-        if (count>0){
-            chapterBO.setBuyOrNot("yes");
-        }else {
-            chapterBO.setBuyOrNot("no");
+        if (chapterBO!=null) {
+            if (count > 0) {
+                chapterBO.setBuyOrNot("yes");
+            } else {
+                chapterBO.setBuyOrNot("no");
+            }
         }
 
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBO));

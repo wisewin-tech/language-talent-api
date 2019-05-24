@@ -65,13 +65,4 @@
         WHERE  tr.id=#{chapterId}
     </select>
 
-    <!--通过课程id查找课时id-->
-    <select id="getChapterIdByCourseId">
-        SELECT ch.id
-        FROM lt_chapter ch LEFT JOIN lt_level le ON ch.level_id = le.id
-        LEFT JOIN lt_course co ON le.course_id = co.id
-        WHERE co.id = #{id}
-    </select>
-
-
 </mapper>
