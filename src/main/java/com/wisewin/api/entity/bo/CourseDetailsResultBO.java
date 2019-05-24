@@ -3,6 +3,7 @@ package com.wisewin.api.entity.bo;
 import com.wisewin.api.entity.bo.common.base.BaseModel;
 
 public class CourseDetailsResultBO extends BaseModel {
+    private Integer languageId;//语言id
     private String languageName;//语言名称
     private String courseThumbnail;//缩略图
     private String courseName; //课程名称
@@ -16,6 +17,14 @@ public class CourseDetailsResultBO extends BaseModel {
     private String certificateTitle;//证书标题
     private String certificateImageUrl;//证书图片
     private String buyOrNot;//是否已经购买
+
+    public Integer getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(Integer languageId) {
+        this.languageId = languageId;
+    }
 
     public String getCertificateTitle() {
         return certificateTitle;

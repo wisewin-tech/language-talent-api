@@ -9,7 +9,7 @@
             parameterType="java.util.Map">
      SELECT
 	  lmf.user_id,lmf.source_id,ll.language_name,lc.course_name,lv.level_name,
-        lch.chapter_name,lch.thumbnail_url,lch.chapter_intro
+        lch.chapter_name,lch.thumbnail_url,lch.chapter_intro,lch.id chapterId
     FROM
       lt_my_favorite AS lmf
     left JOIN `lt_chapter`  AS lch ON lmf.source_id=lch.id

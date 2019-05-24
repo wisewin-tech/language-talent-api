@@ -30,7 +30,7 @@
     <select id="courseDetailsCourse" parameterType="java.lang.Integer"
 			resultType="com.wisewin.api.entity.bo.CourseDetailsResultBO">
         SELECT
-			`language`.language_name languageName,
+			`language`.language_name languageName,`language`.id languageId,
 			course.thumbnail_image_url courseThumbnail,
 			course.course_name,course.course_intro,
 			course.course_lightspot,course.purchase_notes,

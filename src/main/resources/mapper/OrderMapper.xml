@@ -91,10 +91,9 @@
     <!--查询某个用户的某个课程是否购买-->
     <select id="getStatusByCourseId" resultType="java.lang.Integer">
         SELECT
-        count(status)
+        count(oc.id)
         FROM
         lt_order_courses oc
-        LEFT JOIN lt_order `or` ON oc.order_id = `or`.id
         WHERE
         oc.user_id = #{userId}
         AND oc.courses_id = #{courseId}

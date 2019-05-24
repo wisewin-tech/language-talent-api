@@ -10,6 +10,7 @@ public class FavoritesResultBO {
     private String  courseName;    //课程名称
     private String  levelName;     //级别名称
     private String  chapterName;   //课时名称
+    private String chapterId;//课时id
     private String  thumbnailUrl;   //缩略图
     private String  chapterIntro;   //课时简介
     private Integer createId; //创建人id
@@ -17,13 +18,6 @@ public class FavoritesResultBO {
     private String createTime; //创建时间
     private String updateTime; //修改时间
 
-    public String getChapterIntro() {
-        return chapterIntro;
-    }
-
-    public void setChapterIntro(String chapterIntro) {
-        this.chapterIntro = chapterIntro;
-    }
 
     @Override
     public String toString() {
@@ -33,11 +27,13 @@ public class FavoritesResultBO {
                 ", courseName='" + courseName + '\'' +
                 ", levelName='" + levelName + '\'' +
                 ", chapterName='" + chapterName + '\'' +
+                ", chapterId='" + chapterId + '\'' +
                 ", thumbnailUrl='" + thumbnailUrl + '\'' +
+                ", chapterIntro='" + chapterIntro + '\'' +
                 ", createId=" + createId +
                 ", updateId=" + updateId +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
                 '}';
     }
 
@@ -81,6 +77,30 @@ public class FavoritesResultBO {
         this.chapterName = chapterName;
     }
 
+    public String getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(String chapterId) {
+        this.chapterId = chapterId;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public String getChapterIntro() {
+        return chapterIntro;
+    }
+
+    public void setChapterIntro(String chapterIntro) {
+        this.chapterIntro = chapterIntro;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -98,26 +118,18 @@ public class FavoritesResultBO {
     }
 
     public String getCreateTime() {
-        return DateUtil.getStr(createTime);
+        return createTime;
     }
 
     public void setCreateTime(String createTime) {
-        this.createTime = DateUtil.getStr(createTime);
+        this.createTime = createTime;
     }
 
     public String getUpdateTime() {
-        return DateUtil.getStr(updateTime);
+        return updateTime;
     }
 
     public void setUpdateTime(String updateTime) {
-        this.updateTime = DateUtil.getStr(updateTime);
-    }
-
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+        this.updateTime = updateTime;
     }
 }

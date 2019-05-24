@@ -1,8 +1,10 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.ChapterBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.ChapterService;
+import com.wisewin.api.service.OrderService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,8 @@ import java.util.Map;
 public class ChapterController extends BaseCotroller {
     @Resource
     private ChapterService chapterService;
+    @Resource
+    private OrderService orderService;
 
     @RequestMapping("/chapterList")
     /**
@@ -47,7 +51,10 @@ public class ChapterController extends BaseCotroller {
      * @param response
      */
     @RequestMapping("/chapterDetails")
-    public void chapterDetails(Integer id, HttpServletRequest request, HttpServletResponse response) {
+    public void chapterDetails(Integer id, Integer courseId, HttpServletRequest request, HttpServletResponse response) {
+        //获取登录用户信息
+        UserBO userBO = super.getLoginUser(request);
+        Integer userId = userBO.getId();
         //参数验证
         if (id == null) {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -55,6 +62,13 @@ public class ChapterController extends BaseCotroller {
             return;
         }
         ChapterBO chapterBO = chapterService.chapterDetails(id);
+        Integer count = orderService.getStatusByCourseId(userId,courseId);
+        if (count>0){
+            chapterBO.setBuyOrNot("yes");
+        }else {
+            chapterBO.setBuyOrNot("no");
+        }
+
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBO));
         super.safeJsonPrint(response, result);
     }
