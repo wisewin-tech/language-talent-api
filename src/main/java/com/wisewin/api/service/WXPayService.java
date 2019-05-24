@@ -97,11 +97,11 @@ public class WXPayService {
     }
 
     //支付成功回调
-    public Map<String, String> getOrderResult(HttpServletRequest request,String productType,Map<String,String> resultMap) throws Exception {
+    public Map<String, String> getOrderResult(HttpServletRequest request,String productType) throws Exception {
         //接受微信回调参数
-//        InputStream inStream = request.getInputStream();
-//        //转换为map
-//        Map<String, String> resultMap = inStreamToMap(inStream);
+        InputStream inStream = request.getInputStream();
+        //转换为map
+        Map<String, String> resultMap = inStreamToMap(inStream);
         //处理业务逻辑
         String return_code = resultMap.get("return_code");//状态
         String out_trade_no = resultMap.get("out_trade_no");//商户订单号

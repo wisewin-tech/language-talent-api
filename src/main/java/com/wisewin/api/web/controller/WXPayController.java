@@ -50,7 +50,7 @@ public class WXPayController extends BaseCotroller {
         if ((orderParam.getProductName()==null||orderParam.getProductType()==null)
                 ||  (orderParam.getProductType().equals("咖豆")&&orderParam.getPrice()==null)
                 ||  (orderParam.getProductType().equals("课程")&&orderParam.getCourseId()==null)
-                ||  (orderParam.getProductType().equals("语言")&&orderParam.getLanguageId()!=null))
+                ||  (orderParam.getProductType().equals("语言")&&orderParam.getLanguageId()==null))
         {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -78,7 +78,7 @@ public class WXPayController extends BaseCotroller {
         map.put("out_trade_no","581423584523886592");
         map.put("trade_state","SUCCESS");
         map.put("attach","100");
-        Map<String,String> resultMap=wxPayService.getOrderResult(request,"咖豆",map);
+        Map<String,String> resultMap=wxPayService.getOrderResult(request,"咖豆");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("充值成功"));
         super.safeJsonPrint(response, json);
     }
@@ -91,7 +91,7 @@ public class WXPayController extends BaseCotroller {
         map.put("out_trade_no","581449428394876928");
         map.put("trade_state","SUCCESS");
         map.put("attach","2");
-        Map<String,String> resultMap=wxPayService.getOrderResult(request,"课程",map);
+        Map<String,String> resultMap=wxPayService.getOrderResult(request,"课程");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
     }
@@ -106,7 +106,7 @@ public class WXPayController extends BaseCotroller {
         map.put("trade_state","SUCCESS");
         map.put("attach","100");
 
-        Map<String,String> resultMap=wxPayService.getOrderResult(request,"语言",map);
+        Map<String,String> resultMap=wxPayService.getOrderResult(request,"语言");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
     }
