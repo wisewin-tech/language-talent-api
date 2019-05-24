@@ -1,6 +1,7 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.SignResultBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.SignService;
 import com.wisewin.api.util.JsonUtils;
@@ -33,7 +34,8 @@ public class SignController extends BaseCotroller {
      */
     @RequestMapping("/selectSign")
     public void selectSign(HttpServletResponse response, HttpServletRequest request)  {
-        Integer userId=super.getId(request);
+        UserBO userBO = super.getLoginUser(request);
+        Integer userId=userBO.getId();
         if (userId==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
