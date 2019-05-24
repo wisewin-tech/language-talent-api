@@ -56,11 +56,11 @@ public class LanguageController extends BaseCotroller{
                 Integer count = orderService.getStatusByCourseId(userId, courseId);
                 if (count > 0) {
                     languageBO.setBuyOrNot("yes");
-                }else if (count<=0||languageBO!=null){
+                }else if (count<=0){
                     languageBO.setBuyOrNot("no");
                 }
             }
-            if (courseBOS.size()==0){
+            if (courseBOS.size()==0&&languageBO!=null){
                 languageBO.setBuyOrNot("no");
             }
 

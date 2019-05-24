@@ -98,7 +98,7 @@
         WHERE
         oc.user_id = #{userId}
         AND oc.courses_id = #{courseId}
-        AND NOW() &lt; oc.course_validity_period
+        AND DATE_FORMAT(NOW(),'%Y-%m-%d') &lt;= oc.course_validity_period
     </select>
 
 
