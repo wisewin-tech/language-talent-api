@@ -120,8 +120,12 @@ public class WXPayService {
                         buyLanguage(resultMap.get("out_trade_no"),new Integer(  resultMap.get("attach")));
                     }
 
+                }else{
+                    System.err.println("支付失败");
                 }
             }
+        }else{
+            System.err.println("交易标识不正确");
         }
                 return resultMap;
     }

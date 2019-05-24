@@ -73,11 +73,6 @@ public class WXPayController extends BaseCotroller {
     //充值咖豆回调
     @RequestMapping("/currencyOrderResult")
     public void currencyOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        Map<String,String> map=new HashMap<String, String>();
-        map.put("return_code","SUCCESS");
-        map.put("out_trade_no","581423584523886592");
-        map.put("trade_state","SUCCESS");
-        map.put("attach","100");
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"咖豆");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("充值成功"));
         super.safeJsonPrint(response, json);
@@ -86,11 +81,6 @@ public class WXPayController extends BaseCotroller {
     //购买语言回调
     @RequestMapping("/languageOrderResult")
     public void languageOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        Map<String,String> map=new HashMap<String, String>();
-        map.put("return_code","SUCCESS");
-        map.put("out_trade_no","581449428394876928");
-        map.put("trade_state","SUCCESS");
-        map.put("attach","2");
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"课程");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
@@ -100,12 +90,6 @@ public class WXPayController extends BaseCotroller {
     //购买课程回调
     @RequestMapping("/courseOrderResult")
     public void courseOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        Map<String,String> map=new HashMap<String, String>();
-        map.put("return_code","SUCCESS");
-        map.put("out_trade_no","581449258416513024");
-        map.put("trade_state","SUCCESS");
-        map.put("attach","100");
-
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"语言");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
