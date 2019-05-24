@@ -73,6 +73,8 @@ public class WXPayController extends BaseCotroller {
     //充值咖豆回调
     @RequestMapping("/currencyOrderResult")
     public void currencyOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        System.err.println("回调成功");
+        System.err.println("===================");
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"咖豆");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("充值成功"));
         super.safeJsonPrint(response, json);
@@ -81,6 +83,8 @@ public class WXPayController extends BaseCotroller {
     //购买语言回调
     @RequestMapping("/languageOrderResult")
     public void languageOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        System.err.println("回调成功");
+        System.err.println("===================");
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"课程");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
@@ -90,6 +94,8 @@ public class WXPayController extends BaseCotroller {
     //购买课程回调
     @RequestMapping("/courseOrderResult")
     public void courseOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        System.err.println("回调成功");
+        System.err.println("===================");
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"语言");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
         super.safeJsonPrint(response, json);
