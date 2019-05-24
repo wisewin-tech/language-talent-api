@@ -49,7 +49,6 @@ public class LanguageController extends BaseCotroller{
 
         LanguageDetailsResultBO languageBO = languageService.languageDetails(id);
         List<LanguageDetailsCourseResultBO> languageDetailsCourseResultBOS = languageService.languageDetailsCourse(id);
-
         List<CourseBO> courseBOS = courseService.getCourseIdById(id);
 
             for (CourseBO courseBO : courseBOS) {
@@ -57,9 +56,14 @@ public class LanguageController extends BaseCotroller{
                 Integer count = orderService.getStatusByCourseId(userId, courseId);
                 if (count > 0) {
                     languageBO.setBuyOrNot("yes");
+                }else if (count<=0||languageBO!=null){
+                    languageBO.setBuyOrNot("no");
                 }
             }
-            languageBO.setBuyOrNot("no");
+            if (courseBOS.size()==0){
+                languageBO.setBuyOrNot("no");
+            }
+
 
 
         Map resultmap = new HashMap();
