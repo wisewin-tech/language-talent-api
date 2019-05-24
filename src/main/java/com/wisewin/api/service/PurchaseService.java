@@ -99,9 +99,9 @@ public class PurchaseService {
         //获取要购买的课程
 
         //获取特惠开始时间
-        Date dateStart = DateUtil.getDate(course.getDiscountStartTime());
+        Date dateStart = course.getDiscountStartTime();
         //获取特惠结束时间
-        Date dateEnd = DateUtil.getDate(course.getDiscountEndTime());
+        Date dateEnd = course.getDiscountEndTime();
         //判断是否在特惠时间内
         boolean falg = belongCalendar(new Date(), dateStart, dateEnd);
 

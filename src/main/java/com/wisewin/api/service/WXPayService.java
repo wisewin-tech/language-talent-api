@@ -43,19 +43,21 @@ public class WXPayService {
     @Resource
     LanguageDAO languageDAO;
 
+    @Resource
+    KeyValDAO keyValDAO;
+
     //预支付下单
     //给安卓返回预支付信息调用支付
     //插入未支付订单
     public Map<String, String> getUnifiedOrder(OrderParam orderParam) throws Exception {
         //1.获取请求参数
         Map<String, String> map = getWXPayParams(orderParam);
-        map.put("attach", "0.01");
+
         //2.第一次签名
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
 
         //3.发送请求 获取到预支付信息  partnerid
         String result = getCodeUrl(mapStr);
-        System.out.println(result);
 
         //预支付订单信息Map
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
@@ -77,38 +79,29 @@ public class WXPayService {
 
         //存入自己的数据库
         if (twoMap != null && !twoMap.isEmpty()) {
-            //实例化订单对象 完成插入订单操作
-            OrderBO orderBO = new OrderBO();
-            orderBO.setUserId(orderParam.getUserId());
-            orderBO.setPrice(new BigDecimal(map.get("total_fee")));
-            orderBO.setOrderNumber(map.get("out_trade_no"));
-            if(orderParam.getProductType().equals("咖豆")){
-                orderBO.setOrderType("充值");
-            }else{
-                orderBO.setOrderType("购买");
-            }
-            orderBO.setProductName(orderParam.getProductName());
-            //未支付
-            orderBO.setStatus(AliConstants.Didnotpay.getValue());
-            //插入数据库 订单信息
-            orderDAO.insertPreOrder(orderBO);
+            prepaid(orderParam);
         }
 
         return twoMap;
     }
 
-    //充值咖豆回调
-    public Map<String, String> getOrderResult(HttpServletRequest request) throws Exception {
-        //接受微信回调参数
-        InputStream inStream = request.getInputStream();
-        //转换为map
-        Map<String, String> resultMap = inStreamToMap(inStream);
+    //请求统一下单
+    public String getCodeUrl(String mapStr) throws Exception {
+        WXRequestConfig wxPayConfig=new WXRequestConfig();
+        WXPayRequest wxPayRequest=new WXPayRequest(wxPayConfig);
+        //方法形参中需要带个uuid 不清楚干啥的随机生成了
+        UUID uuid = UUID.randomUUID();
+        String uuidStr = uuid.toString();
+        String resultXml = wxPayRequest.requestWithoutCert(WXConfig.PLACE_AN_ORDERAPI,uuidStr,mapStr,false);
+        return resultXml;
+    }
 
-        //测试
-        System.out.println(resultMap.get("return_code"));
-        System.out.println(resultMap.get("out_trade_no"));
-        System.out.println(resultMap.get("trade_state"));
-        System.out.println(resultMap.get("attach"));
+    //支付成功回调
+    public Map<String, String> getOrderResult(HttpServletRequest request,String productType,Map<String,String> resultMap) throws Exception {
+        //接受微信回调参数
+//        InputStream inStream = request.getInputStream();
+//        //转换为map
+//        Map<String, String> resultMap = inStreamToMap(inStream);
         //处理业务逻辑
         String return_code = resultMap.get("return_code");//状态
         String out_trade_no = resultMap.get("out_trade_no");//商户订单号
@@ -116,26 +109,16 @@ public class WXPayService {
         if (return_code.equals("SUCCESS")) {//交易标识
             if (out_trade_no != null) {//商户订单号
                 if (trade_state.equals("SUCCESS")) {//支付成功
-                    //获取到订单信息
-                    OrderBO orderBO = orderDAO.getOrderByOrderNumber(resultMap.get("out_trade_no"));
-
-                    //订单表状态修改为yes
-                    orderDAO.updOrderStatus(out_trade_no, AliConstants.Theorder.getValue());
-
-                    //修改剩余咖豆数量
-                    Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("currency", resultMap.get("attach"));
-                    map.put("id",orderBO.getUserId());
-                    userDAO.updateUserAugment(map);
-
-                    //记录表添加记录
-                    RecordBO recordBO=new RecordBO();
-                    recordBO.setUserId(orderBO.getUserId());
-                    recordBO.setSource("咖豆");
-                    recordBO.setStatus("增加");
-                    recordBO.setSpecificAmount(new Integer(resultMap.get("attach")));
-                    recordBO.setDescribe("充值"+resultMap.get("attach")+"咖豆");
-                    recordDAO.insertUserAction(recordBO);
+                    if (productType.equals("咖豆")){
+                        //调用充值咖豆的方法
+                        rechargeKaDou(resultMap.get("out_trade_no"),new Integer(resultMap.get("attach")));
+                    }else if(productType.equals("课程")){
+                        //购买课程
+                        buyCourse(resultMap.get("out_trade_no"),new Integer(  resultMap.get("attach")));
+                    }else if(productType.equals("课程")) {
+                        //购买语言
+                        buyLanguage(resultMap.get("out_trade_no"),new Integer(  resultMap.get("attach")));
+                    }
 
                 }
             }
@@ -143,96 +126,110 @@ public class WXPayService {
                 return resultMap;
     }
 
-    //购买课程回调
-    public Map<String,String> courseOrderResult(HttpServletRequest request) throws Exception{
-        //接受微信回调参数
-        InputStream inStream = request.getInputStream();
-        //转换为map
-        Map<String, String> resultMap = inStreamToMap(inStream);
-        //处理业务逻辑
-        String return_code = resultMap.get("return_code");//状态
-        String out_trade_no = resultMap.get("out_trade_no");//商户订单号
-        String trade_state = resultMap.get("trade_state");//交易状态
-        if (return_code.equals("SUCCESS")) {//交易标识
-            if (out_trade_no != null) {//商户订单号
-                if (trade_state.equals("SUCCESS")) {//支付成功
-                    //获取到订单信息
-                    OrderBO orderBO = orderDAO.getOrderByOrderNumber(resultMap.get("out_trade_no"));
-
-                    //订单表状态修改为yes
-                    orderDAO.updOrderStatus(out_trade_no, AliConstants.Theorder.getValue());
-
-                    //查询购买的课程信息
-                    CourseBO courseBO=courseDAO.getCourseById(new Integer(resultMap.get("attach")));
-
-                    //实例化子订单信息
-                    OrderCoursesBO orderCoursesBO=new OrderCoursesBO();
-                    orderCoursesBO.setUserId(orderBO.getUserId());
-                    orderCoursesBO.setOrderId(orderBO.getId());
-                    orderCoursesBO.setCoursesId(courseBO.getId());
-                    orderCoursesBO.setCoursesName(courseBO.getCourseName());
-
-                    //课程有效期
-                    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-                    Calendar c = Calendar.getInstance();
-                    c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
-                    orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
-
-                    //添加 订单 子订单表
-                    List<OrderCoursesBO> orderCoursesBOList=new ArrayList<OrderCoursesBO>();
-                    orderCoursesBOList.add(orderCoursesBO);
-                    orderCoursesDAO.addCourses(orderCoursesBOList);
-
-                }
-            }
+    //插入预支付订单
+    public void prepaid(OrderParam orderParam){
+        //实例化订单对象 完成插入订单操作
+        OrderBO orderBO = new OrderBO();
+        orderBO.setUserId(orderParam.getUserId());
+        orderBO.setPrice(orderParam.getPrice());
+        orderBO.setOrderNumber(orderParam.getOrderNumber());
+        if(orderParam.getProductType().equals("咖豆")){
+            orderBO.setOrderType("充值");
+        }else{
+            orderBO.setOrderType("购买");
         }
-        return resultMap;
+        orderBO.setProductName(orderParam.getProductName());
+        //未支付
+        orderBO.setStatus(AliConstants.Didnotpay.getValue());
+        //插入数据库 订单信息
+        orderDAO.insertPreOrder(orderBO);
     }
 
-    //购买语言回调
-    public Map<String,String> languageOrderResult(HttpServletRequest request) throws Exception{
-        //接受微信回调参数
-        InputStream inStream = request.getInputStream();
-        //转换为map
-        Map<String, String> resultMap = inStreamToMap(inStream);
-        //处理业务逻辑
-        String return_code = resultMap.get("return_code");//状态
-        String out_trade_no = resultMap.get("out_trade_no");//商户订单号
-        String trade_state = resultMap.get("trade_state");//交易状态
-        if (return_code.equals("SUCCESS")) {//交易标识
-            if (out_trade_no != null) {//商户订单号
-                if (trade_state.equals("SUCCESS")) {//支付成功
-                    //获取到订单信息
-                    OrderBO orderBO = orderDAO.getOrderByOrderNumber(resultMap.get("out_trade_no"));
+    //支付成功 充值咖豆  修改订单状态 修改咖豆数量 添加纪录
+    public void rechargeKaDou(String orderNumber,Integer currency){
+        //获取到订单信息
+        OrderBO orderBO = orderDAO.getOrderByOrderNumber(orderNumber);
 
-                    //订单表状态修改为yes
-                    orderDAO.updOrderStatus(out_trade_no, AliConstants.Theorder.getValue());
+        //订单表状态修改为yes
+        orderDAO.updOrderStatus(orderNumber, AliConstants.Theorder.getValue());
 
-                    //查询购买的课程信息 因为是购买语言，课程可能有多个
-                    List<CourseBO> courseBOList=courseDAO.getCoursesById(new Integer(resultMap.get("attach")));
+        //修改剩余咖豆数量
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("currency",currency);
+        map.put("id",orderBO.getUserId());
+        userDAO.updateUserAugment(map);
 
-                    //添加 订单 子订单表
-                    List<OrderCoursesBO> orderCoursesBOList=new ArrayList<OrderCoursesBO>();
-                    for (CourseBO courseBO:courseBOList) {
-                        //实例化子订单信息
-                        OrderCoursesBO orderCoursesBO=new OrderCoursesBO();
-                        orderCoursesBO.setUserId(orderBO.getUserId());
-                        orderCoursesBO.setOrderId(orderBO.getId());
-                        orderCoursesBO.setCoursesId(courseBO.getId());
-                        orderCoursesBO.setCoursesName(courseBO.getCourseName());
-                        //课程有效期
-                        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-                        Calendar c = Calendar.getInstance();
-                        c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
-                        orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
-                        orderCoursesBOList.add(orderCoursesBO);
-                    }
+        //记录表添加记录
+        RecordBO recordBO=new RecordBO();
+        recordBO.setUserId(orderBO.getUserId());
+        recordBO.setSource("咖豆");
+        recordBO.setStatus("增加");
+        recordBO.setSpecificAmount(new Integer(currency));
+        recordBO.setDescribe("充值"+currency+"咖豆");
+        recordDAO.insertUserAction(recordBO);
 
-                    orderCoursesDAO.addCourses(orderCoursesBOList);
-                }
-            }
+    }
+
+    //支付成功 购买课程  修改订单状态 添加子订单
+    public void buyCourse(String orderNumber,Integer courseId) throws ParseException {
+        //获取到订单信息
+        OrderBO orderBO = orderDAO.getOrderByOrderNumber(orderNumber);
+
+        //订单表状态修改为yes
+        orderDAO.updOrderStatus(orderNumber, AliConstants.Theorder.getValue());
+
+        //查询购买的课程信息
+        CourseBO courseBO=courseDAO.getCourseById(courseId);
+
+        //实例化子订单信息
+        OrderCoursesBO orderCoursesBO=new OrderCoursesBO();
+        orderCoursesBO.setUserId(orderBO.getUserId());
+        orderCoursesBO.setOrderId(orderBO.getId());
+        orderCoursesBO.setCoursesId(courseBO.getId());
+        orderCoursesBO.setCoursesName(courseBO.getCourseName());
+
+        //课程有效期
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
+        orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
+
+        //添加 订单 子订单表
+        List<OrderCoursesBO> orderCoursesBOList=new ArrayList<OrderCoursesBO>();
+        orderCoursesBOList.add(orderCoursesBO);
+        orderCoursesDAO.addCourses(orderCoursesBOList);
+
+    }
+
+    //支付成功 购买语言 添加多个子订单
+    public void buyLanguage(String orderNumber,Integer languageId) throws ParseException {
+        //获取到订单信息
+        OrderBO orderBO = orderDAO.getOrderByOrderNumber(orderNumber);
+
+        //订单表状态修改为yes
+        orderDAO.updOrderStatus(orderNumber, AliConstants.Theorder.getValue());
+
+        //查询购买的课程信息 因为是购买语言，课程可能有多个
+        List<CourseBO> courseBOList=courseDAO.getCoursesById(languageId);
+
+        //添加 订单 子订单表
+        List<OrderCoursesBO> orderCoursesBOList=new ArrayList<OrderCoursesBO>();
+        for (CourseBO courseBO:courseBOList) {
+            //实例化子订单信息
+            OrderCoursesBO orderCoursesBO=new OrderCoursesBO();
+            orderCoursesBO.setUserId(orderBO.getUserId());
+            orderCoursesBO.setOrderId(orderBO.getId());
+            orderCoursesBO.setCoursesId(courseBO.getId());
+            orderCoursesBO.setCoursesName(courseBO.getCourseName());
+            //课程有效期
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
+            orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
+            orderCoursesBOList.add(orderCoursesBO);
         }
-        return resultMap;
+
+        orderCoursesDAO.addCourses(orderCoursesBOList);
     }
 
     //将InputStream转换为Map
@@ -255,6 +252,17 @@ public class WXPayService {
 
         }
         return resultMap;
+    }
+
+    //转换金额 有 1.00 转为 100分
+    private static String totalFee(BigDecimal  price){
+
+        BigDecimal setScale = price.setScale(2,BigDecimal.ROUND_HALF_DOWN);
+        System.out.println(setScale);
+        String str= setScale.multiply(new BigDecimal("100")).toString();
+        BigDecimal b=   new BigDecimal(str.substring(0,str.length()-3));
+
+        return  b.toString();
     }
 
     //判断是否是优惠时间
@@ -285,6 +293,7 @@ public class WXPayService {
         //生成订单号
         IDBuilder idBuilder = new IDBuilder(10, 10);
         String orderNumber = idBuilder.nextId() + "";
+        orderParam.setOrderNumber(orderNumber);
 
         //获取请求参数
         Map<String, String> map = WXConfig.toMapJSAPI();
@@ -293,9 +302,10 @@ public class WXPayService {
         map.put("out_trade_no",orderNumber);//订单号
         //判断购买类型 添加后续请求参数
         if(orderParam.getProductType().equals("咖豆")){
-            map.put("total_fee",orderParam.getPrice()+"");//订单价格
+            //map.put("total_fee",totalFee(orderParam.getPrice()));//订单价格
+            map.put("total_fee",totalFee(new BigDecimal("0.01")));
             //自定义请求参数 购买咖豆的数量
-            map.put("attach", "100");//！！！！！！！！！！！
+            map.put("attach", getKaDou(new Integer(orderParam.getPrice().intValue()))+"");//！！！！！！！！！！！
             //回调地址
             map.put("notify_url",WXConfig.NOTIFY_URL_CURRENCY);
         }else if(orderParam.getProductType().equals("课程")){
@@ -306,14 +316,18 @@ public class WXPayService {
             //当前时间
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
             //判断是否是优惠时间
-            boolean bool=isEffectiveDate(df.parse((df.format(new Date()))),df.parse(courseBO.getDiscountStartTime()),df.parse(courseBO.getDiscountEndTime()));
+            boolean bool=isEffectiveDate(df.parse((df.format(new Date()))),courseBO.getDiscountStartTime(),courseBO.getDiscountEndTime());
             //价格
             if(bool){
                 //自定义请求参数 价格
-                map.put("total_fee",courseBO.getDiscountPrice()+"");
+               // map.put("total_fee",totalFee(getMoney(courseBO.getDiscountPrice())));
+                orderParam.setPrice(getMoney(courseBO.getDiscountPrice()));
+                 map.put("total_fee",totalFee(new BigDecimal("0.01")));
             }else{
                 //自定义请求参数 价格
-                map.put("total_fee",courseBO.getPrice()+"");
+                //map.put("total_fee",totalFee(getMoney(courseBO.getPrice())));
+                orderParam.setPrice(getMoney(courseBO.getPrice()));
+                map.put("total_fee",totalFee(new BigDecimal("0.01")));
             }
 
             //回调地址
@@ -330,10 +344,14 @@ public class WXPayService {
             //价格
             if(bool){
                 //自定义请求参数 价格
-                map.put("total_fee",languageBO.getLanguageDiscountPrice()+"");
+                //map.put("total_fee",totalFee(getMoney(languageBO.getLanguageDiscountPrice())));
+                orderParam.setPrice(getMoney(languageBO.getLanguageDiscountPrice()));
+                map.put("total_fee",totalFee(new BigDecimal("0.01")));
             }else{
                 //自定义请求参数 价格
-                map.put("total_fee",languageBO.getLanguagePrice()+"");
+                //map.put("total_fee",totalFee(getMoney(languageBO.getLanguagePrice())));
+                orderParam.setPrice(getMoney(languageBO.getLanguagePrice()));
+                map.put("total_fee",totalFee(new BigDecimal("0.01")));
             }
             //回调地址
             map.put("notify_url",WXConfig.NOTIFY_URL_LANGUAGE);
@@ -342,14 +360,23 @@ public class WXPayService {
 
     }
 
-    //请求统一下单
-    public String getCodeUrl(String mapStr) throws Exception {
-        WXRequestConfig wxPayConfig=new WXRequestConfig();
-        WXPayRequest wxPayRequest=new WXPayRequest(wxPayConfig);
-        //方法形参中需要带个uuid 不清楚干啥的随机生成了
-        UUID uuid = UUID.randomUUID();
-        String uuidStr = uuid.toString();
-        String resultXml = wxPayRequest.requestWithoutCert(WXConfig.PLACE_AN_ORDERAPI,uuidStr,mapStr,false);
-        return resultXml;
+    //获取人民币对等的咖豆
+    public Integer getKaDou(Integer price){
+        //String proportion = keyValDAO.selectKey("top-up proportion");
+        String proportion = "1:1";
+        Integer jinE=new Integer(proportion.substring(0,proportion.indexOf(":")));
+        Integer kaD=new Integer(proportion.substring(proportion.indexOf(":")+1,proportion.length()));
+        return price/jinE*kaD;
+    }
+
+    //获取咖豆对等的人民币
+    public BigDecimal getMoney(Integer kaDou){
+        //String proportion = keyValDAO.selectKey("top-up proportion");
+        String proportion = "1:1";
+        Integer jinE=new Integer(proportion.substring(0,proportion.indexOf(":")));
+        Integer kaD=new Integer(proportion.substring(proportion.indexOf(":")+1,proportion.length()));
+        return new BigDecimal(kaDou/kaD*jinE);
     }
 }
+
+

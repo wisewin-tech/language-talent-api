@@ -3,6 +3,7 @@ package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.common.base.BaseModel;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class LanguageBO extends BaseModel {

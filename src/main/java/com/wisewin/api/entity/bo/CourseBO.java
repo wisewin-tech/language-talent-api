@@ -2,6 +2,11 @@ package com.wisewin.api.entity.bo;
 
 
 import com.wisewin.api.common.base.BaseModel;
+import org.omg.PortableInterceptor.INACTIVE;
+
+import javax.xml.crypto.Data;
+import java.math.BigDecimal;
+import java.util.Date;
 
 public class CourseBO extends BaseModel {
     private Integer id; //课程分类表
@@ -11,8 +16,8 @@ public class CourseBO extends BaseModel {
     private String status; //状态
     private Integer price; //价格
     private Integer discountPrice; //特惠价
-    private String discountStartTime; //特惠开始时间
-    private String discountEndTime; //特惠结束时间
+    private Date discountStartTime; //特惠开始时间
+    private Date discountEndTime; //特惠结束时间
     private Integer courseValidityPeriod;//课程有效期
     private Integer studyNumber; //学习人数
     private String courseIntro; //课程简介
@@ -89,19 +94,19 @@ public class CourseBO extends BaseModel {
         this.discountPrice = discountPrice;
     }
 
-    public String getDiscountStartTime() {
+    public Date getDiscountStartTime() {
         return discountStartTime;
     }
 
-    public void setDiscountStartTime(String discountStartTime) {
+    public void setDiscountStartTime(Date discountStartTime) {
         this.discountStartTime = discountStartTime;
     }
 
-    public String getDiscountEndTime() {
+    public Date getDiscountEndTime() {
         return discountEndTime;
     }
 
-    public void setDiscountEndTime(String discountEndTime) {
+    public void setDiscountEndTime(Date discountEndTime) {
         this.discountEndTime = discountEndTime;
     }
 
