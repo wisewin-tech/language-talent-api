@@ -66,7 +66,10 @@ public class WXPayService {
 
         //存入自己的数据库
         if (twoMap != null && !twoMap.isEmpty()) {
+            System.err.println("TwoMap不是空的");
             payService.prepaid(orderParam);
+        }else{
+            System.err.println("TwoMap是空的");
         }
 
         return twoMap;
@@ -92,8 +95,11 @@ public class WXPayService {
         //处理业务逻辑
         String return_code = resultMap.get("return_code");//状态
         String out_trade_no = resultMap.get("out_trade_no");//商户订单号
+        System.err.println("商户号==================="+out_trade_no);
+
         if (return_code.equals("SUCCESS")) {//交易标识
             if (out_trade_no != null) {//商户订单号
+
                 if (productType.equals("咖豆")) {
                     //调用充值咖豆的方法
                     payService.rechargeKaDou(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
@@ -153,6 +159,7 @@ public class WXPayService {
         //生成订单号
         IDBuilder idBuilder = new IDBuilder(10, 10);
         String orderNumber = idBuilder.nextId() + "";
+        System.err.println("生成的订单好========"+orderNumber);
         orderParam.setOrderNumber(orderNumber);
 
         //获取请求参数
