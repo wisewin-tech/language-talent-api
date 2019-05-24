@@ -197,7 +197,7 @@ public class UserController extends BaseCotroller {
              UserBO userBO = userService.selectByPhone(phone);
             if(userBO!=null){
                 //islogin 是否为登录, yes 登录
-                if (userBO.getStatus().equals(UserConstants.Yes.getValue())){
+                if (UserConstants.Yes.getValue().equals(userBO.getStatus())){
                     //状态,是否被拉黑  yes:拉黑,no:账号正常使用
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
                     super.safeJsonPrint(response, json);

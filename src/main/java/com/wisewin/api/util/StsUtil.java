@@ -17,7 +17,6 @@ import java.util.Map;
 public class StsUtil {
     private static final String accessKeyId = "LTAI0MJbyuPxtWRM";
     private static final String accessKeySecret = "HiErjIdNi2EXcZD2Qoz8ylUJTkAygV";
-    private static final String roleArn="acs:ram::1102747709306525:role/vod";
     // 目前只有"cn-hangzhou"这个region可用，不要使用填写其他region的值
     public static final String REGION_CN_HANGZHOU = "cn-hangzhou";
     // 当前 STS API 版本
@@ -69,7 +68,7 @@ public class StsUtil {
         ProtocolType protocolType = ProtocolType.HTTPS;
         final AssumeRoleResponse response;
         try {
-            response = assumeRole(accessKeyId, accessKeySecret,roleArn, roleSessionName, policy, protocolType);
+            response = assumeRole(accessKeyId, accessKeySecret,"acs:ram::1102747709306525:role/vod", roleSessionName, policy, protocolType);
             resultMap.put("akId",response.getCredentials().getAccessKeyId());
             resultMap.put("akScret",response.getCredentials().getAccessKeySecret());
             resultMap.put("stk", response.getCredentials().getSecurityToken());
@@ -81,7 +80,52 @@ public class StsUtil {
     }
 
 
+    /**
+     * 获取临时OSS
+     * @param roleSessionName
+     * @return
+     */
+    public static Map<String,String> getStsOss(String roleSessionName){
+        Map<String,String>  resultMap =  new HashMap<String, String>();
+        // 定制你的policy
+        String policy = "{\n" +
+                "    \"Version\": \"1\", \n" +
+                "    \"Statement\": [\n" +
+                "        {\n" +
+                "            \"Action\": [\n" +
+                "                \"oss:*\"\n" +
+                "            ], \n" +
+                "            \"Resource\": [\n" +
+                "                \"acs:oss:*:*:*\" \n" +
+                "            ], \n" +
+                "            \"Effect\": \"Allow\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+        // 此处必须为 HTTPS
+        ProtocolType protocolType = ProtocolType.HTTPS;
+        final AssumeRoleResponse response;
+        try {
+            response = assumeRole(accessKeyId, accessKeySecret,"acs:ram::1102747709306525:role/oss", roleSessionName, policy, protocolType);
+            resultMap.put("expiration",response.getCredentials().getExpiration());
+            resultMap.put("tempAk",response.getCredentials().getAccessKeyId());
+            resultMap.put("tempSk:",response.getCredentials().getAccessKeySecret());
+            resultMap.put("token:", response.getCredentials().getSecurityToken());
+        } catch (ClientException e){
+            resultMap.put("errorCode",e.getErrCode());
+            resultMap.put("errorMessage", e.getErrMsg());
+        }
+        return  resultMap;
+    }
+
+
+
+
     public static void main(String[] args) {
+        Map<String, String> osstest = getStsOss("osstest");
+        for(String str:osstest.keySet()){
+            System.out.println(str+":"+osstest.get(str));
+        }
 
     }
     static void createUploadVideo(String accessKeyId, String accessKeySecret, String token) {
