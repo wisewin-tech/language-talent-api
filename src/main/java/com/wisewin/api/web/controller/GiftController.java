@@ -44,6 +44,7 @@ public class GiftController extends BaseCotroller{
             return;
         }
 
+
         Map<String,Object> resulmap=new HashMap<String, Object>();
 
         //根据礼品兑换码查找
@@ -59,12 +60,11 @@ public class GiftController extends BaseCotroller{
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000029"));
             super.safeJsonPrint(response, json);
             return;
-
         }
         //判断礼品卡码是否使用
         if (gift.getStatus().equals(GiftConstants.NOT)){
             //判断使用时间
-            //系统时间大于当前时间就等于1
+            //系统时间大于使用时间就等于1
             if(date1.compareTo(gift.getStarttime())==-1 ){
                 resulmap.put("status",gift.getStatus());
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resulmap));
@@ -93,9 +93,7 @@ public class GiftController extends BaseCotroller{
                         return;
                     }
                 }
-
             }
-
         }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000028"));
         super.safeJsonPrint(response, json);
