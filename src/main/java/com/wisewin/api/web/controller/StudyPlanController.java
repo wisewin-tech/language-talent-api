@@ -82,12 +82,13 @@ public class StudyPlanController extends BaseCotroller {
             Integer levelId1 = studyPlanService.getLevelIdByOne();
         Integer courseId1 = courseService.getCourseIdByLevelId(levelId1);
         Integer count = orderService.getStatusByCourseId(userId,courseId1);
+        LevelBO levelBO1 = studyPlanService.getStudyPlan(languageId,levelId1);
         if (count>0){
-            levelBO.setBuyOrNot("yes");
+            levelBO1.setBuyOrNot("yes");
         }else {
-            levelBO.setBuyOrNot("no");
+            levelBO1.setBuyOrNot("no");
         }
-            LevelBO levelBO1 = studyPlanService.getStudyPlan(languageId,levelId1);
+
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO1));
             super.safeJsonPrint(response, json);
     }
