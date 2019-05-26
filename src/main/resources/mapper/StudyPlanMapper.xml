@@ -12,6 +12,8 @@
         <result column="courseIntro" property="courseIntro"/>
         <result column="levelName" property="levelName"/>
         <result column="levelId" property="id"/>
+        <result column="languageId" property="languageId"/>
+        <result column="courseId" property="courseId"/>
         <collection property="chapterBOList" ofType="com.wisewin.api.entity.bo.ChapterResultBO">
             <id column="chapterId" property="chapterId"/>
             <result column="chapter_name" property="chapterName"/>
@@ -26,7 +28,7 @@
             resultMap="chapters">
         SELECT
         `language`.language_name languageName,`language`.ensign_image_url ensignImageUrl,
-        course.course_name courseName,
+        course.course_name courseName,`language`.id languageId,
         chapter.chapter_name,course.course_intro courseIntro,
         chapter.thumbnail_url thumbnailUrl,`level`.level_name levelName,
         `language`.id languageId,course.id courseId,

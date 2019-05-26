@@ -8,6 +8,7 @@ public class FavoritesResultBO {
     private Integer userId;         //用户id
     private String  languageName;  //语言名称
     private String  courseName;    //课程名称
+    private String courseId;//课程id
     private String  levelName;     //级别名称
     private String  chapterName;   //课时名称
     private String chapterId;//课时id
@@ -25,6 +26,7 @@ public class FavoritesResultBO {
                 "userId=" + userId +
                 ", languageName='" + languageName + '\'' +
                 ", courseName='" + courseName + '\'' +
+                ", courseId='" + courseId + '\'' +
                 ", levelName='" + levelName + '\'' +
                 ", chapterName='" + chapterName + '\'' +
                 ", chapterId='" + chapterId + '\'' +
@@ -59,6 +61,14 @@ public class FavoritesResultBO {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
     public String getLevelName() {

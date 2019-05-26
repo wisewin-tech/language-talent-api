@@ -175,4 +175,12 @@
 		discount_end_time as discountEndTime
 		from lt_course where id=#{id}
 	</select>
+
+	<!--通过级别id查课程id-->
+	<select id="getCourseIdByLevelId" resultType="java.lang.Integer">
+		SELECT co.id
+		FROM lt_level le
+		LEFT JOIN lt_course co ON le.course_id = co.id
+		WHERE le.id=#{levelId}
+	</select>
 </mapper>

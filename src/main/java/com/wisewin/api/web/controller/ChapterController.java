@@ -46,7 +46,8 @@ public class ChapterController extends BaseCotroller {
 
     /**
      * 课时详情
-     * @param id
+     * @param id 课时id
+     * @param courseId 课程id
      * @param request
      * @param response
      */
@@ -55,8 +56,13 @@ public class ChapterController extends BaseCotroller {
         //获取登录用户信息
         UserBO userBO = super.getLoginUser(request);
         Integer userId = userBO.getId();
+        if (userId==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, result);
+            return;
+        }
         //参数验证
-        if (id == null) {
+        if (id == null||courseId==null) {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);
             return;

@@ -58,4 +58,13 @@ public class CourseService {
     public List<CourseBO> getCourseIdById(Integer languageId){
         return courseDAO.getCourseIdById(languageId);
     }
+
+    /**
+     * 通过级别id查课程id
+     * @param levelId
+     * @return
+     */
+    public Integer getCourseIdByLevelId(Integer levelId){
+        return courseDAO.getCourseIdByLevelId(levelId);
+    }
 }
