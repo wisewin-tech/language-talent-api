@@ -104,6 +104,9 @@ public class WBAlipayController extends BaseCotroller {
         if("curriculum".equals(orderParam.getProductType())){
             curriculumPayRequest(request,response,orderParam);
         }
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000037"));
+        super.safeJsonPrint(response, json);
+        return;
     }
 
     /**
@@ -164,10 +167,8 @@ public class WBAlipayController extends BaseCotroller {
         } catch (AlipayApiException e) {
             e.printStackTrace();
             logger.info(e.getMessage());
-
         }
     }
-
     /**
      * 购买语言
      * @param request
@@ -207,7 +208,6 @@ public class WBAlipayController extends BaseCotroller {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-
             ali_request.setBizModel(model);
             // 调用SDK生成表单
             AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
@@ -222,11 +222,9 @@ public class WBAlipayController extends BaseCotroller {
                 logger.info("调用SDK生成表单失败");
                 throw new AlipayApiException("调用SDK生成表单失败");
             }
-
         } catch (AlipayApiException e) {
             e.printStackTrace();
             logger.info(e.getMessage());
-
         }
     }
     /**
@@ -272,11 +270,8 @@ public class WBAlipayController extends BaseCotroller {
         } catch (AlipayApiException e) {
             e.printStackTrace();
             logger.info(e.getMessage());
-
         }
     }
-
-
     /**
      * 支付回调
      * @param request
@@ -360,7 +355,6 @@ public class WBAlipayController extends BaseCotroller {
                         e.printStackTrace();
                     }
                 }
-
                 return "success";//成功返给支付宝
             }
         }
