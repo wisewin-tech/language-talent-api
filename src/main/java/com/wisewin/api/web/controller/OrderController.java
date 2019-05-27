@@ -5,6 +5,7 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.OrderService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,15 +57,20 @@ public class OrderController extends BaseCotroller {
 
     }
     @RequestMapping("/selectDetails")
-    public void selectDetails(Integer id,HttpServletResponse response, HttpServletRequest request) {
+    public void selectDetails(String id,HttpServletResponse response, HttpServletRequest request) {
         //判断用户id是否为空,即:用户是否登录
         Integer userId = super.getId(request);
-        if (userId == null||id==null) {
+        if (StringUtils.isEmpty(id)) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
-        OrderBO orderBO=orderService.selectDetails(id,userId);
+        if(userId == null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        OrderBO orderBO=orderService.selectDetails(Integer.parseInt(id),userId);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(orderBO));
         super.safeJsonPrint(response, json);
 

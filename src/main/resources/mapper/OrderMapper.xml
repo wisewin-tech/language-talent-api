@@ -24,13 +24,11 @@
     <sql id="limit">
         limit #{pageOffset},#{pageSize}
     </sql>
+
     <!--查询订单详情-->
     <select id="selectDetails" resultType="com.wisewin.api.entity.bo.OrderBO"
             parameterType="java.util.Map">
-        select
-        lo.id,lo.user_id ,lo.price ,lo.order_number ,
-        lo.order_type ,lo.status ,lo.product_name ,lo.creation_date ,lo.course_validity_period
-        from lt_order lo
+        SELECT * FROM lt_order
         <where>
             user_id=#{userId} AND id=#{id}
         </where>
