@@ -8,7 +8,7 @@ public class OrderParam {
     private String productType ;//商品类型
     private BigDecimal price;//购买咖豆金额
     private Integer languageId;//语言id
-    private Integer courseId;//课程
+    private Integer courseId;//课程id
     private String orderNumber;//订单号
 
     public String getOrderNumber() {

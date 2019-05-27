@@ -4,7 +4,6 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.RecordService;
-import com.wisewin.api.service.SignService;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Controller
 @RequestMapping("/record")

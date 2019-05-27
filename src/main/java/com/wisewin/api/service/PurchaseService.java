@@ -1,3 +1,4 @@
+
 package com.wisewin.api.service;
 
 import com.wisewin.api.dao.*;
@@ -7,15 +8,12 @@ import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.date.DateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * Created by 王彬 on 2019/5/9.
@@ -42,12 +40,7 @@ public class PurchaseService {
     @Resource
     private RecordDAO recordDAO;
 
-    //获取当前用户
-    //获取要购买课程的id
-    //判断当前用户是否购买了当前课程
-    //判断当前课程是否在优惠时间，
-    //获取优惠价格或者普通价格
-    //判断当前用户的咖豆是否足够购买当前课程
+
 
     /**
      * 获取当前用户信息
@@ -56,21 +49,6 @@ public class PurchaseService {
         return userDAO.selectUser(id);
     }
 
-    /**
-     * '判断当前用户是否购买当前课程
-     * @param userId
-     * @param coursesId
-     * @return
-     */
-   /*public boolean purchase(Integer userId, String coursesId){
-      OrderCoursesBO orderCoursesBO = orderCoursesDAO.selectOrderCourses(userId, coursesId) ;
-      if(orderCoursesBO != null){
-          //用户已购买
-          return true;
-      }
-      //用户未购买
-      return false;
-   }*/
 
     /**
      * 查询课程
@@ -112,6 +90,7 @@ public class PurchaseService {
         pruchase.setTitle(sbf.toString());
         //传入当前用户的咖豆
         pruchase.setUserCurrency(user.getCurrency());
+        pruchase.setImg(course.getThumbnailImageUrl());
         //是特惠时间
         if (falg) {
             //获取课程优惠价
@@ -138,13 +117,6 @@ public class PurchaseService {
     }
 
 
-    //获取当前用户
-    //获取要购买课程的id
-    //判断当前用户是否购买了当前课程
-    //判断当前课程是否在优惠时间，
-    //获取优惠价格或者普通价格
-    //判断当前用户的咖豆是否足够购买当前课程
-
     /**
      * @param language 语言
      * @param user     当前用户
@@ -162,6 +134,7 @@ public class PurchaseService {
         pruchase.setTitle(language.getLanguageName());
         //传入当前用户的咖豆
         pruchase.setUserCurrency(user.getCurrency());
+        pruchase.setImg(language.getThumbnailImageUrl());
         //是特惠时间
         if (falg) {
             //获取语言优惠价
@@ -332,3 +305,6 @@ public class PurchaseService {
         return today;
     }
 }
+
+
+

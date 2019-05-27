@@ -12,6 +12,8 @@ public class PruchaseDTO {
     private Integer userCurrency;
     //用户剩余咖豆是否能购买当前课程
     private boolean state;
+    //缩略图
+    private String img;
 
     public String getTitle() {
         return title;
@@ -43,5 +45,13 @@ public class PruchaseDTO {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }
