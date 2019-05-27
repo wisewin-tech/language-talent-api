@@ -11,20 +11,17 @@
     </select>
     <!--添加时长和日期-->
     <insert id="insertDuration">
-        INSERT INTO lt_user_study_details (user_id,study_date,study_duration) VALUES(#{userId},now(),1)
+        INSERT INTO lt_user_study_details (user_id,study_date,study_duration) VALUES(#{userId},#{studydate},1)
     </insert>
     <!--修改时长-->
     <update id="updateDuration" parameterType="com.wisewin.api.entity.bo.UserStudyDetailsBO">
         UPDATE lt_user_study_details SET study_duration = #{studyDuration} WHERE user_id=#{userId} AND study_date=#{studyDate}
     </update>
     <!--最近一周每天学习时长-->
-    <select id="weekStudyDuration" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.UserStudyDetailsBO">
-        SELECT ud.study_duration studyDuration,ud.study_date studyDate
+    <select id="weekStudyDuration" resultType="com.wisewin.api.entity.bo.UserStudyDetailsBO">
+        SELECT ud.user_id userId,ud.study_date studyDate,ud.study_duration studyDuration
         FROM lt_user_study_details ud
-        WHERE ud.user_id = #{userId}
-        GROUP BY ud.study_date
-        ORDER BY ud.study_date DESC
-        LIMIT 0,7
+        WHERE ud.user_id = #{userId} AND ud.study_date =#{studyDate}
     </select>
 
 

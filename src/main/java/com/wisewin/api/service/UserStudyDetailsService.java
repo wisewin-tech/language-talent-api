@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 @Service("userStudyDetailsService")
 @Transactional
@@ -29,8 +28,8 @@ public class UserStudyDetailsService {
      * @param userId
      * @return
      */
-    public void insertDuration(Integer userId){
-         userStudyDetailsDAO.insertDuration(userId);
+    public void insertDuration(Integer userId,Date studydate){
+         userStudyDetailsDAO.insertDuration(userId,studydate);
     }
 
      /**
@@ -48,7 +47,7 @@ public class UserStudyDetailsService {
      * @param userId 用户id
      * @return
      */
-    public List<UserStudyDetailsBO> weekStudyDuration(Integer userId){
-        return userStudyDetailsDAO.weekStudyDuration(userId);
+    public UserStudyDetailsBO weekStudyDuration(Integer userId,Date studyDate){
+        return userStudyDetailsDAO.weekStudyDuration(userId,studyDate);
     }
 }

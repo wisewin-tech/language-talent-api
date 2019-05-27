@@ -4,7 +4,6 @@ import com.wisewin.api.entity.bo.UserStudyDetailsBO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
-import java.util.List;
 
 public interface UserStudyDetailsDAO {
     /**
@@ -19,7 +18,7 @@ public interface UserStudyDetailsDAO {
      * @param userId
      * @return
      */
-    void insertDuration(Integer userId);
+    void insertDuration(@Param("userId") Integer userId,@Param("studydate") Date studydate);
 
     /**
      * 修改时长
@@ -34,5 +33,5 @@ public interface UserStudyDetailsDAO {
      * @param userId 用户id
      * @return
      */
-    List<UserStudyDetailsBO> weekStudyDuration(Integer userId);
+    UserStudyDetailsBO weekStudyDuration(@Param("userId") Integer userId,@Param("studyDate")Date studyDate);
 }
