@@ -168,7 +168,7 @@ public class PayService {
         orderBO.setUserId(orderParam.getUserId());
         orderBO.setPrice(orderParam.getPrice());
         orderBO.setOrderNumber(orderParam.getOrderNumber());
-        if (orderParam.getProductType().equals("咖豆")) {
+        if (orderParam.getProductType().equals("currency")) {
             orderBO.setOrderType("充值");
         } else {
             orderBO.setOrderType("购买");
