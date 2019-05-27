@@ -102,13 +102,13 @@ public class WXPayService {
                     //订单状态为未支付
                     String status=orderDAO.getOrderByOrderNumber(out_trade_no).getStatus();
                     if(!status.equals("yes")){
-                        if (productType.equals("咖豆")) {
+                        if (productType.equals("currency")) {
                             //调用充值咖豆的方法
                             payService.rechargeKaDou(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
-                        } else if (productType.equals("课程")) {
+                        } else if (productType.equals("curriculum")) {
                             //购买课程
                             payService.buyCourse(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
-                        } else if (productType.equals("语言")) {
+                        } else if (productType.equals("language")) {
                             //购买语言
                             payService.buyLanguage(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
                         }
