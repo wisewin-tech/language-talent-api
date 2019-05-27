@@ -49,9 +49,9 @@ public class WXPayController extends BaseCotroller {
         }
         //判断参数
         if ((orderParam.getProductName()==null||orderParam.getProductType()==null)
-                ||  (orderParam.getProductType().equals("咖豆")&&orderParam.getPrice()==null)
-                ||  (orderParam.getProductType().equals("课程")&&orderParam.getCourseId()==null)
-                ||  (orderParam.getProductType().equals("语言")&&orderParam.getLanguageId()==null))
+                ||  (orderParam.getProductType().equals("currency")&&orderParam.getPrice()==null)
+                ||  (orderParam.getProductType().equals("curriculum")&&orderParam.getCourseId()==null)
+                ||  (orderParam.getProductType().equals("language")&&orderParam.getLanguageId()==null))
         {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
