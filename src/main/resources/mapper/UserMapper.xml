@@ -5,10 +5,41 @@
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.api.dao.UserDAO">
 
+
+    <!--查看一个qq号或者微信有没有被绑定过-->
+    <select id="checkBind" resultType="java.lang.String">
+        select
+        mobile
+        from
+        lt_user
+       <where>
+           <if test="status=='QQ'">
+               and qq_openid=#{openid}
+           </if>
+           <if test="status=='WX'">
+               and wx_openid=#{openid}
+           </if>
+       </where>
+    </select>
+    <!--添加绑定-->
+    <update id="bindOpenId">
+        update lt_user
+        <set>
+            <if test="status=='QQ'">
+                qq_openid=#{openid},
+            </if>
+            <if test="status=='WX'">
+                wx_openid=#{openid},
+            </if>
+        </set>
+        where mobile=#{phone}
+    </update>
+
+
     <!--通过phone查看库里有没有这个账号-->
     <select id="selectByPhone" resultType="com.wisewin.api.entity.bo.UserBO">
         select
-        id,nickname,mobile,status
+        *
         from
         lt_user
         where

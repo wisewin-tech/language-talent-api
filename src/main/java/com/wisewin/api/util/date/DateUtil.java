@@ -1,6 +1,8 @@
 package com.wisewin.api.util.date;
 
 
+import com.wisewin.api.util.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,6 +77,9 @@ public class DateUtil {
      * yyyy-MM-dd
      */
     public  static String getStr(String date) {
+        if(date==null || "".equals(date)){
+            return null;
+        }
         Date thisDate=null;
         //设置要获取到什么样的时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

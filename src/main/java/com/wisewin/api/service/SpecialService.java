@@ -38,6 +38,8 @@ public class SpecialService {
 
         //专题的信息
         SpecialBO specialBO=specialDAO.selectSpecialBOById(id);
+        System.err.println(id);
+        System.err.println(specialBO.getId());
 
         //查看这个用户是否喜欢过这个专题
         specialBO.setLike(specialDAO.checkUserLikeSpecial(userId,id)>0?"yes":"no");

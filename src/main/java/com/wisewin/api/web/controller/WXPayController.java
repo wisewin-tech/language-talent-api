@@ -82,11 +82,6 @@ public class WXPayController extends BaseCotroller {
             writer.write("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
             writer.flush();
             writer.close();
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
-            super.safeJsonPrint(response, json);
-        }else{
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000030"));
-            super.safeJsonPrint(response, json);
         }
     }
 
@@ -97,15 +92,10 @@ public class WXPayController extends BaseCotroller {
         String return_code = resultMap.get("return_code");//状态
         String result_code=resultMap.get("result_code");//交易结果
         if (return_code.equals("SUCCESS")&&result_code.equals("SUCCESS")) {//交易成功
-            Writer writer=response.getWriter();
+            Writer writer = response.getWriter();
             writer.write("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
             writer.flush();
             writer.close();
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
-            super.safeJsonPrint(response, json);
-        }else{
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000030"));
-            super.safeJsonPrint(response, json);
         }
 
     }
@@ -114,21 +104,15 @@ public class WXPayController extends BaseCotroller {
     //购买课程回调
     @RequestMapping("/courseOrderResult")
     public void courseOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        Map<String,String> resultMap=wxPayService.getOrderResult(request,"课程");
+        Map<String, String> resultMap = wxPayService.getOrderResult(request, "课程");
         String return_code = resultMap.get("return_code");//状态
-        String result_code=resultMap.get("result_code");//交易结果
-        if (return_code.equals("SUCCESS")&&result_code.equals("SUCCESS")) {//交易成功
-            Writer writer=response.getWriter();
+        String result_code = resultMap.get("result_code");//交易结果
+        if (return_code.equals("SUCCESS") && result_code.equals("SUCCESS")) {//交易成功
+            Writer writer = response.getWriter();
             writer.write("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
             writer.flush();
             writer.close();
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
-            super.safeJsonPrint(response, json);
-        }else{
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000030"));
-            super.safeJsonPrint(response, json);
         }
     }
-
 
 }

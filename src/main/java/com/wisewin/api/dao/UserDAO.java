@@ -9,8 +9,11 @@ import java.util.Map;
 
 public interface UserDAO {
 
+    //根据微信号 或者qq号判断是否绑定过 返回user的手机号
+    String checkBind(@Param("openid")String openid,@Param("status")String status);
 
-
+    //openid绑定
+    Integer bindOpenId(@Param("phone") String phone,@Param("status")String status,@Param("openid")String openid);
     /**
      * 添加用户信息
      * @param user

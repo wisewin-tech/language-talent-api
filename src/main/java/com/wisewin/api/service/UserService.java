@@ -24,6 +24,21 @@ public class UserService {
     @Resource
     private UserDAO userDAO;
 
+
+    //判断openid是否绑定过
+    public String checkBind(String openid,String status){
+        //判断是否绑定过
+        return userDAO.checkBind(openid,status);
+    }
+    //添加绑定
+    public boolean bindOpenId(String phone,String status,String openId){
+        if(userDAO.bindOpenId(phone, status, openId)>0){
+            return true;
+        }
+        return false;
+    }
+
+
     /**
      * 发送验证码
      *

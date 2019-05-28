@@ -172,14 +172,14 @@ public class WXPayService {
         //传入剩余请求参数
         map.put("out_trade_no", orderNumber);//订单号
         //判断购买类型 添加后续请求参数
-        if (orderParam.getProductType().equals("咖豆")) {
+        if (orderParam.getProductType().equals("currency")) {
             //map.put("total_fee",totalFee(orderParam.getPrice()));//订单价格
             map.put("total_fee", totalFee(new BigDecimal("0.01")));
             //自定义请求参数 购买咖豆的数量
             map.put("attach", payService.getKaDou(new Integer(orderParam.getPrice().intValue())) + "");//！！！！！！！！！！！
             //回调地址
             map.put("notify_url", WXConfig.NOTIFY_URL_CURRENCY);
-        } else if (orderParam.getProductType().equals("课程")) {
+        } else if (orderParam.getProductType().equals("curriculum ")) {
             //自定义请求参数 课程id
             map.put("attach", orderParam.getCourseId() + "");
             //要购买的课程
@@ -203,7 +203,7 @@ public class WXPayService {
 
             //回调地址
             map.put("notify_url", WXConfig.NOTIFY_URL_COURSE);
-        } else if (orderParam.getProductType().equals("语言")) {
+        } else if (orderParam.getProductType().equals("language")) {
             //自定义请求参数 语言id
             map.put("attach", orderParam.getLanguageId() + "");
             //要购买的语言
