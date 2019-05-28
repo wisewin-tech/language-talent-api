@@ -62,7 +62,6 @@ public class SequenceController extends BaseCotroller {
         }
     }
 
-
     /**
      * 获取OSS临时凭证
      */
