@@ -61,10 +61,8 @@ public class PayService {
     public void buyCourse(String orderNumber, Integer courseId) throws ParseException {
         //获取到订单信息
         OrderBO orderBO = orderDAO.getOrderByOrderNumber(orderNumber);
-
         //订单表状态修改为yes
         orderDAO.updOrderStatus(orderNumber, AliConstants.Theorder.getValue());
-
         //查询购买的课程信息
         CourseBO courseBO = courseDAO.getCourseById(courseId);
 
@@ -85,11 +83,11 @@ public class PayService {
         List<OrderCoursesBO> orderCoursesBOList = new ArrayList<OrderCoursesBO>();
         orderCoursesBOList.add(orderCoursesBO);
         orderCoursesDAO.addCourses(orderCoursesBOList);
-
     }
 
     //支付成功 购买语言 添加多个子订单
     public void buyLanguage(String orderNumber, Integer languageId) throws ParseException {
+
         //获取到订单信息
         OrderBO orderBO = orderDAO.getOrderByOrderNumber(orderNumber);
 
@@ -179,5 +177,4 @@ public class PayService {
         //插入数据库 订单信息
         orderDAO.insertPreOrder(orderBO);
     }
-
 }

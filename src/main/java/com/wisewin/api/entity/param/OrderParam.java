@@ -51,7 +51,6 @@ public class OrderParam {
         this.productType = productType;
     }
 
-
     public Integer getLanguageId() {
         return languageId;
     }

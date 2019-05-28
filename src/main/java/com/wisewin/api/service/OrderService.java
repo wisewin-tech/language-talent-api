@@ -2,7 +2,6 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.dao.OrderDAO;
 import com.wisewin.api.entity.bo.OrderBO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +14,7 @@ public class OrderService {
     private OrderDAO orderDAO;
     @Resource
     private ChapterService  chapterService;
+
     /**
      * 查询我的交易记录(包括订单,充值)
      * @param map
@@ -36,7 +36,6 @@ public class OrderService {
         return orderDAO.getStatusByCourseId(userId,courseId);
     }
 
-
     /**
      * 查询课时是否能观看
      * @param userId 用户id
@@ -49,7 +48,4 @@ public class OrderService {
         //查询订单
         return  orderDAO.queryOrderCount(userId,course)>0;
     }
-
-
-
 }
