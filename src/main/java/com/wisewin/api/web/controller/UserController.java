@@ -98,7 +98,7 @@ public class UserController extends BaseCotroller {
                 }
             }
             userService.send(phone);
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("短信验证码发送成功!"));
             super.safeJsonPrint(response, json);
 
         }
