@@ -20,8 +20,16 @@ public class LevelBO extends BaseModel {
     private String courseIntro;//课程简介
     private String thumbnailUrl;//缩略图
     private Integer languageId;//语言id
+    private String buyOrNot;//是否购买
     private List<ChapterResultBO> chapterBOList;
 
+    public String getBuyOrNot() {
+        return buyOrNot;
+    }
+
+    public void setBuyOrNot(String buyOrNot) {
+        this.buyOrNot = buyOrNot;
+    }
 
     public Integer getId() {
         return id;

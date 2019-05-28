@@ -67,13 +67,6 @@ public class PurchaseController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }
-           //判断当前用户是否购买过此课程
-          /* boolean bl = purchaseService.purchase(user.getId(),id);
-            if(bl){
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000017"));
-                super.safeJsonPrint(response, json);
-                return;
-            }*/
             PruchaseDTO pruchase = purchaseService.isCourse(course,user);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(pruchase));
             super.safeJsonPrint(response, json);

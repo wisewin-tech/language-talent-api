@@ -202,9 +202,11 @@ public class UserController extends BaseCotroller {
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
                     super.safeJsonPrint(response, json);
                 }else {
-                    mapUser.put("islogin", UserConstants.Yes.getValue());
                     //user对象存入cookie中
                     this.putUser(response, userBO);
+                    mapUser.put("islogin", UserConstants.Yes.getValue());
+                    mapUser.put("userId",userBO.getId());
+
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                     super.safeJsonPrint(response, json);
                 }
@@ -215,6 +217,7 @@ public class UserController extends BaseCotroller {
                 userBO1 = userService.selectByPhone(phone);
                 //islogin 是否为登录, yes 登录
                 mapUser.put("islogin",UserConstants.No.getValue());
+                mapUser.put("userId",userBO1.getId());
                 //将只带有手机号的user对象存入cookie中
                 this.putUser(response,userBO1);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));

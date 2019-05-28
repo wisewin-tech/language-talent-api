@@ -50,8 +50,8 @@ public class CourseController extends BaseCotroller {
             }else {
                 courseDetailsResultBO.setBuyOrNot("no");
             }
-
         }
+
         Map map = new HashMap();
         map.put("courseDetailsResultBO",courseDetailsResultBO);
         map.put("CourseDetailsLevelResultBO",levelBOS);

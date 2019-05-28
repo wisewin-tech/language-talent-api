@@ -28,6 +28,7 @@ public class ChapterBO extends BaseModel {
     private Integer chapterId;//课时id
     private String ensignImageUrl;//语言国旗图片地址
     private String thumbnailUrl;//缩略图
+    private String buyOrNot;//是否已购买
 
 
 
@@ -199,5 +200,11 @@ public class ChapterBO extends BaseModel {
         this.score = score;
     }
 
+    public String getBuyOrNot() {
+        return buyOrNot;
+    }
 
+    public void setBuyOrNot(String buyOrNot) {
+        this.buyOrNot = buyOrNot;
+    }
 }

@@ -30,7 +30,7 @@
     <select id="courseDetailsCourse" parameterType="java.lang.Integer"
 			resultType="com.wisewin.api.entity.bo.CourseDetailsResultBO">
         SELECT
-			`language`.language_name languageName,
+			`language`.language_name languageName,`language`.id languageId,
 			course.thumbnail_image_url courseThumbnail,
 			course.course_name,course.course_intro,
 			course.course_lightspot,course.purchase_notes,
@@ -174,5 +174,13 @@
 		discount_start_time as discountStartTime,
 		discount_end_time as discountEndTime
 		from lt_course where id=#{id}
+	</select>
+
+	<!--通过级别id查课程id-->
+	<select id="getCourseIdByLevelId" resultType="java.lang.Integer">
+		SELECT co.id
+		FROM lt_level le
+		LEFT JOIN lt_course co ON le.course_id = co.id
+		WHERE le.id=#{levelId}
 	</select>
 </mapper>

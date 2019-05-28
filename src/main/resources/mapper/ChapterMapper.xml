@@ -32,7 +32,7 @@
 	      `level`.level_name,chapter.chapter_name,
 	      `language`.id languageId,course.id courseId,
 	      `level`.id levelId,chapter.chapter_intro,
-	      chapter.manuscript,chapter.content
+	      chapter.manuscript,chapter.content,chapter.id chapterId
         FROM lt_chapter `chapter`
         LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
         LEFT JOIN lt_course `course` ON `level`.course_id = course.id
@@ -61,9 +61,8 @@
     <!--获取课程id通过课时id-->
     <select id="getSourceId"  parameterType="java.lang.Integer"  resultType="java.lang.Integer"  >
         SELECT te.id FROM lt_chapter tr LEFT JOIN lt_level  ll  ON ll.id=tr.level_id
-        LEFT JOIN lt_clause  te  ON  te.id=ll.course_id
+        LEFT JOIN lt_course  te  ON  te.id=ll.course_id
         WHERE  tr.id=#{chapterId}
     </select>
-
 
 </mapper>

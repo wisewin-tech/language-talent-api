@@ -69,5 +69,12 @@ public interface CourseDAO {
      */
     List<CourseBO> getCoursesById(Integer languageId);
 
+    /**
+     * 通过级别id查课程id
+     * @param levelId
+     * @return
+     */
+    Integer getCourseIdByLevelId(Integer levelId);
+
 
 }

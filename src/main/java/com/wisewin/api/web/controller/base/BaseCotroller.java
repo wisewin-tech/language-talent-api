@@ -240,6 +240,7 @@ public class BaseCotroller {
 //    public UserBO getLoginUser (HttpServletRequest request ) {
 //        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
 //    }
+
     /** 获取登录用户*/
     public UserBO getLoginUser (HttpServletRequest request ) {
         UserBO userBO = new UserBO(26,"卡尔萨斯",

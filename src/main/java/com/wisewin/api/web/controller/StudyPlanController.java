@@ -2,10 +2,7 @@ package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
-import com.wisewin.api.service.OrderService;
-import com.wisewin.api.service.StudyPlanService;
-import com.wisewin.api.service.UserScoreRecordService;
-import com.wisewin.api.service.UserService;
+import com.wisewin.api.service.*;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -27,6 +24,8 @@ public class StudyPlanController extends BaseCotroller {
     private UserService userService;
     @Resource
     private OrderService orderService;
+    @Resource
+    private CourseService courseService;
 
     /**
      * 获取学习计划
@@ -41,6 +40,7 @@ public class StudyPlanController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+        //获取登录用户信息
         UserBO userBO = super.getLoginUser(request);
         if (userBO == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
@@ -58,14 +58,15 @@ public class StudyPlanController extends BaseCotroller {
         }
         //根据语言id查找课时内容
         LevelBO levelBO = studyPlanService.getStudyPlan(languageId, levelId);
-        if (levelBO==null) {
-            Integer levelId1 = studyPlanService.getLevelIdByOne();
-            LevelBO levelBO1 = studyPlanService.getStudyPlan(languageId,levelId1);
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO1));
-            super.safeJsonPrint(response, json);
-            return;
+        Integer courseId = courseService.getCourseIdByLevelId(levelId);
 
-        }
+        if (levelBO!=null){
+            Integer count = orderService.getStatusByCourseId(userId,courseId);
+            if (count>0){
+                levelBO.setBuyOrNot("yes");
+            }else {
+                levelBO.setBuyOrNot("no");
+            }
             List<ChapterResultBO> chapterResultBOS = levelBO.getChapterBOList();
             for (ChapterResultBO chapterResultBO : chapterResultBOS) {
                 Integer chapterId = chapterResultBO.getChapterId();
@@ -75,8 +76,21 @@ public class StudyPlanController extends BaseCotroller {
             }
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO));
             super.safeJsonPrint(response, json);
+            return;
+        }
 
+            Integer levelId1 = studyPlanService.getLevelIdByOne();
+        Integer courseId1 = courseService.getCourseIdByLevelId(levelId1);
+        Integer count = orderService.getStatusByCourseId(userId,courseId1);
+        LevelBO levelBO1 = studyPlanService.getStudyPlan(languageId,levelId1);
+        if (count>0){
+            levelBO1.setBuyOrNot("yes");
+        }else {
+            levelBO1.setBuyOrNot("no");
+        }
 
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO1));
+            super.safeJsonPrint(response, json);
     }
 
     /**

@@ -6,12 +6,8 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.pop.SystemConfig;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.service.UserStudyDetailsService;
-import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.JsonUtils;
-import com.wisewin.api.util.OSSClientUtil;
 import com.wisewin.api.util.date.DateUtil;
-import com.wisewin.api.util.env.Env;
-import com.wisewin.api.util.env.ResourceUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/studyDetails")
@@ -52,7 +45,7 @@ public class UserStudyDetailsController extends BaseCotroller {
             String studyDate= DateUtil.getDateStr(new Date());
             UserStudyDetailsBO userStudyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
             if (userStudyDetailsBO==null){
-                userStudyDetailsService.insertDuration(userId);
+                userStudyDetailsService.insertDuration(userId,new Date());
             }else {
                 //获取学习时长
                 Integer studyDuration = userStudyDetailsBO.getStudyDuration();
@@ -64,7 +57,26 @@ public class UserStudyDetailsController extends BaseCotroller {
                 userStudyDetailsService.updateDuration(userId, studyDuration,studyDate);
                 UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
                 UserBO userBO1 = userService.selectById(userId);
-                List<UserStudyDetailsBO> weekStudyDuration = userStudyDetailsService.weekStudyDuration(userId);
+                //获取近一周的所有日期
+                DateUtil dateUtil = new DateUtil();
+                List<Date> studyDates = dateUtil.getDays(7);
+                List<UserStudyDetailsBO> userStudyDetailsBOList = new ArrayList<UserStudyDetailsBO>();
+                for (Date date:studyDates){
+                    //获取近一周的学习情况
+                    UserStudyDetailsBO weekStudyDuration = userStudyDetailsService.weekStudyDuration(userId,date);
+
+                    userStudyDetailsBOList.add(weekStudyDuration);
+                    if (weekStudyDuration==null){
+                        UserStudyDetailsBO userStudyDetailsBO1 = new UserStudyDetailsBO();
+                        userStudyDetailsBO1.setStudyDuration(0);
+                        userStudyDetailsBO1.setStudyDate(date);
+                        userStudyDetailsBO1.setUserId(userId);
+                        userStudyDetailsBOList.add(userStudyDetailsBO1);
+                    }
+
+                }
+
+
 
                 //连续学习天数
                 Integer continuousLearning = userBO1.getContinuousLearning();
@@ -72,10 +84,10 @@ public class UserStudyDetailsController extends BaseCotroller {
                 Integer cumulativeLearning = userBO1.getCumulativeLearning();
                 Map resultMap = new HashMap();
                 //将结果放入map中
-                resultMap.put("studyDetailsBO",studyDetailsBO);
+                //resultMap.put("studyDetailsBO",studyDetailsBO);
                 resultMap.put("cumulativeLearning",cumulativeLearning);
                 resultMap.put("continuousLearning",continuousLearning);
-                resultMap.put("weekStudyDuration",weekStudyDuration);
+                resultMap.put("weekStudyDuration",userStudyDetailsBOList);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
                 super.safeJsonPrint(response, json);
             }

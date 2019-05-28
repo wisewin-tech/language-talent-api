@@ -1,23 +1,34 @@
 package com.wisewin.api.web.controller;
 
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.wisewin.api.entity.bo.UserBO;
+import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.entity.param.OrderParam;
+import com.wisewin.api.service.PayService;
 import com.wisewin.api.util.AlipayConfig;
 import com.wisewin.api.util.IDBuilder;
+import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.StringUtils;
+import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -27,112 +38,325 @@ import java.util.logging.Logger;
  */
 @Controller
 @RequestMapping("/wbalipay")
-public class WBAlipayController{
+public class WBAlipayController extends BaseCotroller {
 
-    public static final Logger logger = Logger.getLogger(WBAlipayController.class.getName());
+    @Resource
+    private PayService payService;
 
+    private static Logger logger = Logger.getLogger(WBAlipayController.class.getName());
 
-    @RequestMapping("/alipay")
-    public String  alipay(String currey,String money){
-        IDBuilder idBuilder  =  new IDBuilder(10,10);
-        money = "0.01";
-        if (Double.valueOf(money) <= 0){ // 一些必要的验证，防止抓包恶意修改支付金额
-            return null;
-        }
-        String orderStr="";
-        try {
-            Map<String, String> orderMap = new LinkedHashMap<String, String>(); // 订单实体
-            Map<String, String> bizModel = new LinkedHashMap<String, String>(); // 公共实体
-            /****** 2.商品参数封装开始 *****/ // 手机端用
-            // 商户订单号，商户网站订单系统中唯一订单号，必填
-            orderMap.put("out_trade_no", idBuilder.nextId()+"");
-            // 订单名称，必填
-            orderMap.put("subject", "咖豆充值支付");
-            // 付款金额，必填
-            orderMap.put("total_amount", money);
-            // 销售产品码 必填
-            orderMap.put("product_code", "QUICK_WAP_PAY");
-            /****** --------------- 3.公共参数封装 开始 ------------------------ *****/ // 支付宝用
-            // 1.商户appid
-            bizModel.put("app_id", AlipayConfig.APP_ID);
-            // 2.请求网关地址
-            bizModel.put("method", AlipayConfig.URL);
-            // 3.请求格式
-            bizModel.put("format", AlipayConfig.FORMAT);
-            // 4.回调地址
-            bizModel.put("return_url", AlipayConfig.notify_url);
-            // 5.私钥
-            bizModel.put("private_key", AlipayConfig.APP_PRIVATE_KEY);
-            // 6.商家id
-            //bizModel.put("seller_id", AlipayConfig.partner);
-            // 7.加密格式
-            bizModel.put("sign_type", AlipayConfig.SIGN_TYPE);
-            /****** --------------- 3.公共参数封装 结束 ------------------------ *****/
-            // 实例化客户端
-            AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APP_ID,
-                    AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET,
-                    AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGN_TYPE);
-            // 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
-            AlipayTradeAppPayRequest ali_request = new AlipayTradeAppPayRequest();
-            // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
-            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            // model.setPassbackParams(URLEncoder.encode((String)orderMap.get("body").toString()));;
-            // //描述信息 添加附加数据
-            // model.setBody(orderMap.get("body")); //商品信息
-            model.setSubject(orderMap.get("subject")); // 商品名称
-            model.setOutTradeNo(orderMap.get("out_trade_no")); // 商户订单号(自动生成)
-            model.setTotalAmount(orderMap.get("total_amount")); // 支付金额
-            model.setProductCode(orderMap.get("product_code")); // 销售产品码
-            //model.setSellerId(AlipayConfig.partner); // 商家id
-            ali_request.setBizModel(model);
-            ali_request.setNotifyUrl(AlipayConfig.notify_url); // 回调地址
-            AlipayTradeAppPayResponse responses = client.sdkExecute(ali_request);
-            orderStr = responses.getBody();
-            System.err.println(orderStr); // 就是orderString 可以直接给客户端请求，无需再做处理
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private AlipayClient client;
 
-        return orderStr;
-
+    public WBAlipayController() {
+        client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APP_ID,
+                AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET,
+                AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGN_TYPE);
     }
 
-    @RequestMapping(value = "/notify_url")
-    public void notify(@RequestBody String body, HttpServletRequest requests, HttpServletResponse httpServletResponse)
-            throws IOException {
-        Map<String,String> params = new HashMap();
-        // 1.从支付宝回调的request域中取值
-        Map<String, String[]> requestParams = requests.getParameterMap();
-        System.out.println("从支付宝回调的request域中取值:requestParams===================================" + requestParams);
-        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
+    /**
+     * 支付宝接口    充值咖豆    购买课程    购买语言
+     * @param request
+     * @param response
+     * @param orderParam
+     */
+    @RequestMapping("/appPayRequest")
+    @ResponseBody
+    public void appPayRequest(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam) {
+        //获取当前登陆用户
+        UserBO loginUser = super.getLoginUser(request);
+        //用户登陆过期
+        if (loginUser.getId() == null) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        if (orderParam.getPrice() == null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000032"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        if(orderParam.getPrice().compareTo(BigDecimal.ZERO) <= 0){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000036"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        if(StringUtils.isEmpty(orderParam.getProductName())){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        if (!(new BigDecimal(orderParam.getPrice().intValue()).compareTo(orderParam.getPrice())==0)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000033"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        orderParam.setUserId(loginUser.getId());
+        //判断是否为充值咖豆
+        if("currency".equals(orderParam.getProductType())){
+            currencyPayRequest(request,response,orderParam);
+        }
+        //判断是否为购买语言
+        if("language".equals(orderParam.getProductType())){
+            languagePayRequest(request,response,orderParam);
+        }
+        //判断是否为购买课程
+        if("curriculum".equals(orderParam.getProductType())){
+            curriculumPayRequest(request,response,orderParam);
+        }
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000037"));
+        super.safeJsonPrint(response, json);
+        return;
+    }
 
-            String name = iter.next();
-            String[] values = requestParams.get(name);
+    /**
+     * 购买课程
+     * @param request
+     * @param response
+     * @param orderParam
+     */
+    public void curriculumPayRequest(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam){
+        //判断传递过来课程id
+        if(orderParam.getCourseId() == null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000035"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        //生成订单号
+        IDBuilder idBuilder  =  new IDBuilder(10,10);
+        String number  = idBuilder.nextId()+"";
+        orderParam.setOrderNumber(number);
+        try {
+            // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，
+            // 调用RSA签名方式
+            AlipayTradeAppPayRequest ali_request = new AlipayTradeAppPayRequest();
+            // 封装请求支付信息
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            //DecimalFormat类型金额保留两位精度并转String
+            DecimalFormat df = new DecimalFormat("0.00");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            String price = df.format(orderParam.getPrice())+"";
+            model.setSubject("课程购买");
+            model.setOutTradeNo(number);
+            model.setTotalAmount(price);
+            model.setProductCode("QUICK_MSECURITY_PAY");
+            String courseId = orderParam.getCourseId()+"";
+            try {
+                String passback_params =java.net.URLEncoder.encode(courseId,"UTF-8");
+                //传入课程id
+                model.setPassbackParams(passback_params);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            ali_request.setBizModel(model);
+            // 调用SDK生成表单
+            AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
+            if (ali_response.isSuccess()) {
+                //插入充值预支付订单
+                payService.prepaid(orderParam);
+                // 获取到getBody直接给app,用这个东西去调起支付宝
+                System.out.println(ali_response.getBody());
+                //return ali_response.getBody();
+                super.safeJsonPrint(response, ali_response.getBody());
+            } else {
+                logger.info("调用SDK生成表单失败");
+                throw new AlipayApiException("调用SDK生成表单失败");
+            }
+
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            logger.info(e.getMessage());
+        }
+    }
+    /**
+     * 购买语言
+     * @param request
+     * @param response
+     * @param orderParam
+     */
+    public void languagePayRequest(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam){
+        //判断是否传过来语言id
+        if(orderParam.getLanguageId() == null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000034"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        //生成订单号
+        IDBuilder idBuilder  =  new IDBuilder(10,10);
+        String number  = idBuilder.nextId()+"";
+        orderParam.setOrderNumber(number);
+        try {
+            // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，
+            // 调用RSA签名方式
+            AlipayTradeAppPayRequest ali_request = new AlipayTradeAppPayRequest();
+            // 封装请求支付信息
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            //DecimalFormat类型金额保留两位精度并转String
+            DecimalFormat df = new DecimalFormat("0.00");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            String price = df.format(orderParam.getPrice())+"";
+            model.setSubject("语言购买");
+            model.setOutTradeNo(number);
+            model.setTotalAmount(price);
+            model.setProductCode("QUICK_MSECURITY_PAY");
+            String languageId = orderParam.getLanguageId()+"";
+            try {
+                String passback_params =java.net.URLEncoder.encode(languageId,"UTF-8");
+                //传入课程id
+                model.setPassbackParams(passback_params);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            ali_request.setBizModel(model);
+            // 调用SDK生成表单
+            AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
+            if (ali_response.isSuccess()) {
+                //插入充值预支付订单
+                payService.prepaid(orderParam);
+                // 获取到getBody直接给app,用这个东西去调起支付宝
+                System.out.println(ali_response.getBody());
+                //return ali_response.getBody();
+                super.safeJsonPrint(response, ali_response.getBody());
+            } else {
+                logger.info("调用SDK生成表单失败");
+                throw new AlipayApiException("调用SDK生成表单失败");
+            }
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            logger.info(e.getMessage());
+        }
+    }
+    /**
+     * 充值咖豆
+     * @param request
+     * @param response
+     * @param orderParam
+     */
+    public void currencyPayRequest(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam){
+        //生成订单号
+        IDBuilder idBuilder  =  new IDBuilder(10,10);
+        String number  = idBuilder.nextId()+"";
+        orderParam.setOrderNumber(number);
+        try {
+            // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，
+            // 调用RSA签名方式
+            AlipayTradeAppPayRequest ali_request = new AlipayTradeAppPayRequest();
+            // 封装请求支付信息
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+            //DecimalFormat类型金额保留两位精度并转String
+            DecimalFormat df = new DecimalFormat("0.00");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            String price = df.format(orderParam.getPrice())+"";
+            model.setSubject("咖豆充值");
+            model.setOutTradeNo(number);
+            model.setTotalAmount(price);
+            model.setProductCode("QUICK_MSECURITY_PAY");
+            ali_request.setBizModel(model);
+
+            // 调用SDK生成表单
+            AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
+            if (ali_response.isSuccess()) {
+                //插入课程预支付订单
+                payService.prepaid(orderParam);
+                // 获取到getBody直接给app,用这个东西去调起支付宝
+                System.out.println(ali_response.getBody());
+                //return ali_response.getBody();
+                super.safeJsonPrint(response, ali_response.getBody());
+            } else {
+                logger.info("调用SDK生成表单失败");
+                throw new AlipayApiException("调用SDK生成表单失败");
+            }
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            logger.info(e.getMessage());
+        }
+    }
+    /**
+     * 支付回调
+     * @param request
+     * @param httpResponse
+     * @return
+     */
+    @RequestMapping(value = "/alipayurl")
+    public String APPnotify(HttpServletRequest request, HttpServletResponse httpResponse) {
+        //获取支付宝POST过来反馈信息
+        System.out.println("支付宝回调");
+        Map<String,String> params = new HashMap<String,String>();
+        Map requestParams = request.getParameterMap();
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
-                valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
             }
-            // 乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
+            //乱码解决，这段代码在出现乱码时使用。
+            //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
             params.put(name, valueStr);
         }
-        // 2.封装必须参数
-        String out_trade_no = requests.getParameter("out_trade_no"); // 商户订单号
-        System.err.println("out_trade_no==================================" + out_trade_no);
-        String orderType = requests.getParameter("body"); // 订单内容
-        System.out.println("orderType==================================" + orderType);
-        String tradeStatus = requests.getParameter("trade_status"); // 交易状态
-        System.err.println("tradeStatus=================================" + tradeStatus);
-        // 3.签名验证(对支付宝返回的数据验证，确定是支付宝返回的)
-        boolean signVerified = false;
+        boolean flag = false;
         try {
-            // 3.1调用SDK验证签名
-            signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET);
-            System.out.println(signVerified);
-        } catch (Exception e) {
+            flag = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, AlipayConfig.SIGN_TYPE);
+        } catch (AlipayApiException e) {
             e.printStackTrace();
         }
+
+        if (flag){
+            if("TRADE_SUCCESS".equals(params.get("trade_status"))){
+             //回调订单号
+             String number =    params.get("out_trade_no");
+             logger.info(number+"支付宝回调订单号");
+             //关键字
+             String subject =    params.get("subject");
+             logger.info(subject+"支付宝回调关键字");
+             //金额
+             String price =    params.get("total_amount");
+             logger.info(price+"支付宝回调价格");
+
+                if (StringUtils.isEmpty(number)){
+                    logger.info("未能获取到回调订单ID");
+                    return null;
+                }
+                if (StringUtils.isEmpty(subject)){
+                    logger.info("不能获取回调关键字");
+                    return null;
+                }
+                if (StringUtils.isEmpty(price)){
+                    logger.info("未能获取到回调金额");
+                    return null;
+                }
+                if("咖豆充值".equals(subject)){
+                    logger.info(Integer.parseInt(price)+"存入的咖豆转换为Integer");
+                    payService.rechargeKaDou(number,Integer.parseInt(price));
+                }
+                if("语言购买".equals(subject)){
+                    String languageId =   params.get("passback_params");
+                    logger.info(languageId+"存入的语言为");
+                    if(StringUtils.isEmpty(languageId)){
+                        return null;
+                    }
+                    try {
+                        payService.buyLanguage(number,Integer.parseInt(languageId));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if("课程购买".equals(subject)){
+                    String courseId =   params.get("passback_params");
+                    logger.info(courseId+"存入的课程为");
+                    if(StringUtils.isEmpty(courseId)){
+                        return null;
+                    }
+                    try {
+                        payService.buyCourse(number,Integer.parseInt(courseId));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return "success";//成功返给支付宝
+            }
+        }
+        return "error";
     }
-
-
 }
