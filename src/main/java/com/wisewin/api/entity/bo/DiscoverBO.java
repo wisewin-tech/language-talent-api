@@ -33,6 +33,7 @@ public class DiscoverBO extends BaseModel {
     private String skip; //跳转url[线下活动]
     private String way; //展示方式
     private String videoImg;//存放视频封面url
+    private String description;//内容描述
 
     public DiscoverBO(Integer id) {
         this.id = id;
@@ -81,6 +82,14 @@ public class DiscoverBO extends BaseModel {
         this.show = show;
     }
 
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getVideoImg() {
         return videoImg;

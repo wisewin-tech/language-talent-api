@@ -65,6 +65,7 @@ public class RecordController extends BaseCotroller{
         map.put("count",count);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response, json);
+        return;
 
 
     }
@@ -89,6 +90,7 @@ public class RecordController extends BaseCotroller{
             map.put("integral",integral);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
             super.safeJsonPrint(response, json);
+            return;
 
 
     }
@@ -121,6 +123,7 @@ public class RecordController extends BaseCotroller{
         }else{
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000015"));
             super.safeJsonPrint(response, json);
+            return;
         }
 
     }

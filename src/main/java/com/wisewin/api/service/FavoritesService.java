@@ -46,7 +46,6 @@ public class FavoritesService {
     public List<SpecialResultBO> selectSubject(Map<String,Object> map){
         map.put("source",UserConstants.SUBJECT.getValue());
         return favoritesDAO.selectSubject(map);
-
     }
 
     /**

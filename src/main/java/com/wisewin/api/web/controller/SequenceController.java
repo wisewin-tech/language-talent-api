@@ -58,6 +58,7 @@ public class SequenceController extends BaseCotroller {
         }else{
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000027"));
             super.safeJsonPrint(response, json);
+            return;
         }
     }
 

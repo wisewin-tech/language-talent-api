@@ -70,7 +70,7 @@
 
     </select>
 
-    <!--线下活动-->
+    <!--发现文章线下活动-->
     <select id="queryDiscoveractivity" resultType="com.wisewin.api.entity.bo.DiscoverBO">
       SELECT
         id,title,
@@ -81,7 +81,8 @@
         `type`,likenum,
         activitysite,activitytime,
         phone,
-        ticket,skip,videoImg
+        ticket,skip,videoImg,
+        description
       FROM
         lt_discover
       WHERE

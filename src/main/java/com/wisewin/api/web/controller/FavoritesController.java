@@ -54,6 +54,7 @@ public class FavoritesController extends BaseCotroller {
         List<FavoritesResultBO> list=favoritesService.selectHour(condition);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response, json);
+        return;
 
     }
     /**
@@ -85,6 +86,7 @@ public class FavoritesController extends BaseCotroller {
         List<DiscoverResultBO> list=favoritesService.selectDiscover(condition);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response, json);
+        return;
 
     }
     /**
@@ -116,6 +118,7 @@ public class FavoritesController extends BaseCotroller {
         List<SpecialResultBO> list=favoritesService.selectSubject(condition);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response, json);
+        return;
 
     }
     /**
@@ -140,6 +143,7 @@ public class FavoritesController extends BaseCotroller {
         }else{
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("取消收藏成功"));
             super.safeJsonPrint(response, json);
+            return;
         }
 
 
