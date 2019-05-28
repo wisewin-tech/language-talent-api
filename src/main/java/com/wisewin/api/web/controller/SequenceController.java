@@ -49,7 +49,7 @@ public class SequenceController extends BaseCotroller {
 
         boolean itWatch = orderService.isItWatch(loginUser.getId(), chapterId);
         if(itWatch){
-            Map<String, String> stsMessage = StsUtil.getStsMessage(loginUser.getId().toString());
+            Map<String, String> stsMessage = StsUtil.getStsMessage("user"+loginUser.getId().toString());
             ChapterBO chapterBO = chapterService.chapterDetails(chapterId);
             stsMessage.put("vid",chapterBO.getVideoPath());
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(stsMessage));
