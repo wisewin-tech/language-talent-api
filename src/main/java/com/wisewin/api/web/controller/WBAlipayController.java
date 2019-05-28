@@ -11,6 +11,8 @@ import com.wisewin.api.util.AlipayConfig;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
@@ -30,6 +32,7 @@ import java.util.Map;
 @RequestMapping("/wbalipay")
 public class WBAlipayController extends BaseCotroller {
 
+    static final Logger log = LoggerFactory.getLogger(WBAlipayController.class);
       @Resource
       private WBAlipayService wBAlipayService;
 

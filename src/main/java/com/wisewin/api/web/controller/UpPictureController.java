@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 图片上传与删除
@@ -50,4 +52,10 @@ public class UpPictureController extends BaseCotroller {
                 (null));
         super.safeJsonPrint(response,json);
     }
+
+
+
 }
+
+
+
