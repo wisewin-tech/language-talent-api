@@ -1,5 +1,9 @@
 package com.wisewin.api.util;
 
+import com.aliyun.oss.HttpMethod;
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.common.utils.DateUtil;
+import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
@@ -10,9 +14,15 @@ import com.aliyuncs.sts.model.v20150401.AssumeRoleRequest;
 import com.aliyuncs.sts.model.v20150401.AssumeRoleResponse;
 import com.aliyuncs.vod.model.v20170321.CreateUploadVideoRequest;
 import com.aliyuncs.vod.model.v20170321.CreateUploadVideoResponse;
+import com.wisewin.api.pop.SystemConfig;
 
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.aliyun.oss.internal.OSSConstants.DEFAULT_OBJECT_CONTENT_TYPE;
 
 public class StsUtil {
     private static final String accessKeyId = "LTAI0MJbyuPxtWRM";

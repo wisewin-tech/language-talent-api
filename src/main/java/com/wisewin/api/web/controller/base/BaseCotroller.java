@@ -11,7 +11,8 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -28,10 +29,8 @@ import java.util.List;
  * @author Shibo Sun
  */
 public class BaseCotroller {
-    protected transient final Logger log = Logger.getLogger(getClass());
+    static final Logger log = LoggerFactory.getLogger(BaseCotroller.class);
 
-//    @Resource( name = "loginService" )
-//    LoginService loginService;
 
     protected PageObject pager = null;
     private int default_page_size = 10;
@@ -62,6 +61,7 @@ public class BaseCotroller {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = null;
         try {
+            log.info(str);
             try {
                 out = response.getWriter();
             } catch (IOException e) {
@@ -237,16 +237,16 @@ public class BaseCotroller {
     }
 
     /** 获取登录用户*/
-//    public UserBO getLoginUser (HttpServletRequest request ) {
-//        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
-//    }
+    public UserBO getLoginUser (HttpServletRequest request ) {
+        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+    }
 
     /** 获取登录用户*/
-    public UserBO getLoginUser (HttpServletRequest request ) {
+ /*   public UserBO getLoginUser (HttpServletRequest request ) {
         UserBO userBO = new UserBO(26,"卡尔萨斯",
                 "死亡颂唱者","18631323025","man","2000-06-14");
         return  userBO;
-    }
+    }*/
 
 
 
