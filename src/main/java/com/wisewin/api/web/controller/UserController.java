@@ -101,7 +101,7 @@ public class UserController extends BaseCotroller {
                     return;
                 }
             }
-            if(type.equals("amend")&&userService.selectByPhone(phone)!=null){
+            if("amend".equals(type)&&userService.selectByPhone(phone)!=null){
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000058"));
                 super.safeJsonPrint(response, json);
                 return;

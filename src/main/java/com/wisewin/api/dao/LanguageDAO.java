@@ -1,9 +1,6 @@
 package com.wisewin.api.dao;
 
-import com.wisewin.api.entity.bo.FlashSalesResultBO;
-import com.wisewin.api.entity.bo.LanguageBO;
-import com.wisewin.api.entity.bo.LanguageDetailsCourseResultBO;
-import com.wisewin.api.entity.bo.LanguageDetailsResultBO;
+import com.wisewin.api.entity.bo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

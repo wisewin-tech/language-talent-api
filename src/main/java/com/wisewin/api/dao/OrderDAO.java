@@ -1,7 +1,8 @@
 
 package com.wisewin.api.dao;
 
-import com.wisewin.api.common.constants.AliConstants;
+import com.wisewin.api.entity.bo.CourseOrderBO;
+import com.wisewin.api.entity.bo.LanguageOrderBO;
 import com.wisewin.api.entity.bo.OrderBO;
 import org.apache.ibatis.annotations.Param;
 
@@ -45,4 +46,30 @@ public interface OrderDAO {
      * @return
      */
     int queryOrderCount(@Param("userId") Integer userId,@Param("courseId")Integer course);
+
+    /**
+     * 查询课程订单
+     * @param id
+     * @return
+     */
+    OrderBO courseOrder(String id);
+
+    /**
+     * 查询语言订单
+     * @param id
+     * @return
+     */
+    OrderBO languageOrder(String id);
+
+
+    /**
+     * 级联查询
+     * @param map
+     * @return
+     */
+    List<OrderBO>  listOrderBo(Map<String,Object> map);
+
+    CourseOrderBO selectCouseByOrder(@Param("lc_id")Integer lc_id);
+
+    LanguageOrderBO seleteByLanguageOrder(@Param("lc_id") Integer lc_id);
 }

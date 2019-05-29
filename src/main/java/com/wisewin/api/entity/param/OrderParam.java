@@ -10,6 +10,15 @@ public class OrderParam {
     private Integer languageId;//语言id
     private Integer courseId;//课程id
     private String orderNumber;//订单号
+    private String payment;//付款方式 zfb  wx
+
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
+    }
 
     public String getOrderNumber() {
         return orderNumber;

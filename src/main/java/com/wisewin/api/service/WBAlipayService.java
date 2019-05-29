@@ -29,7 +29,7 @@ import java.util.Date;
 /**
  * Created by 王彬 on 2019/5/28.
  */
-@Service("wBAlipayService")
+@Service
 @Transactional
 public class WBAlipayService {
 
@@ -42,13 +42,10 @@ public class WBAlipayService {
     @Resource
     private PayService payService;
 
-    private AlipayClient client;
 
-    public WBAlipayService() {
-        client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APP_ID,
+     AlipayClient   client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APP_ID,
                 AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET,
                 AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGN_TYPE);
-    }
 
     static final Logger log = LoggerFactory.getLogger(WBAlipayService.class);
 

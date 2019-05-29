@@ -69,6 +69,11 @@ public class OrderController extends BaseCotroller {
             return;
         }
         OrderBO orderBO=orderService.selectDetails(Integer.parseInt(id),userId);
+        if(orderBO == null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000038"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(orderBO));
         super.safeJsonPrint(response, json);
     }

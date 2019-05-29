@@ -31,7 +31,7 @@
     <!--查询用户发现收藏记录-->
     <select id="selectDiscover" resultType="com.wisewin.api.entity.bo.DiscoverResultBO"
             parameterType="java.util.Map">
-        SELECT mf.user_id,mf.source,mf.source_id,dis.title,dis.thumbnail,
+        SELECT mf.user_id,mf.source,mf.source_id,dis.title,dis.thumbnail,description,
         dis.video,dis.content,dis.`type`,dis.activitytime,dis.ticket,dis.skip,dis.videoImg
         FROM `lt_my_favorite` AS mf
         LEFT JOIN lt_discover AS dis

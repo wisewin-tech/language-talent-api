@@ -166,10 +166,28 @@ public class PayService {
         orderBO.setUserId(orderParam.getUserId());
         orderBO.setPrice(orderParam.getPrice());
         orderBO.setOrderNumber(orderParam.getOrderNumber());
+
         if (orderParam.getProductType().equals("currency")) {
-            orderBO.setOrderType("充值");
+            if("zfb".equals(orderParam.getProductType())){
+                orderBO.setOrderType("支付宝充值");
+            }else{
+                orderBO.setOrderType("微信充值");
+            }
         } else {
-            orderBO.setOrderType("购买");
+            if("zfb".equals(orderParam.getProductType())){
+                orderBO.setOrderType("支付宝购买");
+            }else{
+                orderBO.setOrderType("微信购买");
+            }
+            orderBO.setType(orderParam.getProductType());
+            if(orderParam.getProductType().equals("course")){
+                orderBO.setLcId(orderParam.getCourseId());
+            }
+            if(orderParam.getProductType().equals("language")){
+                orderBO.setLcId(orderParam.getLanguageId());
+            }
+
+
         }
         orderBO.setProductName(orderParam.getProductName());
         //未支付
