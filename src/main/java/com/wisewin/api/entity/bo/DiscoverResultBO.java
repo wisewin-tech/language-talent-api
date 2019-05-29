@@ -21,6 +21,15 @@ public class DiscoverResultBO {
     private Integer updateId; //修改人id
     private String createTime; //创建时间
     private String updateTime; //修改时间
+    private String description; //内容描述
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getVideo() {
         return video;

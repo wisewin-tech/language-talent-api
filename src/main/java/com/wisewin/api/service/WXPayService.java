@@ -68,6 +68,7 @@ public class WXPayService {
         twoMap = WXPayUtil.xmlToMap(twoMapStr);
         //存入自己的数据库
         if (twoMap != null && !twoMap.isEmpty()) {
+            orderParam.setPayment("wx");
             payService.prepaid(orderParam);
         }
         return twoMap;
