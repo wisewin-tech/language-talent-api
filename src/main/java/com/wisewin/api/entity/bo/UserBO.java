@@ -31,7 +31,6 @@ public class UserBO  extends BaseModel{
     private String status; //状态,是否被拉黑  yes:拉黑,no:账号正常使用
     private String inviteCode; //邀请码
     private String byInvite; //被邀请码
-    private String job; //职业
     private String qqOpenid; //qq登录id
     private String wxOpenid; //微信登录id
     private Integer continuousSign; //连续签到天数
@@ -82,7 +81,6 @@ public class UserBO  extends BaseModel{
                 ", status='" + status + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
                 ", byInvite='" + byInvite + '\'' +
-                ", job='" + job + '\'' +
                 ", qqOpenid='" + qqOpenid + '\'' +
                 ", wxOpenid='" + wxOpenid + '\'' +
                 ", continuousSign=" + continuousSign +
@@ -275,13 +273,6 @@ public class UserBO  extends BaseModel{
         this.byInvite = byInvite;
     }
 
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
 
     public String getQqOpenid() {
         return qqOpenid;
