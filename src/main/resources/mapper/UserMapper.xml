@@ -73,6 +73,7 @@
             <if test="interest!=null and interest!=''">  interest=#{interest},</if>
             <if test="qqOpenid!=null and qqOpenid!=''">  qq_openid=#{qqOpenid},</if>
             <if test="wxOpenid!=null and wxOpenid!=''">  wx_openid=#{wxOpenid},</if>
+            <if test="learningGoal!=null and learningGoal!=''">  learning_goal=#{learningGoal},</if>
 
         </set>
         where

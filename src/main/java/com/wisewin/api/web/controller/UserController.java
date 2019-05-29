@@ -361,7 +361,7 @@ public class UserController extends BaseCotroller {
         Integer id = this.getId(request);
         //如果获取不到,参数异常
         if (id == null) {
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
         }
         //如果获取到了,判断user参数不为空
