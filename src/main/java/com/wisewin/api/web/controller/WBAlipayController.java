@@ -32,8 +32,10 @@ import java.util.Map;
 @RequestMapping("/wbalipay")
 public class WBAlipayController extends BaseCotroller {
 
-    static final Logger log = LoggerFactory.getLogger(WBAlipayController.class);
-      @Resource
+      private static final Logger log = LoggerFactory.getLogger(BaseCotroller.class);
+
+
+    @Resource
       private WBAlipayService wBAlipayService;
 
       @Resource
