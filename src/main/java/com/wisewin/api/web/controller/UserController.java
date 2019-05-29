@@ -77,11 +77,12 @@ public class UserController extends BaseCotroller {
 
     /**
      * 发送验证码
-     *
+     * 登陆注册
+     * 修改绑定
      * @param phone
      */
     @RequestMapping("/send")
-    public void send(String phone, HttpServletResponse response) {
+    public void send(String phone,String type, HttpServletResponse response) {
         //手机号非空+格式判断
         if (this.phoneFormt(phone, response)) {
             //获取缓存中的失效验证码
@@ -100,6 +101,12 @@ public class UserController extends BaseCotroller {
                     return;
                 }
             }
+            if(type.equals("amend")&&userService.selectByPhone(phone)!=null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000058"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+
             userService.send(phone);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("短信验证码发送成功!"));
             super.safeJsonPrint(response, json);
