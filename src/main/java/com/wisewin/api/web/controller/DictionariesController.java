@@ -30,9 +30,9 @@ public class DictionariesController extends BaseCotroller {
      *    String outer;连接字典类型表valuename
      */
     @RequestMapping("/queryDictionaries")
-    public void queryDictionaries(HttpServletRequest request, HttpServletResponse response, Integer id,String key,String value,String outer){
+    public void queryDictionaries(HttpServletRequest request, HttpServletResponse response,String outer){
 
-        List<DictionariesBO> list=dictionariesService.getqueryDictionaries(id,key,value,outer);
+        List<DictionariesBO> list=dictionariesService.getqueryDictionaries(outer);
         String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response,json);
         return;

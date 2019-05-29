@@ -20,7 +20,7 @@
         </where>
         ORDER  BY
           rank
-        DES
+
     </select>
 
 

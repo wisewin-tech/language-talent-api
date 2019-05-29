@@ -82,7 +82,6 @@ public class DiscoverBO extends BaseModel {
         this.show = show;
     }
 
-
     public String getDescription() {
         return description;
     }
