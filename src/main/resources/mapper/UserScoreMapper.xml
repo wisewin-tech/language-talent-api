@@ -19,9 +19,7 @@
         <set>
             user_id=#{userId},
             chapter_id=#{chapterId},
-            score=#{score},
-            do_exercise_time=#{doExerciseTime},
-            create_time=now()
+            score=#{score}
         </set>
 
     </insert>

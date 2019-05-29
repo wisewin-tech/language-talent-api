@@ -46,17 +46,15 @@ public class UserScoreController extends BaseCotroller{
      * 添加用户答题记录
      * @param chapterId         课时id
      * @param score             成绩
-     * @param doExerciseTime    答题时间
      * @param response
      * @param request
      */
     @RequestMapping("/addUserScore")
-    public void selectUserScore(Integer chapterId,Integer score,String doExerciseTime,
-                                HttpServletResponse response, HttpServletRequest request){
+    public void selectUserScore(Integer chapterId,Integer score, HttpServletResponse response, HttpServletRequest request){
         //从cookie中获取他的user对象的id
         Integer id=this.getId(request);
         //如果获取不到,参数异常
-        if (id==null||chapterId==null||score==null|| StringUtils.isEmpty(doExerciseTime)){
+        if (id==null||chapterId==null||score==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
@@ -65,9 +63,8 @@ public class UserScoreController extends BaseCotroller{
         condition.put("userId",id);
         condition.put("chapterId",chapterId);
         condition.put("score",score);
-        condition.put("doExerciseTime",doExerciseTime);
         userScoreService.addScore(condition);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("0000000"));
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("课时成绩添加成功"));
         super.safeJsonPrint(response, json);
     }
 
