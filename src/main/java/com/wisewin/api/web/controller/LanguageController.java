@@ -44,6 +44,12 @@ public class LanguageController extends BaseCotroller{
         }
         //获取登录用户信息
         UserBO userBO = super.getLoginUser(request);
+        //获取不到用户则提示登录过期重新登录
+        if (userBO==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, result);
+            return;
+        }
         Integer userId = userBO.getId();
 
 
