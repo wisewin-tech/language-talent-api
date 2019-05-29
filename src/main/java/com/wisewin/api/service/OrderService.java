@@ -1,5 +1,6 @@
 package com.wisewin.api.service;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.wisewin.api.dao.OrderDAO;
 import com.wisewin.api.entity.bo.OrderBO;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,10 @@ import java.util.Map;
 
 @Service
 public class OrderService {
+
     @Resource
     private OrderDAO orderDAO;
+
     @Resource
     private ChapterService  chapterService;
 
@@ -21,15 +24,27 @@ public class OrderService {
      * @return
      */
     public List<OrderBO> selectAll(Map<String,Object> map){
-        return orderDAO.selectAll(map);
+        return orderDAO.listOrderBo(map);
     }
+
     /**
      * 查询我的交易记录(包括订单,充值)
      * @param id
      * @return
      */
     public OrderBO selectDetails(Integer id,Integer userId){
-        return orderDAO.selectDetails(id,userId);
+         OrderBO order =  orderDAO.selectDetails(id,userId);
+         if (order == null){
+             return null;
+         }
+         String stat = order.getType();
+         if("course".equals(stat)){
+             OrderBO courseOrder =    orderDAO.courseOrder(order.getId()+"");
+             return courseOrder;
+         }
+
+        OrderBO languageOrder =    orderDAO.languageOrder(order.getId()+"");
+        return languageOrder;
     }
 
     public Integer getStatusByCourseId (Integer userId,Integer courseId){
@@ -48,4 +63,5 @@ public class OrderService {
         //查询订单
         return  orderDAO.queryOrderCount(userId,course)>0;
     }
+
 }

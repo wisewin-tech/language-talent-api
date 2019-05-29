@@ -3,17 +3,59 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wisewin.api.dao.OrderDAO">
-<!--查询所有记录-->
-    <select id="selectAll" resultType="com.wisewin.api.entity.bo.OrderBO"
-            parameterType="java.util.Map">
-        select
-        `id` ,`user_id` ,`price` ,`order_number` ,
-        `order_type` ,`status` ,`product_name` ,`creation_date` ,`course_validity_period`
+
+    <resultMap id="ordermap" type="com.wisewin.api.entity.bo.OrderBO">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="price" column="price"/>
+        <result property="orderNumber" column="order_number"/>
+        <result property="orderType" column="order_type"/>
+        <result property="status" column="status"/>
+        <result property="productName" column="product_name"/>
+        <result property="creationDate" column="creation_date"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="lcId" column="lc_id"/>
+        <result property="type" column="type"/>
+        <discriminator javaType="java.lang.String" column="type">
+        <case value="course" resultMap="coursemap"></case>
+        <case value="language" resultMap="languagemap"></case>
+    </discriminator>
+            <!--<association property="courseOrderBO" column="lc_id" select="selectCouseByOrder"/>-->
+    </resultMap>
+   <resultMap id="coursemap" type="com.wisewin.api.entity.bo.OrderBO" extends="ordermap">
+        <association property="courseOrderBO" column="lc_id" select="selectCouseByOrder"/>
+    </resultMap>
+    <resultMap id="languagemap" type="com.wisewin.api.entity.bo.OrderBO" extends="ordermap">
+        <association property="languageOrderBO" column="lc_id" select="seleteByLanguageOrder" />
+    </resultMap>
+
+    <select id="selectCouseByOrder" resultType="com.wisewin.api.entity.bo.CourseOrderBO">
+        SELECT thumbnail_image_url,course_intro FROM lt_course WHERE id = #{lc_id}
+    </select>
+
+    <select id="seleteByLanguageOrder" resultType="com.wisewin.api.entity.bo.LanguageOrderBO">
+        SELECT thumbnail_image_url,language_intro FROM lt_language WHERE id = #{lc_id}
+    </select>
+
+    <!--级联操作-->
+    <select id="listOrderBo" parameterType="java.util.Map" resultMap="ordermap">
+
+        SELECT 	id,
+        user_id,
+        price,
+        order_number,
+        order_type,
+        `status`,
+        product_name,
+        creation_date,
+        create_time,
+        update_time,
+        lc_id,
+        `type`
         from lt_order
-
         <where>
-            user_id=#{userId}
-
+            user_id = #{userId}
             <if test="orderType!=null">AND order_type=#{orderType}</if>
             <if test="status!=null">AND status=#{status}</if>
         </where>
@@ -21,6 +63,24 @@
 
         <include refid="limit" />
     </select>
+
+<!--
+查询所有记录
+    <select id="selectAll" resultType="com.wisewin.api.entity.bo.OrderBO"
+            parameterType="java.util.Map">
+        select
+              *
+        from lt_order
+
+        <where>
+            user_id=#{userId}
+            <if test="orderType!=null">AND order_type=#{orderType}</if>
+            <if test="status!=null">AND status=#{status}</if>
+        </where>
+        ORDER BY `create_time` DESC
+
+        <include refid="limit" />
+    </select>-->
     <sql id="limit">
         limit #{pageOffset},#{pageSize}
     </sql>
@@ -103,5 +163,15 @@
     <select id="queryOrderCount" resultType="int" >
         SELECT count(tr.id) FROM lt_order  tr LEFT JOIN lt_order_courses  ts ON ts.order_id = tr.id
         WHERE  ts.course_validity_period >= now()  AND  tr.user_id=#{userId} AND tr.`status`='yes'  AND ts.courses_id=#{courseId}
+    </select>
+
+    <!--查询课程订单-->
+    <select id="courseOrder" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.OrderBO">
+        SELECT o.*,c.thumbnail_image_url,c.course_intro as intro FROM lt_order o,lt_course c WHERE o.lc_id = c.id AND o.id = #{id}
+    </select>
+
+    <!--查询语言订单-->
+    <select id="languageOrder" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.OrderBO">
+        SELECT o.*,a.thumbnail_image_url,a.language_intro as intro FROM lt_order o,lt_language a WHERE o.lc_id = a.id AND o.id = #{id}
     </select>
 </mapper>
