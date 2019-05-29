@@ -166,6 +166,7 @@ public class PayService {
         orderBO.setUserId(orderParam.getUserId());
         orderBO.setPrice(orderParam.getPrice());
         orderBO.setOrderNumber(orderParam.getOrderNumber());
+
         if (orderParam.getProductType().equals("currency")) {
             if("zfb".equals(orderParam.getProductType())){
                 orderBO.setOrderType("支付宝充值");
@@ -178,6 +179,14 @@ public class PayService {
             }else{
                 orderBO.setOrderType("微信购买");
             }
+            orderBO.setType(orderParam.getProductType());
+            if(orderParam.getProductType().equals("course")){
+                orderBO.setLcId(orderParam.getCourseId());
+            }
+            if(orderParam.getProductType().equals("language")){
+                orderBO.setLcId(orderParam.getLanguageId());
+            }
+
 
         }
         orderBO.setProductName(orderParam.getProductName());
