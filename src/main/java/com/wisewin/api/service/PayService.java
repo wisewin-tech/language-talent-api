@@ -168,13 +168,13 @@ public class PayService {
         orderBO.setOrderNumber(orderParam.getOrderNumber());
 
         if (orderParam.getProductType().equals("currency")) {
-            if("zfb".equals(orderParam.getProductType())){
+            if("zfb".equals(orderParam.getPayment())){
                 orderBO.setOrderType("支付宝充值");
             }else{
                 orderBO.setOrderType("微信充值");
             }
         } else {
-            if("zfb".equals(orderParam.getProductType())){
+            if("zfb".equals(orderParam.getPayment())){
                 orderBO.setOrderType("支付宝购买");
             }else{
                 orderBO.setOrderType("微信购买");
