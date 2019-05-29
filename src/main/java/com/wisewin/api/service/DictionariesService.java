@@ -23,8 +23,8 @@ public class DictionariesService {
      *    String value; //类型
      *    String outer;连接字典类型表valuename
      */
-    public List<DictionariesBO> getqueryDictionaries(Integer id, String key,String value,String outer){
-        DictionariesBO dictionariesBO=new DictionariesBO(id,key,value,outer);
+    public List<DictionariesBO> getqueryDictionaries(String outer){
+        DictionariesBO dictionariesBO=new DictionariesBO(outer);
         return  dictionariesDAO.queryDictionaries(dictionariesBO);
     }
 }

@@ -23,6 +23,10 @@ public class DictionariesBO extends BaseModel {
 
     public  DictionariesBO(){}
 
+    public DictionariesBO(String outer) {
+        this.outer = outer;
+    }
+
     public DictionariesBO(Integer id, String key, String value, String outer) {
         this.id = id;
         this.key = key;
