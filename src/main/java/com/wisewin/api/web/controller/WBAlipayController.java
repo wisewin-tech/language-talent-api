@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,13 +32,14 @@ import java.util.Map;
 @Controller
 @RequestMapping("/wbalipay")
 public class WBAlipayController extends BaseCotroller {
-
     static final Logger log = LoggerFactory.getLogger(WBAlipayController.class);
-      @Resource
-      private WBAlipayService wBAlipayService;
 
-      @Resource
-      private PayService payService;
+
+    @Resource
+    private WBAlipayService wBAlipayService;
+
+    @Resource
+    private PayService payService;
 
     /**
      * 支付宝接口    充值咖豆    购买课程    购买语言
@@ -50,10 +52,13 @@ public class WBAlipayController extends BaseCotroller {
         System.err.println("1");
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
+
+        System.out.println(loginUser+"当前登陆用户");
         //用户登陆过期
-        if (loginUser.getId() == null) {
+        // System.out.println(loginUser.getId());
+        if (loginUser == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
-             super.safeJsonPrint(response, json);
+            super.safeJsonPrint(response, json);
             return;
         }
 
@@ -81,7 +86,8 @@ public class WBAlipayController extends BaseCotroller {
                 return;
             }
             System.err.println("appPayRequest方法");
-            String json  = wBAlipayService.currencyPay(orderParam);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(wBAlipayService.currencyPay(orderParam)));
+            System.err.println("输出json"+json);
             super.safeJsonPrint(response, json);
             return;
         }
@@ -380,6 +386,5 @@ public class WBAlipayController extends BaseCotroller {
     }
     */
 
-
-
 }
+

@@ -72,21 +72,22 @@ public class StudyPlanController extends BaseCotroller {
                 Integer chapterId = chapterResultBO.getChapterId();
                 Integer score = userScoreRecordService.getScore(userId, chapterId);
                 chapterResultBO.setScore(score);
-
             }
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO));
             super.safeJsonPrint(response, json);
             return;
         }
 
-            Integer levelId1 = studyPlanService.getLevelIdByOne();
+        Integer levelId1 = studyPlanService.getLevelIdByOne();
         Integer courseId1 = courseService.getCourseIdByLevelId(levelId1);
         Integer count = orderService.getStatusByCourseId(userId,courseId1);
         LevelBO levelBO1 = studyPlanService.getStudyPlan(languageId,levelId1);
-        if (count>0){
-            levelBO1.setBuyOrNot("yes");
-        }else {
-            levelBO1.setBuyOrNot("no");
+        if (levelBO1!=null) {
+            if (count > 0) {
+                levelBO1.setBuyOrNot("yes");
+            } else {
+                levelBO1.setBuyOrNot("no");
+            }
         }
 
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO1));

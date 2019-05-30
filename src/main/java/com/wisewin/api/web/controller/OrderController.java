@@ -1,5 +1,6 @@
 package com.wisewin.api.web.controller;
 import com.wisewin.api.entity.bo.OrderBO;
+import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.OrderService;
@@ -31,9 +32,9 @@ public class OrderController extends BaseCotroller {
     @RequestMapping("/selectAll")
     public void selectSign(Integer pageNo, Integer pageSize, HttpServletResponse response, HttpServletRequest request) {
         //判断用户id是否为空,即:用户是否登录
-        Integer userId = super.getId(request);
-        if (userId == null ) {
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+        UserBO user = super.getLoginUser(request);
+        if (user == null ) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
@@ -47,7 +48,7 @@ public class OrderController extends BaseCotroller {
             condition.put("pageSize", queryInfo.getPageSize());
         }
         //把userId 用户id,status 状态:支出/获取 放入map集合中
-        condition.put("userId", userId);
+        condition.put("userId", user.getId());
         //吧封装好的条件传给service
         List<OrderBO> list= orderService.selectAll(condition);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
@@ -69,6 +70,11 @@ public class OrderController extends BaseCotroller {
             return;
         }
         OrderBO orderBO=orderService.selectDetails(Integer.parseInt(id),userId);
+        if(orderBO == null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000038"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(orderBO));
         super.safeJsonPrint(response, json);
     }

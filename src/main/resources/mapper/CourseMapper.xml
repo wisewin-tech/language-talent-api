@@ -183,4 +183,6 @@
 		LEFT JOIN lt_course co ON le.course_id = co.id
 		WHERE le.id=#{levelId}
 	</select>
+
+
 </mapper>

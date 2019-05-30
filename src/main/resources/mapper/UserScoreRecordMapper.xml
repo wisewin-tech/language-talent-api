@@ -4,11 +4,17 @@
 
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.api.dao.UserScoreRecordDAO">
-
+    <!--查询用户课时成绩-->
     <select id="getScore" parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         SELECT score FROM lt_user_score_record
         WHERE user_id = #{userId} AND chapter_id = #{chapterId}
     </select>
-
+    <!--添加用户课时成绩-->
+    <insert id="addScore" parameterType="com.wisewin.api.entity.bo.UserScoreRecordBO">
+        INSERT INTO lt_user_score_record
+         <set>
+             user_id = #{userId},chapter_id = #{chapterId},score = #{score}
+         </set>
+    </insert>
 </mapper>

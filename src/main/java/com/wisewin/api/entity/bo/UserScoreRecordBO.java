@@ -9,11 +9,8 @@ public class UserScoreRecordBO extends BaseModel{
     private Integer userId; //用户id
     private Integer chapterId; //课时id
     private Integer score; //分数
-    private String doExerciseTime; //做题时间
-    private Integer createUserId; //创建人id
-    private Date createTime; //创建时间
-    private Integer updateUserId; //修改人id
-    private Date updateTime; //修改时间
+
+
 
     public Integer getId() {
         return id;
@@ -47,43 +44,5 @@ public class UserScoreRecordBO extends BaseModel{
         this.score = score;
     }
 
-    public String getDoExerciseTime() {
-        return doExerciseTime;
-    }
 
-    public void setDoExerciseTime(String doExerciseTime) {
-        this.doExerciseTime = doExerciseTime;
-    }
-
-    public Integer getCreateUserId() {
-        return createUserId;
-    }
-
-    public void setCreateUserId(Integer createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(Integer updateUserId) {
-        this.updateUserId = updateUserId;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

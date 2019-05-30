@@ -77,11 +77,12 @@ public class UserController extends BaseCotroller {
 
     /**
      * 发送验证码
-     *
+     * 登陆注册
+     * 修改绑定
      * @param phone
      */
     @RequestMapping("/send")
-    public void send(String phone, HttpServletResponse response) {
+    public void send(String phone,String type, HttpServletResponse response) {
         //手机号非空+格式判断
         if (this.phoneFormt(phone, response)) {
             //获取缓存中的失效验证码
@@ -100,6 +101,12 @@ public class UserController extends BaseCotroller {
                     return;
                 }
             }
+            if("amend".equals(type)&&userService.selectByPhone(phone)!=null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000058"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+
             userService.send(phone);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("短信验证码发送成功!"));
             super.safeJsonPrint(response, json);
@@ -354,7 +361,7 @@ public class UserController extends BaseCotroller {
         Integer id = this.getId(request);
         //如果获取不到,参数异常
         if (id == null) {
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
         }
         //如果获取到了,判断user参数不为空
@@ -438,6 +445,8 @@ public class UserController extends BaseCotroller {
         mapUser.put("interest", userBO.getInterest());
         mapUser.put("integral", userBO.getIntegral());
         mapUser.put("head_portrait_url", userBO.getHeadPortraitUrl());
+        mapUser.put("wxid", userBO.getWxOpenid());
+        mapUser.put("qqid", userBO.getQqOpenid());
         //根据需求追加....
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
         super.safeJsonPrint(response, json);

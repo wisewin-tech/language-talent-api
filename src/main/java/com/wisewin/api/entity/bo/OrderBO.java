@@ -19,6 +19,18 @@ public class OrderBO extends BaseModel {
     private Integer updateId; //修改人id
     private String createTime; //创建时间
     private String updateTime; //修改时间
+    private Integer lcId;   //关联id
+    private String type;   //类型 语言还是课程
+    private String thumbnailImageUrl;
+
+    //介绍
+    private String intro;
+
+    //关联课程
+    private  CourseOrderBO courseOrderBO;
+    //关联语言
+    private LanguageOrderBO languageOrderBO;
+
 
 
 
@@ -29,6 +41,14 @@ public class OrderBO extends BaseModel {
         this.orderNumber = orderNumber;
         this.status = status;
 
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
     public Integer getId() {
@@ -54,7 +74,6 @@ public class OrderBO extends BaseModel {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-
 
     public String getOrderNumber() {
         return orderNumber;
@@ -89,7 +108,8 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreationDate() {
-        return creationDate;
+
+        return  creationDate.substring(0,creationDate.length() - 2);
     }
 
     public void setCreationDate(String creationDate) {
@@ -129,7 +149,10 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreateTime() {
-        return createTime;
+       if(createTime!=null){
+           return createTime.substring(0,createTime.length() - 2);
+       }
+       return  null;
     }
 
     public void setCreateTime(String createTime) {
@@ -137,10 +160,53 @@ public class OrderBO extends BaseModel {
     }
 
     public String getUpdateTime() {
-        return updateTime;
+if(updateTime!=null){
+    return updateTime.substring(0,updateTime.length() - 2);
+}
+       return null;
     }
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getLcId() {
+        return lcId;
+    }
+
+    public void setLcId(Integer lcId) {
+        this.lcId = lcId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getThumbnailImageUrl() {
+        return thumbnailImageUrl;
+    }
+
+    public void setThumbnailImageUrl(String thumbnailImageUrl) {
+        this.thumbnailImageUrl = thumbnailImageUrl;
+    }
+
+    public CourseOrderBO getCourseOrderBO() {
+        return courseOrderBO;
+    }
+
+    public void setCourseOrderBO(CourseOrderBO courseOrderBO) {
+        this.courseOrderBO = courseOrderBO;
+    }
+
+    public LanguageOrderBO getLanguageOrderBO() {
+        return languageOrderBO;
+    }
+
+    public void setLanguageOrderBO(LanguageOrderBO languageOrderBO) {
+        this.languageOrderBO = languageOrderBO;
     }
 }

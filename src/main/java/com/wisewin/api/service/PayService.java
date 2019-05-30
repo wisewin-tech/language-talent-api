@@ -160,21 +160,41 @@ public class PayService {
 
     //插入预支付订单
     public void prepaid(OrderParam orderParam) {
-        System.err.println("订单插入数据库");
         //实例化订单对象 完成插入订单操作
         OrderBO orderBO = new OrderBO();
         orderBO.setUserId(orderParam.getUserId());
         orderBO.setPrice(orderParam.getPrice());
         orderBO.setOrderNumber(orderParam.getOrderNumber());
+
         if (orderParam.getProductType().equals("currency")) {
-            orderBO.setOrderType("充值");
+            if("zfb".equals(orderParam.getPayment())){
+                orderBO.setOrderType("支付宝充值");
+            }else{
+                orderBO.setOrderType("微信充值");
+            }
         } else {
-            orderBO.setOrderType("购买");
+            if("zfb".equals(orderParam.getPayment())){
+                orderBO.setOrderType("支付宝购买");
+            }else{
+                orderBO.setOrderType("微信购买");
+            }
+
+            orderBO.setType(orderParam.getProductType());
+
+            if(orderParam.getProductType().equals("curriculum")){
+                orderBO.setLcId(orderParam.getCourseId());
+            }
+            if(orderParam.getProductType().equals("language")){
+                orderBO.setLcId(orderParam.getLanguageId());
+            }
+
+
         }
         orderBO.setProductName(orderParam.getProductName());
         //未支付
         orderBO.setStatus(AliConstants.Didnotpay.getValue());
         //插入数据库 订单信息
-        orderDAO.insertPreOrder(orderBO);
+        int result=0;
+        result=orderDAO.insertPreOrder(orderBO);
     }
 }

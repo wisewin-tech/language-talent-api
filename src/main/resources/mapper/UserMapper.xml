@@ -73,6 +73,7 @@
             <if test="interest!=null and interest!=''">  interest=#{interest},</if>
             <if test="qqOpenid!=null and qqOpenid!=''">  qq_openid=#{qqOpenid},</if>
             <if test="wxOpenid!=null and wxOpenid!=''">  wx_openid=#{wxOpenid},</if>
+            <if test="learningGoal!=null and learningGoal!=''">  learning_goal=#{learningGoal},</if>
 
         </set>
         where
@@ -80,12 +81,12 @@
     </update>
     <!--通过id查找用户信息-->
     <select id="selectAllById" resultType="com.wisewin.api.entity.bo.UserBO">
-        select
+            select
         `id` ,`name` ,`nickname` ,`password` ,`email` ,`mobile`,`age_group` ,
 `head_portrait_url`,`sex`,`birthday` ,`source` ,`career` ,`integral` ,`currency` ,`learning_goal` ,`studying_language_id` ,
-`language_like_id` ,`invite_code` ,`by_invite` ,`job`,`qq_openid` ,`wx_openid` ,`continuous_sign` ,`cumulative_sign` ,
+`language_like_id` ,`invite_code` ,`by_invite` ,`qq_openid` ,`wx_openid` ,`continuous_sign` ,`cumulative_sign` ,
 `last_sign` ,`continuous_learning` ,`cumulative_learning` ,`study_date` datetime ,`status` ,
-`create_id`,`update_id` ,`create_time` ,`update_time`
+`create_id`,`update_id` ,`create_time` ,`update_time`,interest,currency,occupation,integral
         from
         lt_user
         where
