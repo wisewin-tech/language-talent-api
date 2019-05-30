@@ -350,38 +350,6 @@ public class UserController extends BaseCotroller {
     }
 
     /**
-     * 登陆成功后绑定openid
-     */
-    @RequestMapping("/bindOpenid")
-    public void bindOpenid(String status, String openid, HttpServletRequest request, HttpServletResponse response){
-        //从cookie中获取他的user对象的id
-        UserBO userBO = super.getLoginUser(request);
-
-        //如果获取不到,登陆过期
-        if(userBO==null||userBO.getMobile()==null||userBO.getMobile().length()==0){
-            Integer id = this.getId(request);
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-
-
-        //参数异常
-        if(status==null||status.length()==0||openid==null||status.length()==0){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeJsonPrint(response, json);
-        }
-        boolean bool=userService.bindOpenId(userBO.getMobile(), status, openid);
-        if(bool){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
-            super.safeJsonPrint(response, json);
-        }
-
-
-
-    }
-
-    /**
      * 修改用户信息
      *
      * @param response
@@ -477,6 +445,8 @@ public class UserController extends BaseCotroller {
         mapUser.put("interest", userBO.getInterest());
         mapUser.put("integral", userBO.getIntegral());
         mapUser.put("head_portrait_url", userBO.getHeadPortraitUrl());
+        mapUser.put("wxid", userBO.getWxOpenid());
+        mapUser.put("qqid", userBO.getQqOpenid());
         //根据需求追加....
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
         super.safeJsonPrint(response, json);
