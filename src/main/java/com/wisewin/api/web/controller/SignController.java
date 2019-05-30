@@ -35,6 +35,11 @@ public class SignController extends BaseCotroller {
     @RequestMapping("/selectSign")
     public void selectSign(HttpServletResponse response, HttpServletRequest request)  {
         UserBO userBO = super.getLoginUser(request);
+        if (userBO==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
         Integer userId=userBO.getId();
         if (userId==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));

@@ -64,9 +64,9 @@ public class UserStudyDetailsController extends BaseCotroller {
                 for (Date date:studyDates){
                     //获取近一周的学习情况
                     UserStudyDetailsBO weekStudyDuration = userStudyDetailsService.weekStudyDuration(userId,date);
-
-                    userStudyDetailsBOList.add(weekStudyDuration);
-                    if (weekStudyDuration==null){
+                    if (weekStudyDuration!=null) {
+                        userStudyDetailsBOList.add(weekStudyDuration);
+                    } else {
                         UserStudyDetailsBO userStudyDetailsBO1 = new UserStudyDetailsBO();
                         userStudyDetailsBO1.setStudyDuration(0);
                         userStudyDetailsBO1.setStudyDate(date);
