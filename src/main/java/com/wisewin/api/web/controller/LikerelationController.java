@@ -9,6 +9,7 @@ import com.wisewin.api.entity.param.LikerelationParam;
 import com.wisewin.api.service.DiscoverService;
 import com.wisewin.api.service.LikerelatioService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class LikerelationController extends BaseCotroller{
         //获取当前用户id
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
-        if (id==null || param.getDcId()==null){
+        if (id==null || StringUtils.isObjEmpty(param.getDcId())){
          String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
          super.safeJsonPrint(response, json);
          return;
