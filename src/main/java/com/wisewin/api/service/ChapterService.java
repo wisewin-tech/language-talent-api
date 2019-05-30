@@ -58,4 +58,11 @@ public class ChapterService {
         return chapterDAO.getSourceId(chapterId);
     }
 
+
+    /**
+     * 获取视频id
+     */
+    public String queryVideoPath(Integer chapterId){
+        return  chapterDAO.queryVideoPath(chapterId);
+    }
 }

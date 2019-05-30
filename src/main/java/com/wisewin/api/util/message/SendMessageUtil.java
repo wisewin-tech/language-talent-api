@@ -1,8 +1,6 @@
 package com.wisewin.api.util.message;
 
 
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.Bucket;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
@@ -63,8 +61,4 @@ public class SendMessageUtil {
     }
 
 
-    public static void main(String[] args) {
-        Bucket  bucket=new Bucket();
-
-    }
 }

@@ -32,13 +32,17 @@
 	      `level`.level_name,chapter.chapter_name,
 	      `language`.id languageId,course.id courseId,
 	      `level`.id levelId,chapter.chapter_intro,
-	      chapter.manuscript,chapter.content,chapter.id chapterId
+	      chapter.manuscript,chapter.content,chapter.id chapterId 
         FROM lt_chapter `chapter`
         LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
         LEFT JOIN lt_course `course` ON `level`.course_id = course.id
         LEFT JOIN lt_language `language` ON course.language_id = `language`.id
         WHERE chapter.id = #{id}
     </select>
+    <select id="queryVideoPath"  parameterType="java.lang.Integer"  resultType="java.lang.String">
+         SELECT  video_path  FROM  lt_chapter  WHERE  id=#{id}
+    </select>
+    
     <!--课时目录-->
     <select id="getChapterCatalogue" parameterType="com.wisewin.api.entity.bo.ChapterBO"
             resultType="com.wisewin.api.entity.bo.ChapterBO">

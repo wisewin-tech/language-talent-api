@@ -41,4 +41,10 @@ public interface ChapterDAO {
      * @return
      */
     Integer getSourceId(Integer chapterId);
+
+    /**
+     * 获取视频路径
+     *
+     */
+    String queryVideoPath(Integer id);
 }

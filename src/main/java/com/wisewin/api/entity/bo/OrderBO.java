@@ -149,8 +149,10 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreateTime() {
-
-        return createTime.substring(0,createTime.length() - 2);
+       if(createTime!=null){
+           return createTime.substring(0,createTime.length() - 2);
+       }
+       return  null;
     }
 
     public void setCreateTime(String createTime) {
@@ -158,8 +160,10 @@ public class OrderBO extends BaseModel {
     }
 
     public String getUpdateTime() {
-
-        return updateTime.substring(0,updateTime.length() - 2);
+if(updateTime!=null){
+    return updateTime.substring(0,updateTime.length() - 2);
+}
+       return null;
     }
 
     public void setUpdateTime(String updateTime) {
