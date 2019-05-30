@@ -194,7 +194,6 @@ public class PayService {
         //未支付
         orderBO.setStatus(AliConstants.Didnotpay.getValue());
         //插入数据库 订单信息
-        int result=0;
-        result=orderDAO.insertPreOrder(orderBO);
+        orderDAO.insertPreOrder(orderBO);
     }
 }

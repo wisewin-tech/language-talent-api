@@ -132,14 +132,14 @@
     <!--插入预支付订单-->
     <insert id="insertPreOrder" parameterType="com.wisewin.api.entity.bo.OrderBO">
         insert into lt_order
-        (user_id,price,order_number,order_type,`status`,product_name,creation_date,`type`,lc_id)
+        (user_id,price,order_number,order_type,`status`,product_name,create_time,`type`,lc_id)
         values
         (#{userId},#{price},#{orderNumber},#{orderType},#{status},#{productName},now(),#{type},#{lcId})
     </insert>
 
     <!--订单支付成功-->
     <update id="updOrderStatus">
-        update lt_order set status=#{status} where order_number=#{orderNumber}
+        update lt_order set status=#{status},creation_date=now() where order_number=#{orderNumber}
     </update>
 
     <!--查询单条订单-->
