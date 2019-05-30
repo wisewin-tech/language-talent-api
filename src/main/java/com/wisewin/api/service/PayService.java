@@ -160,7 +160,6 @@ public class PayService {
 
     //插入预支付订单
     public void prepaid(OrderParam orderParam) {
-        System.err.println("订单插入数据库");
         //实例化订单对象 完成插入订单操作
         OrderBO orderBO = new OrderBO();
         orderBO.setUserId(orderParam.getUserId());
@@ -179,8 +178,10 @@ public class PayService {
             }else{
                 orderBO.setOrderType("微信购买");
             }
+
             orderBO.setType(orderParam.getProductType());
-            if(orderParam.getProductType().equals("course")){
+
+            if(orderParam.getProductType().equals("curriculum")){
                 orderBO.setLcId(orderParam.getCourseId());
             }
             if(orderParam.getProductType().equals("language")){
@@ -193,6 +194,7 @@ public class PayService {
         //未支付
         orderBO.setStatus(AliConstants.Didnotpay.getValue());
         //插入数据库 订单信息
-        orderDAO.insertPreOrder(orderBO);
+        int result=0;
+        result=orderDAO.insertPreOrder(orderBO);
     }
 }

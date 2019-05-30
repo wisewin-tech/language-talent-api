@@ -57,7 +57,7 @@ public class WXPayController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        boolean bo =1%1==0;
+
         orderParam.setUserId(id);
         Map<String,String> resultMap=wxPayService.getUnifiedOrder(orderParam);
 

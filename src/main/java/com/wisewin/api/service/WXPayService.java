@@ -180,7 +180,7 @@ public class WXPayService {
             map.put("attach", payService.getKaDou(new Integer(orderParam.getPrice().intValue())) + "");//！！！！！！！！！！！
             //回调地址
             map.put("notify_url", WXConfig.NOTIFY_URL_CURRENCY);
-        } else if (orderParam.getProductType().equals("curriculum ")) {
+        } else if (orderParam.getProductType().equals("curriculum")) {
             //自定义请求参数 课程id
             map.put("attach", orderParam.getCourseId() + "");
             //要购买的课程
