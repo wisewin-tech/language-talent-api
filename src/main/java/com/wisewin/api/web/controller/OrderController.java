@@ -1,3 +1,5 @@
+
+
 package com.wisewin.api.web.controller;
 import com.wisewin.api.entity.bo.OrderBO;
 import com.wisewin.api.entity.bo.UserBO;
@@ -33,7 +35,7 @@ public class OrderController extends BaseCotroller {
     public void selectSign(Integer pageNo, Integer pageSize, HttpServletResponse response, HttpServletRequest request) {
         //判断用户id是否为空,即:用户是否登录
         UserBO user = super.getLoginUser(request);
-        if (user == null ) {
+        if (user== null ) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
@@ -51,6 +53,11 @@ public class OrderController extends BaseCotroller {
         condition.put("userId", user.getId());
         //吧封装好的条件传给service
         List<OrderBO> list= orderService.selectAll(condition);
+        if(list == null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000039"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response, json);
 
@@ -58,18 +65,18 @@ public class OrderController extends BaseCotroller {
     @RequestMapping("/selectDetails")
     public void selectDetails(String id,HttpServletResponse response, HttpServletRequest request) {
         //判断用户id是否为空,即:用户是否登录
-        Integer userId = super.getId(request);
+        UserBO user = super.getLoginUser(request);
         if (StringUtils.isEmpty(id)) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
-        if(userId == null){
+        if(user == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
-        OrderBO orderBO=orderService.selectDetails(Integer.parseInt(id),userId);
+        OrderBO orderBO=orderService.selectDetails(Integer.parseInt(id),user.getId());
         if(orderBO == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000038"));
             super.safeJsonPrint(response, json);
@@ -79,3 +86,4 @@ public class OrderController extends BaseCotroller {
         super.safeJsonPrint(response, json);
     }
 }
+

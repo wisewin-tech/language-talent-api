@@ -110,7 +110,9 @@
         create_id,
         update_id,
         create_time,
-        update_time
+        update_time,
+        lc_id,
+        `type`
         )
         VALUES
         (
@@ -120,12 +122,14 @@
         #{orderType},
         #{status},
         #{productName},
-        #{creationDate},
+        now(),
         #{standby},
         #{createId},
         #{updateId},
         #{createTime},
-        #{updateTime}
+        #{updateTime},
+        #{lcId},
+        #{type}
         );
     </insert>
 

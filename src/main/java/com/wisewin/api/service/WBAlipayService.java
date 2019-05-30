@@ -10,6 +10,7 @@ import com.wisewin.api.dao.CourseDAO;
 import com.wisewin.api.dao.LanguageDAO;
 import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.LanguageBO;
+import com.wisewin.api.entity.dto.AlipayBTO;
 import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.util.AlipayConfig;
 import com.wisewin.api.util.IDBuilder;
@@ -41,6 +42,7 @@ public class WBAlipayService {
 
     @Resource
     private PayService payService;
+
 
 
      AlipayClient   client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APP_ID,
@@ -76,6 +78,7 @@ public class WBAlipayService {
             AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
             if (ali_response.isSuccess()) {
                 //插入课程预支付订单
+                System.err.println(orderParam.getPayment());
                 payService.prepaid(orderParam);
                 // 获取到getBody直接给app,用这个东西去调起支付宝
                 System.err.println(ali_response.getBody());

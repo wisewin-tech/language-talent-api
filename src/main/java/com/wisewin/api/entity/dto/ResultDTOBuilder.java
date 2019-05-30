@@ -1,6 +1,7 @@
 package com.wisewin.api.entity.dto;
 
 import com.wisewin.api.entity.bo.common.constants.Result;
+import com.wisewin.api.entity.bo.common.constants.ResultPay;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.util.env.Env;
 
@@ -25,6 +26,9 @@ public class ResultDTOBuilder {
             return   getInstance("0000000",msg,new Object());
     }
 
+    public static  ResultPay successPay(String msg) {
+        return  getInstancePay("0000000","成功",msg);
+    }
     public static Result failure(String errCode) {
         Env env = new Env();
         return   new Result(new Object(),errCode,StringUtils.clearNull(env.getProperty(errCode)));
@@ -81,6 +85,16 @@ public class ResultDTOBuilder {
         result.setMsg(msg);
         return result;
     }
+
+    //支付宝传输专用
+    public static  ResultPay getInstancePay(String errCode,String msg, String data) {
+        ResultPay result = new ResultPay();
+        result.setData(data);
+        result.setCode(errCode);
+        result.setMsg(msg);
+        return result;
+    }
+
 
     public static void main(String[]  args){
        // StringUtils.clearNull(env.getProperty("01"))

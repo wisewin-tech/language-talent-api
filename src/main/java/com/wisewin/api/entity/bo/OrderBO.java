@@ -27,14 +27,13 @@ public class OrderBO extends BaseModel {
     private String intro;
 
     //关联课程
-    private  CourseOrderBO courseOrderBO;
+    private CourseOrderBO courseOrderBO;
     //关联语言
     private LanguageOrderBO languageOrderBO;
 
 
-
-
-    public  OrderBO(){}
+    public OrderBO() {
+    }
 
     public OrderBO(Integer userId, String orderNumber, String status) {
         this.userId = userId;
@@ -108,8 +107,12 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreationDate() {
-
-        return  creationDate.substring(0,creationDate.length() - 2);
+        if (creationDate != null) {
+            if( creationDate.substring(0, creationDate.length() - 2).equals(".0")){
+                return creationDate.substring(0, creationDate.length() - 2);
+            }
+        }
+        return null;
     }
 
     public void setCreationDate(String creationDate) {
@@ -149,10 +152,12 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreateTime() {
-       if(createTime!=null){
-           return createTime.substring(0,createTime.length() - 2);
-       }
-       return  null;
+        if (createTime != null ) {
+            if(createTime.substring(0, createTime.length() - 2).equals(".0")){
+                return createTime.substring(0, createTime.length() - 2);
+            }
+        }
+        return null;
     }
 
     public void setCreateTime(String createTime) {
@@ -160,10 +165,13 @@ public class OrderBO extends BaseModel {
     }
 
     public String getUpdateTime() {
-if(updateTime!=null){
-    return updateTime.substring(0,updateTime.length() - 2);
-}
-       return null;
+        if (updateTime != null) {
+            if(updateTime.substring(0, updateTime.length() - 2).equals(".0")){
+                return updateTime.substring(0, updateTime.length() - 2);
+            }
+
+        }
+        return null;
     }
 
     public void setUpdateTime(String updateTime) {

@@ -48,8 +48,8 @@ public class WBAlipayController extends BaseCotroller {
      * @param orderParam
      */
     @RequestMapping("/appPayRequest")
-    public void  appPayRequest(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam) {
-        System.err.println("1");
+    public void appPayRequest(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam) {
+        Map<String,Object> map = new HashMap();
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
 
@@ -67,6 +67,7 @@ public class WBAlipayController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+        orderParam.setPayment(("zfb"));
         orderParam.setUserId(loginUser.getId());
         //判断是否为充值咖豆
         if("currency".equals(orderParam.getProductType())){
@@ -85,9 +86,10 @@ public class WBAlipayController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }
-            System.err.println("appPayRequest方法");
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(wBAlipayService.currencyPay(orderParam)));
-            System.err.println("输出json"+json);
+
+          String pay =  wBAlipayService.currencyPay(orderParam);
+            map.put("data",pay);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
             return;
         }
@@ -99,7 +101,11 @@ public class WBAlipayController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }
-            String json  = wBAlipayService.languagePay(orderParam);
+
+
+           String pay  =  wBAlipayService.languagePay(orderParam);
+            map.put("data",pay);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
             return;
         }
@@ -110,7 +116,10 @@ public class WBAlipayController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }
-            String json  = wBAlipayService.curriculumPay(orderParam);
+
+            String pay  = wBAlipayService.curriculumPay(orderParam);
+            map.put("data",pay);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
             return;
         }

@@ -35,11 +35,13 @@ public class PurchaseController extends BaseCotroller {
     public void purchaseCurriculum(HttpServletRequest request, HttpServletResponse response, String id, String state){
        UserBO userBO = super.getLoginUser(request);
         if(StringUtils.isEmpty(id)){
+            System.out.println("进入此方法"+id);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
         if(StringUtils.isEmpty(state)){
+            System.out.println("进入此方法"+state);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -61,7 +63,7 @@ public class PurchaseController extends BaseCotroller {
 
         if(state.equals("curriculum")){
          CourseBO course =  purchaseService.queryCouse(id);
-         //判断有无此课程
+          //判断有无此课程
             if(course == null){
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000019"));
                 super.safeJsonPrint(response, json);
@@ -97,13 +99,17 @@ public class PurchaseController extends BaseCotroller {
     @RequestMapping( "/purchaseOder")
     public void purchaseOder(HttpServletRequest request, HttpServletResponse response, String id, String state){
         UserBO userBO = super.getLoginUser(request);
+        System.err.println(id);
+        System.err.println(state);
         if(StringUtils.isEmpty(id)){
+            System.err.println("进入此方法id"+id);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
         if(StringUtils.isEmpty(state)){
+            System.err.println("进入此方法state"+state);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -113,8 +119,6 @@ public class PurchaseController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-
-
         //查询当前用户
         UserBO user  =  purchaseService.selectUser(userBO.getId());
         if(user == null){

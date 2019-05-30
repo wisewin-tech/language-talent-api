@@ -107,6 +107,8 @@ public class PurchaseService {
         //获取课程正常价
         pruchase.setCoursePrice(course.getPrice());
         //判断用户咖豆是否大于等于课程正常价
+        System.err.println("当前用户咖豆"+user.getCurrency());
+        System.err.println("当前课程咖豆"+course.getPrice());
         if (user.getCurrency() >= course.getPrice()) {
             pruchase.setState(true);
             return pruchase;
@@ -210,11 +212,12 @@ public class PurchaseService {
         IDBuilder idBuilder = new IDBuilder(10, 10);
         order.setOrderNumber(idBuilder.nextId() + "");
         order.setStatus("yes");
-        order.setOrderType("购买");
+        order.setOrderType("咖豆购买");
         order.setProductName(pruchase.getTitle());
-
-        order.setCreateTime(DateUtil.getDateStr(new Date()));
-        order.setUpdateTime(DateUtil.getDateStr(new Date()));
+        //插入课程语言id
+        order.setLcId(course.getId());
+        //插入购买的类型（语言/课程）
+        order.setType("curriculum");
         //获取返回的主订单id
         orderDAO.insertOrder(order);
         System.out.println(order.getId());
@@ -258,10 +261,14 @@ public class PurchaseService {
         IDBuilder idBuilder = new IDBuilder(10, 10);
         order.setOrderNumber(idBuilder.nextId() + "");
         order.setStatus("yes");
-        order.setOrderType("购买");
+        order.setOrderType("咖豆购买");
         order.setProductName(pruchase.getTitle());
         order.setCreateTime(DateUtil.getDateStr(new Date()));
         order.setUpdateTime(DateUtil.getDateStr(new Date()));
+        //插入课程语言id
+        order.setLcId(Integer.parseInt(languageId));
+        //插入购买的类型（语言/课程）
+        order.setType("language");
         //获取返回的主订单id
         orderDAO.insertOrder(order);
 
