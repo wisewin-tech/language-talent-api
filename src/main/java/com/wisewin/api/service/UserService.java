@@ -111,6 +111,7 @@ public class UserService {
         if (!StringUtils.isEmpty(password)){
             userParam.setPassword(MD5Util.digest(password));
         }
+
         userDAO.updateUser(userParam);
 
     }
