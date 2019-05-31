@@ -101,8 +101,6 @@ public class WBAlipayController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }
-
-
            String pay  =  wBAlipayService.languagePay(orderParam);
             map.put("data",pay);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));

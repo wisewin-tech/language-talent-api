@@ -1,3 +1,6 @@
+
+
+
 package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
@@ -30,6 +33,8 @@ public class OrderBO extends BaseModel {
     private CourseOrderBO courseOrderBO;
     //关联语言
     private LanguageOrderBO languageOrderBO;
+    //到期时间
+    private CourseValidityPeriodBO courseValidityPeriodBO;
 
 
     public OrderBO() {
@@ -107,8 +112,10 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreationDate() {
+        System.out.println(creationDate);
         if (creationDate != null) {
-            if( creationDate.substring(0, creationDate.length() - 2).equals(".0")){
+            if(creationDate.lastIndexOf(".") == (creationDate.length()-2)){
+                System.out.println(creationDate.substring(0, creationDate.length() - 2));
                 return creationDate.substring(0, creationDate.length() - 2);
             }
         }
@@ -152,8 +159,9 @@ public class OrderBO extends BaseModel {
     }
 
     public String getCreateTime() {
-        if (createTime != null ) {
-            if(createTime.substring(0, createTime.length() - 2).equals(".0")){
+        if (createTime != null) {
+            if(createTime.lastIndexOf(".") == (createTime.length()-2)){
+                System.out.println(createTime.substring(0, createTime.length() - 2));
                 return createTime.substring(0, createTime.length() - 2);
             }
         }
@@ -166,10 +174,10 @@ public class OrderBO extends BaseModel {
 
     public String getUpdateTime() {
         if (updateTime != null) {
-            if(updateTime.substring(0, updateTime.length() - 2).equals(".0")){
+            if(updateTime.lastIndexOf(".") == (updateTime.length()-2)){
+                System.out.println(updateTime.substring(0, updateTime.length() - 2));
                 return updateTime.substring(0, updateTime.length() - 2);
             }
-
         }
         return null;
     }
@@ -217,4 +225,13 @@ public class OrderBO extends BaseModel {
     public void setLanguageOrderBO(LanguageOrderBO languageOrderBO) {
         this.languageOrderBO = languageOrderBO;
     }
+
+    public CourseValidityPeriodBO getCourseValidityPeriodBO() {
+        return courseValidityPeriodBO;
+    }
+
+    public void setCourseValidityPeriodBO(CourseValidityPeriodBO courseValidityPeriodBO) {
+        this.courseValidityPeriodBO = courseValidityPeriodBO;
+    }
 }
+

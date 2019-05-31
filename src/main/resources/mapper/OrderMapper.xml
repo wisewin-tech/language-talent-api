@@ -17,13 +17,14 @@
         <result property="updateTime" column="update_time"/>
         <result property="lcId" column="lc_id"/>
         <result property="type" column="type"/>
+        <association property="courseValidityPeriodBO" column="id" select="selectCourseValidityPeriodBO"/>
         <discriminator javaType="java.lang.String" column="type">
-        <case value="course" resultMap="coursemap"></case>
-        <case value="language" resultMap="languagemap"></case>
-    </discriminator>
-            <!--<association property="courseOrderBO" column="lc_id" select="selectCouseByOrder"/>-->
+            <case value="curriculum" resultMap="coursemap"></case>
+            <case value="language" resultMap="languagemap"></case>
+        </discriminator>
+        <!--<association property="courseOrderBO" column="lc_id" select="selectCouseByOrder"/>-->
     </resultMap>
-   <resultMap id="coursemap" type="com.wisewin.api.entity.bo.OrderBO" extends="ordermap">
+    <resultMap id="coursemap" type="com.wisewin.api.entity.bo.OrderBO" extends="ordermap">
         <association property="courseOrderBO" column="lc_id" select="selectCouseByOrder"/>
     </resultMap>
     <resultMap id="languagemap" type="com.wisewin.api.entity.bo.OrderBO" extends="ordermap">
@@ -38,9 +39,12 @@
         SELECT thumbnail_image_url,language_intro FROM lt_language WHERE id = #{lc_id}
     </select>
 
+    <select id="selectCourseValidityPeriodBO" resultType="com.wisewin.api.entity.bo.CourseValidityPeriodBO">
+        SELECT course_validity_period FROM lt_order_courses WHERE order_id = #{id}  LIMIT 1
+    </select>
+
     <!--级联操作-->
     <select id="listOrderBo" parameterType="java.util.Map" resultMap="ordermap">
-
         SELECT 	id,
         user_id,
         price,
@@ -64,29 +68,29 @@
         <include refid="limit" />
     </select>
 
-<!--
-查询所有记录
-    <select id="selectAll" resultType="com.wisewin.api.entity.bo.OrderBO"
-            parameterType="java.util.Map">
-        select
-              *
-        from lt_order
+    <!--
+    查询所有记录
+        <select id="selectAll" resultType="com.wisewin.api.entity.bo.OrderBO"
+                parameterType="java.util.Map">
+            select
+                  *
+            from lt_order
 
-        <where>
-            user_id=#{userId}
-            <if test="orderType!=null">AND order_type=#{orderType}</if>
-            <if test="status!=null">AND status=#{status}</if>
-        </where>
-        ORDER BY `create_time` DESC
+            <where>
+                user_id=#{userId}
+                <if test="orderType!=null">AND order_type=#{orderType}</if>
+                <if test="status!=null">AND status=#{status}</if>
+            </where>
+            ORDER BY `create_time` DESC
 
-        <include refid="limit" />
-    </select>-->
+            <include refid="limit" />
+        </select>-->
     <sql id="limit">
         limit #{pageOffset},#{pageSize}
     </sql>
 
     <!--查询订单详情-->
-    <select id="selectDetails" resultType="com.wisewin.api.entity.bo.OrderBO"
+    <select id="selectDetails" resultMap="ordermap"
             parameterType="java.util.Map">
         SELECT * FROM lt_order
         <where>
@@ -97,7 +101,7 @@
 
     <!--插入订单-->
     <insert id="insertOrder" parameterType="com.wisewin.api.entity.bo.OrderBO" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO language_talent.lt_order
+        INSERT INTO language_talent.lt_order
         (
         user_id,
         price,
@@ -126,7 +130,7 @@
         #{standby},
         #{createId},
         #{updateId},
-        #{createTime},
+        now(),
         #{updateTime},
         #{lcId},
         #{type}
@@ -143,7 +147,7 @@
 
     <!--订单支付成功-->
     <update id="updOrderStatus">
-        update lt_order set status=#{status},creation_date=now() where order_number=#{orderNumber}
+        update lt_order set status=#{status} where order_number=#{orderNumber}
     </update>
 
     <!--查询单条订单-->

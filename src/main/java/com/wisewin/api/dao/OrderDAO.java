@@ -2,6 +2,7 @@
 package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.CourseOrderBO;
+import com.wisewin.api.entity.bo.CourseValidityPeriodBO;
 import com.wisewin.api.entity.bo.LanguageOrderBO;
 import com.wisewin.api.entity.bo.OrderBO;
 import org.apache.ibatis.annotations.Param;
@@ -72,4 +73,7 @@ public interface OrderDAO {
     CourseOrderBO selectCouseByOrder(@Param("lc_id")Integer lc_id);
 
     LanguageOrderBO seleteByLanguageOrder(@Param("lc_id") Integer lc_id);
+
+    CourseValidityPeriodBO selectCourseValidityPeriodBO(@Param("id")Integer id);
+
 }

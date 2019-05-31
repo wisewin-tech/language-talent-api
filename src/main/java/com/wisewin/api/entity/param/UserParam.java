@@ -40,6 +40,7 @@ public class UserParam {
     private Date createTime; //创建时间
     private Date updateTime; //修改时间
 
+
     @Override
     public String toString() {
         return "UserParam{" +

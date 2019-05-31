@@ -1,3 +1,4 @@
+
 package com.wisewin.api.service;
 
 import com.sun.org.apache.bcel.internal.generic.RETURN;
@@ -25,7 +26,7 @@ public class OrderService {
      * @return
      */
     public List<OrderBO> selectAll(Map<String,Object> map){
-       List<OrderBO>  list = orderDAO.listOrderBo(map);
+        List<OrderBO>  list = orderDAO.listOrderBo(map);
         if(list.size()== 0){
             return null;
         }
@@ -39,24 +40,13 @@ public class OrderService {
      * @return
      */
     public OrderBO selectDetails(Integer id,Integer userId){
-         OrderBO order =  orderDAO.selectDetails(id,userId);
+        OrderBO order =  orderDAO.selectDetails(id,userId);
         System.err.println(order);
-         if (order == null){
-             System.err.println("进入此方法");
-             return null;
-         }
-         String stat = order.getType();
-        System.err.println(stat);
-         if("curriculum".equals(stat)){
-             OrderBO courseOrder =    orderDAO.courseOrder(order.getId()+"");
-             return courseOrder;
-         }
-         if(StringUtils.isEmpty(stat)){
-             return order;
-         }
-
-        OrderBO languageOrder =    orderDAO.languageOrder(order.getId()+"");
-        return languageOrder;
+        if (order == null){
+            System.err.println("进入此方法");
+            return null;
+        }
+        return order;
     }
 
     public Integer getStatusByCourseId (Integer userId,Integer courseId){

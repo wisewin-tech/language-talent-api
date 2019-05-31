@@ -7,7 +7,6 @@ import com.wisewin.api.entity.bo.common.constants.SysConstants;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.UserParam;
 import com.wisewin.api.service.CertificateService;
-import com.wisewin.api.service.UpPictureService;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.*;
 import com.wisewin.api.util.date.DateUtil;
@@ -20,7 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Shibo Sun
@@ -484,14 +486,14 @@ public class UserController extends BaseCotroller {
     @RequestMapping("/selectUserCert")
     public void selectUserMedal(HttpServletResponse response, HttpServletRequest request) throws Exception {
         //从cookie中获取他的user对象的id
-        Integer id = this.getId(request);
+        UserBO user = this.getLoginUser(request);
         //如果获取不到,参数异常
-        if (id == null) {
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+        if (user == null) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
         }
         //查询用户证书
-        List<CertificateResultBO> certificateResultBOS = certificateService.selectUser(id);
+        List<CertificateResultBO> certificateResultBOS = certificateService.selectUser(user.getId());
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(certificateResultBOS));
         super.safeJsonPrint(response, json);
 

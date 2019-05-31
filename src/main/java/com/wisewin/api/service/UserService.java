@@ -98,7 +98,7 @@ public class UserService {
     public void insertUser(UserBO userBO) {
 
         userDAO.insertUser(userBO);
-}
+    }
 
     /**
      * 修改用户信息
@@ -111,6 +111,7 @@ public class UserService {
         if (!StringUtils.isEmpty(password)){
             userParam.setPassword(MD5Util.digest(password));
         }
+
         userDAO.updateUser(userParam);
 
     }

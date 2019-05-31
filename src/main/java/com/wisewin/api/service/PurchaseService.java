@@ -214,6 +214,8 @@ public class PurchaseService {
         order.setStatus("yes");
         order.setOrderType("咖豆购买");
         order.setProductName(pruchase.getTitle());
+        order.setCreationDate(DateUtil.getDateStr(new Date()));
+        order.setCreateTime(DateUtil.getDateStr(new Date()));
         //插入课程语言id
         order.setLcId(course.getId());
         //插入购买的类型（语言/课程）
@@ -263,8 +265,7 @@ public class PurchaseService {
         order.setStatus("yes");
         order.setOrderType("咖豆购买");
         order.setProductName(pruchase.getTitle());
-        order.setCreateTime(DateUtil.getDateStr(new Date()));
-        order.setUpdateTime(DateUtil.getDateStr(new Date()));
+
         //插入课程语言id
         order.setLcId(Integer.parseInt(languageId));
         //插入购买的类型（语言/课程）
@@ -312,6 +313,4 @@ public class PurchaseService {
         return today;
     }
 }
-
-
 
