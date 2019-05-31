@@ -147,7 +147,7 @@
 
     <!--订单支付成功-->
     <update id="updOrderStatus">
-        update lt_order set status=#{status} where order_number=#{orderNumber}
+        update lt_order set status=#{status},creation_date=now() where order_number=#{orderNumber}
     </update>
 
     <!--查询单条订单-->
