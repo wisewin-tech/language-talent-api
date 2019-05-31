@@ -356,7 +356,7 @@ public class UserController extends BaseCotroller {
      * @param request
      */
     @RequestMapping("/update")
-    public void updateUser(HttpServletResponse response, HttpServletRequest request, UserParam userParam) {
+    public void updateUser(HttpServletResponse response, HttpServletRequest request, UserParam userParam,String status) {
         //从cookie中获取他的user对象的id
         Integer id = this.getId(request);
         //如果获取不到,参数异常
@@ -369,6 +369,28 @@ public class UserController extends BaseCotroller {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
+
+        //如果修改绑定的微信或者qq 检查这个openid是否已经被绑定
+        String qqid=userParam.getQqOpenid();
+        if(!StringUtils.isEmpty(qqid)){
+            String mobile=userService.checkBind(qqid,"QQ");
+            if(!StringUtils.isEmpty(mobile)){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000059"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+        }
+        String wxid=userParam.getWxOpenid();
+        if(!StringUtils.isEmpty(wxid)){
+            String mobile=userService.checkBind(wxid,"WX");
+            if(!StringUtils.isEmpty(mobile)){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000059"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+        }
+
+
         //把id设置到user参数对象中
         userParam.setId(id);
         userService.updateUser(userParam);

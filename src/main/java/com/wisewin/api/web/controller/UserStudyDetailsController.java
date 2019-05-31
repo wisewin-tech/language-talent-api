@@ -51,11 +51,12 @@ public class UserStudyDetailsController extends BaseCotroller {
                 Integer studyDuration = userStudyDetailsBO.getStudyDuration();
 
                 Integer pollingFrequency = Integer.parseInt(SystemConfig.getString("pollingFrequency"));
-                studyDuration+=pollingFrequency;
+                studyDuration += pollingFrequency;
 
                 //修改学习时长
-                userStudyDetailsService.updateDuration(userId, studyDuration,studyDate);
-                UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
+                userStudyDetailsService.updateDuration(userId, studyDuration, studyDate);
+                UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId, studyDate);
+            }
                 UserBO userBO1 = userService.selectById(userId);
                 //获取近一周的所有日期
                 DateUtil dateUtil = new DateUtil();
@@ -90,7 +91,7 @@ public class UserStudyDetailsController extends BaseCotroller {
                 resultMap.put("weekStudyDuration",userStudyDetailsBOList);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
                 super.safeJsonPrint(response, json);
-            }
+
 
     }
 

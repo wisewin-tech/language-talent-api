@@ -7,6 +7,7 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.CouplebackParam;
 import com.wisewin.api.service.CouplebackService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class CouplebackController  extends BaseCotroller {
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
 
-        if (id==null || param.getContent().equals("")){
+        if (id==null || StringUtils.isEmpty(param.getContent())){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
