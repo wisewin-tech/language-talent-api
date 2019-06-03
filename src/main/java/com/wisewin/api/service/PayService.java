@@ -3,10 +3,7 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.common.constants.AliConstants;
 import com.wisewin.api.dao.*;
-import com.wisewin.api.entity.bo.CourseBO;
-import com.wisewin.api.entity.bo.OrderBO;
-import com.wisewin.api.entity.bo.OrderCoursesBO;
-import com.wisewin.api.entity.bo.RecordBO;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.web.controller.WBAlipayController;
 import org.slf4j.Logger;
@@ -38,6 +35,9 @@ public class PayService {
 
     @Resource
     CourseDAO courseDAO;
+
+    @Resource
+    CertificateDAO certificateDAO;
 
     //支付成功 充值咖豆  修改订单状态 修改咖豆数量 添加纪录
     public void rechargeKaDou(String orderNumber, Integer currency) {
@@ -90,6 +90,14 @@ public class PayService {
         List<OrderCoursesBO> orderCoursesBOList = new ArrayList<OrderCoursesBO>();
         orderCoursesBOList.add(orderCoursesBO);
         orderCoursesDAO.addCourses(orderCoursesBOList);
+
+        //添加证书
+        CertificateBO certificateBO=new CertificateBO();
+        certificateBO.setUserId(orderBO.getUserId());
+        certificateBO.setCourseId(courseId);
+        List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
+        certificateBOList.add(certificateBO);
+        certificateDAO.addCertificate(certificateBOList);
     }
 
     //支付成功 购买语言 添加多个子订单
@@ -104,7 +112,10 @@ public class PayService {
         //查询购买的课程信息 因为是购买语言，课程可能有多个
         List<CourseBO> courseBOList = courseDAO.getCoursesById(languageId);
 
-        //添加 订单 子订单表
+        //证书
+        List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
+
+        //添加 订单 子订单表  添加证书
         List<OrderCoursesBO> orderCoursesBOList = new ArrayList<OrderCoursesBO>();
         for (CourseBO courseBO : courseBOList) {
             //实例化子订单信息
@@ -119,9 +130,17 @@ public class PayService {
             c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
             orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
             orderCoursesBOList.add(orderCoursesBO);
+
+            //实例化证书
+            CertificateBO certificateBO=new CertificateBO();
+            certificateBO.setUserId(orderBO.getUserId());
+            certificateBO.setCourseId(courseBO.getId());
+            certificateBOList.add(certificateBO);
         }
 
         orderCoursesDAO.addCourses(orderCoursesBOList);
+        //添加证书
+        certificateDAO.addCertificate(certificateBOList);
     }
 
     //获取人民币对等的咖豆

@@ -55,7 +55,7 @@
             #{orderCourses.updateTime},#{orderCourses.courseValidityPeriod}
             )
         </foreach >
-            ;
+
     </insert>
 
     <!--批量插入购买的课程-->
