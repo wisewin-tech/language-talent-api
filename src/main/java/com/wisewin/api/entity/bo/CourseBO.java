@@ -2,10 +2,7 @@ package com.wisewin.api.entity.bo;
 
 
 import com.wisewin.api.common.base.BaseModel;
-import org.omg.PortableInterceptor.INACTIVE;
 
-import javax.xml.crypto.Data;
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class CourseBO extends BaseModel {

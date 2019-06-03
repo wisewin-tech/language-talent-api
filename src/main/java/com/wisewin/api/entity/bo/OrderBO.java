@@ -233,5 +233,32 @@ public class OrderBO extends BaseModel {
     public void setCourseValidityPeriodBO(CourseValidityPeriodBO courseValidityPeriodBO) {
         this.courseValidityPeriodBO = courseValidityPeriodBO;
     }
+
+    @Override
+    public String toString() {
+        return "OrderBO{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", price=" + price +
+                ", orderNumber='" + orderNumber + '\'' +
+                ", orderType='" + orderType + '\'' +
+                ", status='" + status + '\'' +
+                ", productName='" + productName + '\'' +
+                ", creationDate='" + creationDate + '\'' +
+                ", courseValidityPeriod='" + courseValidityPeriod + '\'' +
+                ", standby='" + standby + '\'' +
+                ", createId=" + createId +
+                ", updateId=" + updateId +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", lcId=" + lcId +
+                ", type='" + type + '\'' +
+                ", thumbnailImageUrl='" + thumbnailImageUrl + '\'' +
+                ", intro='" + intro + '\'' +
+                ", courseOrderBO=" + courseOrderBO +
+                ", languageOrderBO=" + languageOrderBO +
+                ", courseValidityPeriodBO=" + courseValidityPeriodBO +
+                '}';
+    }
 }
 

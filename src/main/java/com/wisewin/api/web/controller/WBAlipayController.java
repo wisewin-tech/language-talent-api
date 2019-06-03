@@ -87,7 +87,7 @@ public class WBAlipayController extends BaseCotroller {
                 return;
             }
 
-          String pay =  wBAlipayService.currencyPay(orderParam);
+           String pay =  wBAlipayService.currencyPay(orderParam);
             map.put("data",pay);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
@@ -135,7 +135,7 @@ public class WBAlipayController extends BaseCotroller {
     @RequestMapping(value = "/alipayurl")
     public String APPnotify(HttpServletRequest request, HttpServletResponse httpResponse) {
         //获取支付宝POST过来反馈信息
-        System.out.println("支付宝回调");
+      log.info("==============================支付宝回到方法==================================");
         Map<String,String> params = new HashMap<String,String>();
         Map requestParams = request.getParameterMap();
         for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -161,47 +161,49 @@ public class WBAlipayController extends BaseCotroller {
             if("TRADE_SUCCESS".equals(params.get("trade_status"))){
                 //回调订单号
                 String number =    params.get("out_trade_no");
-                log.info(number+"支付宝回调订单号");
+                log.info(number+"======支付宝回调订单号");
                 //关键字
                 String subject =    params.get("subject");
-                log.info(subject+"支付宝回调关键字");
+                log.info(subject+"=======支付宝回调关键字");
                 //金额
                 String price =    params.get("total_amount");
-                log.info(price+"支付宝回调价格");
-
+                log.info(price+"=====支付宝回调价格");
+               String pr = price.substring(0, price.length() - 3);
+                log.info(pr+"=====支付宝回调价格");
                 if (StringUtils.isEmpty(number)){
-                    log.error("未能获取到回调订单ID");
+                    log.info("=====未能获取到回调订单ID");
                     return null;
                 }
                 if (StringUtils.isEmpty(subject)){
-                    log.error("不能获取回调关键字");
+                    log.info("======不能获取回调关键字");
                     return null;
                 }
                 if (StringUtils.isEmpty(price)){
-                    log.error("未能获取到回调金额");
+                    log.info("======未能获取到回调金额");
                     return null;
                 }
-                if("咖豆充值".equals(subject)){
-                    log.error(Integer.parseInt(price)+"存入的咖豆转换为Integer");
-                    payService.rechargeKaDou(number,Integer.parseInt(price));
+                if("currency".equals(subject)){
+                    log.info("进入此方法++++++++++++++++++++++++++++");
+                    log.info(Integer.parseInt(pr)+"======存入的咖豆转换为Integer");
+                    payService.rechargeKaDou(number,Integer.parseInt(pr));
                 }
-                if("语言购买".equals(subject)){
+                if("language".equals(subject)){
                     String languageId =   params.get("passback_params");
-                    log.error(languageId+"存入的语言为");
+                    log.info(languageId+"存入的语言为");
                     if(StringUtils.isEmpty(languageId)){
                         return null;
                     }
-
+                    log.info("语言id为{}",Integer.parseInt(languageId));
                     try {
-                        payService.buyLanguage(number,Integer.parseInt(languageId));
+                        payService.buyLanguage(number,Integer.parseInt(languageId));/*Integer.parseInt(languageId)*/
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
                 }
-                if("课程购买".equals(subject)){
+                if("curriculum".equals(subject)){
                     String courseId =   params.get("passback_params");
-                    log.error(courseId+"存入的课程为");
+                    log.info(courseId+"存入的课程为");
                     if(StringUtils.isEmpty(courseId)){
                         return null;
                     }

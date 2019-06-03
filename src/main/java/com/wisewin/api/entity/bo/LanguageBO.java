@@ -3,7 +3,6 @@ package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.common.base.BaseModel;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class LanguageBO extends BaseModel {
@@ -34,14 +33,6 @@ public class LanguageBO extends BaseModel {
     private String certificateImage;//证书图片
     private Integer languageId;//语言id
     private String  certificateTitle;//证书标题
-
-    public String getCertificateTitle() {
-        return certificateTitle;
-    }
-
-    public void setCertificateTitle(String certificateTitle) {
-        this.certificateTitle = certificateTitle;
-    }
 
     public Integer getId() {
         return id;
@@ -219,8 +210,6 @@ public class LanguageBO extends BaseModel {
         this.levelName = levelName;
     }
 
-
-
     public Integer getCourseId() {
         return courseId;
     }
@@ -251,5 +240,13 @@ public class LanguageBO extends BaseModel {
 
     public void setLanguageId(Integer languageId) {
         this.languageId = languageId;
+    }
+
+    public String getCertificateTitle() {
+        return certificateTitle;
+    }
+
+    public void setCertificateTitle(String certificateTitle) {
+        this.certificateTitle = certificateTitle;
     }
 }

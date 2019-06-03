@@ -8,6 +8,9 @@ import com.wisewin.api.entity.bo.OrderBO;
 import com.wisewin.api.entity.bo.OrderCoursesBO;
 import com.wisewin.api.entity.bo.RecordBO;
 import com.wisewin.api.entity.param.OrderParam;
+import com.wisewin.api.web.controller.WBAlipayController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +21,9 @@ import java.util.*;
 
 @Service
 public class PayService {
+
+    static final Logger log = LoggerFactory.getLogger(PayService.class);
+
     @Resource
     OrderDAO orderDAO;
 
@@ -91,7 +97,7 @@ public class PayService {
 
         //获取到订单信息
         OrderBO orderBO = orderDAO.getOrderByOrderNumber(orderNumber);
-
+            log.info("订单信息为{}",orderBO);
         //订单表状态修改为yes
         orderDAO.updOrderStatus(orderNumber, AliConstants.Theorder.getValue());
 

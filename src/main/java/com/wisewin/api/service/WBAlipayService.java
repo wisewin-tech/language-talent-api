@@ -67,9 +67,11 @@ public class WBAlipayService {
             //DecimalFormat类型金额保留两位精度并转String
             DecimalFormat df = new DecimalFormat("0.00");
             df.setRoundingMode(RoundingMode.HALF_UP);
-            String price = df.format(orderParam.getPrice())+"";
-            model.setSubject("咖豆充值");
+            String price = df.format(orderParam.getPrice());
+            model.setSubject("currency");
             model.setOutTradeNo(number);
+            log.info(price+"金额");
+            System.err.println(price+"金额");
             model.setTotalAmount(price);
             model.setProductCode("QUICK_MSECURITY_PAY");
             ali_request.setBizModel(model);
@@ -114,7 +116,7 @@ public class WBAlipayService {
 
             //要购买的语言
             LanguageBO languageBO = languageDAO.selectLanguageG(orderParam.getLanguageId() + "");
-            Integer price = null;
+            Integer price;
             //判断时间
             boolean fag = belongCalendar(new Date(),languageBO.getDiscountStartTime(),languageBO.getDiscountEndTime());
             if (fag) {
@@ -125,9 +127,11 @@ public class WBAlipayService {
                  price = languageBO.getLanguagePrice();
 
             }
-            model.setSubject("语言购买");
+            model.setSubject("language");
             model.setOutTradeNo(number);
+            System.err.println(price+".00");
             model.setTotalAmount(price+".00");
+            //model.setTotalAmount("0.01");
             model.setProductCode("QUICK_MSECURITY_PAY");
             String languageId = orderParam.getLanguageId()+"";
             try {
@@ -144,6 +148,7 @@ public class WBAlipayService {
             orderParam.setPrice(new BigDecimal(price));
             if (ali_response.isSuccess()) {
                 //插入充值预支付订单
+                System.err.println(orderParam);
                 payService.prepaid(orderParam);
                 // 获取到getBody直接给app,用这个东西去调起支付宝
                 System.out.println(ali_response.getBody());
@@ -183,7 +188,7 @@ public class WBAlipayService {
             //df.setRoundingMode(RoundingMode.HALF_UP);
             //String price = df.format(orderParam.getPrice())+"";
             //金额
-            Integer price = null;
+            Integer price;
             //判断时间
             boolean fag = belongCalendar(new Date(),courseBO.getDiscountStartTime(),courseBO.getDiscountEndTime());
             if(fag){
@@ -194,9 +199,11 @@ public class WBAlipayService {
                 price = courseBO.getPrice();
 
             }
-            model.setSubject("课程购买");
+            model.setSubject("curriculum");
             model.setOutTradeNo(number);
+            System.err.println(price+".00");
             model.setTotalAmount(price+".00");
+            //model.setTotalAmount("0.01");
             model.setProductCode("QUICK_MSECURITY_PAY");
             String courseId = orderParam.getCourseId()+"";
             try {

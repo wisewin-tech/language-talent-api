@@ -75,4 +75,18 @@ public class OrderParam {
     public void setCourseId(Integer courseId) {
         this.courseId = courseId;
     }
+
+    @Override
+    public String toString() {
+        return "OrderParam{" +
+                "userId=" + userId +
+                ", productName='" + productName + '\'' +
+                ", productType='" + productType + '\'' +
+                ", price=" + price +
+                ", languageId=" + languageId +
+                ", courseId=" + courseId +
+                ", orderNumber='" + orderNumber + '\'' +
+                ", payment='" + payment + '\'' +
+                '}';
+    }
 }

@@ -2,6 +2,7 @@ package com.wisewin.api.service;
 
 import com.wisewin.api.dao.CertificateDAO;
 import com.wisewin.api.entity.bo.CertificateResultBO;
+import com.wisewin.api.entity.bo.UserBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +26,8 @@ public class CertificateService {
      * @param userId
      * @return
      */
-    public List<CertificateResultBO> selectUser(Integer userId){
-
+    public UserBO selectUser(Integer userId){
+        System.out.println(certificateDAO.selectUser(userId));
         return certificateDAO.selectUser(userId);
     }
 

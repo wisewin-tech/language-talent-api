@@ -443,15 +443,15 @@ public class UserController extends BaseCotroller {
     @RequestMapping("/selectUser")
     public void selectUser(HttpServletResponse response, HttpServletRequest request) throws Exception {
         //从cookie中获取他的user对象的id
-        Integer id = this.getId(request);
+        UserBO user = this.getLoginUser(request);
         //如果获取不到,参数异常
-        if (id == null) {
+        if ( user == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
         //通过id找出用户对象
         //id,nickname,birthday,sex,mobile,currency,career,head_portrait_url
-        UserBO userBO = userService.selectById(id);
+        UserBO userBO = userService.selectById(user.getId());
         Map<String, Object> mapUser = new HashMap<String, Object>();
         //通过生日得到用户年龄
         Integer age = AgeUtil.getAge(DateUtil.getDate(userBO.getBirthday()));
@@ -493,7 +493,8 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
         }
         //查询用户证书
-        List<CertificateResultBO> certificateResultBOS = certificateService.selectUser(user.getId());
+       UserBO certificateResultBOS = certificateService.selectUser(user.getId());
+        System.out.println(certificateResultBOS);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(certificateResultBOS));
         super.safeJsonPrint(response, json);
 
