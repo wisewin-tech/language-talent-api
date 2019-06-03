@@ -21,12 +21,12 @@
     WHERE ltc.user_id=#{userId}
     </select>
 
-    <insert id="addCertificate" parameterType="com.wisewin.api.entity.bo.CertificateBO">
+    <insert id="addCertificate" parameterType="java.util.List">
         insert into
         lt_certificate
         (user_id,course_id,send,status,create_time)
         values
-        <foreach collection ="certificateBOs" item="cer" separator =",">
+        <foreach collection ="list" item="cer" separator =",">
             (#{cer.userId},#{cer.courseId},'no','no',now())
         </foreach >
     </insert>

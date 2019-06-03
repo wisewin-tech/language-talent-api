@@ -21,6 +21,6 @@ public interface CertificateDAO {
     /**
      * 添加证书
      */
-    Integer addCertificate(List<CertificateBO> certificateBOs);
+    Integer addCertificate(List<CertificateBO> list);
 
 }
