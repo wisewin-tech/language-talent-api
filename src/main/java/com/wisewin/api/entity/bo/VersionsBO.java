@@ -9,86 +9,93 @@ import java.util.Date;
  */
 public class VersionsBO extends BaseModel {
     private Integer id; //版本id
-    private Integer versionsnum; //发版次数
-    private String model; //版本号
-    private String content; //内容
-    private Integer adminId; //后台管理员id
-    private Date vsReleasetime; //创建时间
-    private Integer vsUpdateadminId; //后台管理员修改id
-    private Date vsUpdatetime; //修改时间
-    private String compatibility; //兼容版本
-
-
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setVersionsnum(Integer versionsnum) {
-        this.versionsnum = versionsnum;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setAdminId(Integer adminId) {
-        this.adminId = adminId;
-    }
-
-    public void setVsReleasetime(Date vsReleasetime) {
-        this.vsReleasetime = vsReleasetime;
-    }
-
-    public void setVsUpdateadminId(Integer vsUpdateadminId) {
-        this.vsUpdateadminId = vsUpdateadminId;
-    }
-
-    public void setVsUpdatetime(Date vsUpdatetime) {
-        this.vsUpdatetime = vsUpdatetime;
-    }
-
-    public void setCompatibility(String compatibility) {
-        this.compatibility = compatibility;
-    }
+    private String title; //更新标题
+    private String downurl; //下载地址
+    private String platform; //平台
+    private String subcontent; //更新内容
+    private Integer type; //1.不需要升级2.不强制升级.3强制升级
+    private Integer versioncode; //版本号（数字形式，越大版本越新）
+    private String versionname; //版本号
+    private Integer adminId; //管理员id
+    private Date createTime;//创建时间
 
     public Integer getId() {
         return id;
     }
 
-    public Integer getVersionsnum() {
-        return versionsnum;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getModel() {
-        return model;
+    public String getTitle() {
+        return title;
     }
 
-    public String getContent() {
-        return content;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDownurl() {
+        return downurl;
+    }
+
+    public void setDownurl(String downurl) {
+        this.downurl = downurl;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public String getSubcontent() {
+        return subcontent;
+    }
+
+    public void setSubcontent(String subcontent) {
+        this.subcontent = subcontent;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getVersioncode() {
+        return versioncode;
+    }
+
+    public void setVersioncode(Integer versioncode) {
+        this.versioncode = versioncode;
+    }
+
+    public String getVersionname() {
+        return versionname;
+    }
+
+    public void setVersionname(String versionname) {
+        this.versionname = versionname;
     }
 
     public Integer getAdminId() {
         return adminId;
     }
 
-    public Date getVsReleasetime() {
-        return vsReleasetime;
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
     }
 
-    public Integer getVsUpdateadminId() {
-        return vsUpdateadminId;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public Date getVsUpdatetime() {
-        return vsUpdatetime;
-    }
-
-    public String getCompatibility() {
-        return compatibility;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
