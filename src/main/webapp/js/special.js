@@ -1,8 +1,16 @@
 $(function () {
-    var id = getUrl('id');
-    if(id){
-        getDataInfo(id);
-    }
+    $.ajax({
+        url: '/sequence/getStsOss',
+        type: 'POST',
+        dataType: 'json',
+        success: function (res) {
+            console.log(res);
+        }
+    })
+    // var id = getUrl('id');
+    // if(id){
+    //     getDataInfo(id);
+    // }
 })
 
 function getDataInfo(id) {
