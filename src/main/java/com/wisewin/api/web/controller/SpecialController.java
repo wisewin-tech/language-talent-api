@@ -54,11 +54,7 @@ public class SpecialController extends BaseCotroller {
             return;
         }
         Integer userId=this.getId(request);
-        if (userId==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
+
         SpecialBO specialBO = specialService.selectSpecialBOById(userId,specialId);//点进去查看的专题
         if(specialBO==null||specialBO.getVideoCover()==null){
             String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000026"));
