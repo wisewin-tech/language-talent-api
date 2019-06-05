@@ -131,7 +131,7 @@ public class UserService {
         //累计学习天数
         Integer cumulativeLearning=userBO.getCumulativeLearning();
         //上次学习日期
-        String lastDate= DateUtil.getStr(userBO.getStudy_date());
+        String lastDate= DateUtil.getStr(userBO.getStudyDate());
         if (yesterday.equals(lastDate)){
             //如果上次学习时间是昨天,连续学习天数+1
             userBO.setContinuousLearning(continuousLearning+1);
