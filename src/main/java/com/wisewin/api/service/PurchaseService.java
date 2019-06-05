@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,12 +41,15 @@ public class PurchaseService {
     @Resource
     private RecordDAO recordDAO;
 
+    @Resource
+    private CertificateDAO certificateDAO;
 
 
     /**
      * 获取当前用户信息
      */
     public UserBO selectUser(Integer id) {
+        System.err.println("当前用户是"+userDAO.selectUser(id));
         return userDAO.selectUser(id);
     }
 
@@ -63,6 +67,8 @@ public class PurchaseService {
     public LanguageBO queryLanguare(String id) {
         return languageDAO.selectLanguageG(id);
     }
+
+
 
 
     /**
@@ -244,10 +250,18 @@ public class PurchaseService {
         record.setSpecificAmount(-pruchase.getCoursePrice());
         record.setDescribe("用户购买课程");
         recordDAO.insertUserAction(record);
+
+        //添加证书
+        CertificateBO certificateBO=new CertificateBO();
+        certificateBO.setUserId(order.getUserId());
+        certificateBO.setCourseId(course.getId());
+        List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
+        certificateBOList.add(certificateBO);
+        certificateDAO.addCertificate(certificateBOList);
     }
 
     /**
-     * 下订单（语言）
+     * 插入订单（语言）
      *
      * @param
      * @return
@@ -273,7 +287,12 @@ public class PurchaseService {
         //获取返回的主订单id
         orderDAO.insertOrder(order);
 
+
+
+
         if (list != null) {
+            //证书
+            List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
             List<OrderCoursesBO> lists = new ArrayList<OrderCoursesBO>();
             for (int i = 0; i < list.size(); i++) {
                 CourseBO course = list.get(i);
@@ -288,8 +307,16 @@ public class PurchaseService {
                 Date date1 = overDate(course.getCourseValidityPeriod());
                 orderCourses.setCourseValidityPeriod(date1);
                 lists.add(orderCourses);
+
+                //实例化证书
+                CertificateBO certificateBO=new CertificateBO();
+                certificateBO.setUserId(order.getUserId());
+                certificateBO.setCourseId(course.getId());
+                certificateBOList.add(certificateBO);
             }
             orderCoursesDAO.insetListOrderCourse(lists);
+            //添加证书
+            certificateDAO.addCertificate(certificateBOList);
         }
 
         //扣减咖豆
@@ -303,6 +330,9 @@ public class PurchaseService {
         record.setSpecificAmount(-pruchase.getCoursePrice());
         record.setDescribe("用户购买语言");
         recordDAO.insertUserAction(record);
+
+
+
     }
 
     //获取到期时间

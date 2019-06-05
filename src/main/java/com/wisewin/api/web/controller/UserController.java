@@ -1,6 +1,7 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.common.constants.UserConstants;
+import com.wisewin.api.entity.bo.CateBO;
 import com.wisewin.api.entity.bo.CertificateResultBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.bo.common.constants.SysConstants;
@@ -493,11 +494,10 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
         }
         //查询用户证书
-       UserBO certificateResultBOS = certificateService.selectUser(user.getId());
+       List<CateBO> certificateResultBOS = certificateService.queryCateList(user.getId()+"");
         System.out.println(certificateResultBOS);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(certificateResultBOS));
         super.safeJsonPrint(response, json);
-
     }
 
 }

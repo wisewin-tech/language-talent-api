@@ -1,8 +1,10 @@
 package com.wisewin.api.dao;
 
+import com.wisewin.api.entity.bo.CateBO;
 import com.wisewin.api.entity.bo.CertificateBO;
 import com.wisewin.api.entity.bo.CertificateResultBO;
 import com.wisewin.api.entity.bo.UserBO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,5 +24,8 @@ public interface CertificateDAO {
      * 添加证书
      */
     Integer addCertificate(List<CertificateBO> list);
+
+    //查询用户证书
+    List<CateBO> queryCateList(@Param("userId")String userId);
 
 }

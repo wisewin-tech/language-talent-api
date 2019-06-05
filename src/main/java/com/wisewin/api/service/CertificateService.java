@@ -1,6 +1,7 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.dao.CertificateDAO;
+import com.wisewin.api.entity.bo.CateBO;
 import com.wisewin.api.entity.bo.CertificateResultBO;
 import com.wisewin.api.entity.bo.UserBO;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,9 @@ public class CertificateService {
      * @param userId
      * @return
      */
-    public UserBO selectUser(Integer userId){
-        System.out.println(certificateDAO.selectUser(userId));
-        return certificateDAO.selectUser(userId);
+    public List<CateBO> queryCateList(String userId){
+        System.out.println(certificateDAO.queryCateList(userId));
+        return certificateDAO.queryCateList(userId);
     }
 
 

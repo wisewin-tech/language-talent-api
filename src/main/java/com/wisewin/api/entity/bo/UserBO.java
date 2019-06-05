@@ -38,7 +38,7 @@ public class UserBO  extends BaseModel{
     private Date lastSign; //上次签到时间
     private Integer continuousLearning; //连续学习天数
     private Integer cumulativeLearning; //累计学习天数
-    private String study_date; //上次学习日期
+    private String studyDate; //上次学习日期
     private Integer createId; //创建人id
     private Integer updateId; //修改人id
     private Date createTime; //创建时间
@@ -54,102 +54,6 @@ public class UserBO  extends BaseModel{
         this.mobile = mobile;
         this.sex = sex;
         this.birthday = birthday;
-    }
-
-    @Override
-    public String toString() {
-        return "UserBO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", ageGroup='" + ageGroup + '\'' +
-                ", headPortraitUrl='" + headPortraitUrl + '\'' +
-                ", learningGoal='" + learningGoal + '\'' +
-                ", sex='" + sex + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", age=" + age +
-                ", source='" + source + '\'' +
-                ", integral=" + integral +
-                ", currency=" + currency +
-                ", studyingLanguageId=" + studyingLanguageId +
-                ", isLogin='" + isLogin + '\'' +
-                ", occupation='" + occupation + '\'' +
-                ", interest='" + interest + '\'' +
-                ", status='" + status + '\'' +
-                ", inviteCode='" + inviteCode + '\'' +
-                ", byInvite='" + byInvite + '\'' +
-                ", qqOpenid='" + qqOpenid + '\'' +
-                ", wxOpenid='" + wxOpenid + '\'' +
-                ", continuousSign=" + continuousSign +
-                ", cumulativeSign=" + cumulativeSign +
-                ", lastSign=" + lastSign +
-                ", continuousLearning=" + continuousLearning +
-                ", cumulativeLearning=" + cumulativeLearning +
-                ", study_date='" + study_date + '\'' +
-                ", createId=" + createId +
-                ", updateId=" + updateId +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
-    }
-
-    public Integer getStudyingLanguageId() {
-        return studyingLanguageId;
-    }
-
-    public void setStudyingLanguageId(Integer studyingLanguageId) {
-        this.studyingLanguageId = studyingLanguageId;
-    }
-
-    public String getStudy_date() {
-        return study_date;
-    }
-
-    public void setStudy_date(String study_date) {
-        this.study_date = study_date;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getIsLogin() {
-        return isLogin;
-    }
-
-    public void setIsLogin(String isLogin) {
-        this.isLogin = isLogin;
-    }
-
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
-    public String getInterest() {
-        return interest;
-    }
-
-    public void setInterest(String interest) {
-        this.interest = interest;
-    }
-
-    public String getLearningGoal() {
-        return learningGoal;
-    }
-
-    public void setLearningGoal(String learningGoal) {
-        this.learningGoal = learningGoal;
     }
 
     public Integer getId() {
@@ -216,6 +120,14 @@ public class UserBO  extends BaseModel{
         this.headPortraitUrl = headPortraitUrl;
     }
 
+    public String getLearningGoal() {
+        return learningGoal;
+    }
+
+    public void setLearningGoal(String learningGoal) {
+        this.learningGoal = learningGoal;
+    }
+
     public String getSex() {
         return sex;
     }
@@ -225,12 +137,19 @@ public class UserBO  extends BaseModel{
     }
 
     public String getBirthday() {
-
-        return DateUtil.getStr(birthday);
+        return birthday;
     }
 
     public void setBirthday(String birthday) {
-        this.birthday = DateUtil.getStr(birthday);
+        this.birthday = birthday;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getSource() {
@@ -257,6 +176,46 @@ public class UserBO  extends BaseModel{
         this.currency = currency;
     }
 
+    public Integer getStudyingLanguageId() {
+        return studyingLanguageId;
+    }
+
+    public void setStudyingLanguageId(Integer studyingLanguageId) {
+        this.studyingLanguageId = studyingLanguageId;
+    }
+
+    public String getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(String isLogin) {
+        this.isLogin = isLogin;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getInviteCode() {
         return inviteCode;
     }
@@ -272,7 +231,6 @@ public class UserBO  extends BaseModel{
     public void setByInvite(String byInvite) {
         this.byInvite = byInvite;
     }
-
 
     public String getQqOpenid() {
         return qqOpenid;
@@ -330,6 +288,14 @@ public class UserBO  extends BaseModel{
         this.cumulativeLearning = cumulativeLearning;
     }
 
+    public String getStudyDate() {
+        return studyDate;
+    }
+
+    public void setStudyDate(String studyDate) {
+        this.studyDate = studyDate;
+    }
+
     public Integer getCreateId() {
         return createId;
     }
@@ -362,11 +328,43 @@ public class UserBO  extends BaseModel{
         this.updateTime = updateTime;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
+    @Override
+    public String toString() {
+        return "UserBO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", ageGroup='" + ageGroup + '\'' +
+                ", headPortraitUrl='" + headPortraitUrl + '\'' +
+                ", learningGoal='" + learningGoal + '\'' +
+                ", sex='" + sex + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", age=" + age +
+                ", source='" + source + '\'' +
+                ", integral=" + integral +
+                ", currency=" + currency +
+                ", studyingLanguageId=" + studyingLanguageId +
+                ", isLogin='" + isLogin + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", interest='" + interest + '\'' +
+                ", status='" + status + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", byInvite='" + byInvite + '\'' +
+                ", qqOpenid='" + qqOpenid + '\'' +
+                ", wxOpenid='" + wxOpenid + '\'' +
+                ", continuousSign=" + continuousSign +
+                ", cumulativeSign=" + cumulativeSign +
+                ", lastSign=" + lastSign +
+                ", continuousLearning=" + continuousLearning +
+                ", cumulativeLearning=" + cumulativeLearning +
+                ", studyDate='" + studyDate + '\'' +
+                ", createId=" + createId +
+                ", updateId=" + updateId +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }
