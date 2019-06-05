@@ -82,4 +82,12 @@ public interface UserDAO {
 
     //修改绑定手机号
     Integer updatePhone(@Param("userId") Integer userId,@Param("phone") String phone);
+
+    /**
+     * 修改用户学习天数
+     * @param continuousLearning 连续学习天数
+     * @param cumulativeLearning 累计学习天数
+     * @param userId
+     */
+    void updateUserStudyDays(@Param("continuousLearning") Integer continuousLearning,@Param("cumulativeLearning") Integer cumulativeLearning,@Param("userId") Integer userId);
 }

@@ -76,13 +76,37 @@ public class UserStudyDetailsController extends BaseCotroller {
                     }
 
                 }
-
-
-
                 //连续学习天数
                 Integer continuousLearning = userBO1.getContinuousLearning();
                 //累计学习天数
                 Integer cumulativeLearning = userBO1.getCumulativeLearning();
+                //获取昨天的日期
+                String yesterday = DateUtil.getYseterday();
+                UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId, yesterday);
+                //获取今天的日期
+                String today = DateUtil.getDateStr(new Date());
+                UserStudyDetailsBO studyDetailsBO2 = userStudyDetailsService.getStudyDetails(userId, today);
+                if (studyDetailsBO==null&studyDetailsBO2==null) {
+                    continuousLearning = 0;
+                    userService.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
+                }
+                if (studyDetailsBO==null&studyDetailsBO2!=null) {
+                    continuousLearning =continuousLearning+ 1;
+                    cumulativeLearning = cumulativeLearning + 1;
+                    userService.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
+                }
+                if (studyDetailsBO!=null&studyDetailsBO2!=null) {
+                    continuousLearning =continuousLearning+ 1;
+                    cumulativeLearning = cumulativeLearning + 1;
+                    userService.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
+                }
+
+
+                if (studyDetailsBO!=null&studyDetailsBO2==null) {
+                        continuousLearning =continuousLearning+ 1;
+                        userService.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
+
+                }
                 Map resultMap = new HashMap();
                 //将结果放入map中
                 //resultMap.put("studyDetailsBO",studyDetailsBO);

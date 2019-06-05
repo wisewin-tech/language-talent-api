@@ -159,6 +159,17 @@
         WHERE
           id=#{userId}
     </update>
+    <!--修改用户学习天数-->
+    <update id="updateUserStudyDays">
+        UPDATE
+           lt_user
+        <set>
+            continuous_learning=#{continuousLearning},
+            cumulative_learning=#{cumulativeLearning}
+        </set>
+        WHERE
+          id=#{userId}
+    </update>
 
 
 </mapper>

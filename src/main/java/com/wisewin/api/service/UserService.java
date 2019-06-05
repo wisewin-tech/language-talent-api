@@ -168,4 +168,14 @@ public class UserService {
         return userDAO.updatePhone(userId,phone)>0;
     }
 
+    /**
+     * 修改用户学习天数
+     * @param continuousLearning 连续学习天数
+     * @param cumulativeLearning 累计学习天数
+     * @param userId
+     */
+    public void updateUserStudyDays(Integer continuousLearning, Integer cumulativeLearning, Integer userId){
+        userDAO.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
+    }
+
 }

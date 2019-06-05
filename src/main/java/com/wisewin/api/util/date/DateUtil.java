@@ -5,10 +5,7 @@ import com.wisewin.api.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 转换时间公用类
@@ -160,11 +157,26 @@ public class DateUtil {
         return  DateUtil.getDate(result);
     }
 
+    /**
+     * 获取昨天的日期
+     * @return
+     */
+    public static String getYseterday(){
+        Date date=new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,-1);//把日期往前减少一天，若想把日期向后推一天则将负数改为正数
+        date=calendar.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(date);
+        return  dateString;
+    }
+
 
     public static void main(String[] args) {
         DateUtil dateUtil =new DateUtil();
-        List list = dateUtil.getDays(7);
-        System.out.println(list);
+        String str = dateUtil.getYseterday();
+        System.out.println(str);
 
     }
 
