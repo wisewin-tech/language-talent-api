@@ -182,4 +182,9 @@
     <select id="languageOrder" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.OrderBO">
         SELECT o.*,a.thumbnail_image_url,a.language_intro as intro FROM lt_order o,lt_language a WHERE o.lc_id = a.id AND o.id = #{id}
     </select>
+
+    <!--查询vid是否存在-->
+    <select id="isVidWahch" parameterType="java.lang.String"  resultType="int">
+        SELECT COUNT(id)  FROM lt_chapter WHERE video_path=#{vid}
+    </select>
 </mapper>

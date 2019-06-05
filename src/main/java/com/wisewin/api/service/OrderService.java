@@ -66,4 +66,11 @@ public class OrderService {
         return  orderDAO.queryOrderCount(userId,course)>0;
     }
 
+    /**
+     * 查询vid是否存在
+     */
+    public boolean isVidWahch(String vid){
+        return  orderDAO.isVidWahch(vid)>0;
+    }
+
 }

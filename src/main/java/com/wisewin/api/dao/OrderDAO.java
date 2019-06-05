@@ -76,4 +76,10 @@ public interface OrderDAO {
 
     CourseValidityPeriodBO selectCourseValidityPeriodBO(@Param("id")Integer id);
 
+    /**
+     * 查询视频是否存在
+     * @param vid
+     * @return
+     */
+    int isVidWahch(String vid);
 }
