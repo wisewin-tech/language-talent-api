@@ -4,7 +4,7 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.ChapterService;
 import com.wisewin.api.service.OrderService;
-import com.wisewin.api.util.ASEUtil;
+import com.wisewin.api.test.AESOperator;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StsUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -50,8 +50,7 @@ public class SequenceController extends BaseCotroller {
 
         Integer id=null;
         try {
-            byte[] decrypt = ASEUtil.decrypt(ASEUtil.parseHexStr2Byte(chapterId));
-            id=Integer.parseInt(new String(decrypt));
+            id=Integer.parseInt(AESOperator.decrypt(chapterId));
         }catch (Exception e){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -99,9 +98,9 @@ public class SequenceController extends BaseCotroller {
             return;
         }
         try {
-            byte[] decrypt = ASEUtil.decrypt(ASEUtil.parseHexStr2Byte(vid));
+            String decrypt = AESOperator.decrypt(vid);
             if(decrypt!=null){
-                boolean itWatch = orderService.isVidWahch(new String(decrypt));
+                boolean itWatch = orderService.isVidWahch(decrypt);
                 if(itWatch){
                     Map<String, String> userTest = StsUtil.getStsMessage(loginUser.getId()+"Download");
                     Map<String,String>  map=new HashMap<String, String>();
