@@ -42,6 +42,12 @@ public class UserStudyDetailsController extends BaseCotroller {
         }
             //获取当前登录用户id
             Integer userId = userBO.getId();
+        //获取昨天的日期
+        String yesterday = DateUtil.getYseterday();
+        UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId, yesterday);
+        //获取今天的日期
+        String today = DateUtil.getDateStr(new Date());
+        UserStudyDetailsBO studyDetailsBO2 = userStudyDetailsService.getStudyDetails(userId, today);
             String studyDate= DateUtil.getDateStr(new Date());
             UserStudyDetailsBO userStudyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
             if (userStudyDetailsBO==null){
@@ -55,7 +61,7 @@ public class UserStudyDetailsController extends BaseCotroller {
 
                 //修改学习时长
                 userStudyDetailsService.updateDuration(userId, studyDuration, studyDate);
-                UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId, studyDate);
+                UserStudyDetailsBO studyDetailsBO1 = userStudyDetailsService.getStudyDetails(userId, studyDate);
             }
                 UserBO userBO1 = userService.selectById(userId);
                 //获取近一周的所有日期
@@ -80,32 +86,17 @@ public class UserStudyDetailsController extends BaseCotroller {
                 Integer continuousLearning = userBO1.getContinuousLearning();
                 //累计学习天数
                 Integer cumulativeLearning = userBO1.getCumulativeLearning();
-                //获取昨天的日期
-                String yesterday = DateUtil.getYseterday();
-                UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId, yesterday);
-                //获取今天的日期
-                String today = DateUtil.getDateStr(new Date());
-                UserStudyDetailsBO studyDetailsBO2 = userStudyDetailsService.getStudyDetails(userId, today);
-                if (studyDetailsBO==null&studyDetailsBO2==null) {
-                    continuousLearning = 0;
-                    userService.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
-                }
-                if (studyDetailsBO==null&studyDetailsBO2!=null) {
+
+
+                if (studyDetailsBO2==null){
                     continuousLearning =continuousLearning+ 1;
                     cumulativeLearning = cumulativeLearning + 1;
-                    userService.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
-                }
-                if (studyDetailsBO!=null&studyDetailsBO2!=null) {
-                    continuousLearning =continuousLearning+ 1;
-                    cumulativeLearning = cumulativeLearning + 1;
-                    userService.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
-                }
-
-
-                if (studyDetailsBO!=null&studyDetailsBO2==null) {
-                        continuousLearning =continuousLearning+ 1;
-                        userService.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
-
+                    userService.updateUserStudyDays(continuousLearning,cumulativeLearning,userId);
+                }else {
+                    if (studyDetailsBO==null){
+                        continuousLearning = 0;
+                        userService.updateUserStudyDays(continuousLearning,cumulativeLearning,userId);
+                    }
                 }
                 Map resultMap = new HashMap();
                 //将结果放入map中
