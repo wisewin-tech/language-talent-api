@@ -5,7 +5,6 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.UserScoreService;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
-import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
