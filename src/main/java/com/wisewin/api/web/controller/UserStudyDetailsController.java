@@ -44,10 +44,10 @@ public class UserStudyDetailsController extends BaseCotroller {
             Integer userId = userBO.getId();
         //获取昨天的日期
         String yesterday = DateUtil.getYseterday();
-        UserStudyDetailsBO studyDetailsBO = userStudyDetailsService.getStudyDetails(userId, yesterday);
+        UserStudyDetailsBO yesterdayStudyDetails = userStudyDetailsService.getStudyDetails(userId, yesterday);
         //获取今天的日期
         String today = DateUtil.getDateStr(new Date());
-        UserStudyDetailsBO studyDetailsBO2 = userStudyDetailsService.getStudyDetails(userId, today);
+        UserStudyDetailsBO todayStudyDetails = userStudyDetailsService.getStudyDetails(userId, today);
             String studyDate= DateUtil.getDateStr(new Date());
             UserStudyDetailsBO userStudyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
             if (userStudyDetailsBO==null){
@@ -88,13 +88,14 @@ public class UserStudyDetailsController extends BaseCotroller {
                 Integer cumulativeLearning = userBO1.getCumulativeLearning();
 
 
-                if (studyDetailsBO2==null){
+                if (todayStudyDetails==null){
                     continuousLearning =continuousLearning+ 1;
                     cumulativeLearning = cumulativeLearning + 1;
                     userService.updateUserStudyDays(continuousLearning,cumulativeLearning,userId);
                 }else {
-                    if (studyDetailsBO==null){
-                        continuousLearning = 0;
+                    if (yesterdayStudyDetails==null){
+                        continuousLearning = 1;
+                        cumulativeLearning = cumulativeLearning + 1;
                         userService.updateUserStudyDays(continuousLearning,cumulativeLearning,userId);
                     }
                 }
