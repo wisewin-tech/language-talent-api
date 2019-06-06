@@ -6,6 +6,7 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.pop.SystemConfig;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.service.UserStudyDetailsService;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -17,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
+/**
+ *  log
+ * */
 @Controller
 @RequestMapping("/studyDetails")
 public class UserStudyDetailsController extends BaseCotroller {
@@ -24,8 +28,8 @@ public class UserStudyDetailsController extends BaseCotroller {
     private UserStudyDetailsService userStudyDetailsService;
     @Resource
     private UserService userService;
-
-
+    @Resource
+    private LogService logService;
     /**
      * 用户学习详情
      * @param request
@@ -35,6 +39,7 @@ public class UserStudyDetailsController extends BaseCotroller {
     public void getUserStudyDetails(HttpServletRequest request, HttpServletResponse response){
         //获取当前登录用户对象
         UserBO userBO = super.getLoginUser(request);
+        logService.startController(userBO,request);
         if (userBO==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
@@ -44,13 +49,20 @@ public class UserStudyDetailsController extends BaseCotroller {
             Integer userId = userBO.getId();
         //获取昨天的日期
         String yesterday = DateUtil.getYseterday();
+        logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),yesterday);
         UserStudyDetailsBO yesterdayStudyDetails = userStudyDetailsService.getStudyDetails(userId, yesterday);
+        logService.end("UserStudyDetailsService.getStudyDetails",yesterdayStudyDetails.toString());
         //获取今天的日期
         String today = DateUtil.getDateStr(new Date());
+        logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),yesterday);
         UserStudyDetailsBO todayStudyDetails = userStudyDetailsService.getStudyDetails(userId, today);
-            String studyDate= DateUtil.getDateStr(new Date());
-            UserStudyDetailsBO userStudyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
+        logService.end("UserStudyDetailsService.getStudyDetails",yesterdayStudyDetails.toString());
+        String studyDate= DateUtil.getDateStr(new Date());
+        logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),yesterday);
+        UserStudyDetailsBO userStudyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
+        logService.end("UserStudyDetailsService.getStudyDetails",yesterdayStudyDetails.toString());
             if (userStudyDetailsBO==null){
+                logService.call("UserStudyDetailsService.insertDuration",userId.toString(),new Date().toString());
                 userStudyDetailsService.insertDuration(userId,new Date());
             }else {
                 //获取学习时长
@@ -60,17 +72,25 @@ public class UserStudyDetailsController extends BaseCotroller {
                 studyDuration += pollingFrequency;
 
                 //修改学习时长
+                logService.call("UserStudyDetailsService.updateDuration",userId.toString(),studyDuration.toString(),studyDate.toString());
                 userStudyDetailsService.updateDuration(userId, studyDuration, studyDate);
+
+                logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),studyDate.toString());
                 UserStudyDetailsBO studyDetailsBO1 = userStudyDetailsService.getStudyDetails(userId, studyDate);
+                logService.end("UserStudyDetailsService.getStudyDetails",studyDetailsBO1.toString());
             }
+                logService.call("userService.selectById",userId.toString());
                 UserBO userBO1 = userService.selectById(userId);
+                logService.end("userService.selectById",userBO1.toString());
                 //获取近一周的所有日期
                 DateUtil dateUtil = new DateUtil();
                 List<Date> studyDates = dateUtil.getDays(7);
                 List<UserStudyDetailsBO> userStudyDetailsBOList = new ArrayList<UserStudyDetailsBO>();
                 for (Date date:studyDates){
                     //获取近一周的学习情况
+                    logService.call("userStudyDetailsService.weekStudyDuration",userId.toString(),date.toString());
                     UserStudyDetailsBO weekStudyDuration = userStudyDetailsService.weekStudyDuration(userId,date);
+                    logService.end("userStudyDetailsService.weekStudyDuration",weekStudyDuration.toString());
                     if (weekStudyDuration!=null) {
                         userStudyDetailsBOList.add(weekStudyDuration);
                     } else {

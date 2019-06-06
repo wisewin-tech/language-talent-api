@@ -12,6 +12,15 @@ public class UserStudyDetailsBO extends BaseModel{
     private Date studyDate; //学习日期
     private Integer studyDuration; //学习时长(分钟)
 
+    @Override
+    public String toString() {
+        return "UserStudyDetailsBO{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", studyDate=" + studyDate +
+                ", studyDuration=" + studyDuration +
+                '}';
+    }
 
     public Integer getId() {
         return id;

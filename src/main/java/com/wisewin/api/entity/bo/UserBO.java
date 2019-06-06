@@ -44,6 +44,46 @@ public class UserBO  extends BaseModel{
     private Date createTime; //创建时间
     private Date updateTime; //修改时间
 
+    @Override
+    public String toString() {
+        return "UserBO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", ageGroup='" + ageGroup + '\'' +
+                ", headPortraitUrl='" + headPortraitUrl + '\'' +
+                ", learningGoal='" + learningGoal + '\'' +
+                ", sex='" + sex + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", age=" + age +
+                ", source='" + source + '\'' +
+                ", integral=" + integral +
+                ", currency=" + currency +
+                ", studyingLanguageId=" + studyingLanguageId +
+                ", isLogin='" + isLogin + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", interest='" + interest + '\'' +
+                ", status='" + status + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", byInvite='" + byInvite + '\'' +
+                ", qqOpenid='" + qqOpenid + '\'' +
+                ", wxOpenid='" + wxOpenid + '\'' +
+                ", continuousSign=" + continuousSign +
+                ", cumulativeSign=" + cumulativeSign +
+                ", lastSign=" + lastSign +
+                ", continuousLearning=" + continuousLearning +
+                ", cumulativeLearning=" + cumulativeLearning +
+                ", studyDate='" + studyDate + '\'' +
+                ", createId=" + createId +
+                ", updateId=" + updateId +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
+
     public UserBO() {
     }
 
@@ -328,43 +368,4 @@ public class UserBO  extends BaseModel{
         this.updateTime = updateTime;
     }
 
-    @Override
-    public String toString() {
-        return "UserBO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", ageGroup='" + ageGroup + '\'' +
-                ", headPortraitUrl='" + headPortraitUrl + '\'' +
-                ", learningGoal='" + learningGoal + '\'' +
-                ", sex='" + sex + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", age=" + age +
-                ", source='" + source + '\'' +
-                ", integral=" + integral +
-                ", currency=" + currency +
-                ", studyingLanguageId=" + studyingLanguageId +
-                ", isLogin='" + isLogin + '\'' +
-                ", occupation='" + occupation + '\'' +
-                ", interest='" + interest + '\'' +
-                ", status='" + status + '\'' +
-                ", inviteCode='" + inviteCode + '\'' +
-                ", byInvite='" + byInvite + '\'' +
-                ", qqOpenid='" + qqOpenid + '\'' +
-                ", wxOpenid='" + wxOpenid + '\'' +
-                ", continuousSign=" + continuousSign +
-                ", cumulativeSign=" + cumulativeSign +
-                ", lastSign=" + lastSign +
-                ", continuousLearning=" + continuousLearning +
-                ", cumulativeLearning=" + cumulativeLearning +
-                ", studyDate='" + studyDate + '\'' +
-                ", createId=" + createId +
-                ", updateId=" + updateId +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
-    }
 }

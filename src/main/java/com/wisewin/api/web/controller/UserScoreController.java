@@ -3,6 +3,7 @@ package com.wisewin.api.web.controller;
 import com.wisewin.api.entity.bo.UserScoreRecordBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.UserScoreService;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -16,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  log
+ * */
 @Controller
 @RequestMapping("/userScore")
 public class UserScoreController extends BaseCotroller{
@@ -23,6 +27,8 @@ public class UserScoreController extends BaseCotroller{
     @Resource
     private UserScoreService userScoreService;
 
+    @Resource
+    LogService logService;
     /**
      * 查询用户课时成绩
      * @param response
@@ -30,6 +36,7 @@ public class UserScoreController extends BaseCotroller{
      */
     @RequestMapping("/selectUserScore")
     public void selectUserScore(Integer chapterId,HttpServletResponse response, HttpServletRequest request){
+        logService.startController(null,request);
         //从cookie中获取他的user对象的id
         Integer id=this.getId(request);
         //如果获取不到,参数异常
@@ -51,6 +58,7 @@ public class UserScoreController extends BaseCotroller{
      */
     @RequestMapping("/addUserScore")
     public void selectUserScore(Integer chapterId,Integer score, HttpServletResponse response, HttpServletRequest request){
+        logService.startController(null,request);
         //从cookie中获取他的user对象的id
         Integer id=this.getId(request);
         //如果获取不到,参数异常

@@ -86,6 +86,7 @@ public class WXPayService {
             orderParam.setPayment("wx");
             payService.prepaid(orderParam);
         }
+        logService.result(twoMap.toString());
         return twoMap;
     }
 
@@ -102,6 +103,8 @@ public class WXPayService {
 
     //支付成功回调
     public Map<String, String> getOrderResult(HttpServletRequest request, String productType) throws Exception {
+        logService.serviceStart("com.wisewin.pai.service.WXPayService.getOrderResult",productType);
+
         //接受微信回调参数
         InputStream inStream = request.getInputStream();
         //转换为map
@@ -120,12 +123,15 @@ public class WXPayService {
                     if(!status.equals("yes")){
                         if (productType.equals("currency")) {
                             //调用充值咖豆的方法
+                            logService.call("PayService.rechargeKaDou",resultMap.get("out_trade_no"),resultMap.get("attach"));
                             payService.rechargeKaDou(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
                         } else if (productType.equals("curriculum")) {
                             //购买课程
+                            logService.call("PayService.buyCourse",resultMap.get("out_trade_no"),resultMap.get("attach"));
                             payService.buyCourse(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
                         } else if (productType.equals("language")) {
                             //购买语言
+                            logService.call("PayService.buyLanguage",resultMap.get("out_trade_no"),resultMap.get("attach"));
                             payService.buyLanguage(resultMap.get("out_trade_no"), new Integer(resultMap.get("attach")));
                         }
                     }
@@ -138,6 +144,8 @@ public class WXPayService {
                 System.err.println("交易标识不正确");
             }
         }
+
+        logService.result(resultMap.toString());
         return resultMap;
     }
 
@@ -164,18 +172,22 @@ public class WXPayService {
     }
 
     //转换金额 有 1.00 转为 100分
-    private static String totalFee(BigDecimal price) {
+    private String totalFee(BigDecimal price) {
+        logService.serviceStart("com.wisewin.pai.service.WXPayService.totalFee",price.toString());
 
         BigDecimal setScale = price.setScale(2, BigDecimal.ROUND_HALF_DOWN);
         System.out.println(setScale);
         String str = setScale.multiply(new BigDecimal("100")).toString();
         BigDecimal b = new BigDecimal(str.substring(0, str.length() - 3));
 
+        logService.result(b.toString());
         return b.toString();
     }
 
     //生成请求参数的map
     public Map<String, String> getWXPayParams(OrderParam orderParam) throws ParseException {
+        logService.serviceStart("com.wisewin.pai.service.WXPayService.getWXPayParams",orderParam.toString());
+
         //生成订单号
         IDBuilder idBuilder = new IDBuilder(10, 10);
         String orderNumber = idBuilder.nextId() + "";
@@ -243,6 +255,7 @@ public class WXPayService {
             //回调地址
             map.put("notify_url", WXConfig.NOTIFY_URL_LANGUAGE);
         }
+        logService.result(orderParam.toString());
         return map;
 
     }

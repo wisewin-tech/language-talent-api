@@ -446,8 +446,8 @@ public class UserController extends BaseCotroller {
         //从cookie中获取他的user对象的id
         UserBO user = this.getLoginUser(request);
         //如果获取不到,参数异常
-        if ( user == null) {
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+        if ( user == null||user.getId()==null) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
         }
         //通过id找出用户对象

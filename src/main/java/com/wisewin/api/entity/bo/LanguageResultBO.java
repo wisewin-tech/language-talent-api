@@ -9,6 +9,15 @@ public class LanguageResultBO extends BaseModel {
     private String languageName; //语言名称
     private List<CourseResultBO> courseList;//课程集合
 
+    @Override
+    public String toString() {
+        return "LanguageResultBO{" +
+                "id=" + id +
+                ", languageName='" + languageName + '\'' +
+                ", courseList=" + courseList +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }

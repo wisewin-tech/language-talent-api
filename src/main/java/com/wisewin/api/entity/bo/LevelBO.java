@@ -23,6 +23,28 @@ public class LevelBO extends BaseModel {
     private String buyOrNot;//是否购买
     private List<ChapterResultBO> chapterBOList;
 
+    @Override
+    public String toString() {
+        return "LevelBO{" +
+                "id=" + id +
+                ", levelName='" + levelName + '\'' +
+                ", courseId=" + courseId +
+                ", status='" + status + '\'' +
+                ", levelIntro='" + levelIntro + '\'' +
+                ", serialNumber=" + serialNumber +
+                ", medalImageUrl='" + medalImageUrl + '\'' +
+                ", medalName='" + medalName + '\'' +
+                ", languageName='" + languageName + '\'' +
+                ", ensignImageUrl='" + ensignImageUrl + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", courseIntro='" + courseIntro + '\'' +
+                ", thumbnailUrl='" + thumbnailUrl + '\'' +
+                ", languageId=" + languageId +
+                ", buyOrNot='" + buyOrNot + '\'' +
+                ", chapterBOList=" + chapterBOList +
+                '}';
+    }
+
     public String getBuyOrNot() {
         return buyOrNot;
     }

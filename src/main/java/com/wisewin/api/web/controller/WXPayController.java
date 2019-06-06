@@ -30,6 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  log
+ * */
 @Controller
 @RequestMapping("/WXPay")
 public class WXPayController extends BaseCotroller {
@@ -48,14 +51,14 @@ public class WXPayController extends BaseCotroller {
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
         logService.startController(loginUser,request,orderParam.toString());
-        Integer id = loginUser.getId();
 
-        if (id == null) {
+        if (loginUser == null) {
             //用户登陆过期
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
+        Integer id = loginUser.getId();
         //判断参数
         if ((orderParam.getProductName()==null||orderParam.getProductType()==null)
                 ||  (orderParam.getProductType().equals("currency")&&orderParam.getPrice()==null)
@@ -83,6 +86,7 @@ public class WXPayController extends BaseCotroller {
     //充值咖豆回调
     @RequestMapping("/currencyOrderResult")
     public void currencyOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        logService.startController(null,request,null);
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"currency");
         String return_code = resultMap.get("return_code");//状态
         String result_code=resultMap.get("result_code");//交易结果
@@ -97,6 +101,7 @@ public class WXPayController extends BaseCotroller {
     //购买语言回调
     @RequestMapping("/languageOrderResult")
     public void languageOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        logService.startController(null,request,null);
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"language");
         String return_code = resultMap.get("return_code");//状态
         String result_code=resultMap.get("result_code");//交易结果
@@ -113,6 +118,7 @@ public class WXPayController extends BaseCotroller {
     //购买课程回调
     @RequestMapping("/courseOrderResult")
     public void courseOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        logService.startController(null,request,null);
         Map<String, String> resultMap = wxPayService.getOrderResult(request, "curriculum");
         String return_code = resultMap.get("return_code");//状态
         String result_code = resultMap.get("result_code");//交易结果
