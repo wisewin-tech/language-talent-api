@@ -17,7 +17,7 @@ import java.io.Writer;
 import java.util.Map;
 
 /**
- *  log
+ * wy log
  * */
 @Controller
 @RequestMapping("/WXPay")
@@ -57,7 +57,9 @@ public class WXPayController extends BaseCotroller {
         }
 
         orderParam.setUserId(id);
+        logService.call("wxPayService.getUnifiedOrder",orderParam.toString());
         Map<String,String> resultMap=wxPayService.getUnifiedOrder(orderParam);
+        logService.result(resultMap);
 
         //统一下单结果
         if (resultMap!=null&&!resultMap.isEmpty()) {
@@ -72,8 +74,10 @@ public class WXPayController extends BaseCotroller {
     //充值咖豆回调
     @RequestMapping("/currencyOrderResult")
     public void currencyOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        logService.startController(null,request,null);
+        logService.startController(null,request);
+        logService.call("wxPayService.getOrderResult",request,"currency");
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"currency");
+        logService.result(resultMap);
         String return_code = resultMap.get("return_code");//状态
         String result_code=resultMap.get("result_code");//交易结果
         if (return_code.equals("SUCCESS")&&result_code.equals("SUCCESS")) {//交易成功
@@ -82,13 +86,16 @@ public class WXPayController extends BaseCotroller {
             writer.flush();
             writer.close();
         }
+        logService.end("/WXPay/currencyOrderResult","SUCCESS");
     }
 
     //购买语言回调
     @RequestMapping("/languageOrderResult")
     public void languageOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
         logService.startController(null,request,null);
+        logService.call("wxPayService.getOrderResult",request,"language");
         Map<String,String> resultMap=wxPayService.getOrderResult(request,"language");
+        logService.result(resultMap);
         String return_code = resultMap.get("return_code");//状态
         String result_code=resultMap.get("result_code");//交易结果
         if (return_code.equals("SUCCESS")&&result_code.equals("SUCCESS")) {//交易成功
@@ -97,7 +104,7 @@ public class WXPayController extends BaseCotroller {
             writer.flush();
             writer.close();
         }
-
+        logService.end("/WXPay/languageOrderResult","SUCCESS");
     }
 
 
@@ -105,6 +112,7 @@ public class WXPayController extends BaseCotroller {
     @RequestMapping("/courseOrderResult")
     public void courseOrderResult(HttpServletRequest request,HttpServletResponse response) throws Exception {
         logService.startController(null,request,null);
+        logService.call("wxPayService.getOrderResult",request, "curriculum");
         Map<String, String> resultMap = wxPayService.getOrderResult(request, "curriculum");
         String return_code = resultMap.get("return_code");//状态
         String result_code = resultMap.get("result_code");//交易结果
@@ -114,6 +122,7 @@ public class WXPayController extends BaseCotroller {
             writer.flush();
             writer.close();
         }
+        logService.end("/WXPay/courseOrderResult","SUCCESS");
     }
 
 }

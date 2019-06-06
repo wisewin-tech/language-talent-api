@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- *  log
+ * wy log
  * */
 @Controller
 @RequestMapping("/Versions")
@@ -33,9 +33,12 @@ public class VersionsController extends BaseCotroller {
     public void queryVersions(HttpServletRequest request,HttpServletResponse response){
         //根据版本号来查询
         logService.startController(null,request,null);
+        logService.call("versionsService.getqueryVersions");
         List<VersionsBO> queryVersionsjson=versionsService.getqueryVersions();
+        logService.result(queryVersionsjson);
         String json=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(queryVersionsjson));
         super.safeJsonPrint(response,json);
+        logService.end("/Versions/queryVersions",json);
         return;
     }
 }

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
- *  log
+ *wy  log
  * */
 @Controller
 @RequestMapping("/studyDetails")
@@ -43,6 +43,7 @@ public class UserStudyDetailsController extends BaseCotroller {
         if (userBO==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
+            logService.end("/studyDetails/getUserStudyDetails",json);
             return;
         }
             //获取当前登录用户id
@@ -51,16 +52,16 @@ public class UserStudyDetailsController extends BaseCotroller {
         String yesterday = DateUtil.getYseterday();
         logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),yesterday);
         UserStudyDetailsBO yesterdayStudyDetails = userStudyDetailsService.getStudyDetails(userId, yesterday);
-        logService.end("UserStudyDetailsService.getStudyDetails",yesterdayStudyDetails.toString());
+        logService.result(yesterdayStudyDetails);
         //获取今天的日期
         String today = DateUtil.getDateStr(new Date());
         logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),yesterday);
         UserStudyDetailsBO todayStudyDetails = userStudyDetailsService.getStudyDetails(userId, today);
-        logService.end("UserStudyDetailsService.getStudyDetails",yesterdayStudyDetails.toString());
+        logService.result(todayStudyDetails);
         String studyDate= DateUtil.getDateStr(new Date());
         logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),yesterday);
         UserStudyDetailsBO userStudyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
-        logService.end("UserStudyDetailsService.getStudyDetails",yesterdayStudyDetails.toString());
+        logService.result(userStudyDetailsBO.toString());
             if (userStudyDetailsBO==null){
                 logService.call("UserStudyDetailsService.insertDuration",userId.toString(),new Date().toString());
                 userStudyDetailsService.insertDuration(userId,new Date());
@@ -77,11 +78,11 @@ public class UserStudyDetailsController extends BaseCotroller {
 
                 logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),studyDate.toString());
                 UserStudyDetailsBO studyDetailsBO1 = userStudyDetailsService.getStudyDetails(userId, studyDate);
-                logService.end("UserStudyDetailsService.getStudyDetails",studyDetailsBO1.toString());
+                logService.result(studyDetailsBO1.toString());
             }
                 logService.call("userService.selectById",userId.toString());
                 UserBO userBO1 = userService.selectById(userId);
-                logService.end("userService.selectById",userBO1.toString());
+                logService.result(userBO1.toString());
                 //获取近一周的所有日期
                 DateUtil dateUtil = new DateUtil();
                 List<Date> studyDates = dateUtil.getDays(7);
@@ -90,7 +91,7 @@ public class UserStudyDetailsController extends BaseCotroller {
                     //获取近一周的学习情况
                     logService.call("userStudyDetailsService.weekStudyDuration",userId.toString(),date.toString());
                     UserStudyDetailsBO weekStudyDuration = userStudyDetailsService.weekStudyDuration(userId,date);
-                    logService.end("userStudyDetailsService.weekStudyDuration",weekStudyDuration.toString());
+                    logService.result(weekStudyDuration.toString());
                     if (weekStudyDuration!=null) {
                         userStudyDetailsBOList.add(weekStudyDuration);
                     } else {
@@ -111,11 +112,13 @@ public class UserStudyDetailsController extends BaseCotroller {
                 if (todayStudyDetails==null){
                     continuousLearning =continuousLearning+ 1;
                     cumulativeLearning = cumulativeLearning + 1;
+                    logService.call("userService.updateUserStudyDays",continuousLearning,cumulativeLearning,userId);
                     userService.updateUserStudyDays(continuousLearning,cumulativeLearning,userId);
                 }else {
                     if (yesterdayStudyDetails==null){
                         continuousLearning = 1;
                         cumulativeLearning = cumulativeLearning + 1;
+                        logService.call("userService.updateUserStudyDays",cumulativeLearning,userId);
                         userService.updateUserStudyDays(continuousLearning,cumulativeLearning,userId);
                     }
                 }
@@ -126,6 +129,7 @@ public class UserStudyDetailsController extends BaseCotroller {
                 resultMap.put("continuousLearning",continuousLearning);
                 resultMap.put("weekStudyDuration",userStudyDetailsBOList);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
+        logService.end("/studyDetails/getUserStudyDetails",json);
                 super.safeJsonPrint(response, json);
 
 
