@@ -7,6 +7,7 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.service.WXPayService;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.wxUtil.WXMsg;
@@ -36,13 +37,17 @@ public class WXPayController extends BaseCotroller {
     @Resource
     WXPayService wxPayService;
 
+    @Resource
+    LogService logService;
 
     //获取预订单信息
     //需要传入 价格 订单类型:购买/充值 商品名称
     @RequestMapping("/unifiedOrder")
     public void unifiedOrder(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam) throws Exception {
+
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
+        logService.startController(loginUser,request,orderParam.toString());
         Integer id = loginUser.getId();
 
         if (id == null) {

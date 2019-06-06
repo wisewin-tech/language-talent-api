@@ -6,10 +6,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class test2 {
     public static void maina(String[] args) {
@@ -49,9 +46,23 @@ public class test2 {
         return "";
     }
 
-    public static void main(String[] args) throws ParseException {
-        compareNumber(new BigDecimal("12"));
 
+    public static void main(String[] args) throws ParseException {
+        //数组转换为集合
+        String[]arr=new String[]{"wy","wy2","wy3"};
+        List<String> list =Arrays.asList(arr);
+
+        for(int i=0;i<list.size();i++){
+            System.err.println(list.get(i));
+        }
+        for(int i=0;i<arr.length;i++){
+            list.add(arr[i]);
+        }
+        //集合转换为数组
+//        String[]arrList= list.toArray(new String[0]);
+//        for(int i=0;i<arrList.length;i++){
+//            System.err.println(arrList[i]);
+//        }
     }
 
 }

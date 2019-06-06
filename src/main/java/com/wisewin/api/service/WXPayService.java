@@ -4,6 +4,7 @@ import com.wisewin.api.common.constants.AliConstants;
 import com.wisewin.api.dao.*;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.param.OrderParam;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.wxUtil.WXMsg;
 import com.wisewin.api.util.wxUtil.WXPayRequest;
@@ -37,21 +38,33 @@ public class WXPayService {
 
     @Resource
     OrderDAO orderDAO;
+
+    @Resource
+    LogService logService;
     //预支付下单
     //给安卓返回预支付信息调用支付
     //插入未支付订单
     public Map<String, String> getUnifiedOrder(OrderParam orderParam) throws Exception {
+        logService.serviceStart("com.wisewin.pai.service.WXPayService.getUnifiedOrder",orderParam.toString());
         //1.获取请求参数
+        logService.call("com.wisewin.pai.service.WXPayService.getWXPayParams",orderParam.toString());
         Map<String, String> map = getWXPayParams(orderParam);
+        logService.end("com.wisewin.pai.service.WXPayService.getWXPayParams",map.toString());
 
         //2.第一次签名
+        logService.call("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",map.toString());
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
+        logService.end("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",mapStr);
 
         //3.发送请求 获取到预支付信息  partnerid
+        logService.call("com.wisewin.pai.service.WXPayService.getCodeUrl",mapStr);
         String result = getCodeUrl(mapStr);
+        logService.end("com.wisewin.pai.service.WXPayService.getCodeUrl",result);
 
         //预支付订单信息Map
+        logService.call("com.wisewin.pai.util.WXUtil.WXPayUtil.xmlToMap",result);
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
+        logService.end("com.wisewin.pai.util.WXUtil.WXPayUtil.xmlToMap",resultMap.toString());
 
         //4.初始化二次签名信息 用第一次请求拿到的信息中的prepayid
         Map<String, String> twoMap = new HashMap<String, String>();
@@ -63,7 +76,9 @@ public class WXPayService {
         twoMap.put("package", "Sign=WXPay");
 
         //6.第二次签名 把这个签名给安卓拉起支付请求
+        logService.call("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",result);
         String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
+        logService.end("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",twoMapStr);
         //给前端调用的Map
         twoMap = WXPayUtil.xmlToMap(twoMapStr);
         //存入自己的数据库
