@@ -10,6 +10,7 @@ import com.wisewin.api.service.WBAlipayService;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.AlipayConfig;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
@@ -52,13 +53,17 @@ public class WBAlipayController extends BaseCotroller {
      */
     @RequestMapping("/appPayRequest")
     public void appPayRequest(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam) {
-
+        log.info("start==================================com.wisewin.api.web.controller.WBAlipayController.appPayRequest===================================================");
+        log.info("请求ip{}", RequestUtils.getIpAddress(request));
+        log.info("传参{}",orderParam);
         Map<String,Object> map = new HashMap();
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
-        logService.startController(loginUser,request,orderParam.toString(),"com.wisewin.api.web.controlle.WBAlipayController.appPayRequestr=======================");
+        log.info("当前用户{}",loginUser);
+
         //用户登陆过期
         if (loginUser == null) {
+            log.info("loginUser == null，return");
             logService.custom(loginUser.toString(),"return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
@@ -66,7 +71,7 @@ public class WBAlipayController extends BaseCotroller {
         }
 
         if(StringUtils.isEmpty(orderParam.getProductName())){
-            logService.custom(orderParam.getProductName()+"return");
+            log.info("StringUtils.isEmpty(orderParam.getProductName())，return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -75,65 +80,79 @@ public class WBAlipayController extends BaseCotroller {
         orderParam.setUserId(loginUser.getId());
         //判断是否为充值咖豆
         if("currency".equals(orderParam.getProductType())){
-            logService.custom("currency");
+            log.info("\"currency\".equals(orderParam.getProductType())");
             if (orderParam.getPrice() == null){
-                logService.custom(orderParam.getPrice().toString(),",return");
+                log.info("orderParam.getPrice() == null,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000032"));
                 super.safeJsonPrint(response, json);
                 return;
             }
             if(orderParam.getPrice().compareTo(BigDecimal.ZERO) <= 0){
-                logService.custom(orderParam.getPrice().toString(),",return");
+                log.info("orderParam.getPrice().compareTo(BigDecimal.ZERO) <= 0,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000036"));
                 super.safeJsonPrint(response, json);
                 return;
             }
             if (!(new BigDecimal(orderParam.getPrice().intValue()).compareTo(orderParam.getPrice())==0)){
+                log.info("!(new BigDecimal(orderParam.getPrice().intValue()).compareTo(orderParam.getPrice())==0,return");
                 logService.custom(orderParam.getPrice().toString(),",return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000033"));
                 super.safeJsonPrint(response, json);
                 return;
             }
-
-            logService.custom("com.wisewin.api.service.WBAlipayService.currencyPay,"+orderParam.toString());
+            log.info("调用com.wisewin.api.service.WBAlipayService.currencyPay");
             String pay =  wBAlipayService.currencyPay(orderParam);
-            logService.result(pay);
+            log.info("com.wisewin.api.service.WBAlipayService.currencyPay返回{}",pay);
             map.put("data",pay);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
-            logService.end("com.wisewin.api.web.controlle.WBAlipayController.appPayRequestr,",json.toString());
+            log.info("return{}",json);
+            log.info("end=====================com.wisewin.api.web.controller.WBAlipayController.appPayRequest====================");
             return;
         }
         //判断是否为购买语言
         if("language".equals(orderParam.getProductType())){
+            log.info("\"language\".equals(orderParam.getProductType())");
             //判断是否传过来语言id
             if(orderParam.getLanguageId() == null){
+                log.info("orderParam.getLanguageId() == null,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000034"));
                 super.safeJsonPrint(response, json);
                 return;
             }
+            log.info("调用com.wisewin.api.service.WBAlipayService.languagePay");
            String pay  =  wBAlipayService.languagePay(orderParam);
+           log.info("com.wisewin.api.service.WBAlipayService.languagePay返回{}",pay);
             map.put("data",pay);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
+            log.info("return{}",json);
+            log.info("end=====================com.wisewin.api.web.controller.WBAlipayController.appPayRequest====================");
             return;
         }
         //判断是否为购买课程
         if("curriculum".equals(orderParam.getProductType())){
+            log.info("\"curriculum\".equals(orderParam.getProductType())");
             if(orderParam.getCourseId() == null){
+                log.info("orderParam.getCourseId() == null,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000035"));
                 super.safeJsonPrint(response, json);
                 return;
             }
-
+            log.info("调用com.wisewin.api.service.WBAlipayService.curriculumPay");
             String pay  = wBAlipayService.curriculumPay(orderParam);
+            log.info("com.wisewin.api.service.WBAlipayService.curriculumPay返回{}",pay);
             map.put("data",pay);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
+            log.info("return{}",json);
+            log.info("end=====================com.wisewin.api.web.controller.WBAlipayController.appPayRequest====================");
             return;
         }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000037"));
         super.safeJsonPrint(response, json);
+        log.info("return{}",json);
+        log.info("end=====================com.wisewin.api.web.controller.WBAlipayController.appPayRequest====================");
         return;
     }
 
@@ -146,7 +165,9 @@ public class WBAlipayController extends BaseCotroller {
     @RequestMapping(value = "/alipayurl")
     public String APPnotify(HttpServletRequest request, HttpServletResponse httpResponse) {
         //获取支付宝POST过来反馈信息
-      log.info("==============================支付宝回到方法==================================");
+        log.info("start==============================com.wisewin.api.web.controller.WBAlipayController.APPnotify==================================");
+        log.info("支付宝回调");
+        log.info("请求ip{}", RequestUtils.getIpAddress(request));
         Map<String,String> params = new HashMap<String,String>();
         Map requestParams = request.getParameterMap();
         for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -167,45 +188,48 @@ public class WBAlipayController extends BaseCotroller {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-
         if (flag){
             if("TRADE_SUCCESS".equals(params.get("trade_status"))){
                 //回调订单号
                 String number =    params.get("out_trade_no");
-                log.info(number+"======支付宝回调订单号");
+                log.info("订单号number:{}",number);
                 //关键字
-                String subject =    params.get("subject");
-                log.info(subject+"=======支付宝回调关键字");
+                String subject =  params.get("subject");
+                log.info("关键字subject:{}",subject);
                 //金额
-                String price =    params.get("total_amount");
-                log.info(price+"=====支付宝回调价格");
-               String pr = price.substring(0, price.length() - 3);
-                log.info(pr+"=====支付宝回调价格");
+                String price =  params.get("total_amount");
+                log.info("金额price:{}",price);
+                String pr = price.substring(0, price.length() - 3);
+                log.info("截取金额整数pr:{}",pr);
                 if (StringUtils.isEmpty(number)){
-                    log.info("=====未能获取到回调订单ID");
+                    log.info("StringUtils.isEmpty(number),return");
                     return null;
                 }
                 if (StringUtils.isEmpty(subject)){
-                    log.info("======不能获取回调关键字");
+                    log.info("StringUtils.isEmpty(subject),return");
                     return null;
                 }
                 if (StringUtils.isEmpty(price)){
-                    log.info("======未能获取到回调金额");
+                    log.info("StringUtils.isEmpty(price),return");
                     return null;
                 }
                 if("currency".equals(subject)){
-                    log.info("进入此方法++++++++++++++++++++++++++++");
-                    log.info(Integer.parseInt(pr)+"======存入的咖豆转换为Integer");
+                    log.info("\"currency\".equals(subject)");
+                    log.info("类型转换{}",Integer.parseInt(pr));
+                    log.info("调用com.wisewin.api.service.PayService.rechargeKaDou");
                     payService.rechargeKaDou(number,Integer.parseInt(pr));
                 }
                 if("language".equals(subject)){
-                    String languageId =   params.get("passback_params");
-                    log.info(languageId+"存入的语言为");
+                    log.info("\"language\".equals(subject)");
+                    String languageId = params.get("passback_params");
+                    log.info("存入的语言为languageId:{}",languageId);
                     if(StringUtils.isEmpty(languageId)){
+                        log.info("StringUtils.isEmpty(languageId),return");
                         return null;
                     }
-                    log.info("语言id为{}",Integer.parseInt(languageId));
+                    log.info("语言id为(转换为Integer){}",Integer.parseInt(languageId));
                     try {
+                        log.info("调用com.wisewin.api.service.PayService.buyLanguage");
                         payService.buyLanguage(number,Integer.parseInt(languageId));/*Integer.parseInt(languageId)*/
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -213,20 +237,27 @@ public class WBAlipayController extends BaseCotroller {
 
                 }
                 if("curriculum".equals(subject)){
+                    log.info("\"curriculum\".equals(subject)");
                     String courseId =   params.get("passback_params");
-                    log.info(courseId+"存入的课程为");
+                    log.info("存入的课程courseId:{}",courseId);
                     if(StringUtils.isEmpty(courseId)){
+                        log.info("StringUtils.isEmpty(courseId),return");
                         return null;
                     }
                     try {
+                        log.info("调用com.wisewin.api.service.PayService.buyCourse");
                         payService.buyCourse(number,Integer.parseInt(courseId));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
+                log.info("return success");
+                log.info("end=======================com.wisewin.api.web.controller.WBAlipayController.APPnotify==================================");
                 return "success";//成功返给支付宝
             }
         }
+        log.info("return error");
+        log.info("end=======================com.wisewin.api.web.controller.WBAlipayController.APPnotify==================================");
         return "error";
     }
 

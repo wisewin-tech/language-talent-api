@@ -13,6 +13,8 @@ import com.wisewin.api.util.*;
 import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.util.redisUtils.RedissonHandler;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +34,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseCotroller {
+    static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Resource
     private UserService userService;
@@ -85,35 +88,50 @@ public class UserController extends BaseCotroller {
      * @param phone
      */
     @RequestMapping("/send")
-    public void send(String phone,String type, HttpServletResponse response) {
+    public void send(String phone,String type, HttpServletRequest request ,HttpServletResponse response) {
+        log.info("start===================================com.wisewin.api.web.controller.UserController.send=============================");
+        log.info("请求id:{}",RequestUtils.getIpAddress(request));
+        log.info("参数phone:{}",phone);
+        log.info("参数type:{}",type);
+
+        log.info("调用com.wisewin.api.web.controller.UserController.phoneFormt,手机号非空+格式判断");
         //手机号非空+格式判断
         if (this.phoneFormt(phone, response)) {
             //获取缓存中的失效验证码
             String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY_LOSE.getValue());
+            log.info("获取缓存中的失效验证码{}",mobileAuthCode);
             if (mobileAuthCode != null) {
+                log.info("mobileAuthCode != null,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000012"));
                 super.safeJsonPrint(response, json);
                 return;
             }
+            log.info("调用RedissonHandler.getInstance().get(phone + UserConstants.DEGREE.getValue())");
             String count = RedissonHandler.getInstance().get(phone + UserConstants.DEGREE.getValue());
+            log.info("返回count;{}",count);
             if (count != null) {
+                log.info("count != null,return");
                 int coun = Integer.valueOf(count);
                 if (coun >= 20) {
+                    log.info("coun >= 20,return");
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000025"));
                     super.safeJsonPrint(response, json);
                     return;
                 }
             }
             if("amend".equals(type)&&userService.selectByPhone(phone)!=null){
+                log.info("\"amend\".equals(type)&&userService.selectByPhone(phone)!=null,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000058"));
                 super.safeJsonPrint(response, json);
                 return;
             }
-
+            log.info("调用com.wisewin.api.service.UserService.send");
             userService.send(phone);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("短信验证码发送成功!"));
             super.safeJsonPrint(response, json);
-
+            log.info("return{}",json);
+            log.info("end===================================com.wisewin.api.web.controller.UserController.send=============================");
+            return;
         }
     }
 
@@ -157,30 +175,44 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/updatePhone")
     public void updatePhone(String phone, String verify, HttpServletResponse response, HttpServletRequest request) {
+        log.info("start==================================com.wisewin.api.web.controller.UserController.updatePhone================================");
+        log.info("请求id:{}",RequestUtils.getIpAddress(request));
+        log.info("参数phone:{}",phone);
+        log.info("参数verify:{}",verify);
         //手机号非空+格式判断
+        log.info("调用com.wisewin.api.web.controller.UserController.phoneFormt手机号非空+格式判断");
         this.phoneFormt(phone, response);
         //用户传参非空判断
         if (StringUtils.isEmpty(verify)) {
+            log.info("StringUtils.isEmpty(verify),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
         //获取Redis中的用户验证码
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
-        System.out.println(mobileAuthCode);
+        log.info("获取Redis中的用户验证码:{}",mobileAuthCode);
         if (verify.equals(mobileAuthCode)) {
+            log.info("verify.equals(mobileAuthCode)");
             //获取当前登陆用户
             UserBO loginUser = super.getLoginUser(request);
+            log.info("获取当前登陆用户{}",loginUser);
             Integer id = loginUser.getId();
+            log.info("调用com.wisewin.api.service.UserService.updatePhone");
             boolean bool = userService.updatePhone(id, phone);
+            log.info("com.wisewin.api.service.UserService.updatePhone{}",bool);
             if (bool) {
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
                 super.safeJsonPrint(response, json);
+                log.info("return{}",json);
+                log.info("end===================================com.wisewin.api.web.controller.UserController.updatePhone==============================");
             }
 
         } else {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000011"));
             super.safeJsonPrint(response, json);
+            log.info("return{}",json);
+            log.info("end===================================com.wisewin.api.web.controller.UserController.updatePhone==============================");
         }
 
     }
@@ -193,28 +225,41 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/register")
     public void register(String phone, String verify, HttpServletResponse response, HttpServletRequest request) {
+        log.info("start==========================com.wisewin.api.web.controller.UserController.register=================================");
+        log.info("请求id:{}",RequestUtils.getIpAddress(request));
+        log.info("参数phone:{}",phone);
+        log.info("参数verify:{}",verify);
+        log.info("调用com.wisewin.api.web.controller.UserController.phoneFormt手机号非空+格式判断");
         //手机号非空+格式判断
         this.phoneFormt(phone, response);
         //用户传参非空判断
         if (StringUtils.isEmpty(verify)) {
+            log.info("StringUtils.isEmpty(verify),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
-            return;
         }
         //获取Redis中的用户验证码
-        System.out.println(phone + UserConstants.VERIFY.getValue());
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
+        log.info("获取Redis中的用户验证码:{}",mobileAuthCode);
+
         Map<String, Object> mapUser = new HashMap<String, Object>();
 
         //如果和用户收到的验证码相同
         if (verify.equals(mobileAuthCode)) {
+            log.info("如果和用户收到的验证码相同");
             //通过手机号查询表中是否有该用户
+            log.info("通过手机号查询表中是否有该用户");
+            log.info("调用com.wisewin.api.service.UserService.selectByPhone");
             UserBO userBO = userService.selectByPhone(phone);
+            log.info("com.wisewin.api.service.UserService.selectByPhone返回{}",userBO);
             if (userBO != null) {
+                log.info("userBO != null");
                 //islogin 是否为登录, yes 登录
                 if (UserConstants.Yes.getValue().equals(userBO.getStatus())) {
                     //状态,是否被拉黑  yes:拉黑,no:账号正常使用
+                    log.info("状态,是否被拉黑  yes:拉黑,no:账号正常使用");
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
+                    log.info(json);
                     super.safeJsonPrint(response, json);
                 } else {
                     //user对象存入cookie中
@@ -223,13 +268,17 @@ public class UserController extends BaseCotroller {
                     mapUser.put("userId", userBO.getId());
 
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
+                    log.info("json");
                     super.safeJsonPrint(response, json);
                 }
             } else { //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
                 UserBO userBO1 = new UserBO();
                 userBO1.setMobile(phone);
+                log.info("调用com.wisewin.api.service.UserService.insertUser");
                 userService.insertUser(userBO1);
+                log.info("调用com.wisewin.api.service.UserService.selectByPhone");
                 userBO1 = userService.selectByPhone(phone);
+                log.info("com.wisewin.api.service.UserService.selectByPhone返回{}",userBO1);
                 //islogin 是否为登录, yes 登录
                 mapUser.put("islogin", UserConstants.No.getValue());
                 mapUser.put("userId", userBO1.getId());
@@ -237,10 +286,14 @@ public class UserController extends BaseCotroller {
                 this.putUser(response, userBO1);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                 super.safeJsonPrint(response, json);
+                log.info("return:{}",json);
+                log.info("end==========================com.wisewin.api.web.controller.UserController.register=================================");
             }
         } else {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000011"));
             super.safeJsonPrint(response, json);
+            log.info("return:{}",json);
+            log.info("end==========================com.wisewin.api.web.controller.UserController.register=================================");
         }
     }
 
