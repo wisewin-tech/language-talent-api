@@ -1,15 +1,11 @@
 package com.wisewin.api.service;
 
-import com.wisewin.api.common.constants.AliConstants;
 import com.wisewin.api.dao.*;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.param.OrderParam;
-import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.IDBuilder;
-import com.wisewin.api.util.wxUtil.WXMsg;
 import com.wisewin.api.util.wxUtil.WXPayRequest;
 import com.wisewin.api.util.wxUtil.WXPayUtil;
-import com.wisewin.api.util.wxUtil.WXPayXmlUtil;
 import com.wisewin.api.util.wxUtil.config.WXConfig;
 import com.wisewin.api.util.wxUtil.config.WXRequestConfig;
 import org.springframework.stereotype.Service;
@@ -17,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;

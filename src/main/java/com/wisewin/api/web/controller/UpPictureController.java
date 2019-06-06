@@ -1,7 +1,6 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
-import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.OSSClientUtil;
 import com.wisewin.api.util.StringUtils;
@@ -13,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 图片上传与删除
