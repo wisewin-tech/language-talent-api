@@ -19,7 +19,7 @@ public class AESOperator {
     /*
      * 加密用的Key 可以用26个字母和数字组成 此处使用AES-128-CBC加密模式，key需要为16位。
      */
-    private static String sKey = "2019duoyuzhong";//key，可自行修改
+    private static String sKey = "2019duoyuzhong12";//key，可自行修改
     private static String ivParameter = "A-16-Byte-String";//偏移量,可自行修改
     private static AESOperator instance = null;
 
@@ -109,10 +109,8 @@ public class AESOperator {
 
 
     public static void main(String[] args) throws Exception {
-        String helloword = encrypt("1");
-        System.out.println(helloword);
-        String decrypt = decrypt("4gFpgUjWkMuKnAmwL3QRHA==");
-        System.out.println(decrypt);
+        String str = encrypt("-0");
+        System.out.println(str);
     }
 
 }

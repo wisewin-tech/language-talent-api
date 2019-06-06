@@ -4,7 +4,7 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.ChapterService;
 import com.wisewin.api.service.OrderService;
-import com.wisewin.api.test.AESOperator;
+import com.wisewin.api.util.AESOperator;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StsUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
