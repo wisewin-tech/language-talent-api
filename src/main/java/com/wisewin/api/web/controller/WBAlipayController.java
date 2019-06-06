@@ -7,6 +7,7 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.service.PayService;
 import com.wisewin.api.service.WBAlipayService;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.AlipayConfig;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StringUtils;
@@ -34,6 +35,8 @@ import java.util.Map;
 public class WBAlipayController extends BaseCotroller {
     static final Logger log = LoggerFactory.getLogger(WBAlipayController.class);
 
+    @Resource
+    private LogService logService;
 
     @Resource
     private WBAlipayService wBAlipayService;
@@ -49,20 +52,21 @@ public class WBAlipayController extends BaseCotroller {
      */
     @RequestMapping("/appPayRequest")
     public void appPayRequest(HttpServletRequest request, HttpServletResponse response, OrderParam orderParam) {
+
         Map<String,Object> map = new HashMap();
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
-
-        System.out.println(loginUser+"当前登陆用户");
+        logService.startController(loginUser,request,orderParam.toString(),"com.wisewin.api.web.controlle.WBAlipayController.appPayRequestr=======================");
         //用户登陆过期
-        // System.out.println(loginUser.getId());
         if (loginUser == null) {
+            logService.custom(loginUser.toString(),"return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
 
         if(StringUtils.isEmpty(orderParam.getProductName())){
+            logService.custom(orderParam.getProductName()+"return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -71,26 +75,33 @@ public class WBAlipayController extends BaseCotroller {
         orderParam.setUserId(loginUser.getId());
         //判断是否为充值咖豆
         if("currency".equals(orderParam.getProductType())){
+            logService.custom("currency");
             if (orderParam.getPrice() == null){
+                logService.custom(orderParam.getPrice().toString(),",return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000032"));
                 super.safeJsonPrint(response, json);
                 return;
             }
             if(orderParam.getPrice().compareTo(BigDecimal.ZERO) <= 0){
+                logService.custom(orderParam.getPrice().toString(),",return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000036"));
                 super.safeJsonPrint(response, json);
                 return;
             }
             if (!(new BigDecimal(orderParam.getPrice().intValue()).compareTo(orderParam.getPrice())==0)){
+                logService.custom(orderParam.getPrice().toString(),",return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000033"));
                 super.safeJsonPrint(response, json);
                 return;
             }
 
-           String pay =  wBAlipayService.currencyPay(orderParam);
+            logService.custom("com.wisewin.api.service.WBAlipayService.currencyPay,"+orderParam.toString());
+            String pay =  wBAlipayService.currencyPay(orderParam);
+            logService.result(pay);
             map.put("data",pay);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
+            logService.end("com.wisewin.api.web.controlle.WBAlipayController.appPayRequestr,",json.toString());
             return;
         }
         //判断是否为购买语言

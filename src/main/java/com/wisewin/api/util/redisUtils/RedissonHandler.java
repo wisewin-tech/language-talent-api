@@ -1,6 +1,4 @@
 package com.wisewin.api.util.redisUtils;
-
-import com.wisewin.api.pop.SystemConfig;
 import org.redisson.Config;
 import org.redisson.Redisson;
 import org.redisson.RedissonClient;
@@ -21,9 +19,9 @@ public class RedissonHandler {
 
     private final String port = "6379";
 
-    private final String ip ="localhost";//"r-2zec622a372f0b04.redis.rds.aliyuncs.com";
+    private final String ip =  "localhost";//"r-2zec622a372f0b04.redis.rds.aliyuncs.com";
 
-    private final String password = null;
+    private final String password =  null;
 
 
     /**

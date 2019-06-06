@@ -12,6 +12,7 @@ import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 import com.wisewin.api.entity.dto.AlipayBTO;
 import com.wisewin.api.entity.param.OrderParam;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.AlipayConfig;
 import com.wisewin.api.util.IDBuilder;
 import org.slf4j.Logger;
@@ -43,6 +44,8 @@ public class WBAlipayService {
     @Resource
     private PayService payService;
 
+    @Resource
+    private LogService logService;
 
 
      AlipayClient   client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APP_ID,
@@ -57,8 +60,8 @@ public class WBAlipayService {
     // 封装请求支付信息
     AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
 
-    public String currencyPay( OrderParam orderParam){
-        System.err.println("进入此方法");
+    public String currencyPay(OrderParam orderParam){
+        logService.serviceStart("com.wisewin.api.service.WBAlipayService.currencyPay"+orderParam.toString());
         //生成订单号
         IDBuilder idBuilder  =  new IDBuilder(10,10);
         String number  = idBuilder.nextId()+"";
@@ -80,21 +83,23 @@ public class WBAlipayService {
             AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
             if (ali_response.isSuccess()) {
                 //插入课程预支付订单
-                System.err.println(orderParam.getPayment());
+                logService.call("com.wisewin.api.service.PayService.prepaid",orderParam.toString());
                 payService.prepaid(orderParam);
                 // 获取到getBody直接给app,用这个东西去调起支付宝
-                System.err.println(ali_response.getBody());
+                //System.err.println(ali_response.getBody());
+                logService.end("com.wisewin.api.service.WBAlipayService.currencyPay",ali_response.getBody().toString());
                 return ali_response.getBody();
               /*  cotroller.safeJsonPrint(response,ali_response.getBody());
                 return;*/
             } else {
-                log.debug("调用SDK生成表单失败");
+                log.info("error");
                 throw new AlipayApiException("调用SDK生成表单失败");
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();
-            log.error(e.getMessage());
+            log.info(e.getMessage());
         }
+        logService.end("com.wisewin.api.service.WBAlipayService.currencyPay","null");
         return null;
     }
 

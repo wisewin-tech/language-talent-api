@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/aboutUs")
 public class AboutUsController extends BaseCotroller {
+
     @Resource
     private AboutUsService aboutUsService ;
 

@@ -105,7 +105,7 @@ public class PayService {
 
         //获取到订单信息
         OrderBO orderBO = orderDAO.getOrderByOrderNumber(orderNumber);
-            log.info("订单信息为{}",orderBO);
+
         //订单表状态修改为yes
         orderDAO.updOrderStatus(orderNumber, AliConstants.Theorder.getValue());
 
