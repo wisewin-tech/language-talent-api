@@ -21,6 +21,24 @@ public class GiftParam extends BaseModel {
     private Date gfReleasetime; //创建时间
     private String status; //状态(已用和未使用)英文来表示
 
+    @Override
+    public String toString() {
+        return "GiftParam{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", value=" + value +
+                ", cardnumber='" + cardnumber + '\'' +
+                ", scope='" + scope + '\'' +
+                ", exchangeyard='" + exchangeyard + '\'' +
+                ", starttime=" + starttime +
+                ", finishtime=" + finishtime +
+                ", userId=" + userId +
+                ", cause='" + cause + '\'' +
+                ", gfReleasetime=" + gfReleasetime +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

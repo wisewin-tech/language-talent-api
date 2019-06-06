@@ -30,7 +30,33 @@ public class ChapterBO extends BaseModel {
     private String thumbnailUrl;//缩略图
     private String buyOrNot;//是否已购买
 
-
+    @Override
+    public String toString() {
+        return "ChapterBO{" +
+                "id=" + id +
+                ", chapterName='" + chapterName + '\'' +
+                ", languageId=" + languageId +
+                ", courseId=" + courseId +
+                ", levelId=" + levelId +
+                ", content='" + content + '\'' +
+                ", status='" + status + '\'' +
+                ", videoPath='" + videoPath + '\'' +
+                ", duration='" + duration + '\'' +
+                ", chapterIntro='" + chapterIntro + '\'' +
+                ", manuscript='" + manuscript + '\'' +
+                ", freeOrNot='" + freeOrNot + '\'' +
+                ", serialNumber=" + serialNumber +
+                ", score=" + score +
+                ", languageName='" + languageName + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", courseIntro='" + courseIntro + '\'' +
+                ", levelName='" + levelName + '\'' +
+                ", chapterId=" + chapterId +
+                ", ensignImageUrl='" + ensignImageUrl + '\'' +
+                ", thumbnailUrl='" + thumbnailUrl + '\'' +
+                ", buyOrNot='" + buyOrNot + '\'' +
+                '}';
+    }
 
     public String getThumbnailUrl() {
         return thumbnailUrl;

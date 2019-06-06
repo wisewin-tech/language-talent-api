@@ -38,6 +38,38 @@ public class DiscoverParam extends BaseModel {
     private int countnum; // 总数
     private String description; //内容描述
 
+    @Override
+    public String toString() {
+        return "DiscoverParam{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", browse=" + browse +
+                ", dcName='" + dcName + '\'' +
+                ", createTime=" + createTime +
+                ", dcUpdatename='" + dcUpdatename + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", video='" + video + '\'' +
+                ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
+                ", likenum=" + likenum +
+                ", participation=" + participation +
+                ", activitytime=" + activitytime +
+                ", activitysite='" + activitysite + '\'' +
+                ", phone='" + phone + '\'' +
+                ", ticket=" + ticket +
+                ", priority=" + priority +
+                ", stick='" + stick + '\'' +
+                ", show='" + show + '\'' +
+                ", skip='" + skip + '\'' +
+                ", way='" + way + '\'' +
+                ", videoImg='" + videoImg + '\'' +
+                ", pageNo=" + pageNo +
+                ", pageSize=" + pageSize +
+                ", countnum=" + countnum +
+                ", description='" + description + '\'' +
+                '}';
+    }
 
     public String getDescription() {
         return description;

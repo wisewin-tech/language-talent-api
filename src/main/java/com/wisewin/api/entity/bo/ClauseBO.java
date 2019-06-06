@@ -12,6 +12,17 @@ public class ClauseBO extends BaseModel {
     private Integer updateId;//修改人id
     private Date updateTime;//修改时间
 
+    @Override
+    public String toString() {
+        return "ClauseBO{" +
+                "id=" + id +
+                ", classify='" + classify + '\'' +
+                ", content='" + content + '\'' +
+                ", updateId=" + updateId +
+                ", updateTime=" + updateTime +
+                '}';
+    }
+
     public Integer getUpdateId() {
         return updateId;
     }

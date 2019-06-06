@@ -3,6 +3,7 @@ package com.wisewin.api.service;
 import com.wisewin.api.dao.*;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.param.OrderParam;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.wxUtil.WXPayRequest;
 import com.wisewin.api.util.wxUtil.WXPayUtil;

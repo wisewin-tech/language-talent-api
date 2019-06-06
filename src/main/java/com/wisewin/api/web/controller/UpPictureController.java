@@ -1,6 +1,7 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.OSSClientUtil;
 import com.wisewin.api.util.StringUtils;

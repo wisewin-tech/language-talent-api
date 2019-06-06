@@ -18,6 +18,26 @@ public class CourseDetailsResultBO extends BaseModel {
     private String certificateImageUrl;//证书图片
     private String buyOrNot;//是否已经购买
 
+    @Override
+    public String toString() {
+        return "CourseDetailsResultBO{" +
+                "languageId=" + languageId +
+                ", languageName='" + languageName + '\'' +
+                ", courseThumbnail='" + courseThumbnail + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", courseIntro='" + courseIntro + '\'' +
+                ", courseLightspot='" + courseLightspot + '\'' +
+                ", purchaseNotes='" + purchaseNotes + '\'' +
+                ", coursePrice=" + coursePrice +
+                ", courseDiscountPrice=" + courseDiscountPrice +
+                ", courseId=" + courseId +
+                ", certificateOrNot='" + certificateOrNot + '\'' +
+                ", certificateTitle='" + certificateTitle + '\'' +
+                ", certificateImageUrl='" + certificateImageUrl + '\'' +
+                ", buyOrNot='" + buyOrNot + '\'' +
+                '}';
+    }
+
     public Integer getLanguageId() {
         return languageId;
     }

@@ -13,6 +13,21 @@ public class LanguageDetailsResultBO extends BaseModel {
     private Integer languageDiscountPrice; //特惠价格
     private String buyOrNot;//是否已购买
 
+    @Override
+    public String toString() {
+        return "LanguageDetailsResultBO{" +
+                "id=" + id +
+                ", languageName='" + languageName + '\'' +
+                ", languageLightspot='" + languageLightspot + '\'' +
+                ", purchaseNotes='" + purchaseNotes + '\'' +
+                ", videoPath='" + videoPath + '\'' +
+                ", languageIntro='" + languageIntro + '\'' +
+                ", languagePrice=" + languagePrice +
+                ", languageDiscountPrice=" + languageDiscountPrice +
+                ", buyOrNot='" + buyOrNot + '\'' +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }

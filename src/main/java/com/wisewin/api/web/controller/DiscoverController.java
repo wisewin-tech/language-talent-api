@@ -6,6 +6,7 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.DiscoverParam;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.DiscoverService;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -18,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+/**
+ * wy log
+ * */
 
 @Controller
 @RequestMapping("/Discover")
@@ -25,6 +29,8 @@ public class DiscoverController extends BaseCotroller{
 
     @Resource
     private DiscoverService discoverService;
+    @Resource
+    LogService logService;
 
 
     /**
@@ -46,7 +52,7 @@ public class DiscoverController extends BaseCotroller{
      */
     @RequestMapping("/queryDiscover")
     public void queryDiscover(HttpServletRequest request, HttpServletResponse response, DiscoverParam param){
-
+        logService.startController(null,request,param.toString());
         //分页
         QueryInfo queryInfo=getQueryInfo(param.getPageNo(),param.getPageSize());
         if (queryInfo!=null){
@@ -55,13 +61,17 @@ public class DiscoverController extends BaseCotroller{
         }
 
          //查询文章 视频  做分页   list
+        logService.call("discoverService.getqueryDiscover",param.toString());
         List<DiscoverJsonBO> discoverPage=discoverService.getqueryDiscover(param);
-
+        logService.result(discoverPage.toString());
         //线下活动
+        logService.call("discoverService.getqueryDiscovertype",param.toString());
         List<DiscoverJsonBO> activity=discoverService.getqueryDiscovertype(param);
-
+        logService.result(activity.toString());
         //首页分页条件查询总数
+        logService.call("discoverService.getfindcoun",param.toString());
         int count=discoverService.getfindcoun(param.getCountnum());
+        logService.result(count);
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("discoverPage",discoverPage);
         map.put("activity",activity);
@@ -69,6 +79,7 @@ public class DiscoverController extends BaseCotroller{
 
         String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response,json);
+        logService.end("/Discover/queryDiscover",json);
         return;
     }
 
@@ -95,33 +106,40 @@ public class DiscoverController extends BaseCotroller{
 
     @RequestMapping("/queryDiscoveractivity")
     public void queryDiscoveractivity(HttpServletRequest request,HttpServletResponse response, DiscoverParam param) {
-
+        logService.startController(null,request,param.toString());
         if (param.getId()== null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
+            logService.end("/Discover/queryDiscoveractivity",json);
             return;
         }
 
         //根据id来查找发现详情
         //线下活动和文章二为合一
+        logService.call("discoverService.getqueryDiscoveractivity",param.getId());
         DiscoverBO list=discoverService.getqueryDiscoveractivity(param.getId());
-
+        logService.result(list.toString());
         if (list==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
+            logService.end("/Discover/queryDiscoveractivity",json);
             return;
         }
         //浏览次数加一
         Integer browse= list.getBrowse()+1;
         //进行修改浏览次数
+        logService.call("discoverService.getupdateDiscover",param.getId(),browse);
         boolean updatediscover=discoverService.getupdateDiscover(param.getId(),browse);
+        logService.result(updatediscover);
         if (updatediscover){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
             super.safeJsonPrint(response, json);
+            logService.end("/Discover/queryDiscoveractivity",json);
             return;
         }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
         super.safeJsonPrint(response, json);
+        logService.end("/Discover/queryDiscoveractivity",json);
         return;
     }
 
@@ -130,17 +148,21 @@ public class DiscoverController extends BaseCotroller{
      */
     @RequestMapping("/queryfindDiscover")
     public void queryfindDiscover(HttpServletRequest request,HttpServletResponse response,DiscoverParam param){
-
+        logService.startController(null,request,param.toString());
         //根据类型查找
         //显示更多，以防发现更多里面出现现在浏览的文章，在sql里面做处理
+        logService.call("discoverService.getqueryfindDiscover",param.toString());
         List<DiscoverParam> list=discoverService.getqueryfindDiscover(param);
+        logService.result(list.toString());
         if (list.equals("")){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
+            logService.end("/Discover/queryfindDiscover",json);
             return;
         }
         String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response,json);
+        logService.end("/Discover/queryfindDiscover",json);
         return;
     }
 

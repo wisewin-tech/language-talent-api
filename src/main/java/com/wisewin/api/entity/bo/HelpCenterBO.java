@@ -11,6 +11,15 @@ public class HelpCenterBO extends BaseModel {
     private String content; //内容
     private Integer serialNumber; //序号码
 
+    @Override
+    public String toString() {
+        return "HelpCenterBO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", serialNumber=" + serialNumber +
+                '}';
+    }
 
     public Integer getId() {
         return id;

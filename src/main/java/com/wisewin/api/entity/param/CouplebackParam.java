@@ -15,6 +15,21 @@ public class CouplebackParam  {
     private String disposeresult; //处理结果
     private String disposeperson; //处理人
 
+    @Override
+    public String toString() {
+        return "CouplebackParam{" +
+                "id=" + id +
+                ", userid=" + userid +
+                ", content='" + content + '\'' +
+                ", contactpattern='" + contactpattern + '\'' +
+                ", pattern='" + pattern + '\'' +
+                ", pictureurl='" + pictureurl + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", disposeresult='" + disposeresult + '\'' +
+                ", disposeperson='" + disposeperson + '\'' +
+                '}';
+    }
 
     public Integer getId() {
         return id;

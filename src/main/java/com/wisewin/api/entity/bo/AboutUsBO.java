@@ -10,6 +10,14 @@ public class AboutUsBO extends BaseModel {
     private String imageUrl; //图片路径
     private String content; //内容
 
+    @Override
+    public String toString() {
+        return "AboutUsBO{" +
+                "id=" + id +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 
     public Integer getId() {
         return id;

@@ -3,6 +3,7 @@ package com.wisewin.api.web.controller;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.*;
+import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -16,6 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * wy log
+ * */
+
+
+
 @Controller
 @RequestMapping("/language")
 public class LanguageController extends BaseCotroller{
@@ -28,7 +35,8 @@ public class LanguageController extends BaseCotroller{
     private UserService userService;
     @Resource
     private OrderService orderService;
-
+    @Resource
+    LogService logService;
     /**
      * 语言详情
      * @param id
@@ -37,9 +45,11 @@ public class LanguageController extends BaseCotroller{
      */
     @RequestMapping("/languageDetails")
     public void languageDetails(Integer id,HttpServletRequest request, HttpServletResponse response){
+        logService.startController(null,request,id);
         if (id==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, result);
+            logService.end("/language/languageDetails",result);
             return;
         }
         //获取登录用户信息
@@ -52,11 +62,15 @@ public class LanguageController extends BaseCotroller{
         }
         Integer userId = userBO.getId();
 
-
+        logService.call("languageService.languageDetails",id);
         LanguageDetailsResultBO languageBO = languageService.languageDetails(id);
+        logService.result(languageBO.toString());
+        logService.call("languageService.languageDetailsCourse",id);
         List<LanguageDetailsCourseResultBO> languageDetailsCourseResultBOS = languageService.languageDetailsCourse(id);
+        logService.result(languageDetailsCourseResultBOS);
+        logService.call("courseService.getCourseIdById",id);
         List<CourseBO> courseBOS = courseService.getCourseIdById(id);
-
+        logService.result(courseBOS);
             for (CourseBO courseBO : courseBOS) {
                 Integer courseId = courseBO.getCourseId();
                 Integer count = orderService.getStatusByCourseId(userId, courseId);
@@ -69,13 +83,11 @@ public class LanguageController extends BaseCotroller{
             if (courseBOS.size()==0&&languageBO!=null){
                 languageBO.setBuyOrNot("no");
             }
-
-
-
         Map resultmap = new HashMap();
         resultmap.put("language",languageBO);
         resultmap.put("course",languageDetailsCourseResultBOS);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultmap));
+        logService.end("/language/languageDetails",result);
         super.safeJsonPrint(response, result);
     }
 
@@ -87,18 +99,25 @@ public class LanguageController extends BaseCotroller{
     @RequestMapping("/languageList")
     public void  languageList(HttpServletRequest request,HttpServletResponse response){
         UserBO userBO = super.getLoginUser(request);
+        logService.startController(userBO,request);
         if (userBO==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, result);
+            logService.end("/language/languageList",result);
             return;
         }
         Integer userId = userBO.getId();
+        logService.call("languageService.myStudyLanguage",userId);
         List<LanguageBO> languageBO = languageService.myStudyLanguage(userId);
+        logService.result(languageBO);
+        logService.call("languageService.languageList");
         List<LanguageBO> languageBO1 = languageService.languageList();
+        logService.result(languageBO1);
         Map resultMap = new HashMap();
         resultMap.put("myStudyLanguage",languageBO);
         resultMap.put("languageList",languageBO1);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
+        logService.end("/language/languageList",result);
         super.safeJsonPrint(response, result);
 
     }
@@ -111,20 +130,26 @@ public class LanguageController extends BaseCotroller{
      */
     @RequestMapping("/updateStudyingLanguage")
     public void updateStudyingLanguage(Integer studyingLanguageId,HttpServletRequest request,HttpServletResponse response){
-        if (studyingLanguageId==null){
-            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeJsonPrint(response, result);
-            return;
-        }
         UserBO userBO = super.getLoginUser(request);
+        logService.startController(userBO,request,studyingLanguageId);
         if (userBO==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, result);
+            logService.end("/language/updateStudyingLanguage",result);
             return;
         }
+        if (studyingLanguageId==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, result);
+            logService.end("/language/updateStudyingLanguage",result);
+            return;
+        }
+
         Integer id = userBO.getId();
+        logService.call("userService.userUpdate",id,studyingLanguageId);
         userService.userUpdate(id,studyingLanguageId);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改我正在学习的语言成功！"));
+        logService.end("/language/updateStudyingLanguage",result);
         super.safeJsonPrint(response, result);
 
     }
