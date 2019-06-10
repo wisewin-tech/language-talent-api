@@ -42,7 +42,7 @@ public class PurchaseController extends BaseCotroller {
         log.info("请求ip{}", RequestUtils.getIpAddress(request));
         log.info("请求id{}",id);
         log.info("请求state{}",state);
-       UserBO userBO = super.getLoginUser(request);
+        UserBO userBO = super.getLoginUser(request);
         if(StringUtils.isEmpty(id)){
             log.info("StringUtils.isEmpty(id),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));

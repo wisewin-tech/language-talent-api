@@ -128,7 +128,7 @@
 
 
     <select id="selectUser"  parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.UserBO">
-      SELECT 	* FROM language_talent.lt_user where id = #{userId}
+      SELECT 	* FROM language_talent.lt_user where id = #{id}
     </select>
 
          <!--扣减用户咖豆-->
