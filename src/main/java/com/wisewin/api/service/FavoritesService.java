@@ -6,17 +6,23 @@ import com.wisewin.api.entity.bo.DiscoverResultBO;
 import com.wisewin.api.entity.bo.FavoritesResultBO;
 import com.wisewin.api.entity.bo.MyFavoriteBO;
 import com.wisewin.api.entity.bo.SpecialResultBO;
+import com.wisewin.api.service.base.LogService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * wy log
+ * */
 @Service
 public class FavoritesService {
     @Resource
     private FavoritesDAO favoritesDAO;
 
+    @Resource
+    private LogService logService;
     /**
      * 查询课时收藏,map封装了用户id,页数,每页行数
      * @param map
@@ -56,12 +62,18 @@ public class FavoritesService {
     public boolean insertCollect(Integer userId,Integer sourceId,String source ){
         //创建 收藏表对象,把用户id和收藏来源id放进去
         MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,sourceId,source);
+        logService.call("favoritesDAO.selectAll",favoriteBO.toString());
        Integer i=favoritesDAO.selectAll(favoriteBO);
+       logService.result(i);
        if (i>0){  //如果收藏表已经有这个记录
+           logService.call("favoritesDAO.delCollect",favoriteBO.toString());
            favoritesDAO.delCollect(favoriteBO);
+           logService.end("FavoritesService/insertCollect","false");
            return false;
        }else{
+           logService.call("favoritesDAO.insertCollect",favoriteBO.toString());
            favoritesDAO.insertCollect(favoriteBO);
+           logService.end("FavoritesService/insertCollect","true");
            return true;
        }
 
