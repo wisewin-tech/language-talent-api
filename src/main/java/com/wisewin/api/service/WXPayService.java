@@ -41,26 +41,26 @@ public class WXPayService {
     //给安卓返回预支付信息调用支付
     //插入未支付订单
     public Map<String, String> getUnifiedOrder(OrderParam orderParam) throws Exception {
-        logService.serviceStart("com.wisewin.pai.service.WXPayService.getUnifiedOrder",orderParam.toString());
+        logService.serviceStart("WXPayService.getUnifiedOrder",orderParam);
         //1.获取请求参数
-        logService.call("com.wisewin.pai.service.WXPayService.getWXPayParams",orderParam.toString());
+        logService.call("WXPayService.getWXPayParams",orderParam);
         Map<String, String> map = getWXPayParams(orderParam);
-        logService.end("com.wisewin.pai.service.WXPayService.getWXPayParams",map.toString());
+        logService.result("WXPayService.getWXPayParams",map);
 
         //2.第一次签名
-        logService.call("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",map.toString());
+        logService.call("WXUtil.WXPayUtil.generateSignedXml",map);
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
-        logService.end("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",mapStr);
+        logService.result("WXUtil.WXPayUtil.generateSignedXml",mapStr);
 
         //3.发送请求 获取到预支付信息  partnerid
-        logService.call("com.wisewin.pai.service.WXPayService.getCodeUrl",mapStr);
+        logService.call("WXPayService.getCodeUrl",mapStr);
         String result = getCodeUrl(mapStr);
-        logService.end("com.wisewin.pai.service.WXPayService.getCodeUrl",result);
+        logService.result("WXPayService.getCodeUrl",result);
 
         //预支付订单信息Map
-        logService.call("com.wisewin.pai.util.WXUtil.WXPayUtil.xmlToMap",result);
+        logService.call("WXPayUtil.xmlToMap",result);
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
-        logService.end("com.wisewin.pai.util.WXUtil.WXPayUtil.xmlToMap",resultMap.toString());
+        logService.result("WXPayUtil.xmlToMap",resultMap);
 
         //4.初始化二次签名信息 用第一次请求拿到的信息中的prepayid
         Map<String, String> twoMap = new HashMap<String, String>();
@@ -74,7 +74,7 @@ public class WXPayService {
         //6.第二次签名 把这个签名给安卓拉起支付请求
         logService.call("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",result);
         String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
-        logService.end("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",twoMapStr);
+        logService.result("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",twoMapStr);
         //给前端调用的Map
         twoMap = WXPayUtil.xmlToMap(twoMapStr);
         //存入自己的数据库
@@ -115,7 +115,9 @@ public class WXPayService {
             if (return_code.equals("SUCCESS")&&result_code.equals("SUCCESS")) {//交易成功
                 if (out_trade_no != null) {//商户订单号
                     //订单状态为未支付
+                    logService.call("orderDAO.getOrderByOrderNumber",out_trade_no);
                     String status=orderDAO.getOrderByOrderNumber(out_trade_no).getStatus();
+                    logService.result(status);
                     if(!status.equals("yes")){
                         if (productType.equals("currency")) {
                             //调用充值咖豆的方法
@@ -251,7 +253,7 @@ public class WXPayService {
             //回调地址
             map.put("notify_url", WXConfig.NOTIFY_URL_LANGUAGE);
         }
-        logService.result(orderParam.toString());
+        logService.end("WXPayService.getWXPayParams",orderParam.toString());
         return map;
 
     }
