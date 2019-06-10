@@ -56,7 +56,7 @@ public class SpecialController extends BaseCotroller {
         Integer userId=this.getId(request);
 
         SpecialBO specialBO = specialService.selectSpecialBOById(userId,specialId);//点进去查看的专题
-        if(specialBO==null||specialBO.getVideoCover()==null){
+        if(specialBO==null){
             String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000026"));
             super.safeHtmlPrint(response,languagejson);
             return;
