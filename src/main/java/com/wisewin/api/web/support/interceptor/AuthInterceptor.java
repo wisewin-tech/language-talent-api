@@ -2,6 +2,8 @@ package com.wisewin.api.web.support.interceptor;
 
 import com.google.common.collect.Sets;
 import com.wisewin.api.common.constants.SysConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -21,7 +23,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 //    @Autowired
 //    private SystemService systemService ;
-
+private static final Logger logger = LoggerFactory.getLogger(AuthInterceptor.class);
     // 不需要过滤的URL
     public static final Set<String> unCheckList = Sets.newHashSet("/client/login" , "/client/toLogin" , "/order/add" , "/apiCourse/toJoin") ;
 
@@ -90,7 +92,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
-//        System.out.println("==============执行顺序: 3、afterCompletion================");
+        if(ex!=null){
+            logger.error("Exception:",ex);
+        }
     }
 
     /**

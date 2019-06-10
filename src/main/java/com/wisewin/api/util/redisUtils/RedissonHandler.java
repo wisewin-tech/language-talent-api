@@ -310,9 +310,8 @@ public class RedissonHandler {
 //        RedissonHandler.getInstance().set("user", userDO, 100l);
 
 //        RedissonHandler.getInstance().delete("user");
-        String u2 = RedissonHandler.getInstance().get("suntestkey");
-
-        System.out.println(u2);
+        Object u2 = RedissonHandler.getInstance().get("log");
+        System.out.println((Boolean) u2);
     }
 
 
