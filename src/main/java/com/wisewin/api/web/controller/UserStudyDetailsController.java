@@ -117,7 +117,7 @@ public class UserStudyDetailsController extends BaseCotroller {
                 }else {
                     if (yesterdayStudyDetails==null){
                         continuousLearning = 1;
-                        cumulativeLearning = cumulativeLearning + 1;
+                        //cumulativeLearning = cumulativeLearning + 1;
                         logService.call("userService.updateUserStudyDays",cumulativeLearning,userId);
                         userService.updateUserStudyDays(continuousLearning,cumulativeLearning,userId);
                     }
