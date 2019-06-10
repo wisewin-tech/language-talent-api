@@ -86,7 +86,7 @@ public class ChapterController extends BaseCotroller {
         }
         logService.call("ChapterService.chapterDetails",id);
         ChapterBO chapterBO = chapterService.chapterDetails(id);
-        logService.result(chapterBO.toString());
+        logService.result(chapterBO);
 
         logService.call("orderService.getStatusByCourseId",userId,courseId);
         Integer count = orderService.getStatusByCourseId(userId,courseId);
@@ -120,7 +120,7 @@ public class ChapterController extends BaseCotroller {
         }
         logService.call("chapterService.getChapterCatalogue",levelId);
         List<ChapterBO> chapterBOList = chapterService.getChapterCatalogue(levelId);
-        logService.result(chapterBOList.toString());
+        logService.result(chapterBOList);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBOList));
         super.safeJsonPrint(response, result);
         logService.end("/chapter/getChapterCatalogue",result);

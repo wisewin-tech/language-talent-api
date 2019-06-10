@@ -36,7 +36,7 @@ public class WXPayController extends BaseCotroller {
 
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
-        logService.startController(loginUser,request,orderParam.toString());
+        logService.startController(loginUser,request,orderParam);
 
         if (loginUser == null) {
             //用户登陆过期
@@ -57,7 +57,7 @@ public class WXPayController extends BaseCotroller {
         }
 
         orderParam.setUserId(id);
-        logService.call("wxPayService.getUnifiedOrder",orderParam.toString());
+        logService.call("wxPayService.getUnifiedOrder",orderParam);
         Map<String,String> resultMap=wxPayService.getUnifiedOrder(orderParam);
         logService.result(resultMap);
 

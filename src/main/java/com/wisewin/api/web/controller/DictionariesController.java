@@ -40,7 +40,7 @@ public class DictionariesController extends BaseCotroller {
         logService.startController(null,request,outer);
         logService.call("dictionariesService.getqueryDictionaries",outer);
         List<DictionariesBO> list=dictionariesService.getqueryDictionaries(outer);
-        logService.result(list.toString());
+        logService.result(list);
         String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         logService.end("/Dictionaries/queryDictionaries",json);
         super.safeJsonPrint(response,json);

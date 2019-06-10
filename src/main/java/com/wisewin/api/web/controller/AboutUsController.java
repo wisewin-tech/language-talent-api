@@ -39,7 +39,7 @@ public class AboutUsController extends BaseCotroller {
         //通过查询信息,返回aboutUs对象
         logService.call("AboutUsService.selectContent");
         AboutUsBO aboutUs=aboutUsService.selectContent();
-        logService.result(aboutUs.toString());
+        logService.result(aboutUs);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(aboutUs));
         logService.result(json);
         super.safeJsonPrint(response, json);

@@ -59,7 +59,7 @@ public class HelpCenterController extends BaseCotroller {
         }
         logService.call("helpCenterService.getparticulars",id);
         HelpCenterBO helpCenterBO = helpCenterService.getparticulars(id);
-        logService.result(helpCenterBO.toString());
+        logService.result(helpCenterBO);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(helpCenterBO));
         super.safeJsonPrint(response, result);
     }

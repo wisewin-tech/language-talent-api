@@ -50,7 +50,7 @@ public class CourseController extends BaseCotroller {
         //查看课程详情
         logService.call("courseService.courseDetailsCourse",id);
         CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
-        logService.result(courseDetailsResultBO.toString());
+        logService.result(courseDetailsResultBO);
         List<CourseDetailsLevelResultBO> levelBOS= courseService.courseDetailsLevel(id);
         Integer count = orderService.getStatusByCourseId(userId,id);
         if (courseDetailsResultBO!=null) {
@@ -87,7 +87,7 @@ public class CourseController extends BaseCotroller {
         }
         logService.call("courseService.courseSearch",languageName);
         List<CourseDetailsResultBO> courseBOList = courseService.courseSearch(languageName);
-        logService.result(courseBOList.toString());
+        logService.result(courseBOList);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(courseBOList));
         logService.end("/course/courseSearch",json);
         super.safeJsonPrint(response, json);
@@ -103,7 +103,7 @@ public class CourseController extends BaseCotroller {
         logService.startController(null,request);
         logService.call("courseService.hotCourse");
         List<HotCourseResultBO> hotCourseResultBOS = courseService.hotCourse();
-        logService.result(hotCourseResultBOS.toString());
+        logService.result(hotCourseResultBOS);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(hotCourseResultBOS));
         super.safeJsonPrint(response, json);
         logService.end("/course/getHotCourse",json);

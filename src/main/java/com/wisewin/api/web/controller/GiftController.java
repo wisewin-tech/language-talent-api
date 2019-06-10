@@ -42,7 +42,7 @@ public class GiftController extends BaseCotroller{
 
         //获取当前用户
         UserBO loginUser = super.getLoginUser(request);
-        logService.startController(loginUser,request,param.toString());
+        logService.startController(loginUser,request,param);
         Integer id = loginUser.getId();
 
         if (param.getExchangeyard().equals("") || id==null){
@@ -58,11 +58,11 @@ public class GiftController extends BaseCotroller{
         //根据礼品兑换码查找
         logService.call("giftService.getqueryGift",param.getExchangeyard());
         GiftBO gift=giftService.getqueryGift(param.getExchangeyard());
-        logService.result(gift.toString());
+        logService.result(gift);
         //根据用户id查找
         logService.call("userService.selectById",id);
         UserBO userBO=userService.selectById(id);
-        logService.result(userBO.toString());
+        logService.result(userBO);
         //时间
         Date date1=new Date();
 

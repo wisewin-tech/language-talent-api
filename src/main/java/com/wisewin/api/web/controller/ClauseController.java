@@ -41,7 +41,7 @@ public class ClauseController extends BaseCotroller {
         }
         logService.call("clauseService.selectClauseBOByClassify",classify);
         ClauseBO ClauseBO=clauseService.selectClauseBOByClassify(classify);
-        logService.result(ClauseBO.toString());
+        logService.result(ClauseBO);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(ClauseBO));
         logService.end("/Clause/selectClauseBOByClassifv",json);
         super.safeJsonPrint(response,json);

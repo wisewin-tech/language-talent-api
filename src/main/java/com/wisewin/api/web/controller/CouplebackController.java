@@ -40,7 +40,7 @@ public class CouplebackController  extends BaseCotroller {
     public void addCpupleback(HttpServletRequest request, HttpServletResponse response, CouplebackParam param){
         //获取当前用户
         UserBO loginUser = super.getLoginUser(request);
-        logService.startController(loginUser,request,param.toString());
+        logService.startController(loginUser,request,param);
         if (loginUser==null || StringUtils.isEmpty(param.getContent())){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
