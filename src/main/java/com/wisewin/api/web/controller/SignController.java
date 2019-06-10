@@ -5,7 +5,10 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.SignService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,6 +26,8 @@ import java.util.Map;
 @RequestMapping("/sign")
 public class SignController extends BaseCotroller {
 
+    static final Logger log = LoggerFactory.getLogger(SignController.class);
+
     @Resource
     private SignService signService;
 
@@ -34,22 +39,31 @@ public class SignController extends BaseCotroller {
      */
     @RequestMapping("/selectSign")
     public void selectSign(HttpServletResponse response, HttpServletRequest request)  {
+        log.info("start==================================================com.wisewin.api.web.controller.SignController.selectSign=============================================");
+        log.info("请求ip{}", RequestUtils.getIpAddress(request));
         UserBO userBO = super.getLoginUser(request);
+        log.info("userBo{}",userBO);
         if (userBO==null){
+            log.info("userBo==null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
         Integer userId=userBO.getId();
         if (userId==null){
+            log.info("userId==nullreturn");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
+        log.info("调用com.wisewin.api.service.SignService.selectMon");
         Map<String,Object> map=signService.selectMon(userId);
+        log.info("com.wisewin.api.service.SignService.selectMon返回{}",map);
 
 
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
+        log.info("return{}",json);
+        log.info("end================================================com.wisewin.api.web.controller.SignController.selectSign=======================================================");
         super.safeJsonPrint(response, json);
 
 
@@ -63,18 +77,27 @@ public class SignController extends BaseCotroller {
      */
     @RequestMapping("/signIn")
     public void signIn(HttpServletResponse response, HttpServletRequest request)  {
+        log.info("start=================================com.wisewin.api.web.controller.SignController.signIn===============================");
+        log.info("请求ip{}",RequestUtils.getIpAddress(request));
         Integer userId=super.getId(request);
         if (userId==null){
+            log.info("userId==null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
             //如果今天第一次签到
         if ( signService.signIn(userId)){
+            log.info("如果今天第一次签到");
+            log.info("进入signService.signIn(userId)");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+            log.info("return{}",json);
+            log.info("end=================================com.wisewin.api.web.controller.SignController.signIn===================================");
             super.safeJsonPrint(response, json);
         }else{
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000013"));
+            log.info("return{}",json);
+            log.info("end=================================com.wisewin.api.web.controller.SignController.signIn===================================");
             super.safeJsonPrint(response, json);
         }
 

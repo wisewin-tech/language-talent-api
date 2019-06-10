@@ -9,8 +9,11 @@ import com.wisewin.api.entity.param.LikerelationParam;
 import com.wisewin.api.service.DiscoverService;
 import com.wisewin.api.service.LikerelatioService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,6 +26,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/Likerelation")
 public class LikerelationController extends BaseCotroller{
+
+    static final Logger log = LoggerFactory.getLogger(LikerelationController.class);
 
     @Resource
     private LikerelatioService likerelatioService;
@@ -37,10 +42,14 @@ public class LikerelationController extends BaseCotroller{
      */
     @RequestMapping("/findLikerelation")
     public void findLikerelation(HttpServletRequest request, HttpServletResponse response, LikerelationParam param){
+        log.info("start========================com.wisewin.api.web.controller.LikerelationController.findLikerelation===========================");
+        log.info("请求ip{}", RequestUtils.getIpAddress(request));
+        log.info("参数param{}",param);
         //获取当前用户id
         UserBO loginUser = super.getLoginUser(request);
         Integer id = loginUser.getId();
         if (id==null || StringUtils.isObjEmpty(param.getDcId())){
+            log.info("id==null || StringUtils.isObjEmpty(param.getDcId()),return");
          String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
          super.safeJsonPrint(response, json);
          return;
@@ -73,6 +82,9 @@ public class LikerelationController extends BaseCotroller{
         int likeCount = likerelatioService.queryLikereCount(param.getDcId());
         resultMap.put("likeCount",likeCount);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
+        log.info("return{}",json);
+        log.info("end========================com.wisewin.api.web.controller.LikerelationController.findLikerelation===========================");
         super.safeJsonPrint(response, json);
+        return;
         }
 }

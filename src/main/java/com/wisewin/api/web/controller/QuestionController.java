@@ -5,7 +5,10 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.QuestionService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,6 +26,8 @@ import java.util.Map;
 @RequestMapping("/question")
 public class QuestionController extends BaseCotroller{
 
+    static final Logger log = LoggerFactory.getLogger(QuestionController.class);
+
     @Resource
     private QuestionService questionService;
 
@@ -39,8 +44,14 @@ public class QuestionController extends BaseCotroller{
      */
     @RequestMapping(value = "/listQuestion")
     public void queryWarmUp(HttpServletRequest request, HttpServletResponse response,Integer relevanceId, String questionType, String testType){
+      log.info("start============================com.wisewin.api.web.controller.QuestionController.queryWarmUp====================");
+      log.info("请求ip{}", RequestUtils.getIpAddress(request));
+      log.info("参数relevanceId{}",relevanceId);
+      log.info("参数questionType{}",questionType);
+      log.info("参数testType{}",testType);
        UserBO userBO = super.getLoginUser(request);
         if(userBO == null){
+            log.info("userBo == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
@@ -67,6 +78,9 @@ public class QuestionController extends BaseCotroller{
         map.put("testType",testType);
         List<QuestionBO> list = questionService.queryQuestionList(map);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
+        log.info("return{}", json);
+        log.info("end============================com.wisewin.api.web.controller.QuestionController.queryWarmUp====================");
+
         super.safeJsonPrint(response, json);
     }
 }

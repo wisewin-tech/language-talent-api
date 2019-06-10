@@ -304,17 +304,25 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/openidLogin")
     public void openidLogin(HttpServletRequest request, HttpServletResponse response, String openid, String status) {
+        log.info("start=============================com.wisewin.api.web.controller.UserController.openidLogin=========================");
+        log.info("请求id:{}",RequestUtils.getIpAddress(request));
+        log.info("参数openid:{}",openid);
+        log.info("参数status:{}",status);
         //参数异常
         if (openid == null || status == null || openid.equals("") || status.equals("")) {
+            log.info("openid == null || status == null || openid.equals(\"\") || status.equals(\"\"),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
+        log.info("获取到和openid绑定的手机号");
+        log.info("调用com.wisewin.api.service.UserService.checkBind");
         //获取到和openid绑定的手机号
         String mobile = userService.checkBind(openid, status);
-
+        log.info("com.wisewin.api.service.UserService.checkBind返回{}",mobile);
         //手机号是空的代表没有和openid绑定过
         if (mobile == null) {
+            log.info("mobile == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000059"));
             super.safeJsonPrint(response, json);
             return;
@@ -322,13 +330,17 @@ public class UserController extends BaseCotroller {
         //返回给前端的数据
         Map<String, Object> mapUser = new HashMap<String, Object>();
 
+        log.info("存入redis的用户信息");
+        log.info("调用com.wisewin.api.service.UserService.selectByPhone");
         //存入redis的用户信息
         UserBO userBO = userService.selectByPhone(mobile);
-
+        log.info("com.wisewin.api.service.UserService.selectByPhone返回{}",userBO);
         //islogin 是否为登录, yes 登录
         if (UserConstants.Yes.getValue().equals(userBO.getStatus())) {
             //状态,是否被拉黑  yes:拉黑,no:账号正常使用
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
+            log.info("return{}",json);
+            log.info("end=============================com.wisewin.api.web.controller.UserController.openidLogin=========================");
             super.safeJsonPrint(response, json);
             return;
         } else {
@@ -338,6 +350,8 @@ public class UserController extends BaseCotroller {
             mapUser.put("userId", userBO.getId());
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
             super.safeJsonPrint(response, json);
+            log.info("return{}",json);
+            log.info("end=============================com.wisewin.api.web.controller.UserController.openidLogin=========================");
             return;
         }
 
@@ -349,43 +363,70 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/bindOpenidLogin")
     public void openidLogin(String phone, String verify, String status, String openid, HttpServletRequest request, HttpServletResponse response) {
+        log.info("start===============================com.wisewin.api.web.controller.UserController.openidLogin===========================");
+        log.info("请求ip{}",RequestUtils.getIpAddress(request));
+        log.info("参数phone:{}",phone);
+        log.info("参数verify:{}",verify);
+        log.info("参数status:{}",status);
+        log.info("参数openid:{}",openid);
+
+        log.info("com.wisewin.api.web.controller.UserController.phoneFormt手机号非空+格式判断");
         //手机号非空+格式判断
         this.phoneFormt(phone, response);
         //用户传参非空判断
         if (StringUtils.isEmpty(verify) || StringUtils.isEmpty(status) || StringUtils.isEmpty(openid)) {
+            log.info("用户传参非空判断");
+            log.info("StringUtils.isEmpty(verify) || StringUtils.isEmpty(status) || StringUtils.isEmpty(openid),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
+        log.info("mobileAuthCode{}",mobileAuthCode);
         Map<String, Object> mapUser = new HashMap<String, Object>();
 
         //如果和用户收到的验证码相同
         if (verify.equals(mobileAuthCode)) {
+            log.info("如果和用户收到的验证码相同");
             //通过手机号查询表中是否有该用户
+            log.info("通过手机号查询表中是否有该用户");
+            log.info("调用com.wisewin.api.service.UserService.selectByPhone");
             UserBO userBO = userService.selectByPhone(phone);
+            log.info("com.wisewin.api.service.UserService.selectByPhone返回{}",userBO);
             if (userBO != null) {
+                log.info("userBO != null");
                 //islogin 是否为登录, yes 登录
                 if (UserConstants.Yes.getValue().equals(userBO.getStatus())) {
                     //状态,是否被拉黑  yes:拉黑,no:账号正常使用
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
                     super.safeJsonPrint(response, json);
+                    log.info(json);
                 } else {
+                    log.info("user对象存入cookie中");
+                    log.info("调用com.wisewin.api.web.controller.UserController.putUser");
                     //user对象存入cookie中
                     this.putUser(response, userBO);
                     mapUser.put("islogin", UserConstants.Yes.getValue());
                     mapUser.put("userId", userBO.getId());
+                    log.info("绑定openid");
+                    log.info("调用com.wisewin.api.service.UserService.bindOpenId");
                     //绑定openid
                     userService.bindOpenId(phone, status, openid);
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                     super.safeJsonPrint(response, json);
+                    log.info("return{}",json);
+                    log.info("end================================com.wisewin.api.web.controller.UserController.openidLogin===========================");
                 }
             } else { //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
                 UserBO userBO1 = new UserBO();
                 userBO1.setMobile(phone);
+                log.info("调用com.wisewin.api.service.UserService.insertUser");
                 userService.insertUser(userBO1);
+                log.info("绑定openid");
+                log.info("调用com.wisewin.api.service.UserService.bindOpenId");
                 //绑定openid
                 userService.bindOpenId(phone, status, openid);
+                log.info("调用com.wisewin.api.service.UserService.selectByPhone");
                 userBO1 = userService.selectByPhone(phone);
 
                 //islogin 是否为登录, yes 登录
@@ -395,11 +436,15 @@ public class UserController extends BaseCotroller {
                 this.putUser(response, userBO1);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                 super.safeJsonPrint(response, json);
+                log.info("return{}",json);
+                log.info("end================================com.wisewin.api.web.controller.UserController.openidLogin===========================");
             }
 
         } else {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000011"));
             super.safeJsonPrint(response, json);
+            log.info("return{}",json);
+            log.info("end================================com.wisewin.api.web.controller.UserController.openidLogin===========================");
         }
 
 
@@ -413,29 +458,46 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/update")
     public void updateUser(HttpServletResponse response, HttpServletRequest request, UserParam userParam,String status) {
+        log.info("start=======================================com.wisewin.api.web.controller.UserController.updateUser==============================");
+        log.info("请求ip{}",RequestUtils.getIpAddress(request));
+        log.info("参数userparam:{}",userParam);
+        log.info("参数status:{}",status);
+        log.info("从cookie中获取他的user对象的id");
+        log.info("调用com.wisewin.api.web.controller.UserController.getId");
         //从cookie中获取他的user对象的id
         Integer id = this.getId(request);
+        log.info("com.wisewin.api.web.controller.UserController.getId返回{}",id);
         //如果获取不到,参数异常
         if (id == null) {
+            log.info("如果获取不到,参数异常");
+            log.info("id == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
         }
         //如果获取到了,判断user参数不为空
         if (ParamNullUtil.checkObjAllFieldsIsNull(userParam)) {
+            log.info("如果获取到了,判断user参数不为空");
+            log.info("(ParamNullUtil.checkObjAllFieldsIsNull(userParam),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
 
         //如果修改绑定的微信或者qq 检查这个openid是否已经被绑定
         String qqid=userParam.getQqOpenid();
+        log.info("qqid{}",qqid);
         if(!StringUtils.isEmpty(qqid)){
+            log.info("!StringUtils.isEmpty(qqid)");
+            log.info("调用com.wisewin.api.service.UserService.checkBind");
             String mobile=userService.checkBind(qqid,"QQ");
+            log.info("com.wisewin.api.service.UserService.checkBind返回{}",mobile);
             if(!StringUtils.isEmpty(mobile)){
+                log.info("!StringUtils.isEmpty(mobile),return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000059"));
                 super.safeJsonPrint(response, json);
                 return;
             }
         }
+
         String wxid=userParam.getWxOpenid();
         if(!StringUtils.isEmpty(wxid)){
             String mobile=userService.checkBind(wxid,"WX");
@@ -463,15 +525,23 @@ public class UserController extends BaseCotroller {
     @RequestMapping("/upPicture")
     public void upPicture(HttpServletResponse response, HttpServletRequest request, MultipartFile image, UserParam userParam)
             throws Exception {
+        log.info("start=====================================com.wisewin.api.web.controller.UserController.upPicture===================");
+        log.info("请求ip{}",request);
+        log.info("从cookie中获取他的user对象的id");
+        log.info("调用com.wisewin.api.web.controller.UserController.getId");
+
         //从cookie中获取他的user对象的id
         Integer id = this.getId(request);
+        log.info("com.wisewin.api.web.controller.UserController.getId返回{}",id);
         //如果获取不到,参数异常
         if (id == null) {
+            log.info("id == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
         //图片非空判断
         if (image == null) {
+            log.info("image == null  return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
         }
@@ -482,8 +552,11 @@ public class UserController extends BaseCotroller {
         userParam.setHeadPortraitUrl(name);
         //把id设置到user参数对象中
         userParam.setId(id);
+        log.info("调用com.wisewin.api.service.UserService.updateUser");
         userService.updateUser(userParam);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+        log.info("return,{}",json);
+        log.info("end=====================================com.wisewin.api.web.controller.UserController.upPicture===================");
         super.safeJsonPrint(response, json);
     }
 
@@ -496,10 +569,15 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/selectUser")
     public void selectUser(HttpServletResponse response, HttpServletRequest request) throws Exception {
+        log.info("start=====================================com.wisewin.api.web.controller.UserController.upPicture===================");
+        log.info("请求ip{}",RequestUtils.getIpAddress(request));
+
+        log.info("从cookie中获取他的user对象的id");
         //从cookie中获取他的user对象的id
         UserBO user = this.getLoginUser(request);
         //如果获取不到,参数异常
         if ( user == null||user.getId()==null) {
+            log.info("如果获取不到,参数异常");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
         }
@@ -539,18 +617,25 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/selectUserCert")
     public void selectUserMedal(HttpServletResponse response, HttpServletRequest request) throws Exception {
+        log.info("start===================com.wisewin.api.web.controller.UserController.selectUserMedal==========");
+        log.info("请求ip{}",request);
         //从cookie中获取他的user对象的id
         UserBO user = this.getLoginUser(request);
+        log.info("从cookie中获取他的user对象的id");
+        log.info("user,{}",user);
         //如果获取不到,参数异常
         if (user == null) {
+            log.info("user == null");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
         }
         //查询用户证书
-       List<CateBO> certificateResultBOS = certificateService.queryCateList(user.getId()+"");
+        List<CateBO> certificateResultBOS = certificateService.queryCateList(user.getId()+"");
         System.out.println(certificateResultBOS);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(certificateResultBOS));
         super.safeJsonPrint(response, json);
+        log.info("return{}",json);
+        log.info("end===================com.wisewin.api.web.controller.UserController.selectUserMedal==========");
     }
 
 }

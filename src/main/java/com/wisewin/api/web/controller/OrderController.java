@@ -7,8 +7,11 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.OrderService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
@@ -21,6 +24,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/order")
 public class OrderController extends BaseCotroller {
+
+    static final Logger log = LoggerFactory.getLogger(OrderController.class);
+
     @Resource
     private OrderService orderService;
 
@@ -33,9 +39,14 @@ public class OrderController extends BaseCotroller {
      */
     @RequestMapping("/selectAll")
     public void selectSign(Integer pageNo, Integer pageSize, HttpServletResponse response, HttpServletRequest request) {
+        log.info("start==================================com.wisewin.api.web.controller.OrderController.selectSign===========================================");
+        log.info("请求ip{}", RequestUtils.getIpAddress(request));
+        log.info("参数pageNo{}",pageNo);
+        log.info("参数pageSize{}",pageSize);
         //判断用户id是否为空,即:用户是否登录
         UserBO user = super.getLoginUser(request);
         if (user== null ) {
+            log.info("user== null,retrun");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
@@ -54,36 +65,48 @@ public class OrderController extends BaseCotroller {
         //吧封装好的条件传给service
         List<OrderBO> list= orderService.selectAll(condition);
         if(list == null){
+            log.info("list == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000039"));
             super.safeJsonPrint(response, json);
             return;
         }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response, json);
-
+        log.info("return{}",json);
+        log.info("end===================================com.wisewin.api.web.controller.OrderController.selectSign===========================");
+        return;
     }
     @RequestMapping("/selectDetails")
     public void selectDetails(String id,HttpServletResponse response, HttpServletRequest request) {
+        log.info("start=============================com.wisewin.api.web.controller.OrderController.selectDetails===========================");
+        log.info("请求ip{}",RequestUtils.getIpAddress(request));
+        log.info("参数id{}",id);
         //判断用户id是否为空,即:用户是否登录
         UserBO user = super.getLoginUser(request);
         if (StringUtils.isEmpty(id)) {
+            log.info("StringUtils.isEmpty(id),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
         if(user == null){
+            log.info("user == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
         OrderBO orderBO=orderService.selectDetails(Integer.parseInt(id),user.getId());
         if(orderBO == null){
+            log.info("orderBO == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000038"));
             super.safeJsonPrint(response, json);
             return;
         }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(orderBO));
         super.safeJsonPrint(response, json);
+        log.info("return{}",json);
+        log.info("end===================================com.wisewin.api.web.controller.OrderController.selectDetails===========================");
+        return;
     }
 }
 
