@@ -553,4 +553,90 @@ public class UserController extends BaseCotroller {
         super.safeJsonPrint(response, json);
     }
 
+    /**
+     *  邀请好友注册
+     * @param phone 手机号
+     * @param verify 验证码
+     * @param byInvite 被邀请人id
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/inviteFriendReg")
+    public void inviteFriendReg(String phone, String verify,String byInvite,HttpServletRequest request,HttpServletResponse response){
+        log.info("start==========================com.wisewin.api.web.controller.UserController.inviteFriendReg=================================");
+        log.info("请求id:{}",RequestUtils.getIpAddress(request));
+        log.info("参数phone:{}",phone);
+        log.info("参数verify:{}",verify);
+        log.info("调用com.wisewin.api.web.controller.UserController.phoneFormt手机号非空+格式判断");
+        //手机号非空+格式判断
+        this.phoneFormt(phone, response);
+        //用户传参非空判断
+        if (StringUtils.isEmpty(verify)) {
+            log.info("StringUtils.isEmpty(verify),return");
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+        }
+        //获取Redis中的用户验证码
+        String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
+        log.info("获取Redis中的用户验证码:{}",mobileAuthCode);
+
+        Map<String, Object> mapUser = new HashMap<String, Object>();
+
+        //如果和用户收到的验证码相同
+        if (verify.equals(mobileAuthCode)) {
+            log.info("如果和用户收到的验证码相同");
+            //通过手机号查询表中是否有该用户
+            log.info("通过手机号查询表中是否有该用户");
+            log.info("调用com.wisewin.api.service.UserService.selectByPhone");
+            UserBO userBO = userService.selectByPhone(phone);
+            log.info("com.wisewin.api.service.UserService.selectByPhone返回{}",userBO);
+            if (userBO != null) {
+                log.info("userBO != null");
+                //islogin 是否为登录, yes 登录
+                if (UserConstants.Yes.getValue().equals(userBO.getStatus())) {
+                    //状态,是否被拉黑  yes:拉黑,no:账号正常使用
+                    log.info("状态,是否被拉黑  yes:拉黑,no:账号正常使用");
+                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
+                    log.info(json);
+                    super.safeJsonPrint(response, json);
+                } else {
+                    //user对象存入cookie中
+                    this.putUser(response, userBO);
+                    mapUser.put("islogin", UserConstants.Yes.getValue());
+                    mapUser.put("userId", userBO.getId());
+
+                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
+                    log.info("json");
+                    super.safeJsonPrint(response, json);
+                }
+            } else { //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
+                UserBO userBO1 = new UserBO();
+                userBO1.setMobile(phone);
+                userBO1.setByInvite(byInvite);
+                log.info("调用com.wisewin.api.service.UserService.insertUser");
+                userService.insertUser(userBO1);
+                log.info("调用com.wisewin.api.service.UserService.selectByPhone");
+                userBO1 = userService.selectByPhone(phone);
+                userBO1.setInviteCode(userBO1.getId().toString());
+                log.info("com.wisewin.api.service.UserService.selectByPhone返回{}",userBO1);
+                //islogin 是否为登录, yes 登录
+                mapUser.put("islogin", UserConstants.No.getValue());
+                mapUser.put("userId", userBO1.getId());
+                //将只带有手机号的user对象存入cookie中
+                this.putUser(response, userBO1);
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
+                super.safeJsonPrint(response, json);
+                log.info("return:{}",json);
+                log.info("end==========================com.wisewin.api.web.controller.UserController.register=================================");
+            }
+        } else {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000011"));
+            super.safeJsonPrint(response, json);
+            log.info("return:{}",json);
+            log.info("end==========================com.wisewin.api.web.controller.UserController.register=================================");
+        }
+    }
+
+
+
 }
