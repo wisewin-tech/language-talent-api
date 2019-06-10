@@ -61,7 +61,6 @@ public class BaseCotroller {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = null;
         try {
-            log.info(str);
             try {
                 out = response.getWriter();
             } catch (IOException e) {
