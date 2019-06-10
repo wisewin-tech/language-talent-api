@@ -6,7 +6,10 @@ import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.RecordService;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,6 +24,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/record")
 public class RecordController extends BaseCotroller{
+
+    static final Logger log = LoggerFactory.getLogger(SequenceController.class);
+
     @Resource
     private RecordService recordService;
     @Resource
@@ -35,9 +41,15 @@ public class RecordController extends BaseCotroller{
      */
     @RequestMapping("/selectIntegral")
     public void selectSign(Integer pageNo, Integer pageSize,HttpServletResponse response, HttpServletRequest request,String status)  {
+
+        log.info("start==========================com.wisewin.api.web.controller.RecordController.selectSign==============================");
+        log.info("请求ip{}", RequestUtils.getIpAddress(request));
+        log.info("参数status{}",status);
+
         //判断用户id是否为空,即:用户是否登录
         Integer userId=super.getId(request);
         if (userId==null||status==null){
+            log.info("userId==null||status==null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -64,6 +76,8 @@ public class RecordController extends BaseCotroller{
         //积分查询总条数
         map.put("count",count);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
+        log.info("return{}",json);
+        log.info("end====================com.wisewin.api.web.controller.RecordController.selectSign===============");
         super.safeJsonPrint(response, json);
         return;
 
@@ -76,9 +90,12 @@ public class RecordController extends BaseCotroller{
      */
     @RequestMapping("/exchangeInfo")
     public void exchangeInfo(HttpServletResponse response, HttpServletRequest request)  {
+        log.info("start==========================com.wisewin.api.web.controller.RecordController.exchangeInfo========================");
+        log.info("请求ip{}",RequestUtils.getIpAddress(request));
         //判断用户id是否为空,即:用户是否登录
         Integer userId=super.getId(request);
         if (userId==null){
+            log.info("userId==null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -89,6 +106,8 @@ public class RecordController extends BaseCotroller{
             Map<String, Object> map = recordService.exchangeInformation();
             map.put("integral",integral);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
+            log.info("return,{}",json);
+            log.info("end==========================com.wisewin.api.web.controller.RecordController.exchangeInfo========================");
             super.safeJsonPrint(response, json);
             return;
 
@@ -102,9 +121,13 @@ public class RecordController extends BaseCotroller{
      */
     @RequestMapping("/exchange")
     public void exchange(Integer num,HttpServletResponse response, HttpServletRequest request)  {
+        log.info("start==========================com.wisewin.api.web.controller.RecordController.exchange========================");
+        log.info("请求ip{}",RequestUtils.getIpAddress(request));
+        log.info("参数num{}",num);
         //判断用户id是否为空,即:用户是否登录
         Integer userId=super.getId(request);
         if (userId==null||num==null||num<0){
+            log.info("userId==null||num==null||num<0,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -119,9 +142,13 @@ public class RecordController extends BaseCotroller{
             map.put("integral",integral);
             map.put("currency",currency);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
+            log.info("return{}",json);
+            log.info("end====================================com.wisewin.api.web.controller.RecordController.exchange=====================");
             super.safeJsonPrint(response, json);
         }else{
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000015"));
+            log.info("return{}",json);
+            log.info("end====================================com.wisewin.api.web.controller.RecordController.exchange=====================");
             super.safeJsonPrint(response, json);
             return;
         }

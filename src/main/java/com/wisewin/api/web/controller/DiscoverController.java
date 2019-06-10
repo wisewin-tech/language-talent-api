@@ -52,7 +52,7 @@ public class DiscoverController extends BaseCotroller{
      */
     @RequestMapping("/queryDiscover")
     public void queryDiscover(HttpServletRequest request, HttpServletResponse response, DiscoverParam param){
-        logService.startController(null,request,param.toString());
+        logService.startController(null,request,param);
         //分页
         QueryInfo queryInfo=getQueryInfo(param.getPageNo(),param.getPageSize());
         if (queryInfo!=null){
@@ -61,15 +61,15 @@ public class DiscoverController extends BaseCotroller{
         }
 
          //查询文章 视频  做分页   list
-        logService.call("discoverService.getqueryDiscover",param.toString());
+        logService.call("discoverService.getqueryDiscover",param);
         List<DiscoverJsonBO> discoverPage=discoverService.getqueryDiscover(param);
-        logService.result(discoverPage.toString());
+        logService.result(discoverPage);
         //线下活动
-        logService.call("discoverService.getqueryDiscovertype",param.toString());
+        logService.call("discoverService.getqueryDiscovertype",param);
         List<DiscoverJsonBO> activity=discoverService.getqueryDiscovertype(param);
-        logService.result(activity.toString());
+        logService.result(activity);
         //首页分页条件查询总数
-        logService.call("discoverService.getfindcoun",param.toString());
+        logService.call("discoverService.getfindcoun",param);
         int count=discoverService.getfindcoun(param.getCountnum());
         logService.result(count);
         Map<String,Object> map=new HashMap<String, Object>();
@@ -106,7 +106,7 @@ public class DiscoverController extends BaseCotroller{
 
     @RequestMapping("/queryDiscoveractivity")
     public void queryDiscoveractivity(HttpServletRequest request,HttpServletResponse response, DiscoverParam param) {
-        logService.startController(null,request,param.toString());
+        logService.startController(null,request,param);
         if (param.getId()== null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -118,7 +118,7 @@ public class DiscoverController extends BaseCotroller{
         //线下活动和文章二为合一
         logService.call("discoverService.getqueryDiscoveractivity",param.getId());
         DiscoverBO list=discoverService.getqueryDiscoveractivity(param.getId());
-        logService.result(list.toString());
+        logService.result(list);
         if (list==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -148,12 +148,12 @@ public class DiscoverController extends BaseCotroller{
      */
     @RequestMapping("/queryfindDiscover")
     public void queryfindDiscover(HttpServletRequest request,HttpServletResponse response,DiscoverParam param){
-        logService.startController(null,request,param.toString());
+        logService.startController(null,request,param);
         //根据类型查找
         //显示更多，以防发现更多里面出现现在浏览的文章，在sql里面做处理
-        logService.call("discoverService.getqueryfindDiscover",param.toString());
+        logService.call("discoverService.getqueryfindDiscover",param);
         List<DiscoverParam> list=discoverService.getqueryfindDiscover(param);
-        logService.result(list.toString());
+        logService.result(list);
         if (list.equals("")){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);

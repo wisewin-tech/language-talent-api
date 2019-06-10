@@ -44,7 +44,7 @@ public class StudyPlanController extends BaseCotroller {
     public void studyPlan(Integer levelId, HttpServletRequest request, HttpServletResponse response) {
         //获取登录用户信息
         UserBO userBO = super.getLoginUser(request);
-        logService.startController(userBO,request,levelId.toString());
+        logService.startController(userBO,request,levelId);
         if (levelId == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -66,18 +66,18 @@ public class StudyPlanController extends BaseCotroller {
             return;
         }
         //根据语言id查找课时内容
-        logService.call("studyPlanService.getStudyPlan",languageId.toString(),levelId.toString());
+        logService.call("studyPlanService.getStudyPlan",languageId,levelId);
         LevelBO levelBO = studyPlanService.getStudyPlan(languageId, levelId);
-        logService.end("studyPlanService.getStudyPlan",levelBO.toString());
+        logService.end("studyPlanService.getStudyPlan",levelBO);
 
-        logService.call("courseService.getCourseIdByLevelId",levelId.toString());
+        logService.call("courseService.getCourseIdByLevelId",levelId);
         Integer courseId = courseService.getCourseIdByLevelId(levelId);
-        logService.end("courseService.getCourseIdByLevelId",courseId.toString());
+        logService.end("courseService.getCourseIdByLevelId",courseId);
 
         if (levelBO!=null){
-            logService.call("orderService.getStatusByCourseId",userId.toString(),courseId.toString());
+            logService.call("orderService.getStatusByCourseId",userId,courseId);
             Integer count = orderService.getStatusByCourseId(userId,courseId);
-            logService.end("orderService.getStatusByCourseId",count.toString());
+            logService.end("orderService.getStatusByCourseId",count);
             if (count>0){
                 levelBO.setBuyOrNot("yes");
             }else {
@@ -86,9 +86,9 @@ public class StudyPlanController extends BaseCotroller {
             List<ChapterResultBO> chapterResultBOS = levelBO.getChapterBOList();
             for (ChapterResultBO chapterResultBO : chapterResultBOS) {
                 Integer chapterId = chapterResultBO.getChapterId();
-                logService.call("userScoreRecordService.getScore",userId.toString(),chapterId.toString());
+                logService.call("userScoreRecordService.getScore",userId,chapterId);
                 Integer score = userScoreRecordService.getScore(userId, chapterId);
-                logService.call("orderService.getStatusByCourseId",score.toString());
+                logService.call("orderService.getStatusByCourseId",score);
                 chapterResultBO.setScore(score);
             }
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO));
@@ -97,16 +97,16 @@ public class StudyPlanController extends BaseCotroller {
         }
         logService.call("studyPlanService.getLevelIdByOne");
         Integer levelId1 = studyPlanService.getLevelIdByOne();
-        logService.end("studyPlanService.getLevelIdByOne",levelId1.toString());
-        logService.call("courseService.getCourseIdByLevelId",levelId1.toString());
+        logService.end("studyPlanService.getLevelIdByOne",levelId1);
+        logService.call("courseService.getCourseIdByLevelId",levelId1);
         Integer courseId1 = courseService.getCourseIdByLevelId(levelId1);
-        logService.end("courseService.getCourseIdByLevelId",courseId1.toString());
-        logService.call("orderService.getStatusByCourseId",userId.toString(), courseId1.toString());
+        logService.end("courseService.getCourseIdByLevelId",courseId1);
+        logService.call("orderService.getStatusByCourseId",userId, courseId1);
         Integer count = orderService.getStatusByCourseId(userId,courseId1);
-        logService.end("orderService.getStatusByCourseId",count.toString());
-        logService.call("studyPlanService.getStudyPlan",languageId.toString(),levelId1.toString());
+        logService.end("orderService.getStatusByCourseId",count);
+        logService.call("studyPlanService.getStudyPlan",languageId,levelId1);
         LevelBO levelBO1 = studyPlanService.getStudyPlan(languageId,levelId1);
-        logService.end("studyPlanService.getStudyPlan",levelBO1.toString());
+        logService.end("studyPlanService.getStudyPlan",levelBO1);
         if (levelBO1!=null) {
             if (count > 0) {
                 levelBO1.setBuyOrNot("yes");
@@ -129,16 +129,16 @@ public class StudyPlanController extends BaseCotroller {
     public void getLevelList(Integer languageId,HttpServletRequest request,HttpServletResponse response){
         //获取登录对象
         UserBO userBO = super.getLoginUser(request);
-        logService.startController(userBO,request,languageId.toString());
+        logService.startController(userBO,request,languageId);
         if (languageId==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
-        logService.call("studyPlanService.getLevelList",languageId.toString());
+        logService.call("studyPlanService.getLevelList",languageId);
         LanguageResultBO languageResultBO = studyPlanService.getLevelList(languageId);
-        logService.end("studyPlanService.getLevelList",languageResultBO.toString());
+        logService.end("studyPlanService.getLevelList",languageResultBO);
         if (languageResultBO==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(languageResultBO));
             super.safeJsonPrint(response, json);
@@ -149,9 +149,9 @@ public class StudyPlanController extends BaseCotroller {
             //获取用户id
             Integer userId = userBO.getId();
             Integer courseId = courseResultBO.getCourseId();
-            logService.call("orderService.getStatusByCourseId",userId.toString(),courseId.toString());
+            logService.call("orderService.getStatusByCourseId",userId,courseId);
             Integer count = orderService.getStatusByCourseId(userId,courseId);
-            logService.call("orderService.getStatusByCourseId",count.toString());
+            logService.call("orderService.getStatusByCourseId",count);
 
             if (count>0){
                 courseResultBO.setBuyOrNot("yes");
@@ -160,9 +160,9 @@ public class StudyPlanController extends BaseCotroller {
             }
             List<LevelResultBO> levelResultBOS =  courseResultBO.getLevelList();
                for (LevelResultBO levelResultBO:levelResultBOS){
-                   logService.call("studyPlanService.getLevelCount",levelResultBO.getLevelId().toString());
+                   logService.call("studyPlanService.getLevelCount",levelResultBO.getLevelId());
                    Integer i = studyPlanService.getLevelCount(levelResultBO.getLevelId());
-                   logService.end("studyPlanService.getLevelCount",i.toString());
+                   logService.end("studyPlanService.getLevelCount",i);
 
                    levelResultBO.setChapterCount(i);
                }

@@ -64,7 +64,6 @@ public class WBAlipayController extends BaseCotroller {
         //用户登陆过期
         if (loginUser == null) {
             log.info("loginUser == null，return");
-            logService.custom(loginUser.toString(),"return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
@@ -121,8 +120,8 @@ public class WBAlipayController extends BaseCotroller {
                 return;
             }
             log.info("调用com.wisewin.api.service.WBAlipayService.languagePay");
-           String pay  =  wBAlipayService.languagePay(orderParam);
-           log.info("com.wisewin.api.service.WBAlipayService.languagePay返回{}",pay);
+            String pay  =  wBAlipayService.languagePay(orderParam);
+            log.info("com.wisewin.api.service.WBAlipayService.languagePay返回{}",pay);
             map.put("data",pay);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.successPay(pay));
             super.safeJsonPrint(response, json);
@@ -263,8 +262,8 @@ public class WBAlipayController extends BaseCotroller {
 
 
 
-/*
-    *//**
+    /*
+     *//**
      * 购买课程
      * @param request
      * @param response
@@ -387,8 +386,8 @@ public class WBAlipayController extends BaseCotroller {
     }*/
 
 
-  /*
-    *//**
+    /*
+     *//**
      * 充值咖豆
      * @param request
      * @param response

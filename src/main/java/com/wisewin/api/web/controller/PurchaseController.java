@@ -6,8 +6,11 @@ import com.wisewin.api.entity.dto.PruchaseDTO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.PurchaseService;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/purchase")
 public class PurchaseController extends BaseCotroller {
 
+    static final Logger log = LoggerFactory.getLogger(PurchaseController.class);
+
     @Resource
     private PurchaseService purchaseService;
 
@@ -33,21 +38,26 @@ public class PurchaseController extends BaseCotroller {
      */
     @RequestMapping("/querypurchase")
     public void purchaseCurriculum(HttpServletRequest request, HttpServletResponse response, String id, String state){
+        log.info("start==========================com.wisewin.api.web.controller.PurchaseController.purchaseCurriculum======================");
+        log.info("请求ip{}", RequestUtils.getIpAddress(request));
+        log.info("请求id{}",id);
+        log.info("请求state{}",state);
        UserBO userBO = super.getLoginUser(request);
         if(StringUtils.isEmpty(id)){
-            System.out.println("进入此方法"+id);
+            log.info("StringUtils.isEmpty(id),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
         if(StringUtils.isEmpty(state)){
-            System.out.println("进入此方法"+state);
+            log.info("StringUtils.isEmpty(state),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
        if(userBO==null){
+           log.info("userBO==null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
@@ -56,36 +66,47 @@ public class PurchaseController extends BaseCotroller {
        //查询当前用户
         UserBO user  =  purchaseService.selectUser(userBO.getId());
         if(user == null){
+            log.info("user == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000016"));
             super.safeJsonPrint(response, json);
             return;
         }
 
         if(state.equals("curriculum")){
+            log.info("state.equals(\"curriculum\"),return");
          CourseBO course =  purchaseService.queryCouse(id);
           //判断有无此课程
             if(course == null){
+                log.info("course == null");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000019"));
                 super.safeJsonPrint(response, json);
                 return;
             }
             PruchaseDTO pruchase = purchaseService.isCourse(course,user);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(pruchase));
+            log.info("return{}",json);
+            log.info("end=======================com.wisewin.api.web.controller.PurchaseController.purchaseCurriculum===========================");
             super.safeJsonPrint(response, json);
+            return;
             }
-
         if(state.equals("language")){
           LanguageBO language  =  purchaseService.queryLanguare(id);
             if(language == null){
+                log.info("language == null,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000020"));
                 super.safeJsonPrint(response, json);
                 return;
             }
             PruchaseDTO pruchase = purchaseService.isLanguage(language,user);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(pruchase));
+            log.info("return{}",json);
+            log.info("end=======================com.wisewin.api.web.controller.PurchaseController.purchaseCurriculum===========================");
             super.safeJsonPrint(response, json);
+            return;
            }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+        log.info("return{}",json);
+        log.info("end=======================com.wisewin.api.web.controller.PurchaseController.purchaseCurriculum===========================");
         super.safeJsonPrint(response, json);
         return;
         }
@@ -98,23 +119,26 @@ public class PurchaseController extends BaseCotroller {
      */
     @RequestMapping( "/purchaseOder")
     public void purchaseOder(HttpServletRequest request, HttpServletResponse response, String id, String state){
+        log.info("start====================================com.wisewin.api.web.controller.PurchaseController.purchaseOder==========================");
+        log.info("请求ip{}",RequestUtils.getIpAddress(request));
+        log.info("参数id{}",id);
+        log.info("参数state{}",state);
         UserBO userBO = super.getLoginUser(request);
-        System.err.println(id);
-        System.err.println(state);
         if(StringUtils.isEmpty(id)){
-            System.err.println("进入此方法id"+id);
+            log.info("StringUtils.isEmpty(id),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
         if(StringUtils.isEmpty(state)){
-            System.err.println("进入此方法state"+state);
+            log.info("StringUtils.isEmpty(state),return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
         if(userBO==null){
+            log.info("userBO==null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
@@ -122,15 +146,18 @@ public class PurchaseController extends BaseCotroller {
         //查询当前用户
         UserBO user  =  purchaseService.selectUser(userBO.getId());
         if(user == null){
+            log.info("user == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000016"));
             super.safeJsonPrint(response, json);
             return;
         }
 
         if(state.equals("curriculum")){
+            log.info("state.equals(\"curriculum\"),return");
             CourseBO course =  purchaseService.queryCouse(id);
             //判断有无此课程
             if(course == null){
+                log.info("course == null,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000019"));
                 super.safeJsonPrint(response, json);
                 return;
@@ -138,6 +165,8 @@ public class PurchaseController extends BaseCotroller {
              PruchaseDTO pruchase  =  purchaseService.isCourse(course,user);
              //如果咖豆不足，返回
              if(!pruchase.getState()){
+                 log.info("如果咖豆不足，返回");
+                 log.info("!pruchase.getState(),return");
                  String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000018"));
                  super.safeJsonPrint(response, json);
                  return;
@@ -146,10 +175,14 @@ public class PurchaseController extends BaseCotroller {
             purchaseService.insertOrderCouse(course,user.getId()+"",pruchase);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
             super.safeJsonPrint(response, json);
+            log.info("end=========================com.wisewin.api.web.controller.PurchaseController.purchaseOder============================");
+            log.info("return,{}",json);
+            return;
         }
         if(state.equals("language")){
             LanguageBO language  =  purchaseService.queryLanguare(id);
             if(language == null){
+                log.info("language == null,return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000020"));
                 super.safeJsonPrint(response, json);
                 return;
@@ -157,6 +190,8 @@ public class PurchaseController extends BaseCotroller {
             PruchaseDTO pruchase  =  purchaseService.isLanguage(language,user);
             //如果咖豆不足，返回
             if(!pruchase.getState()){
+                log.info("如果咖豆不足，返回");
+                log.info("!pruchase.getState(),return");
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000018"));
                 super.safeJsonPrint(response, json);
                 return;
@@ -165,6 +200,9 @@ public class PurchaseController extends BaseCotroller {
             purchaseService.insertOrderlanguage(language.getId()+"",user.getId()+"",pruchase);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
             super.safeJsonPrint(response, json);
+            log.info("end=========================com.wisewin.api.web.controller.PurchaseController.purchaseOder============================");
+            log.info("return,{}",json);
+            return;
         }
     }
 }

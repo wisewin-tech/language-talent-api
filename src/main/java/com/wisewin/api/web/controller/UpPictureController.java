@@ -4,8 +4,11 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.OSSClientUtil;
+import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/image")
 public class UpPictureController extends BaseCotroller {
+    static final Logger log = LoggerFactory.getLogger(UpPictureController.class);
     @Resource
     LogService logService;
 

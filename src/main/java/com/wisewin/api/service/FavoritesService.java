@@ -62,16 +62,16 @@ public class FavoritesService {
     public boolean insertCollect(Integer userId,Integer sourceId,String source ){
         //创建 收藏表对象,把用户id和收藏来源id放进去
         MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,sourceId,source);
-        logService.call("favoritesDAO.selectAll",favoriteBO.toString());
+        logService.call("favoritesDAO.selectAll",favoriteBO);
        Integer i=favoritesDAO.selectAll(favoriteBO);
        logService.result(i);
        if (i>0){  //如果收藏表已经有这个记录
-           logService.call("favoritesDAO.delCollect",favoriteBO.toString());
+           logService.call("favoritesDAO.delCollect",favoriteBO);
            favoritesDAO.delCollect(favoriteBO);
            logService.end("FavoritesService/insertCollect","false");
            return false;
        }else{
-           logService.call("favoritesDAO.insertCollect",favoriteBO.toString());
+           logService.call("favoritesDAO.insertCollect",favoriteBO);
            favoritesDAO.insertCollect(favoriteBO);
            logService.end("FavoritesService/insertCollect","true");
            return true;

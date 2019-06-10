@@ -64,7 +64,7 @@ public class LanguageController extends BaseCotroller{
 
         logService.call("languageService.languageDetails",id);
         LanguageDetailsResultBO languageBO = languageService.languageDetails(id);
-        logService.result(languageBO.toString());
+        logService.result(languageBO);
         logService.call("languageService.languageDetailsCourse",id);
         List<LanguageDetailsCourseResultBO> languageDetailsCourseResultBOS = languageService.languageDetailsCourse(id);
         logService.result(languageDetailsCourseResultBOS);
