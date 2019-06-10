@@ -61,7 +61,7 @@ public class UserStudyDetailsController extends BaseCotroller {
         String studyDate= DateUtil.getDateStr(new Date());
         logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),yesterday);
         UserStudyDetailsBO userStudyDetailsBO = userStudyDetailsService.getStudyDetails(userId,studyDate);
-        logService.result(userStudyDetailsBO.toString());
+        logService.result(userStudyDetailsBO);
             if (userStudyDetailsBO==null){
                 logService.call("UserStudyDetailsService.insertDuration",userId.toString(),new Date().toString());
                 userStudyDetailsService.insertDuration(userId,new Date());
@@ -78,11 +78,11 @@ public class UserStudyDetailsController extends BaseCotroller {
 
                 logService.call("UserStudyDetailsService.getStudyDetails",userId.toString(),studyDate.toString());
                 UserStudyDetailsBO studyDetailsBO1 = userStudyDetailsService.getStudyDetails(userId, studyDate);
-                logService.result(studyDetailsBO1.toString());
+                logService.result(studyDetailsBO1);
             }
                 logService.call("userService.selectById",userId.toString());
                 UserBO userBO1 = userService.selectById(userId);
-                logService.result(userBO1.toString());
+                logService.result(userBO1);
                 //获取近一周的所有日期
                 DateUtil dateUtil = new DateUtil();
                 List<Date> studyDates = dateUtil.getDays(7);
@@ -91,7 +91,7 @@ public class UserStudyDetailsController extends BaseCotroller {
                     //获取近一周的学习情况
                     logService.call("userStudyDetailsService.weekStudyDuration",userId.toString(),date.toString());
                     UserStudyDetailsBO weekStudyDuration = userStudyDetailsService.weekStudyDuration(userId,date);
-                    logService.result(weekStudyDuration.toString());
+                    logService.result(weekStudyDuration);
                     if (weekStudyDuration!=null) {
                         userStudyDetailsBOList.add(weekStudyDuration);
                     } else {
