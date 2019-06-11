@@ -3,15 +3,20 @@ package com.wisewin.api.service;
 import com.wisewin.api.dao.SpecialDAO;
 import com.wisewin.api.entity.bo.SpecialBO;
 import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+
 @Service("SpecialService")
 @Transactional
 public class SpecialService {
+
+    static final Logger log = LoggerFactory.getLogger(SpecialService.class);
 
     @Resource
     SpecialDAO specialDAO;
@@ -20,11 +25,15 @@ public class SpecialService {
      * 所有专题的查询
      * */
     public List<SpecialBO> selectSpecialBO(Integer classId){
+        log.info("start==================================com.wisewin.api.service.SpecialService.selectSpecialBO===================================");
+        log.info("参数classId:{}",classId);
         List<SpecialBO> specialBOList=specialDAO.selectSpecialBO(classId);
         for (SpecialBO specialBO:specialBOList) {
             String date=specialBO.getReleaseDateStr();
             specialBO.setReleaseDateStr(date.substring(0,date.lastIndexOf(".")));
         }
+        log.info("return :{}",specialBOList);
+        log.info("end====================================com.wisewin.api.service.SpecialService.selectSpecialBO===================================");
         return specialBOList;
     }
 
@@ -33,6 +42,10 @@ public class SpecialService {
      * param 用户id 和 专题id
      * */
     public SpecialBO selectSpecialBOById(Integer userId,Integer id){
+        log.info("start======================================com.wisewin.api.service.SpecialService.selectSpecialBOById======================");
+        log.info("参数:{}",userId);
+        log.info("参数:{}",id);
+
         //加访问量
         specialDAO.addSpecialTraffic(id);
 
@@ -46,7 +59,8 @@ public class SpecialService {
 
         String date=specialBO.getReleaseDateStr();
         specialBO.setReleaseDateStr(date.substring(0,date.lastIndexOf(".")));
-
+        log.info("return:{}",specialBO);
+        log.info("end=====================================com.wisewin.api.service.SpecialService.selectSpecialBOById=========================");
         return specialBO;
     }
 

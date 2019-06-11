@@ -6,6 +6,9 @@ import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.PruchaseDTO;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.date.DateUtil;
+import com.wisewin.api.web.controller.WBAlipayController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
@@ -22,6 +25,9 @@ import java.util.List;
 @Transactional
 @Service("purchaseService")
 public class PurchaseService {
+
+
+    static final Logger log = LoggerFactory.getLogger(PurchaseService.class);
 
     @Resource
     private UserDAO userDAO;
@@ -53,7 +59,6 @@ public class PurchaseService {
         return userDAO.selectUser(id);
     }
 
-
     /**
      * 查询课程
      */
@@ -69,8 +74,6 @@ public class PurchaseService {
     }
 
 
-
-
     /**
      * 课程购买
      *
@@ -79,16 +82,21 @@ public class PurchaseService {
      * @return
      */
     public PruchaseDTO isCourse(CourseBO course, UserBO user) {
+        log.info("start=========================================com.wisewin.api.service.PurchaseService.isCourse===================================");
+        log.info("参数course:{}",course);
+        log.info("参数user:{}",user);
         PruchaseDTO pruchase = new PruchaseDTO();
         //获取要购买的课程
-
+        log.info("获取要购买的课程:{}",pruchase);
         //获取特惠开始时间
         Date dateStart = course.getDiscountStartTime();
+        log.info("获取特惠开始时间:{}",dateStart);
         //获取特惠结束时间
         Date dateEnd = course.getDiscountEndTime();
+        log.info("获取特惠结束时间:{}",dateEnd);
         //判断是否在特惠时间内
         boolean falg = belongCalendar(new Date(), dateStart, dateEnd);
-
+        log.info("判断特惠结束时间:{}",falg);
         StringBuffer sbf = new StringBuffer();
         sbf.append(course.getForeignName());
         sbf.append(" | ");
@@ -99,27 +107,39 @@ public class PurchaseService {
         pruchase.setImg(course.getThumbnailImageUrl());
         //是特惠时间
         if (falg) {
+            log.info("如果是特惠时间");
             //获取课程优惠价
             pruchase.setCoursePrice(course.getDiscountPrice());
+            log.info("获取课程优惠价:{}",course.getDiscountPrice());
             //判断用户咖豆是否能够买当前课程
+            log.info("判断用户咖豆是否能够买当前课程");
             if (user.getCurrency() >= course.getDiscountPrice()) {
                 pruchase.setState(true);
+                log.info("reutrn true:{}",pruchase);
+                log.info("end==========================================com.wisewin.api.service.PurchaseService.isCourse===============================================");
                 return pruchase;
             } else {
                 pruchase.setState(false);
+                log.info("reutrn false:{}",pruchase);
+                log.info("end==========================================com.wisewin.api.service.PurchaseService.isCourse===============================================");
                 return pruchase;
             }
         }
+
         //获取课程正常价
         pruchase.setCoursePrice(course.getPrice());
+        log.info("获取课程正常价:{}",course.getPrice());
         //判断用户咖豆是否大于等于课程正常价
-        System.err.println("当前用户咖豆"+user.getCurrency());
-        System.err.println("当前课程咖豆"+course.getPrice());
+        log.info("判断用户咖豆是否大于等于课程正常价");
         if (user.getCurrency() >= course.getPrice()) {
             pruchase.setState(true);
+            log.info("return true:{}",pruchase);
+            log.info("end==========================================com.wisewin.api.service.PurchaseService.isCourse===============================================");
             return pruchase;
         } else {
             pruchase.setState(false);
+            log.info("return false:{}",pruchase);
+            log.info("end==========================================com.wisewin.api.service.PurchaseService.isCourse===============================================");
             return pruchase;
         }
     }
@@ -166,7 +186,6 @@ public class PurchaseService {
             pruchase.setState(false);
             return pruchase;
         }
-
     }
 
     /**
@@ -290,7 +309,7 @@ public class PurchaseService {
 
 
 
-        if (list != null) {
+        if (!(list.size() <= 0)) {
             //证书
             List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
             List<OrderCoursesBO> lists = new ArrayList<OrderCoursesBO>();

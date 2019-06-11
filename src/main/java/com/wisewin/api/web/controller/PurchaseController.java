@@ -90,6 +90,7 @@ public class PurchaseController extends BaseCotroller {
             return;
             }
         if(state.equals("language")){
+            log.info("state.equals(\"language\")");
           LanguageBO language  =  purchaseService.queryLanguare(id);
             if(language == null){
                 log.info("language == null,return");
@@ -98,6 +99,7 @@ public class PurchaseController extends BaseCotroller {
                 return;
             }
             PruchaseDTO pruchase = purchaseService.isLanguage(language,user);
+            log.info("pruchase:{}",pruchase);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(pruchase));
             log.info("return{}",json);
             log.info("end=======================com.wisewin.api.web.controller.PurchaseController.purchaseCurriculum===========================");
@@ -110,6 +112,8 @@ public class PurchaseController extends BaseCotroller {
         super.safeJsonPrint(response, json);
         return;
         }
+
+
     /*
      *
      * @param request       下订单
@@ -200,8 +204,8 @@ public class PurchaseController extends BaseCotroller {
             purchaseService.insertOrderlanguage(language.getId()+"",user.getId()+"",pruchase);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
             super.safeJsonPrint(response, json);
-            log.info("end=========================com.wisewin.api.web.controller.PurchaseController.purchaseOder============================");
             log.info("return,{}",json);
+            log.info("end=========================com.wisewin.api.web.controller.PurchaseController.purchaseOder============================");
             return;
         }
     }

@@ -1,8 +1,5 @@
 package com.wisewin.api.service;
 
-
-
-
 import com.wisewin.api.common.constants.UserConstants;
 import com.wisewin.api.dao.UserDAO;
 import com.wisewin.api.entity.bo.UserBO;
@@ -11,6 +8,8 @@ import com.wisewin.api.util.*;
 import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.util.message.SendMessageUtil;
 import com.wisewin.api.util.redisUtils.RedissonHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,17 +23,34 @@ public class UserService {
     @Resource
     private UserDAO userDAO;
 
+    static final Logger log = LoggerFactory.getLogger(UserService.class);
+
 
     //判断openid是否绑定过
     public String checkBind(String openid,String status){
+        log.info("start=================================com.wisewin.api.service.UserService.checkBind===========================================");
+        log.info("判断openid是否绑定过");
+        log.info("参数openid:{}",openid);
+        log.info("参数status:{}",status);
         //判断是否绑定过
+        log.info("return :{}",userDAO.checkBind(openid,status));
+        log.info("end==================================com.wisewin.api.service.UserService.checkBind=======================================");
         return userDAO.checkBind(openid,status);
     }
+
     //添加绑定
     public boolean bindOpenId(String phone,String status,String openId){
+        log.info("start=====================================com.wisewin.api.service.UserService.bindOpenId=======================================");
+        log.info("添加绑定");
+        log.info("参数phone:{}",phone);
+        log.info("参数openId:{}",openId);
         if(userDAO.bindOpenId(phone, status, openId)>0){
+            log.info("return:true");
+            log.info("end===================================com.wisewin.api.service.UserService.bindOpenId=================================");
             return true;
         }
+        log.info("return:false");
+        log.info("end===================================com.wisewin.api.service.UserService.bindOpenId=================================");
         return false;
     }
 
@@ -47,14 +63,19 @@ public class UserService {
     public void send(String phone) {
         //验证手机号格式
         String number = RandomUtils.getRandomNumber(6);
+        log.info("验证手机号格式");
         //发送验证码
         SendMessageUtil.sendSignInCodeMessage(phone, number);
+        log.info("发送验证码");
         // 保存验证码信息到Redis
         RedissonHandler.getInstance().set(phone + UserConstants.VERIFY.getValue(), number, 300L);
+        log.info("保存验证码信息到redis");
         //缓存验证码失效标识
         RedissonHandler.getInstance().set(phone + UserConstants.VERIFY_LOSE.getValue(), number, 60L);
+        log.info("缓存验证码失效表示");
         //次数
         String count = RedissonHandler.getInstance().get(phone + UserConstants.DEGREE.getValue());
+        log.info("次数:{}",count);
         if(count!=null){
             //累加
             Integer coun=Integer.parseInt(count);
@@ -67,7 +88,7 @@ public class UserService {
 
         //获取缓存中验证码
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
-        System.out.println("send方法缓存中的验证码为" + mobileAuthCode);
+        log.info("send方法缓存中的验证码为:{}",mobileAuthCode);
     }
 
 
@@ -104,8 +125,8 @@ public class UserService {
      * 修改用户信息
      * @param userParam
      */
-    public void updateUser( UserParam userParam) {
-
+    public void updateUser(UserParam userParam) {
+        log.info("start============================================com.wisewin.api.service.UserService.updateUser=========================");
         String password=userParam.getPassword();
         //如果用户有修改密码,对密码进行加密
         if (!StringUtils.isEmpty(password)){
@@ -113,25 +134,33 @@ public class UserService {
         }
 
         userDAO.updateUser(userParam);
-
+        log.info("ende============================================com.wisewin.api.service.UserService.updateUser============================");
     }
+
     /**
      * 用户学习天数
      */
     public UserBO  userLearning( Integer userId) {
+        log.info("start==================================================com.wisewin.api.service.UserService.userLearning========================");
         //通过用户id获取用户信息
         UserBO userBO=userDAO.selectAllById(userId);
+        log.info("通过用户id获取用户信息userBO:{}",userBO);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
         //获取今天学习时间
         String now =sdf.format(new Date());
+        log.info("获取今天学习时间:{}",now);
         //获取昨天学习时间
         String yesterday =sdf.format(TimeUtil.getTimeStart(-1));
+        log.info("获取昨天学习时间:{}",yesterday);
         //连续学习天数
         Integer continuousLearning=userBO.getContinuousLearning();
+        log.info("连续学习天数:{}",continuousLearning);
         //累计学习天数
         Integer cumulativeLearning=userBO.getCumulativeLearning();
+        log.info("累计学习天数:{}",cumulativeLearning);
         //上次学习日期
         String lastDate= DateUtil.getStr(userBO.getStudyDate());
+        log.info("上次学习日期:{}",lastDate);
         if (yesterday.equals(lastDate)){
             //如果上次学习时间是昨天,连续学习天数+1
             userBO.setContinuousLearning(continuousLearning+1);
@@ -141,6 +170,8 @@ public class UserService {
         }
         //累计学习天数+1
         userBO.setCumulativeLearning(cumulativeLearning+1);
+        log.info("return:{}",userBO);
+        log.info("end========================================com.wisewin.api.service.UserService.userLearning=============================================");
         return userBO;
 
     }
@@ -176,15 +207,6 @@ public class UserService {
      */
     public void updateUserStudyDays(Integer continuousLearning, Integer cumulativeLearning, Integer userId){
         userDAO.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
-    }
-
-    /**
-     * 查询用户本周连续签到天数
-     * @param userId
-     * @return
-     */
-    public Integer getWeekContinuousSign(Integer userId){
-        return userDAO.getWeekContinuousSign(userId);
     }
 
 }

@@ -35,6 +35,8 @@ import java.util.Date;
 @Transactional
 public class WBAlipayService {
 
+    static final Logger log = LoggerFactory.getLogger(WBAlipayService.class);
+
     @Resource
     private CourseDAO courseDAO;
 
@@ -44,15 +46,11 @@ public class WBAlipayService {
     @Resource
     private PayService payService;
 
-    @Resource
-    private LogService logService;
 
 
      AlipayClient   client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APP_ID,
                 AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET,
                 AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGN_TYPE);
-
-    static final Logger log = LoggerFactory.getLogger(WBAlipayService.class);
 
     // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，
     // 调用RSA签名方式
@@ -61,10 +59,12 @@ public class WBAlipayService {
     AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
 
     public String currencyPay(OrderParam orderParam){
-        logService.serviceStart("com.wisewin.api.service.WBAlipayService.currencyPay"+orderParam.toString());
+        log.info("start=====================================================================com.wisewin.api.service.WBAlipayService.currencyPay======================================================");
+        log.info("参数orderParam:{}",orderParam);
         //生成订单号
         IDBuilder idBuilder  =  new IDBuilder(10,10);
         String number  = idBuilder.nextId()+"";
+        log.info("生成订单号:{}",number);
         orderParam.setOrderNumber(number);
         try {
             //DecimalFormat类型金额保留两位精度并转String
@@ -81,13 +81,15 @@ public class WBAlipayService {
             ali_request.setNotifyUrl(AlipayConfig.fy_url);
             // 调用SDK生成表单
             AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
+            log.info("调用SDK生成表单");
             if (ali_response.isSuccess()) {
                 //插入课程预支付订单
-                logService.call("com.wisewin.api.service.PayService.prepaid",orderParam.toString());
+                log.info("插入课程预支付订单");
                 payService.prepaid(orderParam);
                 // 获取到getBody直接给app,用这个东西去调起支付宝
                 //System.err.println(ali_response.getBody());
-                logService.end("com.wisewin.api.service.WBAlipayService.currencyPay",ali_response.getBody().toString());
+                log.info("return:{}",ali_response.getBody());
+                log.info("end=============================================================com.wisewin.api.service.WBAlipayService.currencyPay==================================================");
                 return ali_response.getBody();
               /*  cotroller.safeJsonPrint(response,ali_response.getBody());
                 return;*/
@@ -99,7 +101,8 @@ public class WBAlipayService {
             e.printStackTrace();
             log.info(e.getMessage());
         }
-        logService.end("com.wisewin.api.service.WBAlipayService.currencyPay","null");
+        log.info("return:null");
+        log.info("end=============================================================com.wisewin.api.service.WBAlipayService.currencyPay==================================================");
         return null;
     }
 
@@ -110,9 +113,11 @@ public class WBAlipayService {
      * @return
      */
     public  String languagePay(OrderParam orderParam){
+        log.info("start===============================================================com.wisewin.api.service.WBAlipayService.languagePay=================================================================");
         //生成订单号
         IDBuilder idBuilder  =  new IDBuilder(10,10);
         String number  = idBuilder.nextId()+"";
+        log.info("订单号:{}",number);
         orderParam.setOrderNumber(number);
         try {
             //DecimalFormat类型金额保留两位精度并转String
@@ -121,20 +126,20 @@ public class WBAlipayService {
 
             //要购买的语言
             LanguageBO languageBO = languageDAO.selectLanguageG(orderParam.getLanguageId() + "");
+            log.info("要购买的语言:{}",languageBO);
             Integer price;
             //判断时间
             boolean fag = belongCalendar(new Date(),languageBO.getDiscountStartTime(),languageBO.getDiscountEndTime());
             if (fag) {
                 //获取优惠语言价格
                  price = languageBO.getLanguageDiscountPrice();
-                 System.err.println(price);
+               log.info("获取优惠语言价格:{}",price);
             }else{
                  price = languageBO.getLanguagePrice();
 
             }
             model.setSubject("language");
             model.setOutTradeNo(number);
-            System.err.println(price+".00");
             model.setTotalAmount(price+".00");
             //model.setTotalAmount("0.01");
             model.setProductCode("QUICK_MSECURITY_PAY");
@@ -151,22 +156,26 @@ public class WBAlipayService {
             // 调用SDK生成表单
             AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
             orderParam.setPrice(new BigDecimal(price));
+            log.info("调用SDK生成表单");
             if (ali_response.isSuccess()) {
                 //插入充值预支付订单
-                System.err.println(orderParam);
+                log.info("插入充值预支付订单");
                 payService.prepaid(orderParam);
                 // 获取到getBody直接给app,用这个东西去调起支付宝
-                System.out.println(ali_response.getBody());
+               log.info("获取到getBody直接给app,用这个东西去调起支付宝,return:{}",ali_response.getBody());
                 //return ali_response.getBody();
+                log.info("end=========================================com.wisewin.api.service.WBAlipayService.languagePay========================================");
                 return ali_response.getBody();
             } else {
-                log.debug("调用SDK生成表单失败");
+                log.info("调用SDK生成表单失败");
                 throw new AlipayApiException("调用SDK生成表单失败");
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();
-            log.error(e.getMessage());
+            log.info(e.getMessage());
         }
+        log.info("return null");
+        log.info("end=========================================com.wisewin.api.service.WBAlipayService.languagePay========================================");
         return null;
     }
 
@@ -176,11 +185,15 @@ public class WBAlipayService {
      * @return
      */
     public String curriculumPay(OrderParam orderParam){
+        log.info("start====================================com.wisewin.api.service.WBAlipayService.curriculumPay=======================================");
+        log.info("参数orderParam:{}",orderParam);
         //获取购买课程对象
         CourseBO courseBO = courseDAO.getCourseById(orderParam.getCourseId());
+        log.info("获取购买课程对象courseBO:{}",courseBO);
         //生成订单号
         IDBuilder idBuilder  =  new IDBuilder(10,10);
         String number  = idBuilder.nextId()+"";
+        log.info("生成订单号:{}",number);
         orderParam.setOrderNumber(number);
         try {
             // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，
@@ -199,14 +212,12 @@ public class WBAlipayService {
             if(fag){
                 //获取优惠语言价格
                 price = courseBO.getDiscountPrice();
-                System.err.println(price);
+              log.info("获取优惠语言价格:{}",price);
             }else{
                 price = courseBO.getPrice();
-
             }
             model.setSubject("curriculum");
             model.setOutTradeNo(number);
-            System.err.println(price+".00");
             model.setTotalAmount(price+".00");
             //model.setTotalAmount("0.01");
             model.setProductCode("QUICK_MSECURITY_PAY");
@@ -232,15 +243,19 @@ public class WBAlipayService {
                 //System.out.println(ali_response.getBody());
                 //return ali_response.getBody();
                // super.safeJsonPrint(response, ali_response.getBody());
+                log.info("return:{}",ali_response.getBody());
+                log.info("end=======================================com.wisewin.api.service.WBAlipayService.curriculumPay============================");
                 return ali_response.getBody();
             } else {
-                log.debug("调用SDK生成表单失败");
+                log.info("调用SDK生成表单失败");
                 throw new AlipayApiException("调用SDK生成表单失败");
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();
-            log.error(e.getMessage());
+            log.info(e.getMessage());
         }
+        log.info("return null");
+        log.info("end=======================================com.wisewin.api.service.WBAlipayService.curriculumPay============================");
         return null;
     }
 

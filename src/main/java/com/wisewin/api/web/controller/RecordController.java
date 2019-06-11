@@ -80,8 +80,6 @@ public class RecordController extends BaseCotroller{
         log.info("end====================com.wisewin.api.web.controller.RecordController.selectSign===============");
         super.safeJsonPrint(response, json);
         return;
-
-
     }
     /**
      * 兑换咖币

@@ -45,6 +45,7 @@ public class OrderController extends BaseCotroller {
         log.info("参数pageSize{}",pageSize);
         //判断用户id是否为空,即:用户是否登录
         UserBO user = super.getLoginUser(request);
+        log.info("user:{}",user);
         if (user== null ) {
             log.info("user== null,retrun");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
@@ -64,8 +65,9 @@ public class OrderController extends BaseCotroller {
         condition.put("userId", user.getId());
         //吧封装好的条件传给service
         List<OrderBO> list= orderService.selectAll(condition);
-        if(list == null){
-            log.info("list == null,return");
+        System.err.println(list);
+        if(list == null ){
+            log.info("list<=0return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000039"));
             super.safeJsonPrint(response, json);
             return;
@@ -76,6 +78,8 @@ public class OrderController extends BaseCotroller {
         log.info("end===================================com.wisewin.api.web.controller.OrderController.selectSign===========================");
         return;
     }
+
+
     @RequestMapping("/selectDetails")
     public void selectDetails(String id,HttpServletResponse response, HttpServletRequest request) {
         log.info("start=============================com.wisewin.api.web.controller.OrderController.selectDetails===========================");

@@ -24,13 +24,13 @@
 
     INSERT INTO language_talent.lt_order_courses
             (
-            user_id,
-            order_id,
-            courses_id,
-            courses_name,
-            create_time,
-            update_time,
-            course_validity_period
+            user_id as userId,
+            order_id as orderId,
+            courses_id as coursesId,
+            courses_name as coursesName,
+            create_time as createTime,
+            update_time as updateTime,
+            course_validity_period as courseValidityPeriod
             )
             VALUES
             (
