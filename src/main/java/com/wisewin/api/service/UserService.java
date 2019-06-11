@@ -209,4 +209,13 @@ public class UserService {
         userDAO.updateUserStudyDays(continuousLearning, cumulativeLearning, userId);
     }
 
+    /**
+     * 查询用户本周连续签到天数
+     * @param userId
+     * @return
+     */
+    public Integer getWeekContinuousSign(Integer userId){
+        return userDAO.getWeekContinuousSign(userId);
+    }
+
 }
