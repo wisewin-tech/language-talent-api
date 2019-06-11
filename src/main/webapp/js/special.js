@@ -9,7 +9,7 @@ function getDataInfo(id) {
     $.ajax({
         url: '/Special/selectSpecialBOById',
         type: 'POST',
-        data: {specialId: id,source:html},
+        data: {specialId: id,source:"html"},
         dataType: 'json',
         success: function (res) {
             $('title').text(res.data.specialBO.title);
