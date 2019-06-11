@@ -23,8 +23,8 @@
         OR
         `type`='curriculum'
         ORDER  BY
-        stick
-        desc
+        stick DESC,
+        create_time DESC
         <include refid="orderLimit" />
     </select>
 
@@ -63,8 +63,8 @@
         WHERE
           `type`='activity'
         ORDER  BY
-           priority
-
+        stick DESC,
+        create_time DESC
 
     </select>
 
