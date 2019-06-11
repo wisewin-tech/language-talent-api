@@ -45,22 +45,22 @@ public class WXPayService {
         //1.获取请求参数
         logService.call("WXPayService.getWXPayParams",orderParam);
         Map<String, String> map = getWXPayParams(orderParam);
-        logService.result("WXPayService.getWXPayParams",map);
+        logService.result(map);
 
         //2.第一次签名
         logService.call("WXUtil.WXPayUtil.generateSignedXml",map);
         String mapStr = WXPayUtil.generateSignedXml(map, WXConfig.KEY);
-        logService.result("WXUtil.WXPayUtil.generateSignedXml",mapStr);
+        logService.result(mapStr);
 
         //3.发送请求 获取到预支付信息  partnerid
         logService.call("WXPayService.getCodeUrl",mapStr);
         String result = getCodeUrl(mapStr);
-        logService.result("WXPayService.getCodeUrl",result);
+        logService.result(result);
 
         //预支付订单信息Map
         logService.call("WXPayUtil.xmlToMap",result);
         Map<String, String> resultMap = WXPayUtil.xmlToMap(result);
-        logService.result("WXPayUtil.xmlToMap",resultMap);
+        logService.result(resultMap);
 
         //4.初始化二次签名信息 用第一次请求拿到的信息中的prepayid
         Map<String, String> twoMap = new HashMap<String, String>();
@@ -72,9 +72,9 @@ public class WXPayService {
         twoMap.put("package", "Sign=WXPay");
 
         //6.第二次签名 把这个签名给安卓拉起支付请求
-        logService.call("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",result);
+        logService.call("WXPayUtil.generateSignedXml",result);
         String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
-        logService.result("com.wisewin.pai.util.WXUtil.WXPayUtil.generateSignedXml",twoMapStr);
+        logService.result(twoMapStr);
         //给前端调用的Map
         twoMap = WXPayUtil.xmlToMap(twoMapStr);
         //存入自己的数据库
@@ -82,7 +82,7 @@ public class WXPayService {
             orderParam.setPayment("wx");
             payService.prepaid(orderParam);
         }
-        logService.result(twoMap.toString());
+        logService.result(twoMap);
         return twoMap;
     }
 
@@ -143,7 +143,7 @@ public class WXPayService {
             }
         }
 
-        logService.result(resultMap.toString());
+        logService.result(resultMap);
         return resultMap;
     }
 
@@ -178,7 +178,7 @@ public class WXPayService {
         String str = setScale.multiply(new BigDecimal("100")).toString();
         BigDecimal b = new BigDecimal(str.substring(0, str.length() - 3));
 
-        logService.result(b.toString());
+        logService.result(b);
         return b.toString();
     }
 
