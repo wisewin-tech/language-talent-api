@@ -110,22 +110,22 @@ public class DiscoverService {
     /**
      * 修改浏览人数值
      */
-    public  boolean getupdateDiscover(Integer id,Integer browse){
+    public  boolean getupdateDiscover(Integer id){
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("id",id);
-        map.put("browse",browse);
         return  discoverDao.updateDiscover(map)>0;
     }
 
     /**
      * 修改喜欢值
      * 发现 Integer id
-     * Integer likenum; 喜欢
+     * type 为yes 添加喜欢 为no取消喜欢
      */
-    public boolean getupdatelikenumDiscover(Integer id,Integer likenum){
+    public boolean getupdatelikenumDiscover(Integer id,String type){
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("id",id);
-        map.put("likenum",likenum);
+
+        map.put("type",type);
         return  discoverDao.updatelikenumDiscover(map)>0;
     }
 

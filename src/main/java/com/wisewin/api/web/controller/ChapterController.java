@@ -1,6 +1,8 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.dao.FavoritesDAO;
 import com.wisewin.api.entity.bo.ChapterBO;
+import com.wisewin.api.entity.bo.MyFavoriteBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.ChapterService;
@@ -30,11 +32,14 @@ public class ChapterController extends BaseCotroller {
     private OrderService orderService;
 
     @Resource
+    private FavoritesDAO favoritesDAO;
+    @Resource
     LogService logService;
-    @RequestMapping("/chapterList")
+
     /**
      * 获取课时列表
      */
+    @RequestMapping("/chapterList")
     public void chapterList(Integer levelId, HttpServletRequest request, HttpServletResponse response) {
         logService.startController(null,request,levelId);
         if (levelId == null) {
@@ -98,7 +103,12 @@ public class ChapterController extends BaseCotroller {
                 chapterBO.setBuyOrNot("no");
             }
         }
-
+        //查询是否收藏过
+        MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,id,"hour");
+        logService.call("favoritesDAO.selectAll",favoriteBO);
+        Integer i=favoritesDAO.selectAll(favoriteBO);
+        String collection=i>0?"yes":"no";
+        chapterBO.setCollection(collection);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBO));
         logService.end("/chapter/chapterDetails",result);
         super.safeJsonPrint(response, result);

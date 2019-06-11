@@ -47,40 +47,37 @@ public class LikerelationController extends BaseCotroller{
         log.info("参数param{}",param);
         //获取当前用户id
         UserBO loginUser = super.getLoginUser(request);
-        Integer id = loginUser.getId();
-        if (id==null || StringUtils.isObjEmpty(param.getDcId())){
-            log.info("id==null || StringUtils.isObjEmpty(param.getDcId()),return");
+
+        if (StringUtils.isObjEmpty(param.getDcId())){
+         log.info("id==null || StringUtils.isObjEmpty(param.getDcId()),return");
          String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
          super.safeJsonPrint(response, json);
          return;
-      }
-      //是否真实存在
-            DiscoverBO discoverBO=discoverService.getfindDiscoverlikenum(param.getDcId());
-        if (discoverBO==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeJsonPrint(response, json);
-            return;
         }
+        Integer id = loginUser.getId();
 
         Map<String,Object> resultMap=new HashMap<String, Object>();
        //判断用户有没有喜欢过
         boolean likerelationjson=likerelatioService.getfindLikerelation(id,param.getDcId());
         if (likerelationjson){
             //减少喜欢总数 1
-            discoverService.getupdatelikenumDiscover(param.getDcId(),discoverBO.getLikenum()-1);
+            discoverService.getupdatelikenumDiscover(param.getDcId(),"no");
             //删除喜欢关系
             likerelatioService.getdeleteLikerelation(loginUser.getId(),param.getDcId());
             resultMap.put("msg","取消喜欢成功");
+            resultMap.put("status","cancel");
         }else{
             //添加喜欢
-            discoverService.getupdatelikenumDiscover(param.getDcId(),discoverBO.getLikenum()+1);
+            discoverService.getupdatelikenumDiscover(param.getDcId(),"yes");
             //删除喜欢关系
             likerelatioService.getaddLikerelation(loginUser.getId(),param.getDcId());
             resultMap.put("msg","增加喜欢成功");
+            resultMap.put("status","add");
         }
         //喜欢总数 discoverBO
-        int likeCount = likerelatioService.queryLikereCount(param.getDcId());
-        resultMap.put("likeCount",likeCount);
+        //int likeCount = likerelatioService.queryLikereCount(param.getDcId());
+        //resultMap.put("likeCount",likeCount);
+
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
         log.info("return{}",json);
         log.info("end========================com.wisewin.api.web.controller.LikerelationController.findLikerelation===========================");

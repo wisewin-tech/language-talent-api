@@ -98,22 +98,26 @@
          id=#{id}
     </select>
 
-    <!--修改浏览人数值-->
     <update id="updateDiscover" parameterType="java.util.Map">
         UPDATE
           lt_discover
         SET
-         browse=#{browse}
+         browse=browse+1
         WHERE
           id=#{id}
     </update>
 
-    <!--修改浏览人数值-->
+    <!--修改喜欢数值-->
     <update id="updatelikenumDiscover" parameterType="java.util.Map">
         UPDATE
         lt_discover
         SET
-        likenum=#{likenum}
+        <if test="type=='yes'">
+            likenum=likenum+1
+        </if>
+        <if test="type=='no'">
+            likenum=likenum-1
+        </if>
         WHERE
         id=#{id}
     </update>

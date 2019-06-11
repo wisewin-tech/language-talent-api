@@ -29,6 +29,15 @@ public class ChapterBO extends BaseModel {
     private String ensignImageUrl;//语言国旗图片地址
     private String thumbnailUrl;//缩略图
     private String buyOrNot;//是否已购买
+    private String collection;//是否收藏
+
+    public String getCollection() {
+        return collection;
+    }
+
+    public void setCollection(String collection) {
+        this.collection = collection;
+    }
 
     @Override
     public String toString() {
