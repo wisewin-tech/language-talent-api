@@ -79,7 +79,16 @@ public class FavoritesService {
 
     }
 
-
+    //是否收藏过
+    public boolean isCollection(Integer userId,Integer sourceId,String source){
+        MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,sourceId,source);
+        Integer i=favoritesDAO.selectAll(favoriteBO);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 
 

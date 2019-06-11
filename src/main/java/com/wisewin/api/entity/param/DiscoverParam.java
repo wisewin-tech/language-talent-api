@@ -37,6 +37,15 @@ public class DiscoverParam extends BaseModel {
     private  Integer pageSize; //每条条数
     private int countnum; // 总数
     private String description; //内容描述
+    private String source;//访问来源国
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     @Override
     public String toString() {

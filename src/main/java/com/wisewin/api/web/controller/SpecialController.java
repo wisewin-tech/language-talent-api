@@ -47,7 +47,7 @@ public class SpecialController extends BaseCotroller {
      * 用户点进去了一个专题
      * */
     @RequestMapping("/selectSpecialBOById")
-    public void selectSpecialBOById(HttpServletRequest request, HttpServletResponse response,Integer specialId){
+    public void selectSpecialBOById(HttpServletRequest request, HttpServletResponse response,Integer specialId,String source){
         if(specialId==null||specialId==0){
             String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeHtmlPrint(response,languagejson);
@@ -55,9 +55,9 @@ public class SpecialController extends BaseCotroller {
         }
         Integer userId=this.getId(request);
 
-        SpecialBO specialBO = specialService.selectSpecialBOById(userId,specialId);//点进去查看的专题
+        SpecialBO specialBO = specialService.selectSpecialBOById(userId,specialId,source);//点进去查看的专题
         if(specialBO==null){
-            String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000026"));
+            String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeHtmlPrint(response,languagejson);
             return;
         }

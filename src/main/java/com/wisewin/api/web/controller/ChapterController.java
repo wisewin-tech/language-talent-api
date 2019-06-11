@@ -6,6 +6,7 @@ import com.wisewin.api.entity.bo.MyFavoriteBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.ChapterService;
+import com.wisewin.api.service.FavoritesService;
 import com.wisewin.api.service.OrderService;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
@@ -32,7 +33,7 @@ public class ChapterController extends BaseCotroller {
     private OrderService orderService;
 
     @Resource
-    private FavoritesDAO favoritesDAO;
+    private FavoritesService favoritesService;
     @Resource
     LogService logService;
 
@@ -75,13 +76,13 @@ public class ChapterController extends BaseCotroller {
         //获取登录用户信息
         UserBO userBO = super.getLoginUser(request);
         logService.startController(userBO,request,id,courseId);
-        Integer userId = userBO.getId();
-        if (userId==null){
+        if (userBO==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, result);
             logService.end("/chapter/chapterDetails",result);
             return;
         }
+        Integer userId = userBO.getId();
         //参数验证
         if (id == null||courseId==null) {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -104,11 +105,10 @@ public class ChapterController extends BaseCotroller {
             }
         }
         //查询是否收藏过
-        MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,id,"hour");
-        logService.call("favoritesDAO.selectAll",favoriteBO);
-        Integer i=favoritesDAO.selectAll(favoriteBO);
-        String collection=i>0?"yes":"no";
+        boolean connectionBool=favoritesService.isCollection(userId,id,"hour");
+        String collection=connectionBool?"yes":"no";
         chapterBO.setCollection(collection);
+
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBO));
         logService.end("/chapter/chapterDetails",result);
         super.safeJsonPrint(response, result);

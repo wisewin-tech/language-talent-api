@@ -1,6 +1,8 @@
 package com.wisewin.api.service;
 
+import com.wisewin.api.dao.FavoritesDAO;
 import com.wisewin.api.dao.SpecialDAO;
+import com.wisewin.api.entity.bo.MyFavoriteBO;
 import com.wisewin.api.entity.bo.SpecialBO;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -20,6 +22,10 @@ public class SpecialService {
 
     @Resource
     SpecialDAO specialDAO;
+
+    @Resource
+    FavoritesDAO favoritesDAO;
+
 
     /**
      * 所有专题的查询
@@ -41,21 +47,31 @@ public class SpecialService {
      * 某个用户点的某个专题的查询
      * param 用户id 和 专题id
      * */
-    public SpecialBO selectSpecialBOById(Integer userId,Integer id){
+    public SpecialBO selectSpecialBOById(Integer userId,Integer id,String source){
         log.info("start======================================com.wisewin.api.service.SpecialService.selectSpecialBOById======================");
         log.info("参数:{}",userId);
         log.info("参数:{}",id);
 
-        //加访问量
-        specialDAO.addSpecialTraffic(id);
+        if(source.equals("html")){
+            //加访问量
+            specialDAO.addSpecialTraffic(id);
+        }
 
         //专题的信息
         SpecialBO specialBO=specialDAO.selectSpecialBOById(id);
+        if(specialBO==null){
+            return null;
+        }
         System.err.println(id);
         System.err.println(specialBO.getId());
 
         //查看这个用户是否喜欢过这个专题
         specialBO.setLike(specialDAO.checkUserLikeSpecial(userId,id)>0?"yes":"no");
+        //查询是否收藏过
+        MyFavoriteBO favoriteBO=new MyFavoriteBO(userId,id,"subject");
+        Integer i=favoritesDAO.selectAll(favoriteBO);
+        String collection=i>0?"yes":"no";
+        specialBO.setCollection(collection);
 
         String date=specialBO.getReleaseDateStr();
         specialBO.setReleaseDateStr(date.substring(0,date.lastIndexOf(".")));

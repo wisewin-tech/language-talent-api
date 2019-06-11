@@ -35,6 +35,15 @@ public class DiscoverBO extends BaseModel {
     private String videoImg;//存放视频封面url
     private String description;//内容描述
     private String like;//是否喜欢过
+    private String collection;//是否收藏过;
+
+    public String getCollection() {
+        return collection;
+    }
+
+    public void setCollection(String collection) {
+        this.collection = collection;
+    }
 
     public String getLike() {
         return like;

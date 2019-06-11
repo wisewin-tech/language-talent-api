@@ -22,6 +22,15 @@ public class SpecialBO extends BaseModel {
     private String videoLength;//视频时长
     private String videoCover;//视频
     private String skip;//跳转url
+    private String collection;//是否喜欢过
+
+    public String getCollection() {
+        return collection;
+    }
+
+    public void setCollection(String collection) {
+        this.collection = collection;
+    }
 
     public String getContent() {
         return content;

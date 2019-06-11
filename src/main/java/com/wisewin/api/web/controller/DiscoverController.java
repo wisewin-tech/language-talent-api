@@ -1,12 +1,15 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.dao.FavoritesDAO;
 import com.wisewin.api.entity.bo.DiscoverBO;
 import com.wisewin.api.entity.bo.DiscoverJsonBO;
+import com.wisewin.api.entity.bo.MyFavoriteBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.DiscoverParam;
 import com.wisewin.api.query.QueryInfo;
 import com.wisewin.api.service.DiscoverService;
+import com.wisewin.api.service.FavoritesService;
 import com.wisewin.api.service.LikerelatioService;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
@@ -36,6 +39,9 @@ public class DiscoverController extends BaseCotroller{
     LogService logService;
     @Resource
     private LikerelatioService likerelatioService;
+
+    @Resource
+    FavoritesService favoritesService;
 
     /**
      * 发现首页
@@ -121,15 +127,17 @@ public class DiscoverController extends BaseCotroller{
         UserBO loginUser = super.getLoginUser(request);
 
         if (StringUtils.isObjEmpty(loginUser)){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
             return;
         }
         Integer id = loginUser.getId();
 
         //进行修改浏览次数
-        logService.call("discoverService.getupdateDiscover",param.getId());
-        discoverService.getupdateDiscover(param.getId());
+        if(param.getSource().equals("html")){
+            logService.call("discoverService.getupdateDiscover",param.getId());
+            discoverService.getupdateDiscover(param.getId());
+        }
 
         //根据id来查找发现详情
         //线下活动和文章二为合一
@@ -149,8 +157,16 @@ public class DiscoverController extends BaseCotroller{
         boolean likeBool=likerelatioService.getfindLikerelation(id,param.getId());
         String like=likeBool?"yes":"no";
         discoverBO.setLike(like);
+
+
+        //查询是否收藏过
+        boolean collectionBool=favoritesService.isCollection(id,param.getId(),"discover");
+        String collection=collectionBool?"yes":"no";
+        discoverBO.setCollection(collection);
+
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(discoverBO));
         super.safeJsonPrint(response, json);
+
         logService.end("/Discover/queryDiscoveractivity",json);
         return;
     }

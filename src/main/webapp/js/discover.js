@@ -9,7 +9,7 @@ function getDataInfo(id) {
     $.ajax({
         url: '/Discover/queryDiscoveractivity',
         type: 'POST',
-        data: {id: id},
+        data: {id: id,source:html},
         dataType: 'json',
         success: function (res) {
             $('title').text(res.data.title);
