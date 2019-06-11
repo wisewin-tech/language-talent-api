@@ -9,6 +9,7 @@ public class UserSignBO {
     private Integer id; //用戶表
     private Integer integral; //积分
     private Integer currency; //咖豆
+    private Integer weekContinuousSign;//本周连续签到天数
     private Integer continuousSign; //连续签到天数
     private Integer cumulativeSign; //累计签到天数
     private String lastSign; //上次签到时间
@@ -19,18 +20,11 @@ public class UserSignBO {
                 "id=" + id +
                 ", integral=" + integral +
                 ", currency=" + currency +
+                ", weekContinuousSign=" + weekContinuousSign +
                 ", continuousSign=" + continuousSign +
                 ", cumulativeSign=" + cumulativeSign +
-                ", lastSign=" + lastSign +
+                ", lastSign='" + lastSign + '\'' +
                 '}';
-    }
-
-    public Integer getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Integer currency) {
-        this.currency = currency;
     }
 
     public Integer getId() {
@@ -47,6 +41,22 @@ public class UserSignBO {
 
     public void setIntegral(Integer integral) {
         this.integral = integral;
+    }
+
+    public Integer getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Integer currency) {
+        this.currency = currency;
+    }
+
+    public Integer getWeekContinuousSign() {
+        return weekContinuousSign;
+    }
+
+    public void setWeekContinuousSign(Integer weekContinuousSign) {
+        this.weekContinuousSign = weekContinuousSign;
     }
 
     public Integer getContinuousSign() {
@@ -66,8 +76,7 @@ public class UserSignBO {
     }
 
     public String getLastSign() {
-
-        return DateUtil.getStr(lastSign);
+        return lastSign;
     }
 
     public void setLastSign(String lastSign) {

@@ -90,7 +90,7 @@ public class SignController extends BaseCotroller {
         if ( signService.signIn(userId)){
             log.info("如果今天第一次签到");
             log.info("进入signService.signIn(userId)");
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("恭喜你！签到成功！"));
             log.info("return{}",json);
             log.info("end=================================com.wisewin.api.web.controller.SignController.signIn===================================");
             super.safeJsonPrint(response, json);

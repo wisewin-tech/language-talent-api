@@ -129,7 +129,8 @@ public class SignService {
         //累计签到天数
         Integer cumulativeSign=userBO.getCumulativeSign();
         //上次签到日期
-        String date=userBO.getLastSign();
+        String date=DateUtil.getStr(userBO.getLastSign());
+
         //用户积分
         Integer integral=userBO.getIntegral();
         //获取昨天日期
@@ -139,9 +140,19 @@ public class SignService {
         if (yesterdays.equals(date)){
             //连续签到天数改为+1
             userBO.setContinuousSign(continuousSign + 1);
+            //获取本周周一的日期
+            String monday = DateUtil.getWeekStart(new Date());
+            System.out.println("1:"+DateUtil.getDate(monday).getTime());
+            System.out.println("2:"+yesterday.getTime());
+            if (DateUtil.getDate(monday).getTime()<yesterday.getTime()){
+                userBO.setWeekContinuousSign(continuousSign+1);
+            }
+
         }else {
             //连续签到天数改为1
             userBO.setContinuousSign(1);
+            userBO.setWeekContinuousSign(1);
+
         }
             //累计签到天数+1
             userBO.setCumulativeSign(cumulativeSign+1);
@@ -163,6 +174,7 @@ public class SignService {
             //签到表添加用户签到
             signDAO.insertSign(userId);
             return true;
+
     }
 
     /**
@@ -178,6 +190,27 @@ public class SignService {
         UserSignBO userSignBO=signDAO.selectUser(userId);
         //返回连续签到天数
         return userSignBO.getContinuousSign();
+    }
+
+    //查询用户本周签到信息
+    public Integer selectWeek(Integer userId){
+        Integer continuousSigndays = 0;
+        Date date = new Date();
+        String weekstart = DateUtil.getWeekStart(date);
+        String weekend = DateUtil.getWeekEnd(date);
+        Map map = new HashMap();
+        map.put("weekstart",weekstart);
+        map.put("weekend",weekend);
+        map.put("userId",userId);
+
+      // TODO: 2019/6/11
+        List<SignBO> list = signDAO.selectWeek(map);
+        for(SignBO signBO:list){
+            if (DateUtil.getDateStr(new Date()).equals(signBO.getSignTime())){
+                continuousSigndays= continuousSigndays+1;
+            }
+        }
+        return continuousSigndays;
     }
 
 

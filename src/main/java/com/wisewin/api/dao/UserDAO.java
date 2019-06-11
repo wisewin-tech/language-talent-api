@@ -90,4 +90,11 @@ public interface UserDAO {
      * @param userId
      */
     void updateUserStudyDays(@Param("continuousLearning") Integer continuousLearning,@Param("cumulativeLearning") Integer cumulativeLearning,@Param("userId") Integer userId);
+
+    /**
+     * 查询用户本周连续签到天数
+     * @param userId
+     * @return
+     */
+    Integer getWeekContinuousSign(Integer userId);
 }

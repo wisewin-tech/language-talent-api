@@ -29,6 +29,7 @@ public class UserDTO {
     private String job; //职业
     private String qqOpenid; //qq登录id
     private String wxOpenid; //微信登录id
+    private Integer weekContinuousSign;//本周连续签到天数
     private Integer continuousSign; //连续签到天数
     private Integer cumulativeSign; //累计签到天数
     private Date lastSign; //上次签到时间
@@ -64,6 +65,7 @@ public class UserDTO {
                 ", job='" + job + '\'' +
                 ", qqOpenid='" + qqOpenid + '\'' +
                 ", wxOpenid='" + wxOpenid + '\'' +
+                ", weekContinuousSign=" + weekContinuousSign +
                 ", continuousSign=" + continuousSign +
                 ", cumulativeSign=" + cumulativeSign +
                 ", lastSign=" + lastSign +
@@ -250,6 +252,14 @@ public class UserDTO {
 
     public void setWxOpenid(String wxOpenid) {
         this.wxOpenid = wxOpenid;
+    }
+
+    public Integer getWeekContinuousSign() {
+        return weekContinuousSign;
+    }
+
+    public void setWeekContinuousSign(Integer weekContinuousSign) {
+        this.weekContinuousSign = weekContinuousSign;
     }
 
     public Integer getContinuousSign() {

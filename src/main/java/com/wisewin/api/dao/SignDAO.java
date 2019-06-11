@@ -10,6 +10,8 @@ import java.util.Map;
 public interface SignDAO {
     //查询用户本月签到信息
     List<SignBO> selectMon(Map<String, Object> map);
+    //查询用户本周签到信息
+    List<SignBO> selectWeek(Map<String, Object> map);
     //查询用户表用户签到信息
     UserSignBO selectUser(Integer userId);
     //查询最新条用户签到信息

@@ -33,6 +33,7 @@ public class UserBO  extends BaseModel{
     private String byInvite; //被邀请码
     private String qqOpenid; //qq登录id
     private String wxOpenid; //微信登录id
+    private Integer weekContinuousSign;//本周连续签到天数
     private Integer continuousSign; //连续签到天数
     private Integer cumulativeSign; //累计签到天数
     private Date lastSign; //上次签到时间
@@ -71,6 +72,7 @@ public class UserBO  extends BaseModel{
                 ", byInvite='" + byInvite + '\'' +
                 ", qqOpenid='" + qqOpenid + '\'' +
                 ", wxOpenid='" + wxOpenid + '\'' +
+                ", weekContinuousSign=" + weekContinuousSign +
                 ", continuousSign=" + continuousSign +
                 ", cumulativeSign=" + cumulativeSign +
                 ", lastSign=" + lastSign +
@@ -368,4 +370,11 @@ public class UserBO  extends BaseModel{
         this.updateTime = updateTime;
     }
 
+    public Integer getWeekContinuousSign() {
+        return weekContinuousSign;
+    }
+
+    public void setWeekContinuousSign(Integer weekContinuousSign) {
+        this.weekContinuousSign = weekContinuousSign;
+    }
 }

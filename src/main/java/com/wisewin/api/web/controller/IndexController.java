@@ -1,14 +1,8 @@
 package com.wisewin.api.web.controller;
 
-import com.wisewin.api.entity.bo.BannerBO;
-import com.wisewin.api.entity.bo.FlashSalesResultBO;
-import com.wisewin.api.entity.bo.LanguageBO;
-import com.wisewin.api.entity.bo.SpecialClassBO;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
-import com.wisewin.api.service.BannerService;
-import com.wisewin.api.service.LanguageService;
-import com.wisewin.api.service.SignService;
-import com.wisewin.api.service.SpecialClassService;
+import com.wisewin.api.service.*;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.JsonUtils;
@@ -34,7 +28,7 @@ public class IndexController extends BaseCotroller {
     @Resource
     private BannerService bannerService;
     @Resource
-    private SignService signService;
+    private UserService userService;
     @Resource
     private SpecialClassService specialClassService;
     @Resource
@@ -47,7 +41,8 @@ public class IndexController extends BaseCotroller {
     @RequestMapping("/showIndex")
     public void showIndex(HttpServletRequest request, HttpServletResponse response){
         logService.startController(null,request);
-        Integer useId = super.getId(request);
+        UserBO userBO = super.getLoginUser(request);
+        Integer useId = userBO.getId();
         logService.call("languageService.selectEnsignImage");
         List<LanguageBO> ensignImage = languageService.selectEnsignImage();
         logService.result(ensignImage);
@@ -63,8 +58,8 @@ public class IndexController extends BaseCotroller {
         List<BannerBO> banner = bannerService.getBanner();
         logService.result(banner);
         logService.call("signService.getContinuousSign",useId);
-        Integer ContinuousSigndays = signService.getContinuousSign(useId);
-        logService.result(ContinuousSigndays);
+        Integer weekContinuousSigndays= userService.getWeekContinuousSign(useId);
+        logService.result(weekContinuousSigndays);
         logService.call("specialClassService.selectSpecialClassBO");
         List<SpecialClassBO> specialClassBOS = specialClassService.selectSpecialClassBO();
         logService.result(specialClassBOS);
@@ -72,7 +67,7 @@ public class IndexController extends BaseCotroller {
         Map map = new HashMap();
         //将对象封装到map中
         map.put("Banner",banner);
-        map.put("ContinuousSigndays",ContinuousSigndays);
+        map.put("weekContinuousSigndays",weekContinuousSigndays);
         map.put("EnsignImage",ensignImage);
         map.put("FlashSales",flashSales);
         map.put("specialClassBOS",specialClassBOS);

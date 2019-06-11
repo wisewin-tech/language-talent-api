@@ -171,5 +171,11 @@
           id=#{userId}
     </update>
 
+    <!--查询用户本周连续签到天数-->
+    <select id="getWeekContinuousSign" resultType="java.lang.Integer"
+    parameterType="java.lang.Integer">
+        SELECT week_continuous_sign FROM `lt_user` WHERE id = #{userId}
+    </select>
+
 
 </mapper>

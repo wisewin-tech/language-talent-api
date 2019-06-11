@@ -29,6 +29,15 @@
         FROM lt_user
         WHERE id=#{id}
     </select>
+
+    <!--查询用户本周签到记录-->
+    <select id="selectWeek" resultType="com.wisewin.api.entity.bo.SignBO"
+            parameterType="java.util.Map">
+        SELECT
+        id,user_id, sign_time FROM lt_sign
+        WHERE
+        sign_time BETWEEN #{weekstart} AND #{weekend}  AND  user_id=#{userId}
+    </select>
     <!--查询用户签到积分值-->
     <select id="selectSignIntegral" resultType="java.lang.String">
         select
@@ -51,7 +60,7 @@
     <update id="updateUserSign" parameterType="com.wisewin.api.entity.bo.UserBO">
         update lt_user
         <set>
-
+            <if test="weekContinuousSign!=null">week_continuous_sign=#{weekContinuousSign},</if>
             <if test="continuousSign!=null">continuous_sign=#{continuousSign},</if>
             <if test="cumulativeSign!=null">cumulative_sign=#{cumulativeSign},</if>
             <if test="integral!=null">      integral=#{integral},</if>
