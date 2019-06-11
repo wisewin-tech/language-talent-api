@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.events.StartDocument;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,7 +102,7 @@ public class SequenceController extends BaseCotroller {
 
 
     @RequestMapping("/downloadVod")
-    public void test(HttpServletResponse response,HttpServletRequest request,String vid){
+    public void downloadVod(HttpServletResponse response,HttpServletRequest request,String vid){
         UserBO loginUser =super.getLoginUser(request);
         if(loginUser==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
@@ -114,6 +115,7 @@ public class SequenceController extends BaseCotroller {
             return;
         }
         try {
+           // String decode = URLDecoder.decode(vid, "UTF-8");
             String decrypt = AESOperator.decrypt(vid);
             if(decrypt!=null){
                 boolean itWatch = orderService.isVidWahch(decrypt);

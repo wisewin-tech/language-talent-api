@@ -15,7 +15,11 @@
         FROM
           lt_gift
         WHERE
-          exchangeyard=#{exchangeyard}
+           exchangeyard=#{exchangeyard}
+        AND
+        `status`='not'
+        AND
+        NOW() BETWEEN starttime  AND finishtime
     </select>
 
     <!--添加礼品卡兑换码兑换记录-->

@@ -7,6 +7,8 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import java.net.URLEncoder;
+
 
 /**
  * @Author Luolu yuan
@@ -109,8 +111,10 @@ public class AESOperator {
 
 
     public static void main(String[] args) throws Exception {
-        String str = encrypt("-0");
-        System.out.println(str);
+        String str = encrypt("d1d2f5fa2d28409da685a278a93566c7");
+        String encode = URLEncoder.encode(str, "UTF-8");
+
+        System.out.println(encode);
     }
 
 }

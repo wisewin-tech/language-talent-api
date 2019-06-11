@@ -4,6 +4,7 @@ package com.wisewin.api.service;
 import com.wisewin.api.dao.GiftDAO;
 import com.wisewin.api.entity.bo.GiftBO;
 import com.wisewin.api.entity.bo.GiftRecordBO;
+import com.wisewin.api.entity.bo.UserBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,10 +55,16 @@ public class GiftService {
      * Integer id 用户id
      * Integer currency 咖豆
      */
-    public  Integer getupdateUserGift(Integer id,Integer currency){
+    public  Integer getupdateUserGift(UserBO userBO, Integer currency){
+        Integer curr= userBO.getCurrency();
+        if(curr!=null){
+            curr=curr+currency;
+        }else{
+            curr=currency;
+        }
         Map<String,Object> map=new HashMap<String, Object>();
-        map.put("id",id);
-        map.put("currency",currency);
+        map.put("id",userBO.getId());
+        map.put("currency",curr);
         return  giftDAO.updateUserGift(map);
     }
 }

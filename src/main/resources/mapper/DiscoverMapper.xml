@@ -7,7 +7,6 @@
 
     <!--发现首页显示-->
     <select id="queryDiscover" resultType="com.wisewin.api.entity.param.DiscoverParam">
-
         SELECT
         id,title,
         browse,create_time,
@@ -24,12 +23,11 @@
         OR
         `type`='curriculum'
         ORDER  BY
-        priority
+        stick
         desc
-
         <include refid="orderLimit" />
-
     </select>
+
     <sql id="orderLimit">
         limit #{pageNo},#{pageSize}
     </sql>
