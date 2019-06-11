@@ -1,10 +1,7 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.dao.LanguageDAO;
-import com.wisewin.api.entity.bo.FlashSalesResultBO;
-import com.wisewin.api.entity.bo.LanguageBO;
-import com.wisewin.api.entity.bo.LanguageDetailsCourseResultBO;
-import com.wisewin.api.entity.bo.LanguageDetailsResultBO;
+import com.wisewin.api.entity.bo.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,7 +72,7 @@ public class LanguageService {
      * @param userId 用户id
      * @return
      */
-    public List<LanguageBO> myStudyLanguage(Integer userId){
+    public List<MyStudyLanguageBO> myStudyLanguage(Integer userId){
         return languageDAO.myStudyLanguage(userId);
     }
 
@@ -83,7 +80,7 @@ public class LanguageService {
      * 语言名称列表
      * @return
      */
-    public List<LanguageBO> languageList(){
+    public List<MyStudyLanguageBO> languageList(){
         return languageDAO.languageList();
     }
 }

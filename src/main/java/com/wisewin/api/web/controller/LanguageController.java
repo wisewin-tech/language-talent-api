@@ -108,10 +108,10 @@ public class LanguageController extends BaseCotroller{
         }
         Integer userId = userBO.getId();
         logService.call("languageService.myStudyLanguage",userId);
-        List<LanguageBO> languageBO = languageService.myStudyLanguage(userId);
+        List<MyStudyLanguageBO> languageBO = languageService.myStudyLanguage(userId);
         logService.result(languageBO);
         logService.call("languageService.languageList");
-        List<LanguageBO> languageBO1 = languageService.languageList();
+        List<MyStudyLanguageBO> languageBO1 = languageService.languageList();
         logService.result(languageBO1);
         Map resultMap = new HashMap();
         resultMap.put("myStudyLanguage",languageBO);

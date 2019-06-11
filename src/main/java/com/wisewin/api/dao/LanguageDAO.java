@@ -38,13 +38,13 @@ public interface LanguageDAO {
      * @param userId
      * @return
      */
-    List<LanguageBO> myStudyLanguage(Integer userId);
+    List<MyStudyLanguageBO> myStudyLanguage(Integer userId);
 
     /**
      * 获取语言名称列表
      * @return
      */
-    List<LanguageBO> languageList();
+    List<MyStudyLanguageBO> languageList();
 
 
     /**
