@@ -43,6 +43,9 @@ public class PayService {
     @Resource
     LogService logService;
 
+    @Resource
+    KeyValDAO keyValDAO;
+
     //支付成功 充值咖豆  修改订单状态 修改咖豆数量 添加纪录
     public void rechargeKaDou(String orderNumber, Integer currency) {
         logService.serviceStart("PayService.rechargeKaDou",orderNumber,currency);
@@ -168,20 +171,15 @@ public class PayService {
 
     //获取人民币对等的咖豆
     public Integer getKaDou(Integer price) {
-        //String proportion = keyValDAO.selectKey("top-up proportion");
-        String proportion = "1:1";
-        Integer jinE = new Integer(proportion.substring(0, proportion.indexOf(":")));
-        Integer kaD = new Integer(proportion.substring(proportion.indexOf(":") + 1, proportion.length()));
-        return price / jinE * kaD;
+        //一块钱对应的咖豆
+        Integer proportion =  new Integer(keyValDAO.selectKey("topup_proportion"));
+        return price * proportion;
     }
 
     //获取咖豆对等的人民币
     public BigDecimal getMoney(Integer kaDou) {
-        //String proportion = keyValDAO.selectKey("top-up proportion");
-        String proportion = "1:1";
-        Integer jinE = new Integer(proportion.substring(0, proportion.indexOf(":")));
-        Integer kaD = new Integer(proportion.substring(proportion.indexOf(":") + 1, proportion.length()));
-        return new BigDecimal(kaDou / kaD * jinE);
+        Integer proportion = new Integer(keyValDAO.selectKey("topup_proportion"));
+        return new BigDecimal(kaDou/proportion);
     }
 
     //判断是否是优惠时间
