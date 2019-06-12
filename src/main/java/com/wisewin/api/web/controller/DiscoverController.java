@@ -126,12 +126,7 @@ public class DiscoverController extends BaseCotroller{
         //获取当前用户id
         UserBO loginUser = super.getLoginUser(request);
 
-        if (StringUtils.isObjEmpty(loginUser)){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-        Integer id = loginUser.getId();
+
 
         //进行修改浏览次数
         if(param.getSource()!=null&&param.getSource().equals("html")){
@@ -151,18 +146,19 @@ public class DiscoverController extends BaseCotroller{
             return;
         }
 
+        if(loginUser!=null){
+            Integer id = loginUser.getId();
+            //查询是否喜欢过
+            boolean likeBool=likerelatioService.getfindLikerelation(id,param.getId());
+            String like=likeBool?"yes":"no";
+            discoverBO.setLike(like);
 
 
-        //查询是否喜欢过
-        boolean likeBool=likerelatioService.getfindLikerelation(id,param.getId());
-        String like=likeBool?"yes":"no";
-        discoverBO.setLike(like);
-
-
-        //查询是否收藏过
-        boolean collectionBool=favoritesService.isCollection(id,param.getId(),"discover");
-        String collection=collectionBool?"yes":"no";
-        discoverBO.setCollection(collection);
+            //查询是否收藏过
+            boolean collectionBool=favoritesService.isCollection(id,param.getId(),"discover");
+            String collection=collectionBool?"yes":"no";
+            discoverBO.setCollection(collection);
+        }
 
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(discoverBO));
         super.safeJsonPrint(response, json);
