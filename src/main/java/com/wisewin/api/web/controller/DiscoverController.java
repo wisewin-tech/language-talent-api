@@ -134,7 +134,7 @@ public class DiscoverController extends BaseCotroller{
         Integer id = loginUser.getId();
 
         //进行修改浏览次数
-        if(param.getSource().equals("html")){
+        if(param.getSource()!=null&&param.getSource().equals("html")){
             logService.call("discoverService.getupdateDiscover",param.getId());
             discoverService.getupdateDiscover(param.getId());
         }

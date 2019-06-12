@@ -52,7 +52,7 @@ public class SpecialService {
         log.info("参数:{}",userId);
         log.info("参数:{}",id);
 
-        if(source.equals("html")){
+        if(source!=null&&source.equals("html")){
             //加访问量
             specialDAO.addSpecialTraffic(id);
         }
