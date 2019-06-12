@@ -71,10 +71,14 @@ public class IndexController extends BaseCotroller {
             //查询签到表用户最新记录
             SignBO signBO = signService.selectNew(useId);
             TodaySignOrNot todaySignOrNot = new TodaySignOrNot();
-            if (DateUtil.getDateStr(new Date()).equals(signBO.getSignTime())) {
-                todaySignOrNot.setTodaySignOrNot("yes");
-            } else {
+            if (signBO==null){
                 todaySignOrNot.setTodaySignOrNot("no");
+            }else {
+                if (signBO.getSignTime().equals(DateUtil.getDateStr(new Date()))) {
+                    todaySignOrNot.setTodaySignOrNot("yes");
+                } else {
+                    todaySignOrNot.setTodaySignOrNot("no");
+                }
             }
 
             logService.call("specialClassService.selectSpecialClassBO");
