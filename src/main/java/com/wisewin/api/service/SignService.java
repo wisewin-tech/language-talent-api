@@ -213,5 +213,15 @@ public class SignService {
         return continuousSigndays;
     }
 
+    /**
+     * 查询签到表用户最新记录
+     * @param userId
+     * @return
+     */
+    public SignBO selectNew(Integer userId){
+        return  signDAO.selectNew(userId);
+    }
+
+
 
 }

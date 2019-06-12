@@ -25,7 +25,7 @@
     <!--查询用户表用户签到信息-->
     <select id="selectUser" resultType="com.wisewin.api.entity.bo.UserSignBO"
             parameterType="java.lang.Integer">
-        SELECT id,continuous_sign,cumulative_sign,last_sign,integral,currency
+        SELECT id,continuous_sign,cumulative_sign,last_sign,integral,currency,week_continuous_sign
         FROM lt_user
         WHERE id=#{id}
     </select>
