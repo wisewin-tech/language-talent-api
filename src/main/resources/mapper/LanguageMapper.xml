@@ -88,6 +88,7 @@ WHERE
 		LEFT JOIN lt_order_courses oc ON oc.courses_id = co.id
 		LEFT JOIN lt_order `or` ON `or`.id = oc.order_id
 		WHERE `or`.`status` = 'yes' AND oc.course_validity_period > NOW() AND oc.user_id = #{userId}
+		GROUP BY la.language_name
 	</select>
 
 	<!--语言名称列表-->
