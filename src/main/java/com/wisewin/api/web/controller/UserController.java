@@ -477,13 +477,13 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
         }
         //如果获取到了,判断user参数不为空
-        if (ParamNullUtil.checkObjAllFieldsIsNull(userParam)) {
-            log.info("如果获取到了,判断user参数不为空");
-            log.info("(ParamNullUtil.checkObjAllFieldsIsNull(userParam),return");
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeJsonPrint(response, json);
-        }
-
+//
+//        if (ParamNullUtil.checkObjAllFieldsIsNull(userParam)) {
+//            log.info("如果获取到了,判断user参数不为空");
+//            log.info("(ParamNullUtil.checkObjAllFieldsIsNull(userParam),return");
+//            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+//            super.safeJsonPrint(response, json);
+//        }
         //如果修改绑定的微信或者qq 检查这个openid是否已经被绑定
         String qqid=userParam.getQqOpenid();
         log.info("qqid{}",qqid);
