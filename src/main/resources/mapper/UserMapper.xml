@@ -50,9 +50,9 @@
             useGeneratedKeys="true" keyProperty="id">
 
         insert into lt_user(
-        nickname,birthday,sex,password,mobile,by_invite,create_time
+        nickname,birthday,sex,password,mobile,by_invite,create_time,status
         )values(
-        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now()
+        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),#{status}
         )
 
     </insert>

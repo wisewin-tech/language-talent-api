@@ -422,6 +422,7 @@ public class UserController extends BaseCotroller {
             } else { //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
                 UserBO userBO1 = new UserBO();
                 userBO1.setMobile(phone);
+                userBO1.setStatus(UserConstants.Yes.getValue());
                 log.info("调用com.wisewin.api.service.UserService.insertUser");
                 userService.insertUser(userBO1);
                 log.info("绑定openid");
