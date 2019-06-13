@@ -2,6 +2,8 @@ package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
 
+import java.util.Date;
+
 public class LanguageDetailsResultBO extends BaseModel {
     private Integer id; //语言表
     private String languageName; //语言名称
@@ -11,6 +13,8 @@ public class LanguageDetailsResultBO extends BaseModel {
     private String languageIntro; //语言简介
     private Integer languagePrice; //价格
     private Integer languageDiscountPrice; //特惠价格
+    private Date discountStartTime;//特惠开始时间
+    private Date discountEndTime;//特惠结束时间
     private String buyOrNot;//是否已购买
 
     @Override
@@ -24,6 +28,8 @@ public class LanguageDetailsResultBO extends BaseModel {
                 ", languageIntro='" + languageIntro + '\'' +
                 ", languagePrice=" + languagePrice +
                 ", languageDiscountPrice=" + languageDiscountPrice +
+                ", discountStartTime=" + discountStartTime +
+                ", discountEndTime=" + discountEndTime +
                 ", buyOrNot='" + buyOrNot + '\'' +
                 '}';
     }
@@ -90,6 +96,22 @@ public class LanguageDetailsResultBO extends BaseModel {
 
     public void setLanguageDiscountPrice(Integer languageDiscountPrice) {
         this.languageDiscountPrice = languageDiscountPrice;
+    }
+
+    public Date getDiscountStartTime() {
+        return discountStartTime;
+    }
+
+    public void setDiscountStartTime(Date discountStartTime) {
+        this.discountStartTime = discountStartTime;
+    }
+
+    public Date getDiscountEndTime() {
+        return discountEndTime;
+    }
+
+    public void setDiscountEndTime(Date discountEndTime) {
+        this.discountEndTime = discountEndTime;
     }
 
     public String getBuyOrNot() {

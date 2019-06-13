@@ -55,7 +55,9 @@
 	`language`.language_lightspot,
 	`language`.purchase_notes,
 	`language`.price languagePrice,
-	`language`.discount_price languageDiscountPrice
+	`language`.discount_price languageDiscountPrice,
+	`language`.discount_start_time,
+	`language`.discount_end_time
 FROM
 	lt_language `language`
 WHERE
@@ -69,7 +71,10 @@ WHERE
 			course.id courseId,course.certificate_or_not certificateOrNot,
 			course.course_name courseName,
 			course.price coursePrice,
-			course.discount_price courseDiscountPrice
+			course.discount_price courseDiscountPrice,
+			course.discount_start_time,
+			course.discount_end_time
+
 		FROM
 	lt_language `language`
 LEFT JOIN lt_course `course` ON `language`.id = course.language_id

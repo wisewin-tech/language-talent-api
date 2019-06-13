@@ -161,7 +161,30 @@ public class DateUtil {
         String result = format.format(today);
         return  DateUtil.getDate(result);
     }
-
+    /**
+          * 判断时间是否在时间段内
+          * @param nowTime
+          * @param beginTime
+          * @param endTime
+          * @return
+          */
+public static boolean belongCalendar(Date nowTime, Date beginTime, Date endTime) {
+//设置当前时间
+Calendar date = Calendar.getInstance();
+date.setTime(nowTime);
+//设置开始时间
+Calendar begin = Calendar.getInstance();
+begin.setTime(beginTime);
+//设置结束时间
+Calendar end = Calendar.getInstance();
+end.setTime(endTime);
+//处于开始时间之后，和结束时间之前的判断
+if (date.after(begin) && date.before(end)) {
+ return true;
+} else {
+ return false;
+ }
+}
     /**
      * 获取昨天的日期
      * @return
@@ -235,9 +258,13 @@ public class DateUtil {
         return imptimeEnd;
     }
 
+
+
     public static void main(String[] args) {
         DateUtil dateUtil =new DateUtil();
-        String str = dateUtil.getWeekEnd(new Date());
+        Date start =DateUtil.getDate("2019-04-25 13:15:32");
+        Date end =DateUtil.getDate("2019-05-25 13:15:32");
+        Boolean str = belongCalendar(new Date(),start,end);
         System.out.println(str);
 
 
