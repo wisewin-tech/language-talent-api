@@ -1,7 +1,8 @@
 package com.wisewin.api.service;
 
-import com.wisewin.api.dao.CouplebacDAO;
+import com.wisewin.api.dao.FeedbackDAO;
 import com.wisewin.api.entity.bo.CouplebackBO;
+import com.wisewin.api.entity.bo.FeedbackBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +13,7 @@ import javax.annotation.Resource;
 public class CouplebackService {
 
     @Resource
-    private CouplebacDAO couplebacDAO;
+    private FeedbackDAO couplebacDAO;
 
 
     /**
@@ -23,11 +24,14 @@ public class CouplebackService {
      * String pattern; //用户联系
      *  String pictureurl; //图片url
      */
-    public  boolean getaddCpupleback(Integer userid,String content){
-
-        CouplebackBO couplebackBO=new CouplebackBO(userid,content);
-
-        return  couplebacDAO.addCpupleback(couplebackBO)>0;
+    public  boolean getaddCpupleback(Integer userid,String content,String phone){
+        FeedbackBO feedbackBO=new FeedbackBO();
+        feedbackBO.setUserId(userid);
+        feedbackBO.setContent(content);
+        feedbackBO.setContactWay("手机号码");
+        feedbackBO.setStatus("unread");
+        feedbackBO.setContactNumber(phone);
+        return  couplebacDAO.addFeedback(feedbackBO)>0;
 
     }
 
