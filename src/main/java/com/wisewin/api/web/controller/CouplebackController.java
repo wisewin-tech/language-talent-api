@@ -51,7 +51,7 @@ public class CouplebackController  extends BaseCotroller {
 
         //进行添加反馈内容
         logService.call("couplebackService.getaddCpupleback",id,param.getContent());
-        boolean addCpuplebackjson=couplebackService.getaddCpupleback(id,param.getContent());
+        boolean addCpuplebackjson=couplebackService.getaddCpupleback(id,param.getContent(),loginUser.getMobile());
         logService.result(addCpuplebackjson);
         if (addCpuplebackjson){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("反馈成功"));
