@@ -47,7 +47,11 @@ public class LikerelationController extends BaseCotroller{
         log.info("参数param{}",param);
         //获取当前用户id
         UserBO loginUser = super.getLoginUser(request);
-
+        if(loginUser==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
         if (StringUtils.isObjEmpty(param.getDcId())){
          log.info("id==null || StringUtils.isObjEmpty(param.getDcId()),return");
          String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -65,18 +69,18 @@ public class LikerelationController extends BaseCotroller{
             //删除喜欢关系
             likerelatioService.getdeleteLikerelation(loginUser.getId(),param.getDcId());
             resultMap.put("msg","取消喜欢成功");
-            resultMap.put("status","cancel");
+            resultMap.put("type","0");
         }else{
             //添加喜欢
             discoverService.getupdatelikenumDiscover(param.getDcId(),"yes");
             //删除喜欢关系
             likerelatioService.getaddLikerelation(loginUser.getId(),param.getDcId());
             resultMap.put("msg","增加喜欢成功");
-            resultMap.put("status","add");
+            resultMap.put("type","1");
         }
         //喜欢总数 discoverBO
-        //int likeCount = likerelatioService.queryLikereCount(param.getDcId());
-        //resultMap.put("likeCount",likeCount);
+        int likeCount = likerelatioService.queryLikereCount(param.getDcId());
+        resultMap.put("likeCount",likeCount);
 
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
         log.info("return{}",json);

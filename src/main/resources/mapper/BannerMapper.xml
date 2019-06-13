@@ -6,7 +6,7 @@
 <mapper namespace="com.wisewin.api.dao.BannerDAO">
 
     <select id="getBanner" resultType="com.wisewin.api.entity.bo.BannerBO">
-        select * from lt_banner ORDER BY sort DESC
+        select * from lt_banner where status='putaway' ORDER BY sort DESC
     </select>
 
 </mapper>
