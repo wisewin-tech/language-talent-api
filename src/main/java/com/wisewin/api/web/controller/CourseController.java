@@ -7,6 +7,7 @@ import com.wisewin.api.service.OrderService;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StringUtils;
+import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,17 @@ public class CourseController extends BaseCotroller {
         //查看课程详情
         logService.call("courseService.courseDetailsCourse",id);
         CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
+        if (courseDetailsResultBO==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000041"));
+            logService.end("/course/courseDetails",result);
+            super.safeJsonPrint(response, result);
+            return;
+        }
+        Date discountStartTime = courseDetailsResultBO.getDiscountStartTime();
+        Date discountEndTime = courseDetailsResultBO.getDiscountEndTime();
+        if (!DateUtil.belongCalendar(new Date(),discountStartTime,discountEndTime)){
+            courseDetailsResultBO.setCourseDiscountPrice(0);
+        }
         logService.result(courseDetailsResultBO);
         List<CourseDetailsLevelResultBO> levelBOS= courseService.courseDetailsLevel(id);
         Integer count = orderService.getStatusByCourseId(userId,id);

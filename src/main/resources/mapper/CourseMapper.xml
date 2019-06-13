@@ -37,7 +37,7 @@
 			course.certificate_or_not certificateOrNot,course.certificate_title certificateTitle,
 			course.certificate_image_url certificateImageUrl,
 			course.price coursePrice,course.discount_price courseDiscountPrice,
-			course.id courseId
+			course.id courseId,course.discount_start_time,course.discount_end_time
 		FROM
 			lt_course `course`
 		LEFT JOIN lt_language `language` ON course.language_id = `language`.id
