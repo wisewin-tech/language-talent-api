@@ -24,7 +24,7 @@
         `type`='curriculum'
         ORDER  BY
         stick DESC,
-        create_time DESC
+        update_time DESC
         <include refid="orderLimit" />
     </select>
 
@@ -64,7 +64,7 @@
           `type`='activity'
         ORDER  BY
         stick DESC,
-        create_time DESC
+        update_time DESC
 
     </select>
 
