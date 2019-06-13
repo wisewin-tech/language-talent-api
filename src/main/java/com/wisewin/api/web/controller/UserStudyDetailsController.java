@@ -42,8 +42,8 @@ public class UserStudyDetailsController extends BaseCotroller {
         logService.startController(userBO,request);
         if (userBO==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
-            super.safeJsonPrint(response, json);
             logService.end("/studyDetails/getUserStudyDetails",json);
+            super.safeJsonPrint(response, json);
             return;
         }
             //获取当前登录用户id
