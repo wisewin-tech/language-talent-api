@@ -9,7 +9,7 @@
     <insert id="addFeedback" useGeneratedKeys="true" keyProperty="id"  parameterType="com.wisewin.api.entity.bo.FeedbackBO">
         insert into lt_feedback (user_id,content,`status`,contact_way,contact_number,create_time)
         VALUES(
-          #{userid},#{content},#{status},#{contactWay},#{contactNumber},now()
+          #{userId},#{content},#{status},#{contactWay},#{contactNumber},now()
           )
     </insert>
 
