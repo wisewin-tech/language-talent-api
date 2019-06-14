@@ -48,6 +48,12 @@ public class CourseController extends BaseCotroller {
         }
         UserBO userBO = super.getLoginUser(request);
         logService.startController(userBO,request,id);
+        if (userBO==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, result);
+            logService.end("/course/courseDetails",result);
+            return;
+        }
         Integer userId = userBO.getId();
         //查看课程详情
         logService.call("courseService.courseDetailsCourse",id);
@@ -60,8 +66,10 @@ public class CourseController extends BaseCotroller {
         }
         Date discountStartTime = courseDetailsResultBO.getDiscountStartTime();
         Date discountEndTime = courseDetailsResultBO.getDiscountEndTime();
-        if (!DateUtil.belongCalendar(new Date(),discountStartTime,discountEndTime)){
-            courseDetailsResultBO.setCourseDiscountPrice(0);
+        if (discountStartTime!=null&&discountEndTime!=null) {
+            if (!DateUtil.belongCalendar(new Date(), discountStartTime, discountEndTime)) {
+                courseDetailsResultBO.setCourseDiscountPrice(0);
+            }
         }
         logService.result(courseDetailsResultBO);
         List<CourseDetailsLevelResultBO> levelBOS= courseService.courseDetailsLevel(id);
