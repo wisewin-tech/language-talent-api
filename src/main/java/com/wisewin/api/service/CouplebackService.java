@@ -1,7 +1,6 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.dao.FeedbackDAO;
-import com.wisewin.api.entity.bo.CouplebackBO;
 import com.wisewin.api.entity.bo.FeedbackBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,7 @@ import javax.annotation.Resource;
 public class CouplebackService {
 
     @Resource
-    private FeedbackDAO couplebacDAO;
+    private FeedbackDAO feedbackDAO;
 
 
     /**
@@ -31,7 +30,7 @@ public class CouplebackService {
         feedbackBO.setContactWay("手机号码");
         feedbackBO.setStatus("unread");
         feedbackBO.setContactNumber(phone);
-        return  couplebacDAO.addFeedback(feedbackBO)>0;
+        return  feedbackDAO.addFeedback(feedbackBO)>0;
 
     }
 

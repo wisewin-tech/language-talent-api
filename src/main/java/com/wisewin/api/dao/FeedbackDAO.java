@@ -1,10 +1,9 @@
 package com.wisewin.api.dao;
 
 
-import com.wisewin.api.entity.bo.CouplebackBO;
+
 import com.wisewin.api.entity.bo.FeedbackBO;
 
-import java.util.List;
 
 /**
  * 反馈信息
