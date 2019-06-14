@@ -71,7 +71,8 @@ public class SequenceController extends BaseCotroller {
         }
 
         boolean itWatch = orderService.isItWatch(loginUser.getId(), id);
-        if(itWatch){
+        boolean  free=orderService.isFree(id);
+        if(itWatch || free){
             Map<String, String> stsMessage = StsUtil.getStsMessage("user"+loginUser.getId().toString());
             String videoPath = chapterService.queryVideoPath(id);
             stsMessage.put("vid",videoPath);
