@@ -72,4 +72,7 @@ public class OrderService {
         return  orderDAO.isVidWahch(vid)>0;
     }
 
+    public boolean isFree(Integer id) {
+        return  orderDAO.isFree(id)>0;
+    }
 }

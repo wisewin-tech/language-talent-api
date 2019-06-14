@@ -82,4 +82,6 @@ public interface OrderDAO {
      * @return
      */
     int isVidWahch(String vid);
+
+    int isFree(Integer id);
 }

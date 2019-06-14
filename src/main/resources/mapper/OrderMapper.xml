@@ -187,4 +187,8 @@
     <select id="isVidWahch" parameterType="java.lang.String"  resultType="int">
         SELECT COUNT(id)  FROM lt_chapter WHERE video_path=#{vid}
     </select>
+
+    <select id="isFree"  resultType="int"  parameterType="java.lang.Integer"  >
+            SELECT COUNT(id)  FROM lt_chapter WHERE id=#{id}  AND   free_or_not='yes'
+    </select>
 </mapper>
