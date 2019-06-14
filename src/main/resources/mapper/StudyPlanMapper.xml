@@ -81,7 +81,9 @@
         RIGHT JOIN lt_course `course` ON `level`.course_id = course.id
         RIGHT JOIN lt_language `language` ON course.language_id = `language`.id
         WHERE
-        `language`.id = #{languageId}
+         `language`.`status` = 'putaway'
+        AND course.`status` = 'putaway'
+        AND `language`.id = #{languageId}
     </select>
     <!--查询某个级别下的课时数-->
     <select id="getLevelCount" resultType="java.lang.Integer">
