@@ -74,17 +74,22 @@ public class LanguageController extends BaseCotroller{
         }
         Date discountStartTime = languageBO.getDiscountStartTime();
         Date discountEndTime = languageBO.getDiscountEndTime();
-        if (!DateUtil.belongCalendar(new Date(),discountStartTime,discountEndTime)){
-            languageBO.setLanguageDiscountPrice(0);
+        if (discountStartTime!=null&&discountEndTime!=null) {
+            if (!DateUtil.belongCalendar(new Date(), discountStartTime, discountEndTime)) {
+                languageBO.setLanguageDiscountPrice(0);
             }
+        }
         logService.result(languageBO);
         logService.call("languageService.languageDetailsCourse",id);
         List<LanguageDetailsCourseResultBO> languageDetailsCourseResultBOS = languageService.languageDetailsCourse(id);
         for (LanguageDetailsCourseResultBO courseResultBO:languageDetailsCourseResultBOS){
-            Date courseDiscountStartTime = courseResultBO.getDiscountStartTime();
-            Date courseDiscountEndTime = courseResultBO.getDiscountEndTime();
-            if (!DateUtil.belongCalendar(new Date(),courseDiscountStartTime,courseDiscountEndTime)){
-                courseResultBO.setCourseDiscountPrice(0);
+
+                Date courseDiscountStartTime = courseResultBO.getDiscountStartTime();
+                Date courseDiscountEndTime = courseResultBO.getDiscountEndTime();
+            if (courseDiscountStartTime!=null&&courseDiscountEndTime!=null) {
+                if (!DateUtil.belongCalendar(new Date(), courseDiscountStartTime, courseDiscountEndTime)) {
+                    courseResultBO.setCourseDiscountPrice(0);
+                }
             }
         }
         logService.result(languageDetailsCourseResultBOS);
