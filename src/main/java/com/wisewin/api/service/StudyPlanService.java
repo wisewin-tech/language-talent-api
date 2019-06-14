@@ -29,8 +29,8 @@ public class StudyPlanService {
      * 当levelId为0时查询默认的级别id
      * @return
      */
-    public Integer getLevelIdByOne(){
-        return studyPlanDAO.getLevelIdByOne();
+    public Integer getLevelIdByOne(Integer languageId){
+        return studyPlanDAO.getLevelIdByOne(languageId);
     }
     /**
      * 获取首页右侧栏级别列表

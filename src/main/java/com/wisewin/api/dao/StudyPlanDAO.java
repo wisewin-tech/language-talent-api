@@ -20,7 +20,7 @@ public interface StudyPlanDAO {
      * 当levelId为0时查询默认的级别id
      * @return
      */
-    Integer getLevelIdByOne();
+    Integer getLevelIdByOne(Integer languageId);
 
     /**
      * 获取首页右侧栏级别列表

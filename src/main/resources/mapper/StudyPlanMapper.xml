@@ -48,10 +48,12 @@
 
 
     <!--获取学习计划，当用户第一次进来时默认第一个级别-->
-    <select id="getLevelIdByOne" resultType="java.lang.Integer" >
-        SELECT id
-        FROM lt_level
-        ORDER BY create_time ASC LIMIT 0,1
+    <select id="getLevelIdByOne" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+        SELECT le.id
+        FROM lt_level le LEFT JOIN lt_course co ON le.course_id = co.id
+        LEFT JOIN lt_language la ON co.language_id = la.id
+        WHERE la.id = #{languageId} AND co.`status` = 'putaway' AND la.`status` = 'putaway'
+        ORDER BY le.create_time ASC LIMIT 0,1
     </select>
 
     <resultMap id="levelList" type="com.wisewin.api.entity.bo.LanguageResultBO">

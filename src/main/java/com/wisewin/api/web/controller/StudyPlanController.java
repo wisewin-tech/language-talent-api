@@ -96,7 +96,7 @@ public class StudyPlanController extends BaseCotroller {
             return;
         }
         logService.call("studyPlanService.getLevelIdByOne");
-        Integer levelId1 = studyPlanService.getLevelIdByOne();
+        Integer levelId1 = studyPlanService.getLevelIdByOne(languageId);
         logService.end("studyPlanService.getLevelIdByOne",levelId1);
         logService.call("courseService.getCourseIdByLevelId",levelId1);
         Integer courseId1 = courseService.getCourseIdByLevelId(levelId1);
