@@ -1,6 +1,7 @@
 package com.wisewin.api.test;
 
 import com.wisewin.api.dao.KeyValDAO;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -50,9 +51,10 @@ public class test2 {
 
     public static void main(String[] args) throws ParseException {
 
-        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        String result=format1.format(new Date(2019-06-06));
-        System.err.println(result);
+        //a  d
+
+
     }
+
 
 }
