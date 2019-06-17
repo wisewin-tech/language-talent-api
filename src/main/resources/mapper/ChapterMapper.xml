@@ -10,7 +10,7 @@
 	      `language`.language_name,
 	      `level`.level_name,
 	      chapter.chapter_name,
-	      chapter.free_or_not,
+	      chapter.free_or_not,chapter.video_path,
 	      chapter.id
         FROM
 	      lt_chapter `chapter`
