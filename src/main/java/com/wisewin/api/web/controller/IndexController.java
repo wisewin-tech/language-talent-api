@@ -65,9 +65,19 @@ public class IndexController extends BaseCotroller {
             logService.call("bannerService.getBanner");
             List<BannerBO> banner = bannerService.getBanner();
             logService.result(banner);
-            logService.call("signService.getContinuousSign", useId);
-            Integer weekContinuousSigndays = userService.getWeekContinuousSign(useId);
-            logService.result(weekContinuousSigndays);
+            //上次签到日期
+            String date=DateUtil.getDateStr(userBO.getLastSign());
+            //获取本周周一的日期
+            String monday = DateUtil.getWeekStart(new Date());
+            String monday1= DateUtil.getStr(monday);
+            Integer weekContinuousSigndays =0;
+            if (!monday1.equals(date)){
+                weekContinuousSigndays = 0;
+            }else {
+                logService.call("signService.getContinuousSign", useId);
+                 weekContinuousSigndays = userService.getWeekContinuousSign(useId);
+                logService.result(weekContinuousSigndays);
+            }
             //查询签到表用户最新记录
             SignBO signBO = signService.selectNew(useId);
             TodaySignOrNot todaySignOrNot = new TodaySignOrNot();
