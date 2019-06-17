@@ -9,7 +9,8 @@
     <!--查询-->
     <select id="queryVersions" resultType="com.wisewin.api.entity.bo.VersionsBO">
         SELECT * FROM lt_versions
-        where platform=#{platform} and versioncode=#{versioncode}
+        where platform=#{platform}
+        order by versioncode desc
     </select>
 
 
