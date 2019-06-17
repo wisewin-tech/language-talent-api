@@ -17,14 +17,15 @@ public class DictionariesService {
 
 
     /**
-     * 根据outer连接字典类型表来查找数据
-     *     Integer id; //字典id
-     *     String key; //类型名字
-     *    String value; //类型
-     *    String outer;连接字典类型表valuename
+     * 查询字典value
      */
-    public List<DictionariesBO> getqueryDictionaries(String outer){
-        DictionariesBO dictionariesBO=new DictionariesBO(outer);
-        return  dictionariesDAO.queryDictionaries(dictionariesBO);
+    public List<DictionariesBO> getqueryDictionaries(String name){
+        if(name.equals("occupation")){
+            return  dictionariesDAO.queryDictionaries("职业");
+        }else{
+            return  dictionariesDAO.queryDictionaries("兴趣");
+        }
+
+
     }
 }

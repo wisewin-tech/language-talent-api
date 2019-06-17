@@ -30,11 +30,16 @@ public class VersionsController extends BaseCotroller {
      * 通过版本查询
      */
     @RequestMapping("/queryVersions")
-    public void queryVersions(HttpServletRequest request,HttpServletResponse response){
+    public void queryVersions(Integer versioncode, String platform,HttpServletRequest request,HttpServletResponse response){
+        if(versioncode==null||platform==null||platform.length()==0){
+            String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeHtmlPrint(response,languagejson);
+            return;
+        }
         //根据版本号来查询
         logService.startController(null,request,null);
         logService.call("versionsService.getqueryVersions");
-        List<VersionsBO> queryVersionsjson=versionsService.getqueryVersions();
+        VersionsBO queryVersionsjson=versionsService.queryVersions(versioncode,platform);
         logService.result(queryVersionsjson);
         String json=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(queryVersionsjson));
         super.safeJsonPrint(response,json);

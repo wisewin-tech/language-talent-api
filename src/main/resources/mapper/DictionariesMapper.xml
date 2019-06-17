@@ -6,22 +6,10 @@
 <mapper namespace="com.wisewin.api.dao.DictionariesDAO" >
 
     <!--字典表-->
-    <select id="queryDictionaries" resultType="com.wisewin.api.entity.bo.DictionariesBO">
-
-        SELECT
-          id, `key`,
-          `value`
-        FROM
-          lt_dictionaries
-        <where>
-            <if test="outer!=null and outer!='' ">
-                `outer`=#{outer}
-            </if>
-        </where>
-        ORDER  BY
-          rank
-
-
+    <select id="queryDictionaries" parameterType="java.lang.String" resultType="com.wisewin.api.entity.bo.DictionariesBO">
+        select lt_dictionary_value.id,`name` as `key`,`value` from lt_dictionary,lt_dictionary_value
+        where lt_dictionary.id=lt_dictionary_value.kid and `name`=#{name}
+        order by sort desc
     </select>
 
 

@@ -9,11 +9,7 @@
     <!--查询-->
     <select id="queryVersions" resultType="com.wisewin.api.entity.bo.VersionsBO">
         SELECT * FROM lt_versions
-        ORDER BY
-        create_time
-        desc
-        limit 1
-
+        where platform=#{platform} and versioncode=#{versioncode}
     </select>
 
 

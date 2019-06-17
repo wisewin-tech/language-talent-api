@@ -2,6 +2,7 @@ package com.wisewin.api.entity.bo;
 
 import com.wisewin.api.entity.bo.common.base.BaseModel;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -91,8 +92,13 @@ public class VersionsBO extends BaseModel {
         this.adminId = adminId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        if(this.createTime==null||this.createTime.equals("")){
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStr = sdf.format(this.createTime);
+        return timeStr;
     }
 
     public void setCreateTime(Date createTime) {

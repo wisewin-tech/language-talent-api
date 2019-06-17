@@ -4,6 +4,7 @@ import com.wisewin.api.dao.KeyValDAO;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -48,21 +49,10 @@ public class test2 {
 
 
     public static void main(String[] args) throws ParseException {
-        //数组转换为集合
-        String[]arr=new String[]{"wy","wy2","wy3"};
-        List<String> list =Arrays.asList(arr);
 
-        for(int i=0;i<list.size();i++){
-            System.err.println(list.get(i));
-        }
-        for(int i=0;i<arr.length;i++){
-            list.add(arr[i]);
-        }
-        //集合转换为数组
-//        String[]arrList= list.toArray(new String[0]);
-//        for(int i=0;i<arrList.length;i++){
-//            System.err.println(arrList[i]);
-//        }
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String result=format1.format(new Date(2019-06-06));
+        System.err.println(result);
     }
 
 }
