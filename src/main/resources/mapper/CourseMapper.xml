@@ -165,7 +165,7 @@
 		select co.id,co.course_name,course_validity_period,co.price,co.discount_price,co.discount_start_time,co.discount_end_time
 		from lt_course co
 		left join lt_language la on co.language_id = la.id
-		where la.id = #{languageId}
+		where la.id = #{languageId}  and co.`status`='putaway'
 	</select>
 
 	<!--通过id查name-->
