@@ -66,7 +66,10 @@ public class IndexController extends BaseCotroller {
             List<BannerBO> banner = bannerService.getBanner();
             logService.result(banner);
             //上次签到日期
-            String date=DateUtil.getDateStr(userBO.getLastSign());
+            logService.call("userService.selectById",useId);
+            UserBO userBO1 = userService.selectById(useId);
+            logService.result(userBO1);
+            String date=DateUtil.getDateStr(userBO1.getLastSign());
             //获取本周周一的日期
             String monday = DateUtil.getWeekStart(new Date());
             String monday1= DateUtil.getStr(monday);
