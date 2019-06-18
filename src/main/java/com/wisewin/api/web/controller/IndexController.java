@@ -69,12 +69,13 @@ public class IndexController extends BaseCotroller {
             logService.call("userService.selectById",useId);
             UserBO userBO1 = userService.selectById(useId);
             logService.result(userBO1);
-            String date=DateUtil.getDateStr(userBO1.getLastSign());
             //获取本周周一的日期
             String monday = DateUtil.getWeekStart(new Date());
-            String monday1= DateUtil.getStr(monday);
-            Integer weekContinuousSigndays =0;
-            if (!monday1.equals(date)){
+            //获取本周周日的日期
+            String sunday = DateUtil.getWeekEnd(new Date());
+            Integer weekContinuousSigndays ;
+            boolean i = DateUtil.belongCalendar(userBO.getLastSign(),DateUtil.getDate(monday),DateUtil.getDate(sunday));
+            if (!i){
                 weekContinuousSigndays = 0;
             }else {
                 logService.call("signService.getContinuousSign", useId);

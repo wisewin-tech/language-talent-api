@@ -125,7 +125,8 @@ public class SignService {
                 return false;
             }
         }
-
+        //本周连续签到天数
+        Integer weekContinuousSign = userBO.getWeekContinuousSign();
         //连续签到天数
         Integer continuousSign=userBO.getContinuousSign();
         //累计签到天数
@@ -147,7 +148,7 @@ public class SignService {
             System.out.println("1:"+DateUtil.getDate(monday).getTime());
             System.out.println("2:"+yesterday.getTime());
             if (DateUtil.getDate(monday).getTime()<yesterday.getTime()){
-                userBO.setWeekContinuousSign(continuousSign+1);
+                userBO.setWeekContinuousSign(weekContinuousSign+1);
             }
 
         }else {
