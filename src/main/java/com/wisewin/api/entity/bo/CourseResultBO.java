@@ -7,6 +7,7 @@ import java.util.List;
 public class CourseResultBO extends BaseModel {
     private Integer courseId;//课程id
     private String courseName;//课程名称
+    private String handouts;//讲义
     private String buyOrNot;//是否已经购买
     private List<LevelResultBO> levelList;//级别集合
 
@@ -24,6 +25,14 @@ public class CourseResultBO extends BaseModel {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public String getHandouts() {
+        return handouts;
+    }
+
+    public void setHandouts(String handouts) {
+        this.handouts = handouts;
     }
 
     public String getBuyOrNot() {

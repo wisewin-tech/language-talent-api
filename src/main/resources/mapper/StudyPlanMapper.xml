@@ -62,6 +62,7 @@
         <collection property="courseList" ofType="com.wisewin.api.entity.bo.CourseResultBO">
             <id column="courseId" property="courseId"/>
             <result column="courseName" property="courseName"/>
+            <result column="handouts" property="handouts"/>
             <collection property="levelList" ofType="com.wisewin.api.entity.bo.LevelResultBO">
                 <id column="levelId" property="levelId"/>
                 <result column="levelName" property="levelName"/>
@@ -74,7 +75,7 @@
     <!--获取首页右侧栏级别列表-->
     <select id="getLevelList" resultMap="levelList">
         SELECT `language`.id languageId,`language`.language_name languageName,
-        course.id courseId,course.course_name courseName,
+        course.id courseId,course.course_name courseName,course.handouts handouts,
         `level`.id levelId,`level`.level_name levelName
         FROM
         lt_level `level`
