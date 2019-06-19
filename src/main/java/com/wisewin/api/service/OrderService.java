@@ -27,9 +27,9 @@ public class OrderService {
      */
     public List<OrderBO> selectAll(Map<String,Object> map){
         List<OrderBO>  list = orderDAO.listOrderBo(map);
-        if(list.size()== 0){
+        /*if(list.size()== 0){
             return null;
-        }
+        }*/
         return list;
     }
 

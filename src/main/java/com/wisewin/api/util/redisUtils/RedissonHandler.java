@@ -313,6 +313,4 @@ public class RedissonHandler {
         Object u2 = RedissonHandler.getInstance().get("log");
         System.out.println((Boolean) u2);
     }
-
-
 }

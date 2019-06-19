@@ -64,14 +64,14 @@ public class OrderController extends BaseCotroller {
         //把userId 用户id,status 状态:支出/获取 放入map集合中
         condition.put("userId", user.getId());
         //吧封装好的条件传给service
-        List<OrderBO> list= orderService.selectAll(condition);
+        List<OrderBO> list = orderService.selectAll(condition);
         System.err.println(list);
-        if(list == null ){
+       /* if(list == null ){
             log.info("list<=0return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000039"));
             super.safeJsonPrint(response, json);
             return;
-        }
+        }*/
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
         super.safeJsonPrint(response, json);
         log.info("return{}",json);
