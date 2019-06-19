@@ -249,4 +249,37 @@ public class LanguageBO extends BaseModel {
     public void setCertificateTitle(String certificateTitle) {
         this.certificateTitle = certificateTitle;
     }
+
+    @Override
+    public String toString() {
+        return "LanguageBO{" +
+                "id=" + id +
+                ", languageName='" + languageName + '\'' +
+                ", status='" + status + '\'' +
+                ", foreignLanguageName='" + foreignLanguageName + '\'' +
+                ", ensignImageUrl='" + ensignImageUrl + '\'' +
+                ", thumbnailImageUrl='" + thumbnailImageUrl + '\'' +
+                ", popularSort=" + popularSort +
+                ", languageLightspot='" + languageLightspot + '\'' +
+                ", purchaseNotes='" + purchaseNotes + '\'' +
+                ", videoPath='" + videoPath + '\'' +
+                ", languageIntro='" + languageIntro + '\'' +
+                ", languagePrice=" + languagePrice +
+                ", languageDiscountPrice=" + languageDiscountPrice +
+                ", discountStartTime=" + discountStartTime +
+                ", discountEndTime=" + discountEndTime +
+                ", discountTimeRemaining=" + discountTimeRemaining +
+                ", courseName='" + courseName + '\'' +
+                ", coursePrice=" + coursePrice +
+                ", courseDiscountPrice=" + courseDiscountPrice +
+                ", chapterCount=" + chapterCount +
+                ", levelId=" + levelId +
+                ", levelName='" + levelName + '\'' +
+                ", courseId=" + courseId +
+                ", certificateOrNot='" + certificateOrNot + '\'' +
+                ", certificateImage='" + certificateImage + '\'' +
+                ", languageId=" + languageId +
+                ", certificateTitle='" + certificateTitle + '\'' +
+                '}';
+    }
 }

@@ -97,8 +97,15 @@ public class PurchaseService {
         //判断是否在特惠时间内
         boolean falg = belongCalendar(new Date(), dateStart, dateEnd);
         log.info("判断特惠结束时间:{}",falg);
+        LanguageBO languageBO = languageDAO.selectLanguageG(course.getLanguageId());
+        log.info("获取课程对应的语言:{}",languageBO);
+        if(languageBO == null){
+            log.info("languageBO == null,return");
+            return null;
+        }
+
         StringBuffer sbf = new StringBuffer();
-        sbf.append(course.getForeignName());
+        sbf.append(languageBO.getLanguageName());
         sbf.append(" | ");
         sbf.append(course.getCourseName());
         pruchase.setTitle(sbf.toString());
@@ -256,6 +263,7 @@ public class PurchaseService {
         orderCourses.setCreateTime(new Date());
         orderCourses.setUpdateTime(new Date());
         orderCourses.setCourseValidityPeriod(overDate(course.getCourseValidityPeriod()));
+        log.info("orderCourse:{}",orderCourses);
         orderCoursesDAO.insetOrderCourse(orderCourses);
 
         //扣减咖豆
@@ -307,9 +315,7 @@ public class PurchaseService {
         orderDAO.insertOrder(order);
 
 
-
-
-        if (!(list.size() <= 0)) {
+        if ((!(list.size() <= 0)) && list != null ) {
             //证书
             List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
             List<OrderCoursesBO> lists = new ArrayList<OrderCoursesBO>();

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by 王彬 on 2019/5/9.
  */
@@ -56,7 +59,7 @@ public class PurchaseController extends BaseCotroller {
             return;
         }
 
-       if(userBO==null){
+       if(userBO == null){
            log.info("userBO==null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
@@ -74,7 +77,7 @@ public class PurchaseController extends BaseCotroller {
 
         if(state.equals("curriculum")){
             log.info("state.equals(\"curriculum\"),return");
-         CourseBO course =  purchaseService.queryCouse(id);
+           CourseBO course =  purchaseService.queryCouse(id);
           //判断有无此课程
             if(course == null){
                 log.info("course == null");
@@ -83,6 +86,12 @@ public class PurchaseController extends BaseCotroller {
                 return;
             }
             PruchaseDTO pruchase = purchaseService.isCourse(course,user);
+            if(pruchase == null){
+                log.info("pruchase == null,return");
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000050"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(pruchase));
             log.info("return{}",json);
             log.info("end=======================com.wisewin.api.web.controller.PurchaseController.purchaseCurriculum===========================");
@@ -157,7 +166,7 @@ public class PurchaseController extends BaseCotroller {
         }
 
         if(state.equals("curriculum")){
-            log.info("state.equals(\"curriculum\"),return");
+            log.info("state.equals(\"curriculum\")");
             CourseBO course =  purchaseService.queryCouse(id);
             //判断有无此课程
             if(course == null){
@@ -207,6 +216,7 @@ public class PurchaseController extends BaseCotroller {
             log.info("return,{}",json);
             log.info("end=========================com.wisewin.api.web.controller.PurchaseController.purchaseOder============================");
             return;
+
         }
     }
 }
