@@ -23,7 +23,7 @@ public class StudyPlanController extends BaseCotroller {
     @Resource
     private StudyPlanService studyPlanService;
     @Resource
-    private UserScoreRecordService userScoreRecordService;
+    private UserScoreService userScoreService;
     @Resource
     private UserService userService;
     @Resource
@@ -87,7 +87,12 @@ public class StudyPlanController extends BaseCotroller {
             for (ChapterResultBO chapterResultBO : chapterResultBOS) {
                 Integer chapterId = chapterResultBO.getChapterId();
                 logService.call("userScoreRecordService.getScore",userId,chapterId);
-                Integer score = userScoreRecordService.getScore(userId, chapterId);
+                Integer score = userScoreService.getScore(userId, chapterId);
+                if (score==null){
+                    chapterResultBO.setDidOrNot("no");
+                }else{
+                    chapterResultBO.setDidOrNot("yes");
+                }
                 logService.call("orderService.getStatusByCourseId",score);
                 chapterResultBO.setScore(score);
             }
@@ -117,7 +122,12 @@ public class StudyPlanController extends BaseCotroller {
             for (ChapterResultBO chapterResultBO : chapterResultBOS) {
                 Integer chapterId = chapterResultBO.getChapterId();
                 logService.call("userScoreRecordService.getScore",userId,chapterId);
-                Integer score = userScoreRecordService.getScore(userId, chapterId);
+                Integer score = userScoreService.getScore(userId, chapterId);
+                if (score==null){
+                    chapterResultBO.setDidOrNot("no");
+                }else{
+                    chapterResultBO.setDidOrNot("yes");
+                }
                 logService.call("orderService.getStatusByCourseId",score);
                 chapterResultBO.setScore(score);
             }

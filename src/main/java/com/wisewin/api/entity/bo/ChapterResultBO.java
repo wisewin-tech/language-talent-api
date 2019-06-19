@@ -9,6 +9,7 @@ public class ChapterResultBO extends BaseModel{
     private String videoPath; //链接地址
     private String thumbnailUrl;//缩略图
     private Integer score;//分数
+    private String didOrNot;//是否做过此课时试题
 
     public Integer getScore() {
         return score;
@@ -56,5 +57,13 @@ public class ChapterResultBO extends BaseModel{
 
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
+    }
+
+    public String getDidOrNot() {
+        return didOrNot;
+    }
+
+    public void setDidOrNot(String didOrNot) {
+        this.didOrNot = didOrNot;
     }
 }
