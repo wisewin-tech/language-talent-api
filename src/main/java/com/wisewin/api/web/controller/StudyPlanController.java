@@ -113,6 +113,15 @@ public class StudyPlanController extends BaseCotroller {
             } else {
                 levelBO1.setBuyOrNot("no");
             }
+            List<ChapterResultBO> chapterResultBOS = levelBO1.getChapterBOList();
+            for (ChapterResultBO chapterResultBO : chapterResultBOS) {
+                Integer chapterId = chapterResultBO.getChapterId();
+                logService.call("userScoreRecordService.getScore",userId,chapterId);
+                Integer score = userScoreRecordService.getScore(userId, chapterId);
+                logService.call("orderService.getStatusByCourseId",score);
+                chapterResultBO.setScore(score);
+            }
+
         }
 
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(levelBO1));
