@@ -39,6 +39,7 @@ public class LanguageController extends BaseCotroller{
     private OrderService orderService;
     @Resource
     LogService logService;
+
     /**
      * 语言详情
      * @param id

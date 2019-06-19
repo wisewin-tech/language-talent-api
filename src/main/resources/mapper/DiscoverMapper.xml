@@ -19,7 +19,9 @@
         FROM
         lt_discover
         WHERE
-       `show` = 'yes'
+        `type`='journalism'
+        OR
+        `type`='curriculum' and `show` = 'yes'
         ORDER  BY
         stick DESC,
         update_time DESC
@@ -36,7 +38,9 @@
         FROM
         lt_discover
         WHERE
-        `show` = 'yes'
+        `type`='journalism'
+        OR
+        `type`='curriculum' and `show` = 'yes'
     </select>
 
 
@@ -56,7 +60,8 @@
             description
         FROM
             lt_discover
-        where  `show` = 'yes'
+        WHERE
+          `type`='activity' and `show` = 'yes'
         ORDER  BY
         stick DESC,
         update_time DESC

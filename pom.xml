@@ -527,8 +527,5 @@
         <system.cfg.wapProjectUrl>http://wap.test.urbanfit.cn/</system.cfg.wapProjectUrl>
       </properties>
     </profile>
-
   </profiles>
-
-
 </project>

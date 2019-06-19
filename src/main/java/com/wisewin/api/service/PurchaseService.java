@@ -82,6 +82,7 @@ public class PurchaseService {
      * @return
      */
     public PruchaseDTO isCourse(CourseBO course, UserBO user) {
+        boolean falg = false ;
         log.info("start=========================================com.wisewin.api.service.PurchaseService.isCourse===================================");
         log.info("参数course:{}",course);
         log.info("参数user:{}",user);
@@ -95,7 +96,10 @@ public class PurchaseService {
         Date dateEnd = course.getDiscountEndTime();
         log.info("获取特惠结束时间:{}",dateEnd);
         //判断是否在特惠时间内
-        boolean falg = belongCalendar(new Date(), dateStart, dateEnd);
+        if(dateStart != null){
+            falg  = belongCalendar(new Date(), dateStart, dateEnd);
+        }
+
         log.info("判断特惠结束时间:{}",falg);
         LanguageBO languageBO = languageDAO.selectLanguageG(course.getLanguageId());
         log.info("获取课程对应的语言:{}",languageBO);
