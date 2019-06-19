@@ -11,6 +11,7 @@
         SELECT * FROM lt_versions
         where platform=#{platform}
         order by versioncode desc
+        limit 1
     </select>
 
 
