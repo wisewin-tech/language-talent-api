@@ -97,4 +97,11 @@ public interface UserDAO {
      * @return
      */
     Integer getWeekContinuousSign(Integer userId);
+
+    /**
+     * 送用户咖豆
+     * @param inviteUserId
+     * @param current
+     */
+    void updateCurrent(@Param("userId") Integer inviteUserId,@Param("current")int current);
 }

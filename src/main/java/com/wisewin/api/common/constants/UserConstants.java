@@ -16,9 +16,9 @@ public enum UserConstants {
         /*  增加  */ INCREASE("获取"),
         /*  减少  */  DECREASE("支出"),
         /*  积分兑换咖豆比例 */  SCALE("integral_proportion"),
-        /*  签到增加积分值 */  SIGNNUM("sign_integral");
-
-
+        /*  签到增加积分值 */  SIGNNUM("sign_integral"),
+        /*  邀请别人获取咖豆数量 */ INVITER("inviter"),
+        /*  被邀请人获取咖豆 */ BYINVITER("by_inviter");
     private UserConstants(String value) {
         this.value = value;
     }

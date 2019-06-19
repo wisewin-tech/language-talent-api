@@ -1,6 +1,7 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.common.constants.UserConstants;
+import com.wisewin.api.dao.KeyValDAO;
 import com.wisewin.api.dao.UserDAO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.param.UserParam;
@@ -22,6 +23,8 @@ import java.util.Map;
 public class UserService {
     @Resource
     private UserDAO userDAO;
+    @Resource
+    private KeyValDAO keyValDAO;
 
     static final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -218,4 +221,8 @@ public class UserService {
         return userDAO.getWeekContinuousSign(userId);
     }
 
+    public void invite(Integer inviteUserId) {
+        int current = Integer.parseInt(keyValDAO.selectKey(UserConstants.INVITER.getValue()));
+        userDAO.updateCurrent(inviteUserId,current);
+    }
 }
