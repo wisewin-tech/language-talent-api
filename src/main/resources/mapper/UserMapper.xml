@@ -48,11 +48,10 @@
 
     <insert id="insertUser"     parameterType="com.wisewin.api.entity.bo.UserBO"
             useGeneratedKeys="true" keyProperty="id">
-
         insert into lt_user(
-        nickname,birthday,sex,password,mobile,by_invite,create_time,status
+        nickname,birthday,sex,password,mobile,by_invite,create_time,status,by_invite,source
         )values(
-        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),'yes'
+        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),'yes',#{byInvite},#{source}
         )
 
     </insert>
@@ -177,5 +176,9 @@
         SELECT week_continuous_sign FROM `lt_user` WHERE id = #{userId}
     </select>
 
+    <!--赠送用户咖豆-->
+    <update  id="updateCurrent" >
+            UPDATE  lt_user  SET   currency + #{current}  WHERE   id=#{userId}
+    </update>
 
 </mapper>

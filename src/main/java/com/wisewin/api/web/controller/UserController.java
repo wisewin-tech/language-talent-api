@@ -1,6 +1,7 @@
 package com.wisewin.api.web.controller;
 
 import com.wisewin.api.common.constants.UserConstants;
+import com.wisewin.api.dao.KeyValDAO;
 import com.wisewin.api.entity.bo.CateBO;
 import com.wisewin.api.entity.bo.CertificateResultBO;
 import com.wisewin.api.entity.bo.UserBO;
@@ -40,7 +41,8 @@ public class UserController extends BaseCotroller {
     private UserService userService;
     @Resource
     private CertificateService certificateService;
-
+    @Resource
+    private KeyValDAO keyValDAO;
 
     /**
      * 手机号格式判断
@@ -224,7 +226,7 @@ public class UserController extends BaseCotroller {
      * @param verify 用户验证码
      */
     @RequestMapping("/register")
-    public void register(String phone, String verify, HttpServletResponse response, HttpServletRequest request) {
+    public void register(String phone, String verify, HttpServletResponse response, HttpServletRequest request,Integer inviteUserId,String source) {
         log.info("start==========================com.wisewin.api.web.controller.UserController.register=================================");
         log.info("请求id:{}",RequestUtils.getIpAddress(request));
         log.info("参数phone:{}",phone);
@@ -261,15 +263,16 @@ public class UserController extends BaseCotroller {
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
                     log.info(json);
                     super.safeJsonPrint(response, json);
+                    return;
                 } else {
                     //user对象存入cookie中
                     this.putUser(response, userBO);
                     mapUser.put("islogin", UserConstants.Yes.getValue());
                     mapUser.put("userId", userBO.getId());
-
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                     log.info("json");
                     super.safeJsonPrint(response, json);
+                    return;
                 }
             } else { //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
                 UserBO userBO1 = new UserBO();
@@ -277,6 +280,14 @@ public class UserController extends BaseCotroller {
                 userBO1.setNickname("用户_"+phone);
                 userBO1.setMobile(phone);
                 log.info("调用com.wisewin.api.service.UserService.insertUser");
+                if(source!=null && inviteUserId!=null){
+                    //获取赠送咖豆
+                    userBO1.setCurrency(Integer.parseInt(keyValDAO.selectKey(UserConstants.BYINVITER.getValue())));
+                    userBO1.setByInvite(String.valueOf(inviteUserId));
+                    userBO1.setSource(source);
+                    userService.invite(inviteUserId);
+                }
+
                 userService.insertUser(userBO1);
                 log.info("调用com.wisewin.api.service.UserService.selectByPhone");
                 userBO1 = userService.selectByPhone(phone);
@@ -641,14 +652,14 @@ public class UserController extends BaseCotroller {
         log.info("end===================com.wisewin.api.web.controller.UserController.selectUserMedal==========");
     }
 
-    /**
+   /* *//**
      *  邀请好友注册
      * @param phone 手机号
      * @param verify 验证码
      * @param byInvite 被邀请人id
      * @param request
      * @param response
-     */
+     *//*
     @RequestMapping("/inviteFriendReg")
     public void inviteFriendReg(String phone, String verify,String byInvite,HttpServletRequest request,HttpServletResponse response){
         log.info("start==========================com.wisewin.api.web.controller.UserController.inviteFriendReg=================================");
@@ -724,7 +735,7 @@ public class UserController extends BaseCotroller {
             log.info("end==========================com.wisewin.api.web.controller.UserController.register=================================");
         }
     }
-
+*/
 
 
 }

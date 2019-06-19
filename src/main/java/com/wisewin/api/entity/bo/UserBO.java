@@ -22,8 +22,8 @@ public class UserBO  extends BaseModel{
     private String birthday; //生日
     private Integer age; //年龄
     private String source; //个人/企业
-    private Integer integral; //积分
-    private Integer currency; //咖豆
+    private Integer integral=0; //积分
+    private Integer currency=0; //咖豆
     private Integer studyingLanguageId; //正在学习的语言id
     private String isLogin; //是否为登录 Yes:登录 No:注册
     private String occupation; //职业
