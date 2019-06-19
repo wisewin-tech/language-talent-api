@@ -41,8 +41,7 @@
         LEFT JOIN lt_language `language` ON course.language_id = `language`.id
         WHERE
         `language`.id = #{languageId} AND `level`.id = #{levelId}
-        <if test="levelId!=null"> </if>
-        <if test="levelId==null"> ORDER BY `level`.create_time DESC LIMIT 0,1 </if>
+        <!--<if test="levelId==null"> ORDER BY `level`.create_time DESC LIMIT 0,1 </if>-->
     </select>
 
 
