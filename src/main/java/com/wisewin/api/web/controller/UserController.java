@@ -195,6 +195,7 @@ public class UserController extends BaseCotroller {
         String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY.getValue());
         log.info("获取Redis中的用户验证码:{}",mobileAuthCode);
         if (verify.equals(mobileAuthCode)) {
+
             log.info("verify.equals(mobileAuthCode)");
             //获取当前登陆用户
             UserBO loginUser = super.getLoginUser(request);
@@ -248,6 +249,12 @@ public class UserController extends BaseCotroller {
 
         //如果和用户收到的验证码相同
         if (verify.equals(mobileAuthCode)) {
+            try {
+                RedissonHandler.getInstance().delete(phone + UserConstants.VERIFY.getValue());
+            }catch (Exception e){
+
+            }
+
             log.info("如果和用户收到的验证码相同");
             //通过手机号查询表中是否有该用户
             log.info("通过手机号查询表中是否有该用户");
