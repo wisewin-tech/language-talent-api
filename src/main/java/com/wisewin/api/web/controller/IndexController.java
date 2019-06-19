@@ -74,14 +74,19 @@ public class IndexController extends BaseCotroller {
             //获取本周周日的日期
             String sunday = DateUtil.getWeekEnd(new Date());
             Integer weekContinuousSigndays ;
-            boolean i = DateUtil.belongCalendar(userBO.getLastSign(),DateUtil.getDate(monday),DateUtil.getDate(sunday));
-            if (!i){
+            if (userBO.getLastSign()==null){
                 weekContinuousSigndays = 0;
             }else {
-                logService.call("signService.getContinuousSign", useId);
-                 weekContinuousSigndays = userService.getWeekContinuousSign(useId);
-                logService.result(weekContinuousSigndays);
+                boolean i = DateUtil.belongCalendar(userBO.getLastSign(), DateUtil.getDate(monday), DateUtil.getDate(sunday));
+                if (!i) {
+                    weekContinuousSigndays = 0;
+                } else {
+                    logService.call("signService.getContinuousSign", useId);
+                    weekContinuousSigndays = userService.getWeekContinuousSign(useId);
+                    logService.result(weekContinuousSigndays);
+                }
             }
+
             //查询签到表用户最新记录
             SignBO signBO = signService.selectNew(useId);
             TodaySignOrNot todaySignOrNot = new TodaySignOrNot();
