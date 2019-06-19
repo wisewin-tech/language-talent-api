@@ -21,7 +21,6 @@
     </select>
     
     <insert id="insetOrderCourse" parameterType="com.wisewin.api.entity.bo.OrderCoursesBO">
-
     INSERT INTO language_talent.lt_order_courses
             (
             user_id ,

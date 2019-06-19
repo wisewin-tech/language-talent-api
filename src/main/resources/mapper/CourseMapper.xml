@@ -141,7 +141,7 @@
 		FROM
 		language_talent.lt_course
 
-		where language_id = #{id}
+		where language_id = #{id} and  status = 'putaway';
 	</select>
 
 	<!--热门搜索-->
