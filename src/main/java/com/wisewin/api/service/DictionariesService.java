@@ -22,8 +22,12 @@ public class DictionariesService {
     public List<DictionariesBO> getqueryDictionaries(String name){
         if(name.equals("occupation")){
             return  dictionariesDAO.queryDictionaries("职业");
-        }else{
+        }else if(name.equals("purpose")){
+            return  dictionariesDAO.queryDictionaries("学习语言的目的");
+        }else if(name.equals("insterst")){
             return  dictionariesDAO.queryDictionaries("兴趣");
+        }else{
+            return null;
         }
 
 
