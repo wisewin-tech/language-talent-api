@@ -256,9 +256,7 @@ public class UserController extends BaseCotroller {
             log.info("com.wisewin.api.service.UserService.selectByPhone返回{}",userBO);
             if (userBO != null) {
                 log.info("userBO != null");
-                //islogin 是否为登录, yes 登录
                 if (UserConstants.Yes.getValue().equals(userBO.getStatus())) {
-                    //状态,是否被拉黑  yes:拉黑,no:账号正常使用
                     log.info("状态,是否被拉黑  yes:拉黑,no:账号正常使用");
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014"));
                     log.info(json);

@@ -51,7 +51,7 @@
         insert into lt_user(
         nickname,birthday,sex,password,mobile,by_invite,create_time,status,by_invite,source
         )values(
-        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),'yes',#{byInvite},#{source}
+        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),'no',#{byInvite},#{source}
         )
 
     </insert>
