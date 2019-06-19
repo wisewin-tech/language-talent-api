@@ -19,4 +19,19 @@ public interface UserScoreDAO {
      * @param map
      */
     void addUserScore(Map<String,Object> map);
+
+    /**
+     * 查询课时成绩
+     * @param userId
+     * @param chapterId
+     * @return
+     */
+    Integer getScore(@Param("userId")Integer userId,@Param("chapterId") Integer chapterId);
+
+    /**
+     * 更新课时成绩
+     * @param userId
+     * @param chapterId
+     */
+    void updateScore(@Param("userId")Integer userId,@Param("chapterId") Integer chapterId,@Param("score")Integer score);
 }

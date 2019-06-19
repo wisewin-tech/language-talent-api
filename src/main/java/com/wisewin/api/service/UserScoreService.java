@@ -30,4 +30,23 @@ public class UserScoreService {
         userScoreDAO.addUserScore(map);
     }
 
+    /**
+     *查询课时成绩
+     * @param userId
+     * @param chapterId
+     * @return
+     */
+    public Integer getScore(Integer userId,Integer chapterId){
+        return userScoreDAO.getScore(userId,chapterId);
+    }
+
+    /**
+     * 更新课时成绩
+     * @param userId
+     * @param chapterId
+     * @param score
+     */
+    public void updateScore(Integer userId, Integer chapterId,Integer score){
+        userScoreDAO.updateScore(userId,chapterId,score);
+    }
 }
