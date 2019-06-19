@@ -24,7 +24,14 @@
 
     </insert>
 
-
+    <!--查询课时成绩-->
+    <select id="getScore" resultType="java.lang.Integer">
+        SELECT score FROM `lt_user_score_record` WHERE user_id = #{userId} AND chapter_id = #{chapterId}
+    </select>
+    <!--更新课时成绩-->
+    <update id="updateScore">
+        UPDATE `lt_user_score_record` SET score = #{score} WHERE user_id = #{userId} AND chapter_id =#{chapterId}
+    </update>
 
 
 </mapper>

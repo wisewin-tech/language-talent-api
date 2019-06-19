@@ -69,16 +69,27 @@ public class UserScoreController extends BaseCotroller{
             super.safeJsonPrint(response, json);
             logService.end("userScore/addUserScore",json);
         }
+        Integer i = userScoreService.getScore(id,chapterId);
         Map<String, Object> condition = new HashMap<String, Object>();
-        //吧用户id,课时id,成绩,答题时间放入map中
-        condition.put("userId",id);
-        condition.put("chapterId",chapterId);
-        condition.put("score",score);
-        logService.call("userScoreService.addScore",condition);
-        userScoreService.addScore(condition);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("课时成绩添加成功"));
-        logService.end("/userScore/addUserScore",json);
-        super.safeJsonPrint(response, json);
+        if (i==null) {
+
+            //吧用户id,课时id,成绩,答题时间放入map中
+            condition.put("userId", id);
+            condition.put("chapterId", chapterId);
+            condition.put("score", score);
+            logService.call("userScoreService.addScore", condition);
+            userScoreService.addScore(condition);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("课时成绩添加成功"));
+            logService.end("/userScore/addUserScore", json);
+            super.safeJsonPrint(response, json);
+            return;
+        }else{
+            userScoreService.updateScore(id,chapterId,score);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("课时成绩添加成功"));
+            logService.end("/userScore/addUserScore", json);
+            super.safeJsonPrint(response, json);
+            return;
+        }
     }
 
 
