@@ -114,12 +114,12 @@ public class UserController extends BaseCotroller {
             if (count != null) {
                 log.info("count != null,return");
                 int coun = Integer.valueOf(count);
-                if (coun >= 20) {
+                /*if (coun >= 20) {
                     log.info("coun >= 20,return");
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000025"));
                     super.safeJsonPrint(response, json);
                     return;
-                }
+                }*/
             }
             if("amend".equals(type)&&userService.selectByPhone(phone)!=null){
                 log.info("\"amend\".equals(type)&&userService.selectByPhone(phone)!=null,return");
