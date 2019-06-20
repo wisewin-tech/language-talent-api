@@ -1,11 +1,11 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.common.constants.ClauseConstants;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.*;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
-import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -38,7 +38,10 @@ public class LanguageController extends BaseCotroller{
     @Resource
     private OrderService orderService;
     @Resource
+    private ClauseService clauseService;
+    @Resource
     LogService logService;
+
 
     /**
      * 语言详情
@@ -67,12 +70,15 @@ public class LanguageController extends BaseCotroller{
 
         logService.call("languageService.languageDetails",id);
         LanguageDetailsResultBO languageBO = languageService.languageDetails(id);
+        ClauseBO clauseBO= clauseService.selectClauseBOByClassify(ClauseConstants.PURCHASEINFORMATION.getValue());
+
         if (languageBO==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000040"));
             logService.end("/language/languageDetails",result);
             super.safeJsonPrint(response, result);
             return;
         }
+        languageBO.setPurchaseNotes(clauseBO.getContent());
         Date discountStartTime = languageBO.getDiscountStartTime();
         Date discountEndTime = languageBO.getDiscountEndTime();
         if (discountStartTime!=null&&discountEndTime!=null) {
