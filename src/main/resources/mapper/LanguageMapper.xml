@@ -7,12 +7,12 @@
     <!--为你定制-->
     <select id="selectEnsignImage" resultType="com.wisewin.api.entity.bo.EnsignImageResultBO">
         SELECT
-	      ensign_image_url ensignImageUrl,language_name languageName,
-	      `language`.id languageId
-        FROM
-	      lt_language `language`
+	      la.ensign_image_url ensignImageUrl,la.language_name languageName,
+	      la.id languageId
+        FROM lt_language la
+        LEFT JOIN lt_course co ON la.id = co.language_id
         WHERE
-	      `language`.`status` = 'putaway' AND `language`.hot_or_not = 'yes'
+	      la.`status` = 'putaway' AND la.hot_or_not = 'yes' AND co.`status`='putaway' GROUP BY la.language_name
     </select>
     <!--限时特惠-->
     <select id="getFlashSales" resultType="com.wisewin.api.entity.bo.FlashSalesResultBO">
