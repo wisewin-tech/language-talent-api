@@ -88,9 +88,14 @@ public class LanguageController extends BaseCotroller{
         }
         logService.result(languageBO);
         logService.call("languageService.languageDetailsCourse",id);
+        //语言详情课程集合
         List<LanguageDetailsCourseResultBO> languageDetailsCourseResultBOS = languageService.languageDetailsCourse(id);
-        for (LanguageDetailsCourseResultBO courseResultBO:languageDetailsCourseResultBOS){
+        logService.result(languageDetailsCourseResultBOS);
 
+        logService.call("courseService.getCourseIdById",id);
+        List<CourseBO> courseBOS = courseService.getCourseIdById(id);
+        logService.result(courseBOS);
+        for (LanguageDetailsCourseResultBO courseResultBO:languageDetailsCourseResultBOS){
                 Date courseDiscountStartTime = courseResultBO.getDiscountStartTime();
                 Date courseDiscountEndTime = courseResultBO.getDiscountEndTime();
             if (courseDiscountStartTime!=null&&courseDiscountEndTime!=null) {
@@ -98,23 +103,21 @@ public class LanguageController extends BaseCotroller{
                     courseResultBO.setCourseDiscountPrice(0);
                 }
             }
-        }
-        logService.result(languageDetailsCourseResultBOS);
-        logService.call("courseService.getCourseIdById",id);
-        List<CourseBO> courseBOS = courseService.getCourseIdById(id);
-        logService.result(courseBOS);
             for (CourseBO courseBO : courseBOS) {
                 Integer courseId = courseBO.getCourseId();
                 Integer count = orderService.getStatusByCourseId(userId, courseId);
                 if (count > 0) {
-                    languageBO.setBuyOrNot("yes");
+                    courseResultBO.setBuyOrNot("yes");
                 }else if (count<=0){
-                    languageBO.setBuyOrNot("no");
+                    courseResultBO.setBuyOrNot("no");
                 }
             }
-            if (courseBOS.size()==0&&languageBO!=null){
-                languageBO.setBuyOrNot("no");
-            }
+
+
+
+        }
+
+
         Map resultmap = new HashMap();
         resultmap.put("language",languageBO);
         resultmap.put("course",languageDetailsCourseResultBOS);

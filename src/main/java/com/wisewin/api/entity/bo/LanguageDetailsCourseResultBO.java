@@ -12,6 +12,7 @@ public class LanguageDetailsCourseResultBO extends BaseModel {
     private Date discountStartTime;//特惠开始时间
     private Date discountEndTime;//特惠结束时间
     private String certificateOrNot;//是否可以考证
+    private String buyOrNot;//是否已购买
 
     public Integer getCourseId() {
         return courseId;
@@ -67,5 +68,13 @@ public class LanguageDetailsCourseResultBO extends BaseModel {
 
     public void setCertificateOrNot(String certificateOrNot) {
         this.certificateOrNot = certificateOrNot;
+    }
+
+    public String getBuyOrNot() {
+        return buyOrNot;
+    }
+
+    public void setBuyOrNot(String buyOrNot) {
+        this.buyOrNot = buyOrNot;
     }
 }
