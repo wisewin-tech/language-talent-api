@@ -1,7 +1,9 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.common.constants.ClauseConstants;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.service.ClauseService;
 import com.wisewin.api.service.CourseService;
 import com.wisewin.api.service.OrderService;
 import com.wisewin.api.service.base.LogService;
@@ -29,7 +31,8 @@ public class CourseController extends BaseCotroller {
     private CourseService courseService;
     @Resource
     private OrderService orderService;
-
+    @Resource
+    private ClauseService clauseService;
     @Resource
     LogService logService;
     /**
@@ -58,12 +61,14 @@ public class CourseController extends BaseCotroller {
         //查看课程详情
         logService.call("courseService.courseDetailsCourse",id);
         CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
+        ClauseBO clauseBO = clauseService.selectClauseBOByClassify(ClauseConstants.PURCHASEINFORMATION.getValue());
         if (courseDetailsResultBO==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000041"));
             logService.end("/course/courseDetails",result);
             super.safeJsonPrint(response, result);
             return;
         }
+        courseDetailsResultBO.setPurchaseNotes(clauseBO.getContent());
         Date discountStartTime = courseDetailsResultBO.getDiscountStartTime();
         Date discountEndTime = courseDetailsResultBO.getDiscountEndTime();
         if (discountStartTime!=null&&discountEndTime!=null) {
