@@ -163,12 +163,17 @@ public class PurchaseService {
      */
     public PruchaseDTO isLanguage(LanguageBO language, UserBO user) {
 
+        boolean falg = false;
+
         //获取特惠开始时间
         Date dateStart = language.getDiscountStartTime();
         //获取特惠结束时间
         Date dateEnd = language.getDiscountEndTime();
-        //判断是否在特惠时间内
-        boolean falg = belongCalendar(new Date(), dateStart, dateEnd);
+        if(dateStart != null){
+            //判断是否在特惠时间内
+            falg  = belongCalendar(new Date(), dateStart, dateEnd);
+        }
+
         PruchaseDTO pruchase = new PruchaseDTO();
         pruchase.setTitle(language.getLanguageName());
         //传入当前用户的咖豆
