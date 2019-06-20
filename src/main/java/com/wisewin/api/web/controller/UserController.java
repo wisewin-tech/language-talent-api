@@ -272,7 +272,11 @@ public class UserController extends BaseCotroller {
                 } else {
                     //user对象存入cookie中
                     this.putUser(response, userBO);
-                    mapUser.put("islogin", UserConstants.Yes.getValue());
+                    if(userBO.getAgeGroup()==null){
+                        mapUser.put("islogin", UserConstants.No.getValue());
+                    }else {
+                        mapUser.put("islogin", UserConstants.Yes.getValue());
+                    }
                     mapUser.put("userId", userBO.getId());
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                     log.info("json");
