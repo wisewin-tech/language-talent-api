@@ -102,6 +102,7 @@
         lt_discover
       WHERE
         id=#{id}
+        and show='yes'
     </select>
 
 
