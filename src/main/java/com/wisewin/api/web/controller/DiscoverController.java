@@ -140,7 +140,7 @@ public class DiscoverController extends BaseCotroller{
         DiscoverBO discoverBO=discoverService.getqueryDiscoveractivity(param.getId());
         logService.result(discoverBO);
         if (discoverBO==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000051"));
             super.safeJsonPrint(response, json);
             logService.end("/Discover/queryDiscoveractivity",json);
             return;

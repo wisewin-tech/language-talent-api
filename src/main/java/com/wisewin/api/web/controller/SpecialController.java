@@ -57,8 +57,8 @@ public class SpecialController extends BaseCotroller {
 
         SpecialBO specialBO = specialService.selectSpecialBOById(userId,specialId,source);//点进去查看的专题
         if(specialBO==null){
-            String languagejson=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeHtmlPrint(response,languagejson);
+            String result=JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000053"));
+            super.safeHtmlPrint(response,result);
             return;
         }
         List<SpecialBO> specialBOList = specialService.selectOtherSpecialBO(specialBO.getClassId(),specialBO.getId());//专题详情页下的其他专题
