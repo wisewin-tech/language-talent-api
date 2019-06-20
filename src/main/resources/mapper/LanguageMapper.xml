@@ -99,7 +99,10 @@ WHERE
 	<!--语言名称列表-->
 	<select id="languageList" resultType="com.wisewin.api.entity.bo.MyStudyLanguageBO">
 		SELECT la.id languageId,la.ensign_image_url,la.language_name
-		FROM lt_language la WHERE la.status = 'putaway' ORDER BY CONVERT(la.language_name USING gbk) COLLATE gbk_chinese_ci
+		FROM lt_language la
+		LEFT JOIN lt_course co ON la.id = co.language_id
+		WHERE la.status = 'putaway' AND co.`status`='putaway' GROUP BY la.language_name
+		ORDER BY CONVERT(la.language_name USING gbk) COLLATE gbk_chinese_ci
 	</select>
 
 	<!--单查询语言表-->
