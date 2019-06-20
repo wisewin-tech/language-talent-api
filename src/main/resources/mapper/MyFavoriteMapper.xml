@@ -19,6 +19,8 @@
 
         <where>
             lmf.user_id=#{userId}
+            and
+            lc.status='putaway'
             <if test="source!=null and source!='' ">AND lmf.source=#{source}</if>
         </where>
         ORDER BY lmf.create_time DESC
@@ -38,6 +40,8 @@
         ON dis.id=mf.source_id
         <where>
             mf.user_id=#{userId}
+            and
+            show=#{yes}
             <if test="source!=null and source!='' ">AND mf.source=#{source}</if>
         </where>
         ORDER BY mf.create_time DESC
@@ -53,6 +57,8 @@
         ON ls.id=mf.source_id
         <where>
             mf.user_id=#{userId}
+            and
+            ls.status='putaway'
             <if test="source!=null and source!='' ">AND mf.source=#{source}</if>
         </where>
         ORDER BY mf.create_time DESC
