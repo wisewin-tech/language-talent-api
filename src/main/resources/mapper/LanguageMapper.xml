@@ -12,7 +12,8 @@
         FROM lt_language la
         LEFT JOIN lt_course co ON la.id = co.language_id
         WHERE
-	      la.`status` = 'putaway' AND la.hot_or_not = 'yes' AND co.`status`='putaway' GROUP BY la.language_name
+	      la.`status` = 'putaway' AND la.hot_or_not = 'yes' AND co.`status`='putaway'
+	      GROUP BY la.language_name ORDER BY la.popular_sort DESC
     </select>
     <!--限时特惠-->
     <select id="getFlashSales" resultType="com.wisewin.api.entity.bo.FlashSalesResultBO">
