@@ -20,7 +20,13 @@
         <where>
             lmf.user_id=#{userId}
             and
+            lch.status='putaway'
+            and
             lc.status='putaway'
+            and
+            lv.status='putaway'
+            and
+            ll.status='putaway'
             <if test="source!=null and source!='' ">AND lmf.source=#{source}</if>
         </where>
         ORDER BY lmf.create_time DESC
