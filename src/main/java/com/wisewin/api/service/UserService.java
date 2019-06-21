@@ -25,7 +25,8 @@ public class UserService {
     private UserDAO userDAO;
     @Resource
     private KeyValDAO keyValDAO;
-
+    @Resource
+    private RecordService record;
     static final Logger log = LoggerFactory.getLogger(UserService.class);
 
 
@@ -224,5 +225,6 @@ public class UserService {
     public void invite(Integer inviteUserId) {
         int current = Integer.parseInt(keyValDAO.selectKey(UserConstants.INVITER.getValue()));
         userDAO.updateCurrent(inviteUserId,current);
+        record.getinsertUserAction(inviteUserId,"咖豆","获取",current, "邀请好友获取咖豆",null);
     }
 }

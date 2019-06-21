@@ -178,7 +178,7 @@
 
     <!--赠送用户咖豆-->
     <update  id="updateCurrent" >
-            UPDATE  lt_user  SET   currency + #{current}  WHERE   id=#{userId}
+            UPDATE  lt_user  SET  currency= currency + #{current}  WHERE   id=#{userId}
     </update>
 
 </mapper>

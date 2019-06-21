@@ -9,6 +9,7 @@ import com.wisewin.api.entity.bo.common.constants.SysConstants;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.UserParam;
 import com.wisewin.api.service.CertificateService;
+import com.wisewin.api.service.RecordService;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.*;
 import com.wisewin.api.util.date.DateUtil;
@@ -43,7 +44,8 @@ public class UserController extends BaseCotroller {
     private CertificateService certificateService;
     @Resource
     private KeyValDAO keyValDAO;
-
+    @Resource
+    private RecordService record;
     /**
      * 手机号格式判断
      */
@@ -254,7 +256,6 @@ public class UserController extends BaseCotroller {
             }catch (Exception e){
 
             }
-
             log.info("如果和用户收到的验证码相同");
             //通过手机号查询表中是否有该用户
             log.info("通过手机号查询表中是否有该用户");
@@ -295,9 +296,14 @@ public class UserController extends BaseCotroller {
                     userBO1.setByInvite(String.valueOf(inviteUserId));
                     userBO1.setSource(source);
                     userService.invite(inviteUserId);
+
                 }
 
                 userService.insertUser(userBO1);
+
+                if(source!=null && inviteUserId!=null) {
+                    record.getinsertUserAction(userBO1.getId(), "咖豆", "获取", Integer.parseInt(keyValDAO.selectKey(UserConstants.BYINVITER.getValue())), "邀请好友获取咖豆", null);
+                }
                 log.info("调用com.wisewin.api.service.UserService.selectByPhone");
                 userBO1 = userService.selectByPhone(phone);
                 log.info("com.wisewin.api.service.UserService.selectByPhone返回{}",userBO1);
