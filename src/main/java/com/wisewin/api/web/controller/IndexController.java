@@ -74,7 +74,8 @@ public class IndexController extends BaseCotroller {
             //获取本周周日的日期
             String sunday = DateUtil.getWeekEnd(new Date());
             Integer weekContinuousSigndays ;
-            if (userBO.getLastSign()==null){
+            UserBO userBO2 = userService.selectById(useId);
+            if (userBO2.getLastSign()==null){
                 weekContinuousSigndays = 0;
             }else {
                 boolean i = DateUtil.belongCalendar(userBO.getLastSign(), DateUtil.getDate(monday), DateUtil.getDate(sunday));
