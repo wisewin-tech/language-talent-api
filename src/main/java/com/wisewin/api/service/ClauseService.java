@@ -20,5 +20,4 @@ public class ClauseService {
         return clauseDAO.selectClauseBOByClassify(classify);
     }
 
-
 }
