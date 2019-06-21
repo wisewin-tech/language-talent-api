@@ -12,6 +12,7 @@ function getDataInfo(id) {
         dataType: 'json',
         data: {id: id},
         success: function (res) {
+            $('title').text(res.data.title);
             for(var item in res.data){
                 if(item=="phone"){
                     $('#'+item).text(res.data[item])
