@@ -78,7 +78,7 @@ public class IndexController extends BaseCotroller {
             if (userBO2.getLastSign()==null){
                 weekContinuousSigndays = 0;
             }else {
-                boolean i = DateUtil.belongCalendar(userBO.getLastSign(), DateUtil.getDate(monday), DateUtil.getDate(sunday));
+                boolean i = DateUtil.belongCalendar(userBO2.getLastSign(), DateUtil.getDate(monday), DateUtil.getDate(sunday));
                 if (!i) {
                     weekContinuousSigndays = 0;
                 } else {
