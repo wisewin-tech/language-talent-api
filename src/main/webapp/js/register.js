@@ -8,12 +8,12 @@ var source = 'user';
 
 
 function register() {
+    var phone = $('input[name="phone"]').val();
+    var verify = $('input[name="verify"]').val();
     if (!inviteUserId || !phone || !verify || !source) {
         alert('请将填写表单！！！！');
         return;
     }
-    var phone = $('input[name="phone"]').val();
-    var verify = $('input[name="verify"]').val();
     $.ajax({
         url: '/user/register',
         type: 'POST',
@@ -25,7 +25,7 @@ function register() {
             source: source
         },
         success: function (response) {
-            console.log(response);
+            alert(response.msg);
         }
     })
 }
