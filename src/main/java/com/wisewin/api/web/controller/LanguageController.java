@@ -112,9 +112,6 @@ public class LanguageController extends BaseCotroller{
                     courseResultBO.setBuyOrNot("no");
                 }
             }
-
-
-
         }
 
 
