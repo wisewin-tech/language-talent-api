@@ -7,24 +7,6 @@
 
     <!--发现首页显示-->
     <select id="queryDiscover" resultType="com.wisewin.api.entity.param.DiscoverParam">
-      /*  SELECT
-        id,title,
-        browse,create_time,
-        thumbnail,video,
-        `type`,priority,
-        stick,`show`,
-        way,videoImg,
-        likenum,skip,
-        description
-        FROM
-        lt_discover
-        WHERE
-        `type`='journalism'
-        OR
-        `type`='curriculum' and `show` = 'yes'
-        ORDER  BY
-        stick DESC,
-        update_time DESC*/
         SELECT
         id,title,
         browse,create_time,
@@ -102,7 +84,6 @@
         lt_discover
       WHERE
         id=#{id}
-        and show='yes'
     </select>
 
 
@@ -155,24 +136,22 @@
     <!--发现更多-->
     <select id="queryfindDiscover" resultType="com.wisewin.api.entity.param.DiscoverParam">
         SELECT
-            id,title,
-            browse,create_time,
-            thumbnail,video,
-            content,`type`,
-            likenum,participation,
-            activitytime,activitysite,
-            phone,ticket,
-            priority,stick,
-            `show`,skip,
-            way,videoImg,
-            description
+        id,title,
+        browse,create_time,
+        thumbnail,video,
+        content,`type`,
+        likenum,participation,
+        activitytime,activitysite,
+        phone,ticket,
+        priority,stick,
+        `show`,skip,
+        way,videoImg,
+        description
         FROM
-           lt_discover
+        lt_discover
         <where>
-
-            <if test="id!=null">id!=#{id}
-
-            </if>
+            `show` = 'yes'
+            <if test="id!=null"> and id!=#{id}</if>
 
             <if test="type!=null and type!='' ">
                 AND
