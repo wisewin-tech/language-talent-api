@@ -500,7 +500,7 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        String sr =   StringUtils.removeNonBmpUnicode(userParam.getNickname());
+     /*   String sr =   StringUtils.removeNonBmpUnicode(userParam.getNickname());
 
         if(sr == null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000060"));
@@ -519,7 +519,7 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        userParam.setNickname(sr);
+        userParam.setNickname(sr);*/
         //System.err.println());
 
         //如果获取到了,判断user参数不为空
