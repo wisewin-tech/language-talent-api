@@ -441,8 +441,6 @@ public class UserController extends BaseCotroller {
                 }
             } else { //如果表里没有该用户,添加用户手机号,把带有手机号的user对象存入cookie中,登录成功,
                 UserBO userBO1 = new UserBO();
-                //设置默认昵称
-                userBO1.setNickname("用户_"+phone);
                 userBO1.setMobile(phone);
                 userBO1.setStatus(UserConstants.Yes.getValue());
                 log.info("调用com.wisewin.api.service.UserService.insertUser");
@@ -498,7 +496,30 @@ public class UserController extends BaseCotroller {
             log.info("id == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
+            return;
         }
+        String sr =   StringUtils.removeNonBmpUnicode(userParam.getNickname());
+
+        if(sr == null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000060"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+
+        if(sr.length()<2 ||sr.length()>16){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000060"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+
+        if(StringUtils.canshu(sr)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000060"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        userParam.setNickname(sr);
+        //System.err.println());
+
         //如果获取到了,判断user参数不为空
 //
 //        if (ParamNullUtil.checkObjAllFieldsIsNull(userParam)) {
@@ -663,7 +684,7 @@ public class UserController extends BaseCotroller {
         log.info("end===================com.wisewin.api.web.controller.UserController.selectUserMedal==========");
     }
 
-   /* *//**
+    /* *//**
      *  邀请好友注册
      * @param phone 手机号
      * @param verify 验证码

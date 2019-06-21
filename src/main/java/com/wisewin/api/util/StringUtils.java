@@ -36,6 +36,26 @@ public class StringUtils {
 
 	private static final char EXTENSION_SEPARATOR = '.';
 
+
+	public static String removeNonBmpUnicode(String str) {
+		if (str == null) {
+			return null;
+		}
+		str = str.replaceAll("[^\u0000-\uFFFF]", "");
+		return str;
+	}
+	/**
+	 * 校验字符串是否和非法字符
+	 * @param stc
+	 * @return
+	 */
+	public static boolean canshu(String stc){
+		String regEx = "[ `~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
+		Pattern p = Pattern.compile(regEx);
+		Matcher m = p.matcher(stc);
+		return m.find();
+	}
+
 	/**
 	 * Check if a String has length.
 	 * <p>
