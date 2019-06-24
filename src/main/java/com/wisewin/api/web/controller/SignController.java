@@ -104,5 +104,19 @@ public class SignController extends BaseCotroller {
 
     }
 
+    /**
+     * 获取keyvalue
+     * */
+    @RequestMapping("/getKeyValue")
+    public void getKeyValue(String key,HttpServletResponse response, HttpServletRequest request){
+        if (key==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success( signService.getKeyValue(key)));
+        super.safeJsonPrint(response, json);
+
+    }
 
 }

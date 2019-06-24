@@ -3,10 +3,7 @@ package com.wisewin.api.service;
 import com.wisewin.api.common.constants.UserConstants;
 import com.wisewin.api.dao.RecordDAO;
 import com.wisewin.api.dao.SignDAO;
-import com.wisewin.api.entity.bo.RecordBO;
-import com.wisewin.api.entity.bo.SignBO;
-import com.wisewin.api.entity.bo.SignResultBO;
-import com.wisewin.api.entity.bo.UserSignBO;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.TimeUtil;
 import com.wisewin.api.util.date.DateUtil;
@@ -225,6 +222,12 @@ public class SignService {
         return  signDAO.selectNew(userId);
     }
 
+    /**
+     * 查询key_value表
+     * */
+    public String getKeyValue(String key){
+        return signDAO.selectSignIntegral(key);
+    }
 
 
 }
