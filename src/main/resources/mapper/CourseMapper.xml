@@ -14,6 +14,8 @@
 	    course.course_intro,
 		course.price,
 		course.discount_price,
+		course.discount_start_time,
+		course.discount_end_time,
 	    course.certificate_or_not,
 	    course.id
       FROM

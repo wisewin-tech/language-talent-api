@@ -102,6 +102,8 @@ public class LanguageController extends BaseCotroller{
                 if (!DateUtil.belongCalendar(new Date(), courseDiscountStartTime, courseDiscountEndTime)) {
                     courseResultBO.setCourseDiscountPrice(0);
                 }
+            }else if (courseDiscountStartTime==null||courseDiscountEndTime==null){
+                courseResultBO.setCourseDiscountPrice(0);
             }
             for (CourseBO courseBO : courseBOS) {
                 Integer courseId = courseBO.getCourseId();
