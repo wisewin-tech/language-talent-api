@@ -37,6 +37,11 @@ public class StringUtils {
 	private static final char EXTENSION_SEPARATOR = '.';
 
 
+	/**
+	 * 过滤表情
+	 * @param str
+	 * @return
+	 */
 	public static String removeNonBmpUnicode(String str) {
 		if (str == null) {
 			return null;
@@ -44,6 +49,7 @@ public class StringUtils {
 		str = str.replaceAll("[^\u0000-\uFFFF]", "");
 		return str;
 	}
+
 	/**
 	 * 校验字符串是否和非法字符
 	 * @param stc
