@@ -64,7 +64,12 @@ public class UserScoreController extends BaseCotroller{
         //从cookie中获取他的user对象的id
         Integer id=this.getId(request);
         //如果获取不到,参数异常
-        if (id==null||chapterId==null||score==null){
+        if (id==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            logService.end("userScore/addUserScore",json);
+        }
+        if (chapterId==null||score==null){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             logService.end("userScore/addUserScore",json);
