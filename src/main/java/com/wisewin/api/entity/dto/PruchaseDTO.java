@@ -14,6 +14,8 @@ public class PruchaseDTO {
     private boolean state;
     //缩略图
     private String img;
+    //描述
+    private String msg;
 
     public String getTitle() {
         return title;
@@ -53,5 +55,17 @@ public class PruchaseDTO {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

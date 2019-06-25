@@ -50,6 +50,8 @@ public class PurchaseService {
     @Resource
     private CertificateDAO certificateDAO;
 
+    @Resource
+    private KeyValDAO keyValDAO;
 
     /**
      * 获取当前用户信息
@@ -174,6 +176,19 @@ public class PurchaseService {
             falg  = belongCalendar(new Date(), dateStart, dateEnd);
         }
 
+        //查询用户已经购买过的课程
+        List<CourseBO> corList =  orderDAO.getBeforeBuyCourseInfo(user.getId(),language.getId());
+        System.err.println(corList);
+        //查询用户购买过的课程的价格
+        List<Integer>  intList =  orderDAO.getBeforeBuyCoursePrice(user.getId(),language.getId());
+        Integer price  = 0 ;
+        if(intList.size() >0 && intList != null){
+            for(Integer i : intList){
+                price = price + i ;
+            }
+        }
+
+
         PruchaseDTO pruchase = new PruchaseDTO();
         pruchase.setTitle(language.getLanguageName());
         //传入当前用户的咖豆
@@ -181,10 +196,21 @@ public class PurchaseService {
         pruchase.setImg(language.getThumbnailImageUrl());
         //是特惠时间
         if (falg) {
+            Integer pr  = language.getLanguageDiscountPrice() - price>0?language.getLanguageDiscountPrice() - price:0;
+            if(corList.size() >0 && corList != null){
+                StringBuffer stringBuffer = new StringBuffer();
+                stringBuffer.append("您已购买了当前语言下的");
+                for (CourseBO s : corList){
+                    stringBuffer.append(",");
+                    stringBuffer.append(s.getCourseName());
+                }
+                stringBuffer.append(",价格扣减后还需支付"+pr+"咖豆");
+                pruchase.setMsg(stringBuffer.toString());
+            }
             //获取语言优惠价
-            pruchase.setCoursePrice(language.getLanguageDiscountPrice());
+            pruchase.setCoursePrice(pr);
             //判断用户咖豆是否能够买当前语言
-            if (user.getCurrency() >= language.getLanguageDiscountPrice()) {
+            if (user.getCurrency() >= pr) {
                 pruchase.setState(true);
                 return pruchase;
             } else {
@@ -192,10 +218,21 @@ public class PurchaseService {
                 return pruchase;
             }
         }
+        Integer pr  = language.getLanguagePrice() - price>0?language.getLanguagePrice():0;
+        if(corList.size() >0 && corList != null){
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("您已购买了当前语言下的");
+            for (CourseBO s : corList){
+                stringBuffer.append(",");
+                stringBuffer.append(s.getCourseName());
+            }
+            stringBuffer.append(",价格扣减后还需支付"+pr+"咖豆");
+            pruchase.setMsg(stringBuffer.toString());
+        }
         //获取语言正常价
-        pruchase.setCoursePrice(language.getLanguagePrice());
+        pruchase.setCoursePrice(pr);
         //判断用户咖豆是否大于等于语言正常价
-        if (user.getCurrency() >= language.getLanguagePrice()) {
+        if (user.getCurrency() >= pr) {
             pruchase.setState(true);
             return pruchase;
         } else {
@@ -303,8 +340,12 @@ public class PurchaseService {
      * @return
      */
     public void insertOrderlanguage(String languageId, String userId, PruchaseDTO pruchase) {
-        //获取购买的语言
+        //获取用户已经购买过并且未过有效期的课程
+        List<CourseBO> corList = orderDAO.getBeforeBuyCourseInfo(Integer.parseInt(languageId),Integer.parseInt(userId));
+
+        //获取购买的语言下所有的课程
         List<CourseBO> list = courseDAO.listCousebyLanguage(languageId);
+        
         System.out.println(list);
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
@@ -337,8 +378,10 @@ public class PurchaseService {
                 orderCourses.setUserId(Integer.parseInt(userId));
                 orderCourses.setCreateTime(new Date());
                 orderCourses.setUpdateTime(new Date());
+                //TODO
+                String time = keyValDAO.selectKey("period_of_validity");
                 //有效日期
-                Date date1 = overDate(course.getCourseValidityPeriod());
+                Date date1 = overDate(Integer.parseInt(time));
                 orderCourses.setCourseValidityPeriod(date1);
                 lists.add(orderCourses);
 

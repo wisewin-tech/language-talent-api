@@ -195,7 +195,7 @@
     <!--查询子订单 之前购买并且未过期的课程信息-->
     <select id="getBeforeBuyCourseInfo" resultType="com.wisewin.api.entity.bo.CourseBO">
         select
-        courses_id as id,courses_name,lt_order.order_number
+        courses_id as id,courses_name as courseName,lt_order.order_number
         from
         lt_order,lt_order_courses,lt_course
         where
@@ -203,9 +203,9 @@
         and
         lt_order_courses.courses_id=lt_course.id
         and
-        lt_course.language_id=22
+        lt_course.language_id= #{languageId}
         and
-        lt_order.user_id=158
+        lt_order.user_id= #{userId}
         and
         lt_order_courses.course_validity_period &gt;= now()
     </select>
@@ -221,9 +221,9 @@
         and
         lt_order_courses.courses_id=lt_course.id
         and
-        lt_course.language_id=22
+        lt_course.language_id=#{languageId}
         and
-        lt_order.user_id=158
+        lt_order.user_id=#{userId}
         and
         lt_order_courses.course_validity_period &gt;= now()
         group by lt_order.order_number

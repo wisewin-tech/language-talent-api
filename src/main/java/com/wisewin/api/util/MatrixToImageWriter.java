@@ -12,6 +12,7 @@ import java.io.OutputStream;
  * Created by Administrator on 2018/4/21.
  */
 public class MatrixToImageWriter {
+
     private static final int BLACK = 0xFF000000;
     private static final int WHITE = 0xFFFFFFFF;
 

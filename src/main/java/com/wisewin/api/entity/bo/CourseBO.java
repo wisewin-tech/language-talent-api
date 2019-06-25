@@ -260,5 +260,39 @@ public class CourseBO extends BaseModel {
     public void setLevelId(Integer levelId) {
         this.levelId = levelId;
     }
+
+    @Override
+    public String toString() {
+        return "CourseBO{" +
+                "id=" + id +
+                ", courseName='" + courseName + '\'' +
+                ", languageId='" + languageId + '\'' +
+                ", foreignName='" + foreignName + '\'' +
+                ", status='" + status + '\'' +
+                ", price=" + price +
+                ", discountPrice=" + discountPrice +
+                ", discountStartTime=" + discountStartTime +
+                ", discountEndTime=" + discountEndTime +
+                ", courseValidityPeriod=" + courseValidityPeriod +
+                ", studyNumber=" + studyNumber +
+                ", courseIntro='" + courseIntro + '\'' +
+                ", courseLightspot='" + courseLightspot + '\'' +
+                ", purchaseNotes='" + purchaseNotes + '\'' +
+                ", popularSort=" + popularSort +
+                ", hotOrNot='" + hotOrNot + '\'' +
+                ", certificateOrNot='" + certificateOrNot + '\'' +
+                ", certificateId=" + certificateId +
+                ", languageName='" + languageName + '\'' +
+                ", thumbnailImageUrl='" + thumbnailImageUrl + '\'' +
+                ", courseId=" + courseId +
+                ", courseThumbnail='" + courseThumbnail + '\'' +
+                ", certificateTitle='" + certificateTitle + '\'' +
+                ", certificateImageUrl='" + certificateImageUrl + '\'' +
+                ", certificateIntro='" + certificateIntro + '\'' +
+                ", levelName='" + levelName + '\'' +
+                ", levelId=" + levelId +
+                ", orderNumber='" + orderNumber + '\'' +
+                '}';
+    }
 }
 

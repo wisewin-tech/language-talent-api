@@ -50,6 +50,7 @@ public class StringUtils {
 		return str;
 	}
 
+
 	/**
 	 * 校验字符串是否和非法字符
 	 * @param stc
@@ -485,6 +486,7 @@ public class StringUtils {
 		} else {
 			return relativePath;
 		}
+
 	}
 
 	/**
