@@ -238,7 +238,7 @@ public class WXPayService {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
             //判断是否是优惠时间
             boolean bool = payService.isEffectiveDate(df.parse(df.format(new Date())), languageBO.getDiscountStartTime(), languageBO.getDiscountEndTime());
-            //价格
+            //价格    判断优惠期 + 之前是否购买过的
             if (bool) {
                 //自定义请求参数 价格
                 //map.put("total_fee",totalFee(getMoney(languageBO.getLanguageDiscountPrice())));

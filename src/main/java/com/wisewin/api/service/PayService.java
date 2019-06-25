@@ -46,6 +46,9 @@ public class PayService {
     @Resource
     KeyValDAO keyValDAO;
 
+    @Resource
+    OrderService orderService;
+
     //支付成功 充值咖豆  修改订单状态 修改咖豆数量 添加纪录
     public void rechargeKaDou(String orderNumber, Integer currency) {
         logService.serviceStart("PayService.rechargeKaDou",orderNumber,currency);
@@ -91,6 +94,9 @@ public class PayService {
         CourseBO courseBO = courseDAO.getCourseById(courseId);
         logService.result(courseBO);
 
+        //看看之前购买是否购买过 并且有效期没过的
+
+
         //实例化子订单信息
         OrderCoursesBO orderCoursesBO = new OrderCoursesBO();
         orderCoursesBO.setUserId(orderBO.getUserId());
@@ -99,9 +105,10 @@ public class PayService {
         orderCoursesBO.setCoursesName(courseBO.getCourseName());
 
         //课程有效期
+        Integer courseValidityPeriod = new Integer(keyValDAO.selectKey("period_of_validity"));
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
+        c.add(Calendar.DAY_OF_MONTH, courseValidityPeriod);
         orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
 
         //添加 订单 子订单表
@@ -132,12 +139,16 @@ public class PayService {
         logService.call("orderDAO.updOrderStatus",orderNumber, AliConstants.Theorder.getValue());
         orderDAO.updOrderStatus(orderNumber, AliConstants.Theorder.getValue());
 
-        //查询购买的课程信息 因为是购买语言，课程可能有多个
-        logService.call("courseDAO.getCoursesById",languageId);
-        List<CourseBO> courseBOList = courseDAO.getCoursesById(languageId);
+        //把已经购买过的删除掉后没买的课程
+        List<CourseBO> courseBOList = orderService.getBeforeBuyCourseInfo(orderBO.getUserId(),languageId);
+
         logService.result(courseBOList);
+
         //证书
         List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
+
+        //有效期
+        Integer courseValidityPeriod = new Integer(keyValDAO.selectKey("period_of_validity"));
 
         //添加 订单 子订单表  添加证书
         List<OrderCoursesBO> orderCoursesBOList = new ArrayList<OrderCoursesBO>();
@@ -151,7 +162,8 @@ public class PayService {
             //课程有效期
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
             Calendar c = Calendar.getInstance();
-            c.add(Calendar.DAY_OF_MONTH, courseBO.getCourseValidityPeriod());
+
+            c.add(Calendar.DAY_OF_MONTH, courseValidityPeriod);
             orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
             orderCoursesBOList.add(orderCoursesBO);
 

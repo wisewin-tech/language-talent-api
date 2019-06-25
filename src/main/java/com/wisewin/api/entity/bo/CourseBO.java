@@ -35,6 +35,16 @@ public class CourseBO extends BaseModel {
     private String levelName;//级别名称
     private Integer levelId;//级别id
 
+    private String orderNumber;//订单号
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
     public Integer getId() {
         return id;
     }

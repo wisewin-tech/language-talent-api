@@ -191,4 +191,42 @@
     <select id="isFree"  resultType="int"  parameterType="java.lang.Integer"  >
             SELECT COUNT(id)  FROM lt_chapter WHERE id=#{id}  AND   free_or_not='yes'
     </select>
+
+    <!--查询子订单 之前购买并且未过期的课程信息-->
+    <select id="getBeforeBuyCourseInfo" resultType="com.wisewin.api.entity.bo.CourseBO">
+        select
+        courses_id,courses_name,lt_order.order_number
+        from
+        lt_order,lt_order_courses,lt_course
+        where
+        lt_order_courses.order_id=lt_order.id
+        and
+        lt_order_courses.courses_id=lt_course.id
+        and
+        lt_course.language_id=22
+        and
+        lt_order.user_id=158
+        and
+        lt_order_courses.course_validity_period=>now()
+    </select>
+
+    <!--查询子订单 之前购买并且未过期的总课程的价格-->
+    <select id="getBeforeBuyCoursePrice" resultType="java.lang.Double">
+        select
+        lt_order.price
+        from
+        lt_order,lt_order_courses,lt_course
+        where
+        lt_order_courses.order_id=lt_order.id
+        and
+        lt_order_courses.courses_id=lt_course.id
+        and
+        lt_course.language_id=22
+        and
+        lt_order.user_id=158
+        and
+        lt_order_courses.course_validity_period>now()
+        group by lt_order.order_number
+
+    </select>
 </mapper>

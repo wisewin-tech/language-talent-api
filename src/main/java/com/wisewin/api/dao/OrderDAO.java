@@ -1,10 +1,7 @@
 
 package com.wisewin.api.dao;
 
-import com.wisewin.api.entity.bo.CourseOrderBO;
-import com.wisewin.api.entity.bo.CourseValidityPeriodBO;
-import com.wisewin.api.entity.bo.LanguageOrderBO;
-import com.wisewin.api.entity.bo.OrderBO;
+import com.wisewin.api.entity.bo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -75,6 +72,16 @@ public interface OrderDAO {
     LanguageOrderBO seleteByLanguageOrder(@Param("lc_id") Integer lc_id);
 
     CourseValidityPeriodBO selectCourseValidityPeriodBO(@Param("id")Integer id);
+
+    //查询子订单 之前购买并且未过期的课程信息
+    //根据语言 用户 未过期查询
+    List<CourseBO> getBeforeBuyCourseInfo(@Param("userId")Integer userId, @Param("languageId")Integer languageId);
+
+    //查询子订单 之前购买并且未过期的总课程的价格
+    //根据语言 用户 未过期查询
+    List<Double> getBeforeBuyCoursePrice(@Param("userId")Integer userId, @Param("languageId")Integer languageId);
+
+
 
     /**
      * 查询视频是否存在
