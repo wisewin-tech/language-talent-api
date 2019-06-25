@@ -256,7 +256,7 @@ public class WXPayService {
                 map.put("total_fee", totalFee(new BigDecimal("0.01")));
             } else {
                 //自定义请求参数 价格
-                Integer sumPrice=languageBO.getLanguageDiscountPrice();//总价格
+                Integer sumPrice=languageBO.getLanguagePrice();//总价格
                 //应付价格
                 Integer price=sumPrice-buyPrice;
                 orderParam.setPrice(payService.getMoney(price));

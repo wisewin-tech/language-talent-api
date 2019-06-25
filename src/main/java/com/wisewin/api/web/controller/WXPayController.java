@@ -1,8 +1,10 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.OrderParam;
+import com.wisewin.api.service.OrderService;
 import com.wisewin.api.service.WXPayService;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.JsonUtils;
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Writer;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +32,8 @@ public class WXPayController extends BaseCotroller {
     @Resource
     LogService logService;
 
+    @Resource
+    OrderService orderService;
     //获取预订单信息
     //需要传入 价格 订单类型:购买/充值 商品名称
     @RequestMapping("/unifiedOrder")
@@ -37,6 +42,13 @@ public class WXPayController extends BaseCotroller {
         //获取当前登陆用户
         UserBO loginUser = super.getLoginUser(request);
         logService.startController(loginUser,request,orderParam);
+
+        List<CourseBO> courseBOList = orderService.getBeforeBuyCourseInfo(loginUser.getId(),orderParam.getLanguageId());
+        for (CourseBO c:courseBOList
+             ) {
+            System.err.println(c.getCourseName());
+
+        }
 
         if (loginUser == null) {
             //用户登陆过期
