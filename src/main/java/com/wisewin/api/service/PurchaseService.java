@@ -53,6 +53,9 @@ public class PurchaseService {
     @Resource
     private KeyValDAO keyValDAO;
 
+    @Resource
+    private OrderService orderService;
+
     /**
      * 获取当前用户信息
      */
@@ -340,13 +343,20 @@ public class PurchaseService {
      * @return
      */
     public void insertOrderlanguage(String languageId, String userId, PruchaseDTO pruchase) {
-        //获取用户已经购买过并且未过有效期的课程
+     /*   //获取用户已经购买过并且未过有效期的课程
         List<CourseBO> corList = orderDAO.getBeforeBuyCourseInfo(Integer.parseInt(languageId),Integer.parseInt(userId));
 
         //获取购买的语言下所有的课程
-        List<CourseBO> list = courseDAO.listCousebyLanguage(languageId);
-        
-        System.out.println(list);
+        List<CourseBO> list = courseDAO.listCousebyLanguage(languageId);*/
+
+        List<CourseBO> list = orderService.getBeforeBuyCourseInfo(Integer.parseInt(userId),Integer.parseInt(languageId));
+        System.err.println("测试"+list);
+        if(list  == null || list.size()<= 0 ){
+            System.err.println("进入此方法1");
+            return ;
+        }
+        System.err.println("进入此方法2");
+        //System.out.println(list);
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
         order.setPrice(new BigDecimal(pruchase.getCoursePrice()));
@@ -364,10 +374,9 @@ public class PurchaseService {
         //获取返回的主订单id
         orderDAO.insertOrder(order);
 
-
-        if ((!(list.size() <= 0)) && list != null ) {
+        if ((!(list.size() <= 0)) && list != null) {
             //证书
-            List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
+            List<CertificateBO> certificateBOList = new ArrayList<CertificateBO>();
             List<OrderCoursesBO> lists = new ArrayList<OrderCoursesBO>();
             for (int i = 0; i < list.size(); i++) {
                 CourseBO course = list.get(i);
@@ -407,8 +416,6 @@ public class PurchaseService {
         record.setSpecificAmount(-pruchase.getCoursePrice());
         record.setDescribe("用户购买语言");
         recordDAO.insertUserAction(record);
-
-
 
     }
 
