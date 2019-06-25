@@ -105,7 +105,7 @@ public class ChapterController extends BaseCotroller {
             } else {
                 chapterBO.setBuyOrNot("no");
             }
-           
+
             String collection=connectionBool?"yes":"no";
             chapterBO.setCollection(collection);
         }
