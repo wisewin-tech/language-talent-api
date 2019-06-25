@@ -79,7 +79,7 @@ public interface OrderDAO {
 
     //查询子订单 之前购买并且未过期的总课程的价格
     //根据语言 用户 未过期查询
-    List<Double> getBeforeBuyCoursePrice(@Param("userId")Integer userId, @Param("languageId")Integer languageId);
+    List<Integer> getBeforeBuyCoursePrice(@Param("userId")Integer userId, @Param("languageId")Integer languageId);
 
 
 

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -99,12 +100,12 @@ public class OrderService {
 
     //查询子订单 之前购买并且未过期的总课程的价格
     //根据语言 用户 未过期查询
-    public Double getBeforeBuyCoursePrice(Integer userId,Integer languageId){
-        Double sum=0d;
-        for (Double result:orderDAO.getBeforeBuyCoursePrice(userId,languageId)){
+    public Integer getBeforeBuyCoursePrice(Integer userId, Integer languageId){
+        Integer sum=0;
+        for (Integer result:orderDAO.getBeforeBuyCoursePrice(userId,languageId)){
             sum+=result;
         }
-        return sum;
+        return Integer.parseInt(sum.toString());
     }
 
 

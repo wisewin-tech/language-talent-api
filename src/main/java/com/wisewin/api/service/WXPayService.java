@@ -9,6 +9,7 @@ import com.wisewin.api.util.wxUtil.WXPayRequest;
 import com.wisewin.api.util.wxUtil.WXPayUtil;
 import com.wisewin.api.util.wxUtil.config.WXConfig;
 import com.wisewin.api.util.wxUtil.config.WXRequestConfig;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +38,10 @@ public class WXPayService {
 
     @Resource
     LogService logService;
+
+    @Resource
+    OrderService orderService;
+
     //预支付下单
     //给安卓返回预支付信息调用支付
     //插入未支付订单
@@ -239,15 +244,22 @@ public class WXPayService {
             //判断是否是优惠时间
             boolean bool = payService.isEffectiveDate(df.parse(df.format(new Date())), languageBO.getDiscountStartTime(), languageBO.getDiscountEndTime());
             //价格    判断优惠期 + 之前是否购买过的
+            //已经付款过的价格
+            Integer buyPrice=orderService.getBeforeBuyCoursePrice(orderParam.getUserId(),orderParam.getLanguageId());
             if (bool) {
                 //自定义请求参数 价格
-                //map.put("total_fee",totalFee(getMoney(languageBO.getLanguageDiscountPrice())));
-                orderParam.setPrice(payService.getMoney(languageBO.getLanguageDiscountPrice()));
+                Integer sumPrice=languageBO.getLanguageDiscountPrice();//总价格
+                //应付价格
+                Integer price=sumPrice-buyPrice;
+                orderParam.setPrice(payService.getMoney(price));
+
                 map.put("total_fee", totalFee(new BigDecimal("0.01")));
             } else {
                 //自定义请求参数 价格
-                //map.put("total_fee",totalFee(getMoney(languageBO.getLanguagePrice())));
-                orderParam.setPrice(payService.getMoney(languageBO.getLanguagePrice()));
+                Integer sumPrice=languageBO.getLanguageDiscountPrice();//总价格
+                //应付价格
+                Integer price=sumPrice-buyPrice;
+                orderParam.setPrice(payService.getMoney(price));
                 map.put("total_fee", totalFee(new BigDecimal("0.01")));
             }
             //回调地址

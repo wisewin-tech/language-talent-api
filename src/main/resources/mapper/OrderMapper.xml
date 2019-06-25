@@ -211,7 +211,7 @@
     </select>
 
     <!--查询子订单 之前购买并且未过期的总课程的价格-->
-    <select id="getBeforeBuyCoursePrice" resultType="java.lang.Double">
+    <select id="getBeforeBuyCoursePrice" resultType="java.lang.Integer">
         select
         lt_order.price
         from
