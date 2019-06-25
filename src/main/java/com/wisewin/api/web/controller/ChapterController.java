@@ -97,17 +97,19 @@ public class ChapterController extends BaseCotroller {
         logService.call("orderService.getStatusByCourseId",userId,courseId);
         Integer count = orderService.getStatusByCourseId(userId,courseId);
         logService.result(count);
+        //查询是否收藏过
+        boolean connectionBool=favoritesService.isCollection(userId,id,"hour");
         if (chapterBO!=null) {
             if (count > 0) {
                 chapterBO.setBuyOrNot("yes");
             } else {
                 chapterBO.setBuyOrNot("no");
             }
+           
+            String collection=connectionBool?"yes":"no";
+            chapterBO.setCollection(collection);
         }
-        //查询是否收藏过
-        boolean connectionBool=favoritesService.isCollection(userId,id,"hour");
-        String collection=connectionBool?"yes":"no";
-        chapterBO.setCollection(collection);
+
 
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(chapterBO));
         logService.end("/chapter/chapterDetails",result);
