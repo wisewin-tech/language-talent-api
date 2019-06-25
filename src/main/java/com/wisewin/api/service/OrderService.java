@@ -88,13 +88,22 @@ public class OrderService {
         List<CourseBO> allCourseBOList = courseDAO.getCoursesById(languageId);
         //已经购买的课程
         List<CourseBO> buyCourseBOList = orderDAO.getBeforeBuyCourseInfo(userId,languageId);
-        for (CourseBO course:allCourseBOList) {
-            for (CourseBO buyCourse:buyCourseBOList){
-                if(course.getId()==buyCourse.getId()){
-                    allCourseBOList.remove(course);
+
+        int maxSize = allCourseBOList.size();
+        for (int i = maxSize-1; i >=0; i--) {
+            int size = buyCourseBOList.size();
+            while (size > 0) {
+                CourseBO courseBO = buyCourseBOList.get(size-1);
+                if (courseBO.getId().equals(allCourseBOList.get(i).getId())) {
+                    buyCourseBOList.remove(size-1);
+                    allCourseBOList.remove(i);
+                    break;
                 }
+                size--;
             }
         }
+
+
         return allCourseBOList;
     }
 

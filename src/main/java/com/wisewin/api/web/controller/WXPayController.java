@@ -43,13 +43,6 @@ public class WXPayController extends BaseCotroller {
         UserBO loginUser = super.getLoginUser(request);
         logService.startController(loginUser,request,orderParam);
 
-        List<CourseBO> courseBOList = orderService.getBeforeBuyCourseInfo(loginUser.getId(),orderParam.getLanguageId());
-        for (CourseBO c:courseBOList
-             ) {
-            System.err.println(c.getCourseName());
-
-        }
-
         if (loginUser == null) {
             //用户登陆过期
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
