@@ -9,6 +9,7 @@ import com.wisewin.api.util.*;
 import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.util.message.SendMessageUtil;
 import com.wisewin.api.util.redisUtils.RedissonHandler;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -227,4 +228,10 @@ public class UserService {
         userDAO.updateCurrent(inviteUserId,current);
         record.getinsertUserAction(inviteUserId,"咖豆","获取",current, "邀请好友获取咖豆",null);
     }
+
+    //解除绑定
+    public boolean removeOpenId(String type,Integer id){
+        return userDAO.removeOpenId(type,id)>0;
+    }
+
 }

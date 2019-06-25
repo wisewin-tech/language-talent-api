@@ -114,7 +114,8 @@ public class SignController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success( signService.getKeyValue(key)));
+        Object value = signService.getKeyValue(key);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(value));
         super.safeJsonPrint(response, json);
 
     }

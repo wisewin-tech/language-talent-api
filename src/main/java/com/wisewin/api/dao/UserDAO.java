@@ -14,6 +14,11 @@ public interface UserDAO {
 
     //openid绑定
     Integer bindOpenId(@Param("phone") String phone,@Param("status")String status,@Param("openid")String openid);
+
+    //解除绑定
+    Integer removeOpenId(@Param("type") String type,@Param("id")Integer id);
+
+
     /**
      * 添加用户信息
      * @param user

@@ -35,6 +35,20 @@
         where mobile=#{phone}
     </update>
 
+    <!--解除绑定-->
+    <update id="removeOpenId">
+        update lt_user
+        <set>
+            <if test="type=='QQ'">
+                qq_openid=null ,
+            </if>
+            <if test="type=='WX'">
+                wx_openid=null,
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
 
     <!--通过phone查看库里有没有这个账号-->
     <select id="selectByPhone" resultType="com.wisewin.api.entity.bo.UserBO">

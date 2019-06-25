@@ -482,11 +482,42 @@ public class UserController extends BaseCotroller {
     }
 
     /**
-     * 修改用户信息
-     *
-     * @param response
-     * @param request
+     * 解除绑定
      */
+    @RequestMapping("/removeOpenid")
+    public void removeOpenid(String type,HttpServletRequest request, HttpServletResponse response) {
+        //从cookie中获取他的user对象的id
+        Integer id = this.getId(request);
+        log.info("com.wisewin.api.web.controller.UserController.getId返回{}",id);
+        //如果获取不到,参数异常
+        if (id == null) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        //判断参数
+        if (StringUtils.isEmpty(type)) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        if (userService.removeOpenId(type,id)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+            super.safeJsonPrint(response, json);
+        }else{
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000054"));
+            super.safeJsonPrint(response, json);
+        }
+
+    }
+
+
+        /**
+         * 修改用户信息
+         *
+         * @param response
+         * @param request
+         */
     @RequestMapping("/update")
     public void updateUser(HttpServletResponse response, HttpServletRequest request, UserParam userParam,String status) {
         log.info("start=======================================com.wisewin.api.web.controller.UserController.updateUser==============================");
