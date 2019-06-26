@@ -59,6 +59,7 @@ public class WXPayController extends BaseCotroller {
 
         //获取手机系统
         String model=AgentUserKit.getDeviceInfo(request);
+        orderParam.setModel(model);
         System.err.println(model);
 
         orderParam.setUserId(id);

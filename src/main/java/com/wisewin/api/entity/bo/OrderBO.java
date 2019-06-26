@@ -27,7 +27,6 @@ public class OrderBO extends BaseModel {
     private String thumbnailImageUrl;
     private String purchaseChannels;//购买渠道
 
-
     //介绍
     private String intro;
 
