@@ -56,6 +56,11 @@ public class PurchaseService {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private CertificateService certificateService;
+
+
+
     /**
      * 获取当前用户信息
      */
@@ -191,12 +196,18 @@ public class PurchaseService {
             }
         }
 
+        List<CourseBO> list = orderService.getBeforeBuyCourseInfo(user.getId(),language.getId());
 
         PruchaseDTO pruchase = new PruchaseDTO();
         pruchase.setTitle(language.getLanguageName());
         //传入当前用户的咖豆
         pruchase.setUserCurrency(user.getCurrency());
         pruchase.setImg(language.getThumbnailImageUrl());
+        if(list  == null || list.size()<= 0 ){
+            pruchase.setMsg("您已购买了当前语言下的所有课程");
+            pruchase.setCoursePrice(0);
+            return pruchase;
+        }
         //是特惠时间
         if (falg) {
             Integer pr  = language.getLanguageDiscountPrice() - price>0?language.getLanguageDiscountPrice() - price:0;
@@ -210,6 +221,7 @@ public class PurchaseService {
                 stringBuffer.append(",价格扣减后还需支付"+pr+"咖豆");
                 pruchase.setMsg(stringBuffer.toString());
             }
+
             //获取语言优惠价
             pruchase.setCoursePrice(pr);
             //判断用户咖豆是否能够买当前语言
@@ -284,8 +296,7 @@ public class PurchaseService {
     /**
      * 插入订单(课程)
      */
-    public void insertOrderCouse(CourseBO course, String userId, PruchaseDTO pruchase) {
-
+    public void insertOrderCouse(CourseBO course, String userId, PruchaseDTO pruchase, String model) {
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
         order.setPrice(new BigDecimal(pruchase.getCoursePrice()));
@@ -297,6 +308,7 @@ public class PurchaseService {
         order.setProductName(pruchase.getTitle());
         order.setCreationDate(DateUtil.getDateStr(new Date()));
         order.setCreateTime(DateUtil.getDateStr(new Date()));
+        order.setPurchaseChannels(model);
         //插入课程语言id
         order.setLcId(course.getId());
         //插入购买的类型（语言/课程）
@@ -336,6 +348,10 @@ public class PurchaseService {
         certificateBO.setCourseId(course.getId());
         List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
         certificateBOList.add(certificateBO);
+
+        //证书编号
+        String certificateNumber=certificateService.getCertificateNumber();
+        certificateBO.setCertificateNumber(certificateNumber);
         certificateDAO.addCertificate(certificateBOList);
     }
 
@@ -346,19 +362,17 @@ public class PurchaseService {
      * @return
      */
     public void insertOrderlanguage(String languageId, String userId, PruchaseDTO pruchase) {
-     /*   //获取用户已经购买过并且未过有效期的课程
+     /* //获取用户已经购买过并且未过有效期的课程
         List<CourseBO> corList = orderDAO.getBeforeBuyCourseInfo(Integer.parseInt(languageId),Integer.parseInt(userId));
 
         //获取购买的语言下所有的课程
         List<CourseBO> list = courseDAO.listCousebyLanguage(languageId);*/
 
         List<CourseBO> list = orderService.getBeforeBuyCourseInfo(Integer.parseInt(userId),Integer.parseInt(languageId));
-        System.err.println("测试"+list);
         if(list  == null || list.size()<= 0 ){
-            System.err.println("进入此方法1");
             return ;
         }
-        System.err.println("进入此方法2");
+
         //System.out.println(list);
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));

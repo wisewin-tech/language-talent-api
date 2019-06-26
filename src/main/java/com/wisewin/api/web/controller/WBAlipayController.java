@@ -8,10 +8,7 @@ import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.service.PayService;
 import com.wisewin.api.service.WBAlipayService;
 import com.wisewin.api.service.base.LogService;
-import com.wisewin.api.util.AlipayConfig;
-import com.wisewin.api.util.JsonUtils;
-import com.wisewin.api.util.RequestUtils;
-import com.wisewin.api.util.StringUtils;
+import com.wisewin.api.util.*;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +73,9 @@ public class WBAlipayController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+        //获取手机系统
+        String model= AgentUserKit.getDeviceInfo(request);
+        orderParam.setModel(model);
         orderParam.setPayment(("zfb"));
         orderParam.setUserId(loginUser.getId());
         //判断是否为充值咖豆

@@ -5,6 +5,7 @@ import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.PruchaseDTO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.PurchaseService;
+import com.wisewin.api.util.AgentUserKit;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.RequestUtils;
 import com.wisewin.api.util.StringUtils;
@@ -157,15 +158,18 @@ public class PurchaseController extends BaseCotroller {
             return;
         }
         //查询当前用户
-        UserBO user  =  purchaseService.selectUser(userBO.getId());
-        if(user == null){
-            log.info("user == null,return");
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000016"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
+            UserBO user  =  purchaseService.selectUser(userBO.getId());
+            if(user == null){
+                log.info("user == null,return");
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000016"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            //获取手机系统
+            String model=AgentUserKit.getDeviceInfo(request);
 
-        if(state.equals("curriculum")){
+
+            if(state.equals("curriculum")){
             log.info("state.equals(\"curriculum\")");
             CourseBO course =  purchaseService.queryCouse(id);
             //判断有无此课程
@@ -175,6 +179,7 @@ public class PurchaseController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }
+
              PruchaseDTO pruchase  =  purchaseService.isCourse(course,user);
              //如果咖豆不足，返回
              if(!pruchase.getState()){
@@ -185,7 +190,7 @@ public class PurchaseController extends BaseCotroller {
                  return;
              }
              //生成订单
-            purchaseService.insertOrderCouse(course,user.getId()+"",pruchase);
+            purchaseService.insertOrderCouse(course,user.getId()+"",pruchase, model);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
             super.safeJsonPrint(response, json);
             log.info("end=========================com.wisewin.api.web.controller.PurchaseController.purchaseOder============================");
