@@ -11,6 +11,15 @@ public class OrderParam {
     private Integer courseId;//课程id
     private String orderNumber;//订单号
     private String payment;//付款方式 zfb  wx
+    private String model;//手机型号
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
 
     public String getPayment() {
         return payment;

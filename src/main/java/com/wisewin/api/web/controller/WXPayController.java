@@ -5,6 +5,7 @@ import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.service.WXPayService;
 import com.wisewin.api.service.base.LogService;
+import com.wisewin.api.util.AgentUserKit;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,10 @@ public class WXPayController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+
+        //获取手机系统
+        String model=AgentUserKit.getDeviceInfo(request);
+        System.err.println(model);
 
         orderParam.setUserId(id);
         logService.call("wxPayService.getUnifiedOrder",orderParam);
