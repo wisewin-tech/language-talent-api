@@ -256,6 +256,7 @@ public class PayService {
         orderBO.setProductName(orderParam.getProductName());
         //未支付
         orderBO.setStatus(AliConstants.Didnotpay.getValue());
+        orderBO.setPurchaseChannels(orderParam.getModel());
         //插入数据库 订单信息
         logService.call("orderDAO.insertPreOrder",orderBO);
         orderDAO.insertPreOrder(orderBO);

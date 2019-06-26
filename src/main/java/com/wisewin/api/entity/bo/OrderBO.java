@@ -25,6 +25,8 @@ public class OrderBO extends BaseModel {
     private Integer lcId;   //关联id
     private String type;   //类型 语言还是课程
     private String thumbnailImageUrl;
+    private String purchaseChannels;//购买渠道
+
 
     //介绍
     private String intro;
@@ -36,6 +38,14 @@ public class OrderBO extends BaseModel {
     //到期时间
     private CourseValidityPeriodBO courseValidityPeriodBO;
 
+
+    public String getPurchaseChannels() {
+        return purchaseChannels;
+    }
+
+    public void setPurchaseChannels(String purchaseChannels) {
+        this.purchaseChannels = purchaseChannels;
+    }
 
     public OrderBO() {
     }
