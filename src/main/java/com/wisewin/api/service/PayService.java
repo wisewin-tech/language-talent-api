@@ -177,12 +177,14 @@ public class PayService {
             orderCoursesBO.setCourseValidityPeriod(sf.parse(sf.format(c.getTime())));
             orderCoursesBOList.add(orderCoursesBO);
 
+            //证书编号
+            String certificateNumber=certificateService.getCertificateNumber();
             //实例化证书
             CertificateBO certificateBO=new CertificateBO();
             certificateBO.setUserId(orderBO.getUserId());
             certificateBO.setCourseId(courseBO.getId());
-            //证书编号
-            String certificateNumber=certificateService.getCertificateNumber();
+            certificateBO.setCertificateNumber(certificateNumber);
+
             certificateBOList.add(certificateBO);
         }
         logService.call("orderCoursesDAO.addCourses",orderCoursesBOList);

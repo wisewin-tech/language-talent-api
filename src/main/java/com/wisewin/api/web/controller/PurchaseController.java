@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -132,7 +133,7 @@ public class PurchaseController extends BaseCotroller {
      * @param state      状态  用来区分语言还是课程  语言language       课程curriculum
      */
     @RequestMapping( "/purchaseOder")
-    public void purchaseOder(HttpServletRequest request, HttpServletResponse response, String id, String state){
+    public void purchaseOder(HttpServletRequest request, HttpServletResponse response, String id, String state) throws ParseException {
         log.info("start====================================com.wisewin.api.web.controller.PurchaseController.purchaseOder==========================");
         log.info("请求ip{}",RequestUtils.getIpAddress(request));
         log.info("参数id{}",id);

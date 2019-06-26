@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -296,7 +297,7 @@ public class PurchaseService {
     /**
      * 插入订单(课程)
      */
-    public void insertOrderCouse(CourseBO course, String userId, PruchaseDTO pruchase, String model) {
+    public void insertOrderCouse(CourseBO course, String userId, PruchaseDTO pruchase, String model) throws ParseException {
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
         order.setPrice(new BigDecimal(pruchase.getCoursePrice()));

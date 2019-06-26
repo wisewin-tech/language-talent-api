@@ -11,6 +11,7 @@ import com.wisewin.api.dao.TestDAO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.pop.SystemConfig;
+import com.wisewin.api.service.CertificateService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
@@ -44,8 +45,12 @@ public class TestController extends BaseCotroller {
     @Resource
     private TestDAO testDAO;
 
+    @Resource
+    CertificateService certificateService;
+
     @RequestMapping("/test")
-    public void test(HttpServletRequest request,HttpServletResponse response) {
+    public void test(HttpServletRequest request,HttpServletResponse response) throws ParseException {
+
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
         super.safeJsonPrint(response, json);
     }

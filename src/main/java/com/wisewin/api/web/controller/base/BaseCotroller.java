@@ -5,6 +5,7 @@ import com.wisewin.api.common.constants.SysConstants;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.query.PageObject;
 import com.wisewin.api.query.QueryInfo;
+import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.redisUtils.RedissonHandler;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,14 +40,15 @@ public class BaseCotroller {
 
     /**
      * 获取cookie中的user对象,通过user对象返回id
+     *
      * @param request
      * @return
      */
     public Integer getId(HttpServletRequest request) {
-        UserBO user =  this.getLoginUser(request);
-        if(user != null) {
+        UserBO user = this.getLoginUser(request);
+        if (user != null) {
             return user.getId();
-        }else {
+        } else {
             return null;
         }
         //return 26;
@@ -115,10 +118,11 @@ public class BaseCotroller {
 
     /**
      * 此方法防止当缓冲区满之后将无法继续写入数据，最终造成阻塞在waitFor()这里
+     *
      * @param process
      * @return
      */
-    public int safeRun(Process process){
+    public int safeRun(Process process) {
         try {
             // 保存进程的输入流信息
             List<String> stdoutList = Lists.newArrayList();
@@ -167,7 +171,7 @@ public class BaseCotroller {
                 String line = null;
                 while ((line = br.readLine()) != null) {
                     if (line != null) {
-                        if(!br.ready()){
+                        if (!br.ready()) {
                             break;
                         }
                         list.add(line);
@@ -188,15 +192,16 @@ public class BaseCotroller {
     }
 
     /**
-     *获取各种类型表单的表单参数
-     *@paramrequest HttpServletRequest请求对像
+     * 获取各种类型表单的表单参数
+     *
+     * @return
+     * @paramrequest HttpServletRequest请求对像
      * @paramparamName 参数名
-     *@return
-     *@throwsFileUploadException
+     * @throwsFileUploadException
      */
     public static String getParameterValue(HttpServletRequest request, String paramName) {
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        if(isMultipart==true){
+        if (isMultipart == true) {
             FileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
             List fileItemList = null;
@@ -205,10 +210,10 @@ public class BaseCotroller {
             } catch (FileUploadException e) {
                 e.printStackTrace();
             }
-            if(fileItemList!=null){
-                for(Iterator itr = fileItemList.iterator(); itr.hasNext();){
-                    FileItem fileItem = (FileItem)itr.next();
-                    if(fileItem.getFieldName().equalsIgnoreCase(paramName)){
+            if (fileItemList != null) {
+                for (Iterator itr = fileItemList.iterator(); itr.hasNext(); ) {
+                    FileItem fileItem = (FileItem) itr.next();
+                    if (fileItem.getFieldName().equalsIgnoreCase(paramName)) {
                         try {
                             return new String(fileItem.getString().getBytes("ISO8859-1"));//中文转码
                         } catch (UnsupportedEncodingException e) {
@@ -217,27 +222,31 @@ public class BaseCotroller {
                     }
                 }
             }
-        }else{
+        } else {
             try {
                 return new String(request.getParameter(paramName).getBytes("ISO8859-1"));//中文转码
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
-        return"";
+        return "";
     }
 
-    /** 移除session*/
-    public void removeSession (HttpServletRequest request , String key) {
+    /**
+     * 移除session
+     */
+    public void removeSession(HttpServletRequest request, String key) {
         String loginID = this.getLoginID(request);
 
         RedissonHandler.getInstance().delete(createKey(this.getLoginID(request), key));
 //        RedisUtil.del(createKey(this.getLoginID(request), key)) ;
     }
 
-    /** 获取登录用户*/
-    public UserBO getLoginUser (HttpServletRequest request ) {
-        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+    /**
+     * 获取登录用户
+     */
+    public UserBO getLoginUser(HttpServletRequest request) {
+        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER);
     }
 
     /** 获取登录用户*/
@@ -248,33 +257,38 @@ public class BaseCotroller {
     }*/
 
 
-
-    /** putLoginUser*/
-    public void putLoginUser (String loginId , UserBO loginUser) {
-        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
+    /**
+     * putLoginUser
+     */
+    public void putLoginUser(String loginId, UserBO loginUser) {
+        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser);
     }
 
 
-    /** putSession */
-    public void putSession (HttpServletRequest request, String key , String value ) {
-        this.putSession(createKey(this.getLoginID(request), key), value) ;
+    /**
+     * putSession
+     */
+    public void putSession(HttpServletRequest request, String key, String value) {
+        this.putSession(createKey(this.getLoginID(request), key), value);
     }
+
     /**
      * 获取登录ID (从cookie中获取)
+     *
      * @param request
      * @return
      */
     public String getLoginID(HttpServletRequest request) {
 
-        return getCookie(request , SysConstants.CURRENT_LOGIN_ID) ;
+        return getCookie(request, SysConstants.CURRENT_LOGIN_ID);
     }
 
     public String getClientLoginID(HttpServletRequest request) {
-        return getCookie(request , SysConstants.CURRENT_LOGIN_CLIENT_ID) ;
+        return getCookie(request, SysConstants.CURRENT_LOGIN_CLIENT_ID);
     }
 
-    public void putPublicSession (String key , Object value) {
-        RedissonHandler.getInstance().set(key , value , null);
+    public void putPublicSession(String key, Object value) {
+        RedissonHandler.getInstance().set(key, value, null);
 //        RedisUtil.set(value , key) ;
     }
 
@@ -287,58 +301,60 @@ public class BaseCotroller {
         RedissonHandler.getInstance().delete(key);
 //        RedisUtil.del(key) ;
     }
+
     /**
      * session赋值
      */
-    private void putSession (String key , Object value) {
-        RedissonHandler.getInstance().set(key , value , (long)24*60*60*30);
+    private void putSession(String key, Object value) {
+        RedissonHandler.getInstance().set(key, value, (long) 24 * 60 * 60 * 30);
 //        RedisUtil.set(value , key) ;
     }
 
     /**
      * 生成在redis中存储的key
+     *
      * @param loginId 登录用户ID
-     * @param key key
+     * @param key     key
      * @return
      */
-    public String createKey (String loginId, String key) {
-        return loginId + "@" + key ;
+    public String createKey(String loginId, String key) {
+        return loginId + "@" + key;
     }
 
     /**
      * 获取session
      * session存储格式为
      * loginUuid + @ + key
-     * */
-    public Object getSession (HttpServletRequest request , String key) {
+     */
+    public Object getSession(HttpServletRequest request, String key) {
         return RedissonHandler.getInstance().get(createKey(this.getClientLoginID(request), key));
 //        return RedisUtil.get(createKey(this.getLoginID(request), key)) ;
     }
 
-    public Object getClientSession (HttpServletRequest request , String key) {
+    public Object getClientSession(HttpServletRequest request, String key) {
         return RedissonHandler.getInstance().get(createKey(this.getClientLoginID(request), key));
 //        return RedisUtil.get(createKey(this.getLoginID(request), key)) ;
     }
 
-    public String getCookie(HttpServletRequest request , String key) {
+    public String getCookie(HttpServletRequest request, String key) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null || cookies.length == 0) {
-            return null ;
+            return null;
         }
-        for(Cookie c :cookies ){
+        for (Cookie c : cookies) {
             if (c.getName().equals(key)) {
-                return c.getValue() ;
+                return c.getValue();
             }
         }
-        return null ;
+        return null;
     }
 
-    public void removeCookie (HttpServletRequest request , HttpServletResponse response , String key) {
+    public void removeCookie(HttpServletRequest request, HttpServletResponse response, String key) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null || cookies.length == 0) {
-            return  ;
+            return;
         }
-        for(Cookie c :cookies ){
+        for (Cookie c : cookies) {
             if (c.getName().equals(key)) {
                 c.setMaxAge(0);
                 c.setValue(null);
@@ -350,7 +366,7 @@ public class BaseCotroller {
 
     }
 
-    public void setCookie(HttpServletResponse response, String key , String value , int expiry) {
+    public void setCookie(HttpServletResponse response, String key, String value, int expiry) {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(expiry); //365 * 24 * 60 * 60
         cookie.setPath("/");
