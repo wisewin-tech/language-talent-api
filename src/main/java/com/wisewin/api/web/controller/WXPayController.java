@@ -130,5 +130,4 @@ public class WXPayController extends BaseCotroller {
         }
         logService.end("/WXPay/courseOrderResult","SUCCESS");
     }
-
 }
