@@ -252,13 +252,13 @@ public class WXPayService {
                 //应付价格
                 Integer price=sumPrice-buyPrice<0?0:sumPrice-buyPrice;
                 orderParam.setPrice(payService.getMoney(price));
-
                 map.put("total_fee", totalFee(new BigDecimal(price)));
             } else {
                 //自定义请求参数 价格
                 Integer sumPrice=languageBO.getLanguagePrice();//总价格
                 //应付价格
                 Integer price=sumPrice-buyPrice<0?0:sumPrice-buyPrice;
+
                 orderParam.setPrice(payService.getMoney(price));
                 map.put("total_fee", totalFee(new BigDecimal(price)));
             }
