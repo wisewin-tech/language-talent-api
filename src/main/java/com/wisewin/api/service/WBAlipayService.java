@@ -8,6 +8,7 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.wisewin.api.dao.CourseDAO;
 import com.wisewin.api.dao.LanguageDAO;
+import com.wisewin.api.dao.OrderDAO;
 import com.wisewin.api.entity.bo.CourseBO;
 import com.wisewin.api.entity.bo.LanguageBO;
 import com.wisewin.api.entity.dto.AlipayBTO;
@@ -27,6 +28,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by 王彬 on 2019/5/28.
@@ -46,7 +48,8 @@ public class WBAlipayService {
     @Resource
     private PayService payService;
 
-
+    @Resource
+    private OrderDAO orderDAO;
 
      AlipayClient   client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APP_ID,
                 AlipayConfig.APP_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET,
@@ -119,6 +122,18 @@ public class WBAlipayService {
         String number  = idBuilder.nextId()+"";
         log.info("订单号:{}",number);
         orderParam.setOrderNumber(number);
+
+        //查询用户已经购买过的课程
+        List<CourseBO> corList =  orderDAO.getBeforeBuyCourseInfo(orderParam.getUserId(),orderParam.getLanguageId());
+        System.err.println(corList);
+        //查询用户购买过的课程的价格
+        List<Integer>  intList =  orderDAO.getBeforeBuyCoursePrice(orderParam.getUserId(),orderParam.getLanguageId());
+        Integer price  = 0 ;
+        if(intList.size() >0 && intList != null){
+            for(Integer i : intList){
+                price = price + i ;
+            }
+        }
         try {
             //DecimalFormat类型金额保留两位精度并转String
             //DecimalFormat df = new DecimalFormat("0.00");
@@ -127,20 +142,20 @@ public class WBAlipayService {
             //要购买的语言
             LanguageBO languageBO = languageDAO.selectLanguageG(orderParam.getLanguageId() + "");
             log.info("要购买的语言:{}",languageBO);
-            Integer price;
             //判断时间
             boolean fag = belongCalendar(new Date(),languageBO.getDiscountStartTime(),languageBO.getDiscountEndTime());
+            Integer pr  = 0;
             if (fag) {
                 //获取优惠语言价格
-                 price = languageBO.getLanguageDiscountPrice();
-               log.info("获取优惠语言价格:{}",price);
+                pr = languageBO.getLanguageDiscountPrice() - price > 0 ? languageBO.getLanguageDiscountPrice() - price : 0;
+               log.info("获取优惠语言价格:{}",pr);
             }else{
-                 price = languageBO.getLanguagePrice();
+                 pr = languageBO.getLanguagePrice() - price > 0 ? languageBO.getLanguagePrice() - price : 0;
 
             }
             model.setSubject("language");
             model.setOutTradeNo(number);
-            model.setTotalAmount(price+".00");
+            model.setTotalAmount(pr+".00");
             //model.setTotalAmount("0.01");
             model.setProductCode("QUICK_MSECURITY_PAY");
             String languageId = orderParam.getLanguageId()+"";
@@ -155,7 +170,7 @@ public class WBAlipayService {
             ali_request.setNotifyUrl(AlipayConfig.fy_url);
             // 调用SDK生成表单
             AlipayTradeAppPayResponse ali_response = client.sdkExecute(ali_request);
-            orderParam.setPrice(new BigDecimal(price));
+            orderParam.setPrice(new BigDecimal(pr));
             log.info("调用SDK生成表单");
             if (ali_response.isSuccess()) {
                 //插入充值预支付订单

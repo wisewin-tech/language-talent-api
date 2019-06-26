@@ -311,7 +311,10 @@ public class PurchaseService {
         orderCourses.setCoursesName(course.getCourseName());
         orderCourses.setCreateTime(new Date());
         orderCourses.setUpdateTime(new Date());
-        orderCourses.setCourseValidityPeriod(overDate(course.getCourseValidityPeriod()));
+        // TODO
+        String time = keyValDAO.selectKey("period_of_validity");
+        //有效日期
+        orderCourses.setCourseValidityPeriod(overDate(Integer.parseInt(time)));
         log.info("orderCourse:{}",orderCourses);
         orderCoursesDAO.insetOrderCourse(orderCourses);
 
