@@ -49,6 +49,7 @@ public class IndexController extends BaseCotroller {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             logService.end("/index/showIndex", result);
             super.safeJsonPrint(response, result);
+            return;
         }
             Integer useId = userBO.getId();
             logService.call("languageService.selectEnsignImage");
