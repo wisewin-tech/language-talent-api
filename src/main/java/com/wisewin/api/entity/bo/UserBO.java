@@ -44,6 +44,15 @@ public class UserBO  extends BaseModel{
     private Integer updateId; //修改人id
     private Date createTime; //创建时间
     private Date updateTime; //修改时间
+    private String registeredChannels;//注册渠道
+
+    public String getRegisteredChannels() {
+        return registeredChannels;
+    }
+
+    public void setRegisteredChannels(String registeredChannels) {
+        this.registeredChannels = registeredChannels;
+    }
 
     @Override
     public String toString() {

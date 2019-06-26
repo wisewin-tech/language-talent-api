@@ -289,6 +289,10 @@ public class UserController extends BaseCotroller {
                 //设置默认昵称
                 userBO1.setNickname("用户_"+phone);
                 userBO1.setMobile(phone);
+                //获取手机系统 注册渠道
+                String model=AgentUserKit.getDeviceInfo(request);
+                userBO1.setRegisteredChannels(model);
+                System.err.println(model);
                 log.info("调用com.wisewin.api.service.UserService.insertUser");
                 if(source!=null && inviteUserId!=null){
                     //获取赠送咖豆
@@ -451,6 +455,10 @@ public class UserController extends BaseCotroller {
                 userBO1.setNickname("用户_"+phone);
                 userBO1.setMobile(phone);
                 userBO1.setStatus(UserConstants.Yes.getValue());
+                //获取手机系统 注册渠道
+                String model=AgentUserKit.getDeviceInfo(request);
+                userBO1.setRegisteredChannels(model);
+                System.err.println(model);
                 log.info("调用com.wisewin.api.service.UserService.insertUser");
                 userService.insertUser(userBO1);
                 log.info("绑定openid");
