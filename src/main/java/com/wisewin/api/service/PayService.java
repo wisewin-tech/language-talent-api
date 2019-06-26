@@ -196,6 +196,9 @@ public class PayService {
 
     //判断是否是优惠时间
     public boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
+        if(startTime==null||endTime==null){
+            return false;
+        }
         if (nowTime.getTime() == startTime.getTime()
                 || nowTime.getTime() == endTime.getTime()) {
             return true;
