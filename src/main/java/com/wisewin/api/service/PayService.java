@@ -6,6 +6,8 @@ import com.wisewin.api.dao.*;
 import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.param.OrderParam;
 import com.wisewin.api.service.base.LogService;
+import com.wisewin.api.util.IDBuilder;
+import com.wisewin.api.util.RandomUtil;
 import com.wisewin.api.web.controller.WBAlipayController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,9 @@ public class PayService {
 
     @Resource
     OrderService orderService;
+
+    @Resource
+    CertificateService certificateService;
 
     //支付成功 充值咖豆  修改订单状态 修改咖豆数量 添加纪录
     public void rechargeKaDou(String orderNumber, Integer currency) {
@@ -121,8 +126,13 @@ public class PayService {
         CertificateBO certificateBO=new CertificateBO();
         certificateBO.setUserId(orderBO.getUserId());
         certificateBO.setCourseId(courseId);
+        //证书编号
+        String certificateNumber=certificateService.getCertificateNumber();
+        certificateBO.setCertificateNumber(certificateNumber);
+
         List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
         certificateBOList.add(certificateBO);
+
         logService.call("certificateDAO.addCertificate",certificateBOList);
         certificateDAO.addCertificate(certificateBOList);
         logService.end("PayService.buyCourse");
@@ -171,6 +181,8 @@ public class PayService {
             CertificateBO certificateBO=new CertificateBO();
             certificateBO.setUserId(orderBO.getUserId());
             certificateBO.setCourseId(courseBO.getId());
+            //证书编号
+            String certificateNumber=certificateService.getCertificateNumber();
             certificateBOList.add(certificateBO);
         }
         logService.call("orderCoursesDAO.addCourses",orderCoursesBOList);

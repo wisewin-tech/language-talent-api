@@ -7,12 +7,30 @@ import java.util.Date;
 public class CertificateBO extends BaseModel {
     private Integer id; //用户证书关联表
     private Integer userId; //用户id
+    private String name;//用户真实姓名
+    private String certificateNumber;//证书编号
     private Integer courseId; //课程id
     private String status; //证书是否获得(yes已获得/no)
     private Integer createUserId; //创建人id
     private Date createTime; //创建时间
     private Integer updateUserId; //修改人id
     private Date updateTime; //修改时间
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCertificateNumber() {
+        return certificateNumber;
+    }
+
+    public void setCertificateNumber(String certificateNumber) {
+        this.certificateNumber = certificateNumber;
+    }
 
     public String getStatus() {
         return status;

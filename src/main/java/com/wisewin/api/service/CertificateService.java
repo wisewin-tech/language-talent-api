@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service("certificateService")
@@ -31,7 +33,15 @@ public class CertificateService {
         System.out.println(certificateDAO.queryCateList(userId));
         return certificateDAO.queryCateList(userId);
     }
-
+    /**
+     * 获取证书编号
+     */
+    public String getCertificateNumber(){
+        //证书编号
+        String certificateNumber="DYK";
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyMMdd");
+        return certificateNumber=certificateNumber+simpleDateFormat.format(new Date());
+    }
 
 
 

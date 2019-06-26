@@ -51,8 +51,10 @@ public class test2 {
 
     public static void main(String[] args) throws ParseException {
 
-        //a  d
-
+        String certificateNumber="DYK";
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyMMdd");
+        certificateNumber=certificateNumber+simpleDateFormat.format(new Date());
+        System.err.println(certificateNumber);
 
     }
 
