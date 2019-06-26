@@ -204,7 +204,8 @@ public class WXPayService {
         map.put("out_trade_no", orderNumber);//订单号
         //判断购买类型 添加后续请求参数
         if (orderParam.getProductType().equals("currency")) {
-            map.put("total_fee",totalFee(orderParam.getPrice()));//订单价格
+            //map.put("total_fee",totalFee(orderParam.getPrice()));//订单价格
+            map.put("total_fee", totalFee(new BigDecimal("0.01")));
             //map.put("total_fee", totalFee(new BigDecimal("0.01")));
             //自定义请求参数 购买咖豆的数量
             map.put("attach", payService.getKaDou(new Integer(orderParam.getPrice().intValue())) + "");//！！！！！！！！！！！
@@ -223,13 +224,13 @@ public class WXPayService {
             if (bool) {
                 //自定义请求参数 价格
                 map.put("total_fee",totalFee(payService.getMoney(courseBO.getDiscountPrice())));
-                orderParam.setPrice(payService.getMoney(courseBO.getDiscountPrice()));
-                //map.put("total_fee", totalFee(new BigDecimal("0.01")));
+                //orderParam.setPrice(payService.getMoney(courseBO.getDiscountPrice()));
+                map.put("total_fee", totalFee(new BigDecimal("0.01")));
             } else {
                 //自定义请求参数 价格
-                map.put("total_fee",totalFee(payService.getMoney(courseBO.getPrice())));
+                //map.put("total_fee",totalFee(payService.getMoney(courseBO.getPrice())));
                 orderParam.setPrice(payService.getMoney(courseBO.getPrice()));
-                //map.put("total_fee", totalFee(new BigDecimal("0.01")));
+                map.put("total_fee", totalFee(new BigDecimal("0.01")));
             }
 
             //回调地址
@@ -252,7 +253,8 @@ public class WXPayService {
                 //应付价格
                 Integer price=sumPrice-buyPrice<0?0:sumPrice-buyPrice;
                 orderParam.setPrice(payService.getMoney(price));
-                map.put("total_fee", totalFee(new BigDecimal(price)));
+                //map.put("total_fee", totalFee(new BigDecimal(price)));
+                map.put("total_fee", totalFee(new BigDecimal("0.01")));
             } else {
                 //自定义请求参数 价格
                 Integer sumPrice=languageBO.getLanguagePrice();//总价格
@@ -260,7 +262,8 @@ public class WXPayService {
                 Integer price=sumPrice-buyPrice<0?0:sumPrice-buyPrice;
 
                 orderParam.setPrice(payService.getMoney(price));
-                map.put("total_fee", totalFee(new BigDecimal(price)));
+                //map.put("total_fee", totalFee(new BigDecimal(price)));
+                map.put("total_fee", totalFee(new BigDecimal("0.01")));
             }
             //回调地址
             map.put("notify_url", WXConfig.NOTIFY_URL_LANGUAGE);
