@@ -24,10 +24,10 @@
     <insert id="addCertificate" parameterType="java.util.List">
         insert into
         lt_certificate
-        (user_id,course_id,send,status,create_time)
+        (user_id,course_id,send,status,create_time,certificate_number)
         values
         <foreach collection ="list" item="cer" separator =",">
-            (#{cer.userId},#{cer.courseId},'no','no',now())
+            (#{cer.userId},#{cer.courseId},'no','no',now(),#{certificateNumber})
         </foreach >
     </insert>
 
