@@ -63,9 +63,9 @@
     <insert id="insertUser"     parameterType="com.wisewin.api.entity.bo.UserBO"
             useGeneratedKeys="true" keyProperty="id">
         insert into lt_user(
-        nickname,birthday,sex,password,mobile,by_invite,create_time,status,source,currency
+        nickname,birthday,sex,password,mobile,by_invite,create_time,status,source,currency ,integral
         )values(
-        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),'no',#{source},#{currency}
+        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),'no',#{source},#{currency},#{integral}
         )
 
     </insert>
@@ -194,5 +194,11 @@
     <update  id="updateCurrent" >
             UPDATE  lt_user  SET  currency= currency + #{current}  WHERE   id=#{userId}
     </update>
+
+    <!--用户增加积分-->
+    <update id="addIntegral"  >
+          UPDATE  lt_user  SET  integral= integral + #{integral}  WHERE   id=#{userId}
+    </update>
+
 
 </mapper>

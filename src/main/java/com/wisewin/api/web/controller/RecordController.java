@@ -7,6 +7,7 @@ import com.wisewin.api.service.RecordService;
 import com.wisewin.api.service.UserService;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.RequestUtils;
+import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,5 +153,38 @@ public class RecordController extends BaseCotroller{
         }
 
     }
+
+
+    /**
+     *  获取积分
+     *    学前热身  type =  warm
+     *      教学视频  type =  watch
+     *        课后测试  type =  after
+     */
+     @RequestMapping("/forPoints")
+     public void forPoints(HttpServletRequest request,HttpServletResponse response,String type){
+         UserBO loginUser = new UserBO();// super.getLoginUser(request);
+         loginUser.setId(160);
+         if (loginUser==null){
+             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+             super.safeJsonPrint(response, json);
+             return;
+         }
+
+         if(StringUtils.isEmpty(type)){
+             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+             super.safeJsonPrint(response, json);
+             return;
+         }
+
+         recordService.forPoints(loginUser.getId(),type);
+
+         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+         super.safeJsonPrint(response, json);
+         return;
+     }
+
+
+
 
 }

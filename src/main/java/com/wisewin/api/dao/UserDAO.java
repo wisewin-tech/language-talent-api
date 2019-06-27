@@ -109,4 +109,6 @@ public interface UserDAO {
      * @param current
      */
     void updateCurrent(@Param("userId") Integer inviteUserId,@Param("current")int current);
+
+    void addIntegral(@Param("userId")Integer userId,@Param("integral")Integer integral);
 }

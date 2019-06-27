@@ -31,4 +31,11 @@ public interface RecordDAO {
     //修改用户表积分咖豆信息
     void updateUser(UserSignBO userBO);
 
+
+    /**
+     * 查询今天完成次数
+     */
+    int queryNumber(Map<String,Object>  map);
+
+
 }

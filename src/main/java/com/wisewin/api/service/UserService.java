@@ -234,4 +234,15 @@ public class UserService {
         return userDAO.removeOpenId(type,id)>0;
     }
 
+
+    /**
+     * 增加用户积分
+     */
+    public void addIntegral(Integer userId,Integer integral){
+        if(userId!=null || integral!=null){
+            userDAO.addIntegral(userId,integral);
+        }
+    }
+
+
 }

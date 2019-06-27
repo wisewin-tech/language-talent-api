@@ -5,12 +5,12 @@ import com.wisewin.api.dao.KeyValDAO;
 import com.wisewin.api.dao.RecordDAO;
 import com.wisewin.api.dao.SignDAO;
 import com.wisewin.api.entity.bo.RecordBO;
-import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.bo.UserSignBO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +23,8 @@ public class RecordService {
     private SignDAO signDAO;
     @Resource
     private KeyValDAO keyValDAO;
-
-
+    @Resource
+    private UserService userService;
     /**
      * 查询积分情况
      * @param map 用户id
@@ -153,6 +153,62 @@ public class RecordService {
     public  void getinsertUserAction(Integer userId,String source,String status,Integer specificAmount,String describe,Integer createId){
     RecordBO  recordBO=new RecordBO(userId,source,status,specificAmount,describe,createId);
       recordDAO.insertUserAction(recordBO);
+    }
+
+
+    /**
+     * 用户id
+     * @param userId
+     * @param type  学前热身 |  观看视频 | 课后测试
+     */
+    public void forPoints(Integer userId, String type) {
+        SimpleDateFormat  startSimp=new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        SimpleDateFormat  endSimp=new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        Map<String,Object>  map=new HashMap<String, Object>();
+        map.put("startTime",startSimp.format(new Date()));
+        map.put("endTime",endSimp.format(new Date()));
+        map.put("userId",userId);
+
+        //完成学前热身
+        if(type.equals(UserConstants.WARM.getValue())){
+            map.put("describe",UserConstants.COMPLETE_WARM.getValue());
+            //查询今天完成次数
+            int row = recordDAO.queryNumber(map);
+            //查询配置次数
+            int number=Integer.parseInt(keyValDAO.selectKey(UserConstants.WARM_UP.getValue()));
+            if(row<number){
+                userService.addIntegral(userId,Integer.parseInt(keyValDAO.selectKey(UserConstants.WARM_UP_INVITER.getValue())));
+                //积分    获取     数量    原因
+                this.getinsertUserAction(userId, UserConstants.INTEGRAL.getValue(), UserConstants.INCREASE.getValue(), Integer.parseInt(keyValDAO.selectKey(UserConstants.WARM_UP_INVITER.getValue())), UserConstants.COMPLETE_WARM.getValue(), null);
+            }
+
+         //完成教学视频
+        }else if(type.equals(UserConstants.WATCH.getValue()))  {
+            map.put("describe",UserConstants.COMPLETE_VODE.getValue());
+            //查询今天完成次数
+            int row = recordDAO.queryNumber(map);
+            //查询配置次数
+            int number=Integer.parseInt(keyValDAO.selectKey(UserConstants.VIDEO.getValue()));
+            if(row<number){
+                userService.addIntegral(userId,Integer.parseInt(keyValDAO.selectKey(UserConstants.VIDEO_INVITER.getValue())));
+                //积分    获取     数量    原因
+                this.getinsertUserAction(userId, UserConstants.INTEGRAL.getValue(), UserConstants.INCREASE.getValue(), Integer.parseInt(keyValDAO.selectKey(UserConstants.VIDEO_INVITER.getValue())), UserConstants.COMPLETE_VODE.getValue(), null);
+            }
+
+
+            //完成随堂测试
+        }else if(type.equals(UserConstants.AFTER.getValue()))  {
+            map.put("describe",UserConstants.COMPLETE_TEST.getValue());
+            //查询今天完成次数
+            int row = recordDAO.queryNumber(map);
+            //查询配置次数
+            int number=Integer.parseInt(keyValDAO.selectKey(UserConstants.TEST.getValue()));
+            if(row<number){
+                userService.addIntegral(userId,Integer.parseInt(keyValDAO.selectKey(UserConstants.TEST_INVITER.getValue())));
+                //积分    获取     数量    原因
+                this.getinsertUserAction(userId, UserConstants.INTEGRAL.getValue(), UserConstants.INCREASE.getValue(), Integer.parseInt(keyValDAO.selectKey(UserConstants.TEST_INVITER.getValue())), UserConstants.COMPLETE_TEST.getValue(), null);
+            }
+        }
     }
 
 }

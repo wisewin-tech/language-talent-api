@@ -67,4 +67,13 @@
         id=#{id}
     </update>
 
+    <!--查询今天获取积分次数 -->
+    <select id="queryNumber"  resultType="int"  parameterType="java.util.Map">
+        SELECT  COUNT(id) FROM `lt_record`
+             WHERE source='积分'  AND  `describe`=#{describe}
+             AND  create_time  BETWEEN  #{startTime}  AND  #{endTime}
+             AND user_id =#{userId}
+    </select>
+
+
 </mapper>
