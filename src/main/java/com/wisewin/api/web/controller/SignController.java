@@ -1,5 +1,6 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.entity.bo.KeyValuesBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.SignService;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,12 +110,23 @@ public class SignController extends BaseCotroller {
      * */
     @RequestMapping("/getKeyValue")
     public void getKeyValue(String key,HttpServletResponse response, HttpServletRequest request){
-        if (key==null){
+        if (key==null||key.length()==0){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
         Object value = signService.getKeyValue(key);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(value));
+        super.safeJsonPrint(response, json);
+
+    }
+
+    /**
+     * 获取所有keyvalue
+     * */
+    @RequestMapping("/getKeyValues")
+    public void getKeyValues(HttpServletResponse response, HttpServletRequest request){
+        List<KeyValuesBO> value = signService.selectKeys();
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(value));
         super.safeJsonPrint(response, json);
 

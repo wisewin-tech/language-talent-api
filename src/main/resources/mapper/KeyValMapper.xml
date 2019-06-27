@@ -15,5 +15,11 @@
     </select>
 
 
+    <!--查询配置表配置属性-->
+    <select id="selectKeys" resultType="com.wisewin.api.entity.bo.KeyValuesBO">
+        SELECT * FROM lt_key_val
+    </select>
+
+
 
 </mapper>

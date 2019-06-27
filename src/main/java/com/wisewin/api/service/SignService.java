@@ -1,6 +1,7 @@
 package com.wisewin.api.service;
 
 import com.wisewin.api.common.constants.UserConstants;
+import com.wisewin.api.dao.KeyValDAO;
 import com.wisewin.api.dao.RecordDAO;
 import com.wisewin.api.dao.SignDAO;
 import com.wisewin.api.entity.bo.*;
@@ -19,6 +20,8 @@ public class SignService {
     private SignDAO signDAO;
     @Resource
     private RecordDAO recordDAO;
+    @Resource
+    private KeyValDAO keyValDAO;
 
     /**
      *
@@ -229,5 +232,11 @@ public class SignService {
         return signDAO.selectSignIntegral(key);
     }
 
+    /**
+     * 查询所有key valye
+     */
+    public List<KeyValuesBO> selectKeys(){
+        return keyValDAO.selectKeys();
+    }
 
 }
