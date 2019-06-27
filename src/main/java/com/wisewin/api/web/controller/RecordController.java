@@ -163,8 +163,7 @@ public class RecordController extends BaseCotroller{
      */
      @RequestMapping("/forPoints")
      public void forPoints(HttpServletRequest request,HttpServletResponse response,String type){
-         UserBO loginUser = new UserBO();// super.getLoginUser(request);
-         loginUser.setId(160);
+         UserBO loginUser = super.getLoginUser(request);
          if (loginUser==null){
              String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
              super.safeJsonPrint(response, json);
