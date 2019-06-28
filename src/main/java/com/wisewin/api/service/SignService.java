@@ -235,12 +235,13 @@ public class SignService {
     /**
      * 查询所有key valye
      */
-    public List<KeyValuesBO> selectKeys(){
+    public Map<String,String> selectKeys(){
+        List<KeyValuesBO> list= keyValDAO.selectKeys();
         Map<String,String> map=new HashMap<String, String>();
-        for (String key:map.keySet()) {
-            map.put(key,map.get(key));
+        for (KeyValuesBO keyValue:list) {
+            map.put(keyValue.getKey(),keyValue.getValues());
         }
-        return keyValDAO.selectKeys();
+        return map;
     }
 
 }

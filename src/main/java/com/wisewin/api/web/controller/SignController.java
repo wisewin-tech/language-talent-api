@@ -126,7 +126,7 @@ public class SignController extends BaseCotroller {
      * */
     @RequestMapping("/getKeyValues")
     public void getKeyValues(HttpServletResponse response, HttpServletRequest request){
-        List<KeyValuesBO> value = signService.selectKeys();
+        Map<String,String> value = signService.selectKeys();
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(value));
         super.safeJsonPrint(response, json);
 
