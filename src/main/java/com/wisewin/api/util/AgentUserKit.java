@@ -11,9 +11,12 @@ public class AgentUserKit {
 	private static Pattern r = Pattern.compile(pattern);
 	private static Pattern r2 = Pattern.compile(pattern2);
 
+//	public static String getDeviceInfo(HttpServletRequest request) {
+//		String userAgent = request.getHeader("User-Agent");
+//		return getDeviceInfo(userAgent);
+//	}
 	public static String getDeviceInfo(HttpServletRequest request) {
-		String userAgent = request.getHeader("User-Agent");
-		return getDeviceInfo(userAgent);
+		return request.getHeader("model");
 	}
 
 	private static String getDeviceInfo(String userAgent) {

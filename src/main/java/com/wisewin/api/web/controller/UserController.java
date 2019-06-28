@@ -585,7 +585,7 @@ public class UserController extends BaseCotroller {
             log.info("com.wisewin.api.service.UserService.checkBind返回{}",mobile);
             if(!StringUtils.isEmpty(mobile)){
                 log.info("!StringUtils.isEmpty(mobile),return");
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000059"));
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000061"));
                 super.safeJsonPrint(response, json);
                 return;
             }
@@ -595,7 +595,7 @@ public class UserController extends BaseCotroller {
         if(!StringUtils.isEmpty(wxid)){
             String mobile=userService.checkBind(wxid,"WX");
             if(!StringUtils.isEmpty(mobile)){
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000059"));
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000061"));
                 super.safeJsonPrint(response, json);
                 return;
             }
