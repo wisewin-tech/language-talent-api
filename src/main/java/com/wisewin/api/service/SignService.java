@@ -236,6 +236,10 @@ public class SignService {
      * 查询所有key valye
      */
     public List<KeyValuesBO> selectKeys(){
+        Map<String,String> map=new HashMap<String, String>();
+        for (String key:map.keySet()) {
+            map.put(key,map.get(key));
+        }
         return keyValDAO.selectKeys();
     }
 
