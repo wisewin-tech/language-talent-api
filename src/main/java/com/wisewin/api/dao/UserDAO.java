@@ -1,6 +1,7 @@
 package com.wisewin.api.dao;
 
 
+import com.wisewin.api.entity.bo.InviteRecordBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.param.UserParam;
 import org.apache.ibatis.annotations.Param;
@@ -111,4 +112,9 @@ public interface UserDAO {
     void updateCurrent(@Param("userId") Integer inviteUserId,@Param("current")int current);
 
     void addIntegral(@Param("userId")Integer userId,@Param("integral")Integer integral);
+
+    /**
+     * 邀请记录
+     */
+    void addInviteRecord(InviteRecordBO  inviteRecordBO);
 }

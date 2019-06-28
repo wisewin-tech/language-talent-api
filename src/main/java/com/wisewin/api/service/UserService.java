@@ -3,6 +3,7 @@ package com.wisewin.api.service;
 import com.wisewin.api.common.constants.UserConstants;
 import com.wisewin.api.dao.KeyValDAO;
 import com.wisewin.api.dao.UserDAO;
+import com.wisewin.api.entity.bo.InviteRecordBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.param.UserParam;
 import com.wisewin.api.util.*;
@@ -226,7 +227,7 @@ public class UserService {
     public void invite(Integer inviteUserId) {
         int current = Integer.parseInt(keyValDAO.selectKey(UserConstants.INVITER.getValue()));
         userDAO.updateCurrent(inviteUserId,current);
-        record.getinsertUserAction(inviteUserId,"咖豆","获取",current, "邀请好友获取咖豆",null);
+        record.getinsertUserAction(inviteUserId,UserConstants.CURRENCY.getValue(),UserConstants.INCREASE.getValue(),current, UserConstants.INVITER_MSG.getValue(),null);
     }
 
     //解除绑定
@@ -243,6 +244,11 @@ public class UserService {
             userDAO.addIntegral(userId,integral);
         }
     }
-
+    /**
+     * 邀请记录
+     */
+    public void addInviteRecord(InviteRecordBO inviteRecordBO){
+        userDAO.addInviteRecord(inviteRecordBO);
+    }
 
 }
