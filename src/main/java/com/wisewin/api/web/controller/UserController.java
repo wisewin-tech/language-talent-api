@@ -4,6 +4,7 @@ import com.wisewin.api.common.constants.UserConstants;
 import com.wisewin.api.dao.KeyValDAO;
 import com.wisewin.api.entity.bo.CateBO;
 import com.wisewin.api.entity.bo.CertificateResultBO;
+import com.wisewin.api.entity.bo.InviteRecordBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.bo.common.constants.SysConstants;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
@@ -306,7 +307,8 @@ public class UserController extends BaseCotroller {
                 userService.insertUser(userBO1);
 
                 if(source!=null && inviteUserId!=null) {
-                    record.getinsertUserAction(userBO1.getId(), "咖豆", "获取", Integer.parseInt(keyValDAO.selectKey(UserConstants.BYINVITER.getValue())), "邀请好友获取咖豆", null);
+                    record.getinsertUserAction(userBO1.getId(), UserConstants.CURRENCY.getValue(), UserConstants.INCREASE.getValue(), Integer.parseInt(keyValDAO.selectKey(UserConstants.BYINVITER.getValue())), UserConstants.INVITER_MSG.getValue(), null);
+                    userService.addInviteRecord(new InviteRecordBO(inviteUserId,userBO1.getId(),Integer.parseInt(keyValDAO.selectKey(UserConstants.INVITER.getValue())),Integer.parseInt(keyValDAO.selectKey(UserConstants.BYINVITER.getValue()))));
                 }
                 log.info("调用com.wisewin.api.service.UserService.selectByPhone");
                 userBO1 = userService.selectByPhone(phone);
