@@ -63,9 +63,9 @@
     <insert id="insertUser"     parameterType="com.wisewin.api.entity.bo.UserBO"
             useGeneratedKeys="true" keyProperty="id">
         insert into lt_user(
-        nickname,birthday,sex,password,mobile,by_invite,create_time,status,source,currency ,integral
+        nickname,birthday,sex,password,mobile,by_invite,create_time,status,source,currency ,integral,registered_channels
         )values(
-        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),'no',#{source},#{currency},#{integral}
+        #{nickname},#{birthday},#{sex},#{password},#{mobile},#{byInvite},now(),'no',#{source},#{currency},#{integral},#{registeredChannels}
         )
 
     </insert>
