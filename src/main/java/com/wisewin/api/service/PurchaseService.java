@@ -207,11 +207,13 @@ public class PurchaseService {
         if(list  == null || list.size()<= 0 ){
             pruchase.setMsg("您已购买了当前语言下的所有课程");
             pruchase.setCoursePrice(0);
+            pruchase.setState(true);
             return pruchase;
         }
+
         //是特惠时间
         if (falg) {
-            Integer pr  = language.getLanguageDiscountPrice() - price>0?language.getLanguageDiscountPrice() - price:0;
+           Integer  pr  = language.getLanguageDiscountPrice() - price>0?language.getLanguageDiscountPrice() - price:0;
             if(corList.size() >0 && corList != null){
                 StringBuffer stringBuffer = new StringBuffer();
                 stringBuffer.append("您已购买了当前语言下的");

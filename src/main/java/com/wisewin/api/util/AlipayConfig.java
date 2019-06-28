@@ -19,8 +19,8 @@ public class AlipayConfig {
     //商户生成签名字符串所使用的签名算法类型
     public static final String SIGN_TYPE = "RSA2";
     //服务器异步通知页面路径
-    public static final String fy_url = "http://www.duoyuka.com/wbalipay/alipayurl";
+    public static final String fy_url = "https://www.duoyuka.net/wbalipay/alipayurl";
     //页面跳转同步通知页面路径
-    public static final String return_url = "http://www.duoyuka.com/wbalipay/return_url";
+    public static final String return_url = "https://www.duoyuka.net/wbalipay/return_url";
 
 }
