@@ -75,7 +75,10 @@ public class WXPayService {
         twoMap.put("noncestr", resultMap.get("nonce_str"));
         twoMap.put("timestamp", WXPayUtil.getCurrentTimestamp() + "");//时间戳
         twoMap.put("package", "Sign=WXPay");
-
+        System.err.println(resultMap.get("appid"));
+        System.err.println(resultMap.get("mch_id"));
+        System.err.println(resultMap.get("prepay_id"));
+        System.err.println(resultMap.get("nonce_str"));
         //6.第二次签名 把这个签名给安卓拉起支付请求
         logService.call("WXPayUtil.generateSignedXml",result);
         String twoMapStr = WXPayUtil.generateSignedXml(twoMap, WXConfig.KEY);
@@ -223,8 +226,8 @@ public class WXPayService {
             //价格
             if (bool) {
                 //自定义请求参数 价格
-                map.put("total_fee",totalFee(payService.getMoney(courseBO.getDiscountPrice())));
-                //orderParam.setPrice(payService.getMoney(courseBO.getDiscountPrice()));
+                //map.put("total_fee",totalFee(payService.getMoney(courseBO.getDiscountPrice())));
+                orderParam.setPrice(payService.getMoney(courseBO.getDiscountPrice()));
                 map.put("total_fee", totalFee(new BigDecimal("0.01")));
             } else {
                 //自定义请求参数 价格
@@ -268,6 +271,12 @@ public class WXPayService {
             //回调地址
             map.put("notify_url", WXConfig.NOTIFY_URL_LANGUAGE);
         }
+        for (String key:map.keySet()
+             ) {
+            System.err.println("key:"+key+"value:"+map.get(key));
+
+        }
+
         logService.end("WXPayService.getWXPayParams",orderParam.toString());
         return map;
 
