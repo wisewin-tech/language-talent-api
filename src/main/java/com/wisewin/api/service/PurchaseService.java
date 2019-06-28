@@ -364,7 +364,7 @@ public class PurchaseService {
      * @param
      * @return
      */
-    public void insertOrderlanguage(String languageId, String userId, PruchaseDTO pruchase) {
+    public void insertOrderlanguage(String languageId, String userId, PruchaseDTO pruchase) throws ParseException {
      /* //获取用户已经购买过并且未过有效期的课程
         List<CourseBO> corList = orderDAO.getBeforeBuyCourseInfo(Integer.parseInt(languageId),Integer.parseInt(userId));
 
@@ -413,11 +413,14 @@ public class PurchaseService {
                 Date date1 = overDate(Integer.parseInt(time));
                 orderCourses.setCourseValidityPeriod(date1);
                 lists.add(orderCourses);
-
+                //证书编号
+                String certificateNumber = certificateService.getCertificateNumber();
+                System.err.println(certificateNumber);
                 //实例化证书
                 CertificateBO certificateBO=new CertificateBO();
                 certificateBO.setUserId(order.getUserId());
                 certificateBO.setCourseId(course.getId());
+                certificateBO.setCertificateNumber(certificateNumber);
                 certificateBOList.add(certificateBO);
             }
             orderCoursesDAO.insetListOrderCourse(lists);
