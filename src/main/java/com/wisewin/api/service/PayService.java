@@ -154,7 +154,7 @@ public class PayService {
 
         logService.result(courseBOList);
 
-        //证书
+        //添加 证书 证书表  添加证书
         List<CertificateBO> certificateBOList=new ArrayList<CertificateBO>();
 
         //有效期
@@ -184,7 +184,7 @@ public class PayService {
             certificateBO.setUserId(orderBO.getUserId());
             certificateBO.setCourseId(courseBO.getId());
             certificateBO.setCertificateNumber(certificateNumber);
-
+            System.err.println("certificateNumber:"+certificateNumber);
             certificateBOList.add(certificateBO);
         }
         logService.call("orderCoursesDAO.addCourses",orderCoursesBOList);

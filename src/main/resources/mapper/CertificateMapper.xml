@@ -27,7 +27,7 @@
         (user_id,course_id,send,status,create_time,certificate_number)
         values
         <foreach collection ="list" item="cer" separator =",">
-            (#{cer.userId},#{cer.courseId},'no','no',now(),#{certificateNumber})
+            (#{cer.userId},#{cer.courseId},'no','no',now(),#{cer.certificateNumber})
         </foreach >
     </insert>
 

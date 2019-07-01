@@ -50,8 +50,8 @@ public class TestController extends BaseCotroller {
 
     @RequestMapping("/test")
     public void test(HttpServletRequest request,HttpServletResponse response) throws ParseException {
-
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+        String certificateNumber=certificateService.getCertificateNumber();
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(certificateNumber));
         super.safeJsonPrint(response, json);
     }
 
