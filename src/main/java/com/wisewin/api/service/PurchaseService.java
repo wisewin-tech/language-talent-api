@@ -196,7 +196,7 @@ public class PurchaseService {
                 price = price + i ;
             }
         }
-
+        System.err.println("用户购买过的课程的价格是"+price);
         List<CourseBO> list = orderService.getBeforeBuyCourseInfo(user.getId(),language.getId());
 
         PruchaseDTO pruchase = new PruchaseDTO();
@@ -213,7 +213,9 @@ public class PurchaseService {
 
         //是特惠时间
         if (falg) {
-           Integer  pr  = language.getLanguageDiscountPrice() - price>0?language.getLanguageDiscountPrice() - price:0;
+           Integer  pr  = language.getLanguageDiscountPrice() - price > 0 ? language.getLanguageDiscountPrice() - price:0;
+            System.err.println("应支付的价格是"+pr);
+            System.err.println("语言价格"+language.getLanguageDiscountPrice());
             if(corList.size() >0 && corList != null){
                 StringBuffer stringBuffer = new StringBuffer();
                 stringBuffer.append("您已购买了当前语言下的");
@@ -223,10 +225,11 @@ public class PurchaseService {
                 }
                 stringBuffer.append(",价格扣减后还需支付"+pr+"咖豆");
                 pruchase.setMsg(stringBuffer.toString());
+                System.err.println(stringBuffer.toString());
+               //获取语言优惠价
+               pruchase.setCoursePrice(pr);
             }
 
-            //获取语言优惠价
-            pruchase.setCoursePrice(pr);
             //判断用户咖豆是否能够买当前语言
             if (user.getCurrency() >= pr) {
                 pruchase.setState(true);
@@ -236,7 +239,9 @@ public class PurchaseService {
                 return pruchase;
             }
         }
-        Integer pr  = language.getLanguagePrice() - price>0?language.getLanguagePrice():0;
+        System.err.println("扣减的价格"+price);
+        Integer pr  = language.getLanguagePrice() - price>0?language.getLanguagePrice() - price:0;
+        System.err.println("应支付的价格是"+pr);
         if(corList.size() >0 && corList != null){
             StringBuffer stringBuffer = new StringBuffer();
             stringBuffer.append("您已购买了当前语言下的");
@@ -245,6 +250,7 @@ public class PurchaseService {
                 stringBuffer.append(s.getCourseName());
             }
             stringBuffer.append(",价格扣减后还需支付"+pr+"咖豆");
+            System.err.println(stringBuffer.toString());
             pruchase.setMsg(stringBuffer.toString());
         }
         //获取语言正常价
