@@ -116,7 +116,8 @@
         create_time,
         update_time,
         lc_id,
-        `type`
+        `type`,
+        purchase_channels
         )
         VALUES
         (
@@ -133,7 +134,8 @@
         now(),
         #{updateTime},
         #{lcId},
-        #{type}
+        #{type},
+        #{purchaseChannels}
         );
     </insert>
 

@@ -216,7 +216,7 @@ public class PurchaseController extends BaseCotroller {
                 return;
             }
             //生成订单
-            purchaseService.insertOrderlanguage(language.getId()+"",user.getId()+"",pruchase);
+            purchaseService.insertOrderlanguage(language.getId()+"",user.getId()+"",pruchase,model);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("购买成功"));
             super.safeJsonPrint(response, json);
             log.info("return,{}",json);
