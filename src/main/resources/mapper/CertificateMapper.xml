@@ -33,6 +33,6 @@
 
     <select id="queryCateList" resultType="com.wisewin.api.entity.bo.CateBO">
         SELECT lt_user.nickname as nickname ,lt_course.course_name as courseName,lt_course.certificate_image_url as imageUrl,lt_certificate.id as id,lt_certificate.user_id as userId,lt_certificate.course_id as courseId,lt_certificate.status as status
-      FROM lt_certificate,lt_course,lt_user WHERE lt_certificate.user_id = lt_user.id AND lt_certificate.course_id = lt_course.id AND lt_certificate.user_id =#{userId}
+FROM lt_certificate,lt_course,lt_user WHERE lt_certificate.user_id = lt_user.id AND lt_certificate.course_id = lt_course.id AND lt_certificate.user_id =#{userId}
     </select>
 </mapper>

@@ -364,7 +364,7 @@ public class PurchaseService {
      * @param
      * @return
      */
-    public void insertOrderlanguage(String languageId, String userId, PruchaseDTO pruchase) throws ParseException {
+    public void insertOrderlanguage(String languageId, String userId, PruchaseDTO pruchase, String model) throws ParseException {
      /* //获取用户已经购买过并且未过有效期的课程
         List<CourseBO> corList = orderDAO.getBeforeBuyCourseInfo(Integer.parseInt(languageId),Integer.parseInt(userId));
 
@@ -375,7 +375,7 @@ public class PurchaseService {
         if(list  == null || list.size()<= 0 ){
             return ;
         }
-
+        System.err.println("渠道"+model);
         //System.out.println(list);
         OrderBO order = new OrderBO();
         order.setUserId(Integer.parseInt(userId));
@@ -386,6 +386,7 @@ public class PurchaseService {
         order.setStatus("yes");
         order.setOrderType("咖豆购买");
         order.setProductName(pruchase.getTitle());
+        order.setPurchaseChannels(model);
 
         //插入课程语言id
         order.setLcId(Integer.parseInt(languageId));
@@ -415,7 +416,7 @@ public class PurchaseService {
                 lists.add(orderCourses);
                 //证书编号
                 String certificateNumber = certificateService.getCertificateNumber();
-                System.err.println(certificateNumber);
+                System.err.println("证书标号"+certificateNumber);
                 //实例化证书
                 CertificateBO certificateBO=new CertificateBO();
                 certificateBO.setUserId(order.getUserId());
