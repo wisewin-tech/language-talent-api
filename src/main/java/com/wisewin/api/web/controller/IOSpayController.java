@@ -16,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.SortParameters;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -31,6 +32,7 @@ import java.util.*;
  * @date: Created in 10:54 2019/7/1
  */
 @RequestMapping("/iospay")
+@Controller
 public class IOSpayController extends BaseCotroller {
 
     @Resource
@@ -47,7 +49,7 @@ public class IOSpayController extends BaseCotroller {
      * @param payload       校验体（base64字符串）
      * @return
      */
-    @RequestMapping(value = "/setIapCertificate", method = RequestMethod.POST)
+    @RequestMapping("/setIapCertificate")
     public void  iosPay(HttpServletRequest request, HttpServletResponse response,
                                       BigDecimal price, String transactionId, String payload) {
         log.info("苹果内购校验开始，交易ID：" + transactionId + " base64校验体：" + payload);
@@ -101,6 +103,7 @@ public class IOSpayController extends BaseCotroller {
                         order.setStatus("yes");
                         order.setProductName(transactionId);
                         order.setPurchaseChannels(model);
+                        order.setOrderType("ios内购");
                         orderDAO.insertOrder(order);
 
                         log.info("交易成功，新增并处理订单：{}",order);
