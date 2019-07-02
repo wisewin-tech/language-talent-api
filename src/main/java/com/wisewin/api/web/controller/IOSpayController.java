@@ -3,10 +3,12 @@ package com.wisewin.api.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisewin.api.dao.OrderDAO;
+import com.wisewin.api.dao.UserDAO;
 import com.wisewin.api.entity.bo.OrderBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.service.OrderService;
+import com.wisewin.api.service.PayService;
 import com.wisewin.api.util.AgentUserKit;
 import com.wisewin.api.util.IDBuilder;
 import com.wisewin.api.util.IosVerifyUtil;
@@ -37,6 +39,10 @@ public class IOSpayController extends BaseCotroller {
 
     @Resource
     private OrderDAO orderDAO;
+    @Resource
+    private PayService payService;
+    @Resource
+    private UserDAO userDAO;
 
     final static Logger log = LoggerFactory.getLogger(IOSpayController.class);
 
@@ -52,10 +58,13 @@ public class IOSpayController extends BaseCotroller {
     @RequestMapping("/setIapCertificate")
     public void  iosPay(HttpServletRequest request, HttpServletResponse response,
                                       BigDecimal price, String transactionId, String payload) {
+        log.info("start============================================iosPay======================================================");
         log.info("苹果内购校验开始，交易ID：" + transactionId + " base64校验体：" + payload);
 
         UserBO user = super.getLoginUser(request);
+        log.info("获取当前登陆对象{}",user);
         if(user == null){
+            log.info("user null return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("用户未登录"));
             super.safeJsonPrint(response, json);
             return;
@@ -63,8 +72,9 @@ public class IOSpayController extends BaseCotroller {
 
         //获取手机系统
         String model= AgentUserKit.getDeviceInfo(request);
-
+        log.info("获取手机系统{}",model);
         //线上环境验证
+        log.info("线上传经验证");
         String verifyResult = IosVerifyUtil.buyAppVerify(payload, 0);
         if (verifyResult == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("苹果验证失败,返回数据为空"));
@@ -73,7 +83,9 @@ public class IOSpayController extends BaseCotroller {
         } else {
             log.info("线上，苹果平台返回JSON:" + verifyResult);
             JSONObject appleReturn = JSONObject.parseObject(verifyResult);
+            log.info("appleReturn{}",appleReturn);
             String states = appleReturn.getString("status");
+            log.info("states{}",states);
             //无数据则沙箱环境验证
             if ("21007".equals(states)) {
                 verifyResult = IosVerifyUtil.buyAppVerify(payload, 0);
@@ -85,27 +97,45 @@ public class IOSpayController extends BaseCotroller {
             // 前端所提供的收据是有效的    验证成功
             if (states.equals("0")) {
                 String receipt = appleReturn.getString("receipt");
+                log.info("receipt{}",receipt);
                 JSONObject returnJson = JSONObject.parseObject(receipt);
+                log.info("returnJson{}",returnJson);
                 String inApp = returnJson.getString("in_app");
+                log.info("inApp{}",inApp);
                 List<HashMap> inApps = JSONObject.parseArray(inApp, HashMap.class);
+                log.info("inApps{}",inApps);
                 if (!CollectionUtils.isEmpty(inApps)) {
+                    log.info("进入判断");
                     ArrayList<String> transactionIds = new ArrayList<String>();
                     for (HashMap app : inApps) {
+                        log.info("进入增强for循环");
                         transactionIds.add((String) app.get("transaction_id"));
                     }
                     //交易列表包含当前交易，则认为交易成功
+                    log.info("transactionId{}",transactionId);
                     if (transactionIds.contains(transactionId)) {
+                        log.info("交易成功");
                         OrderBO order = new OrderBO();
                         IDBuilder idBuilder = new IDBuilder(10, 10);
                         order.setOrderNumber(idBuilder.nextId() + "");
                         order.setPrice(price);
                         order.setUserId(user.getId());
                         order.setStatus("yes");
-                        order.setProductName(transactionId);
+                        order.setProductName("咖豆充值");
                         order.setPurchaseChannels(model);
                         order.setOrderType("ios内购");
                         orderDAO.insertOrder(order);
-
+                        //为用户增加咖豆
+                        //将BigDecimal类型的金额转换成Sring类型
+                        String pri = price.toString();
+                        log.info("pri{}",pri);
+                        String pr = pri.substring(0, pri.length() - 3);
+                        log.info("pr{}",pr);
+                        Integer kd = payService.getKaDou(Integer.parseInt(pr));
+                        log.info("转换为咖豆{}",kd);
+                        Map map =  new HashMap<String, Object>();
+                        map.put("currency",kd);
+                        userDAO.updateUserAugment(map);
                         log.info("交易成功，新增并处理订单：{}",order);
                         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("支付成功"));
                         super.safeJsonPrint(response, result);
@@ -131,6 +161,4 @@ public class IOSpayController extends BaseCotroller {
             }
         }
     }
-
-
 }

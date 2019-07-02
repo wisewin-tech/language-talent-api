@@ -27,7 +27,6 @@ import java.util.List;
 @Service("purchaseService")
 public class PurchaseService {
 
-
     static final Logger log = LoggerFactory.getLogger(PurchaseService.class);
 
     @Resource

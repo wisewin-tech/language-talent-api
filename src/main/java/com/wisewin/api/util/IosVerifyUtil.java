@@ -1,5 +1,9 @@
 package com.wisewin.api.util;
 
+import com.sun.deploy.trace.LoggerTraceListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.net.ssl.*;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -15,6 +19,9 @@ import java.util.Locale;
  * @date: Created in 17:10 2019/7/1
  */
 public class IosVerifyUtil {
+
+    final static Logger log = LoggerFactory.getLogger(IosVerifyUtil.class);
+
     private static class TrustAnyTrustManager implements X509TrustManager {
 
         public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
@@ -47,6 +54,7 @@ public class IosVerifyUtil {
      *
      */
     public static String buyAppVerify(String receipt,int type) {
+        log.info("进入此方法===buyAppVerify=======================");
         //环境判断 线上/开发环境用不同的请求链接
         String url = "";
         if(type==0){
@@ -55,7 +63,7 @@ public class IosVerifyUtil {
             url = url_verify; //线上测试
         }
         //String url = EnvUtils.isOnline() ?url_verify : url_sandbox;
-
+        log.info("url:{}",url);
         try {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, new TrustManager[] { new TrustAnyTrustManager() }, new java.security.SecureRandom());
