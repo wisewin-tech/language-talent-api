@@ -8,7 +8,6 @@ import java.util.Date;
 
 public class UserBO  extends BaseModel{
 
-
     private Integer id; //用戶表
     private String name; //姓名
     private String nickname; //昵称

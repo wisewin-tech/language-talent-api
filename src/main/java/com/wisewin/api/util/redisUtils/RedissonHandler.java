@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 /***
  * Redis client的辅助工具类
  * 用于连接Redis服务器 创建不同的Redis Server对应的客户端对象
- *
  * @author Shibo Sun
  */
 public class RedissonHandler {
@@ -19,7 +18,7 @@ public class RedissonHandler {
 
     private final String port = "6379";
 
-    private final String ip = "localhost";//"r-2zec622a372f0b04.redis.rds.aliyuncs.com"; "wisewin-tech.com"
+    private final String ip = "r-2zec622a372f0b04.redis.rds.aliyuncs.com";//"r-2zec622a372f0b04.redis.rds.aliyuncs.com"; "wisewin-tech.com"
 
     private final String password = null;
 
