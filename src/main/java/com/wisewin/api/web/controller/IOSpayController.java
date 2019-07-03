@@ -4,9 +4,11 @@ package com.wisewin.api.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.wisewin.api.dao.OrderDAO;
 import com.wisewin.api.dao.UserDAO;
+import com.wisewin.api.entity.bo.InviteRecordBO;
 import com.wisewin.api.entity.bo.OrderBO;
 import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.entity.param.UserParam;
 import com.wisewin.api.service.OrderService;
 import com.wisewin.api.service.PayService;
 import com.wisewin.api.util.AgentUserKit;
@@ -45,6 +47,13 @@ public class IOSpayController extends BaseCotroller {
     private UserDAO userDAO;
 
     final static Logger log = LoggerFactory.getLogger(IOSpayController.class);
+
+
+    @RequestMapping("/test")
+    public void test() {
+
+    }
+
 
 
     /**
@@ -127,14 +136,17 @@ public class IOSpayController extends BaseCotroller {
                         orderDAO.insertOrder(order);
                         //为用户增加咖豆
                         //将BigDecimal类型的金额转换成Sring类型
+
+
                         String pri = price.toString();
-                        log.info("pri{}",pri);
-                        String pr = pri.substring(0, pri.length() - 3);
-                        log.info("pr{}",pr);
-                        Integer kd = payService.getKaDou(Integer.parseInt(pr));
+                        log.info("pri:::::::::{}",pri);
+                        //String pr = pri.substring(0, pri.length() - 3);
+                        //log.info("pr{}",pr);
+                        Integer kd = payService.getKaDou(Integer.parseInt(pri));
                         log.info("转换为咖豆{}",kd);
                         Map map =  new HashMap<String, Object>();
                         map.put("currency",kd);
+                        map.put("id",161);
                         userDAO.updateUserAugment(map);
                         log.info("交易成功，新增并处理订单：{}",order);
                         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("支付成功"));
@@ -161,4 +173,6 @@ public class IOSpayController extends BaseCotroller {
             }
         }
     }
+
+
 }
