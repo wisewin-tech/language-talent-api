@@ -84,7 +84,7 @@ public class IOSpayController extends BaseCotroller {
         log.info("获取手机系统{}",model);
         //线上环境验证
         log.info("线上传经验证");
-        String verifyResult = IosVerifyUtil.buyAppVerify(payload, 0);
+        String verifyResult = IosVerifyUtil.buyAppVerify(payload, 1);
         if (verifyResult == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("苹果验证失败,返回数据为空"));
             super.safeJsonPrint(response, json);
