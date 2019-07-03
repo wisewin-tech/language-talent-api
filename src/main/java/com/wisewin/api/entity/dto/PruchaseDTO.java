@@ -68,4 +68,16 @@ public class PruchaseDTO {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+    @Override
+    public String toString() {
+        return "PruchaseDTO{" +
+                "title='" + title + '\'' +
+                ", coursePrice=" + coursePrice +
+                ", userCurrency=" + userCurrency +
+                ", state=" + state +
+                ", img='" + img + '\'' +
+                ", msg='" + msg + '\'' +
+                '}';
+    }
 }

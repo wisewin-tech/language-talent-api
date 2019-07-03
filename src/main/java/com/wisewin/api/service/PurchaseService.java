@@ -225,16 +225,18 @@ public class PurchaseService {
                 stringBuffer.append(",价格扣减后还需支付"+pr+"咖豆");
                 pruchase.setMsg(stringBuffer.toString());
                 System.err.println(stringBuffer.toString());
-               //获取语言优惠价
-               pruchase.setCoursePrice(pr);
-            }
 
+            }
+            //获取语言优惠价
+            pruchase.setCoursePrice(pr);
             //判断用户咖豆是否能够买当前语言
             if (user.getCurrency() >= pr) {
                 pruchase.setState(true);
+                System.err.println(pruchase.toString());
                 return pruchase;
             } else {
                 pruchase.setState(false);
+                System.err.println(pruchase.toString());
                 return pruchase;
             }
         }

@@ -74,9 +74,6 @@ public interface UserDAO {
     void updateLanguage(@Param("id") Integer id,@Param("studyingLanguageId")Integer studyingLanguageId);
 
 
-
-
-
     //获取当前用户
     UserBO selectUser(@Param("id") Integer id);
 
