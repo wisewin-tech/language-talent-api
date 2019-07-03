@@ -1,6 +1,6 @@
 package com.wisewin.api.util;
 
-import com.sun.deploy.trace.LoggerTraceListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
