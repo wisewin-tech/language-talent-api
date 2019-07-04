@@ -16,7 +16,7 @@ function getDataInfo(id) {
             for(var item in res.data.specialBO){
                 $('#'+item).html(res.data.specialBO[item]);
             }
-            $(".ql-video").contents().find("video").removeAttr('controls');
+            $('video').attr('poster', './image/default.jpg')
         }
     })
 }

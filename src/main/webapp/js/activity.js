@@ -23,7 +23,8 @@ function getDataInfo(id) {
                     $('#'+item).html(res.data[item])
                 }
             }
-            $('#week').test(FormatWeek(res.data.activitytime))
+            $('#week').test(FormatWeek(res.data.activitytime));
+            $('video').attr('poster', './image/default.jpg')
         }
     })
 }

@@ -16,7 +16,7 @@ function getDataInfo(id) {
             for(var item in res.data){
                 $('#'+item).html(res.data[item]);
             }
-            $(".ql-video").contents().find("video").removeAttr('controls');
+            $('video').attr('poster', './image/default.jpg')
         }
     })
 }
@@ -35,3 +35,4 @@ function getUrl(name) {
         return null;
     }
 }
+
