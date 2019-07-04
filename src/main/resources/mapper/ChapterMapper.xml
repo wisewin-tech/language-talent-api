@@ -11,7 +11,7 @@
 	      `level`.level_name,
 	      chapter.chapter_name,
 	      chapter.free_or_not,chapter.video_path,
-	      chapter.id
+	      chapter.id,chapter.serial_number serialNumber
         FROM
 	      lt_chapter `chapter`
         LEFT JOIN lt_level `level` ON chapter.level_id = `level`.id
