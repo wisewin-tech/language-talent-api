@@ -80,7 +80,6 @@ public class IndexController extends BaseCotroller {
                 weekContinuousSigndays = 0;
             }else {
                 boolean i = DateUtil.belongCalendar(userBO2.getLastSign(), DateUtil.getDate(monday), DateUtil.getDate(sunday));
-                // TODO: 2019/7/4
                 String yesterday = DateUtil.getYseterday();
                 String lastSignDate = DateUtil.getDateStr(userBO2.getLastSign());
                 if (!(i||yesterday.equals(lastSignDate))) {
