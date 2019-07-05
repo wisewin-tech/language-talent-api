@@ -16,7 +16,7 @@ function getDataInfo(id) {
             for(var item in res.data.specialBO){
                 $('#'+item).html(res.data.specialBO[item]);
             }
-            $('video').attr('poster', './image/default.jpg')
+            $('video').attr({poster:'./image/default.jpg'});
         }
     })
 }
