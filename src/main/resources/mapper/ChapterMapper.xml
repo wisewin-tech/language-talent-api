@@ -28,7 +28,7 @@
     <select id="chapterDetails" parameterType="com.wisewin.api.entity.bo.ChapterBO"
             resultType="com.wisewin.api.entity.bo.ChapterBO">
         SELECT
-	      `language`.language_name,course.course_name,
+	       chapter.manuscript, `language`.language_name,course.course_name,
 	      `level`.level_name,chapter.chapter_name,`language`.ensign_image_url,
 	      `language`.id languageId,course.id courseId,chapter.thumbnail_url,
 	      `level`.id levelId,chapter.chapter_intro,

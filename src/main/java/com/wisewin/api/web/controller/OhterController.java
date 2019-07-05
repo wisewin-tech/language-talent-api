@@ -1,9 +1,11 @@
 package com.wisewin.api.web.controller;
 
+import com.wisewin.api.entity.bo.ChapterBO;
 import com.wisewin.api.entity.bo.ClauseBO;
 import com.wisewin.api.entity.bo.CourseDetailsResultBO;
 import com.wisewin.api.entity.bo.LanguageDetailsResultBO;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
+import com.wisewin.api.service.ChapterService;
 import com.wisewin.api.service.ClauseService;
 import com.wisewin.api.service.CourseService;
 import com.wisewin.api.service.LanguageService;
@@ -28,6 +30,8 @@ public class OhterController extends BaseCotroller {
     private LanguageService languageService;
     @Resource
     private CourseService courseService;
+    @Resource
+    private ChapterService chapterService;
 
     static final Logger log = LoggerFactory.getLogger(OhterController.class);
 
@@ -90,5 +94,26 @@ public class OhterController extends BaseCotroller {
         return;
     }
 
+    /**
+     *  查询文稿
+     */
+    @RequestMapping("/queryManuscript")
+    public void queryManuscript(HttpServletRequest request,HttpServletResponse response,Integer chapterId) {
+        if(chapterId==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        String manuscript="";
+        ChapterBO chapterBO = chapterService.chapterDetails(chapterId);
+        if(chapterBO!=null){
+            manuscript=chapterBO.getManuscript();
+        }
+
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(manuscript));
+        super.safeJsonPrint(response, json);
+        return;
+
+    }
 
 }
