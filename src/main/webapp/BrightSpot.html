@@ -42,7 +42,7 @@
             url: 'other/queryHelp',
             type: 'POST',
             dataType: 'json',
-            data: {chapterId: id},
+            data: {id: id},
             success: function (response) {
                 $('#page').html(response.msg);
             }
