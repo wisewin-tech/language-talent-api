@@ -1,14 +1,8 @@
 package com.wisewin.api.web.controller;
 
-import com.wisewin.api.entity.bo.ChapterBO;
-import com.wisewin.api.entity.bo.ClauseBO;
-import com.wisewin.api.entity.bo.CourseDetailsResultBO;
-import com.wisewin.api.entity.bo.LanguageDetailsResultBO;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
-import com.wisewin.api.service.ChapterService;
-import com.wisewin.api.service.ClauseService;
-import com.wisewin.api.service.CourseService;
-import com.wisewin.api.service.LanguageService;
+import com.wisewin.api.service.*;
 import com.wisewin.api.util.JsonUtils;
 import com.wisewin.api.util.StringUtils;
 import com.wisewin.api.web.controller.base.BaseCotroller;
@@ -25,26 +19,28 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/other")
 public class OhterController extends BaseCotroller {
     @Resource
-    private ClauseService  clauseService;
+    private ClauseService clauseService;
     @Resource
     private LanguageService languageService;
     @Resource
     private CourseService courseService;
     @Resource
     private ChapterService chapterService;
-
+    @Resource
+    private HelpCenterService  helpCenterService;
     static final Logger log = LoggerFactory.getLogger(OhterController.class);
 
 
     /**
      * 查询购买须知类的东西
+     *
      * @param request
      * @param response
      * @param config
      */
     @RequestMapping("/queryConfig")
-    public void queryConfig(HttpServletRequest request,HttpServletResponse response,String config) {
-        if(StringUtils.isEmpty(config)){
+    public void queryConfig(HttpServletRequest request, HttpServletResponse response, String config) {
+        if (StringUtils.isEmpty(config)) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -59,32 +55,33 @@ public class OhterController extends BaseCotroller {
 
     /**
      * 查询课程亮点 ||  语言亮点
+     *
      * @param request
      * @param response
-     * @param type course  || language
+     * @param type     course  || language
      * @param id
      */
     @RequestMapping("/queryLightspot")
-    public void queryLightspot(HttpServletRequest request,HttpServletResponse response,String type,Integer id) {
-        if(StringUtils.isEmpty(type) || id==null){
+    public void queryLightspot(HttpServletRequest request, HttpServletResponse response, String type, Integer id) {
+        if (StringUtils.isEmpty(type) || id == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
-        String msg="";
+        String msg = "";
         //查询课程的
-        if("course".equals(type)){
+        if ("course".equals(type)) {
             CourseDetailsResultBO courseDetailsResultBO = courseService.courseDetailsCourse(id);
-            if(courseDetailsResultBO!=null){
-                msg= courseDetailsResultBO.getCourseLightspot();
+            if (courseDetailsResultBO != null) {
+                msg = courseDetailsResultBO.getCourseLightspot();
             }
         }
         //查询语言的
-        if("language".equals(type)){
+        if ("language".equals(type)) {
             LanguageDetailsResultBO language = languageService.languageDetails(id);
-            if(language!=null){
-                msg= language.getLanguageLightspot();
+            if (language != null) {
+                msg = language.getLanguageLightspot();
             }
         }
 
@@ -95,19 +92,19 @@ public class OhterController extends BaseCotroller {
     }
 
     /**
-     *  查询文稿
+     * 查询文稿
      */
     @RequestMapping("/queryManuscript")
-    public void queryManuscript(HttpServletRequest request,HttpServletResponse response,Integer chapterId) {
-        if(chapterId==null){
+    public void queryManuscript(HttpServletRequest request, HttpServletResponse response, Integer chapterId) {
+        if (chapterId == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
-        String manuscript="";
+        String manuscript = "";
         ChapterBO chapterBO = chapterService.chapterDetails(chapterId);
-        if(chapterBO!=null){
-            manuscript=chapterBO.getManuscript();
+        if (chapterBO != null) {
+            manuscript = chapterBO.getManuscript();
         }
 
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(manuscript));
@@ -115,5 +112,31 @@ public class OhterController extends BaseCotroller {
         return;
 
     }
+
+
+    /**
+     * 查询新手帮助
+     *
+     * @param id
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/queryHelp")
+    public void queryHelp(HttpServletRequest request, HttpServletResponse response, Integer id) {
+        if (id == null) {
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        String manuscript = "";
+        HelpCenterBO getparticulars = helpCenterService.getparticulars(id);
+        if (getparticulars != null) {
+            manuscript = getparticulars.getContent();
+        }
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(manuscript));
+        super.safeJsonPrint(response, json);
+        return;
+    }
+
 
 }
