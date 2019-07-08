@@ -45,7 +45,7 @@
       FROM lt_language `language`
       WHERE `language`.`status` = 'putaway'
       AND NOW() BETWEEN `language`.discount_start_time AND `language`.discount_end_time
-      GROUP BY `language`.language_name
+      GROUP BY `language`.id
 	</select>
     <!--语言详情页语言模块-->
     <select id="languageDetails" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.LanguageDetailsResultBO">
@@ -93,7 +93,7 @@ WHERE
 		LEFT JOIN lt_order_courses oc ON oc.courses_id = co.id
 		LEFT JOIN lt_order `or` ON `or`.id = oc.order_id
 		WHERE `or`.`status` = 'yes' AND oc.course_validity_period > NOW() AND oc.user_id = #{userId}
-		GROUP BY la.language_name
+		GROUP BY la.id
 	</select>
 
 	<!--语言名称列表-->
@@ -101,7 +101,7 @@ WHERE
 		SELECT la.id languageId,la.ensign_image_url,la.language_name
 		FROM lt_language la
 		LEFT JOIN lt_course co ON la.id = co.language_id
-		WHERE la.status = 'putaway' AND co.`status`='putaway' GROUP BY la.language_name
+		WHERE la.status = 'putaway' AND co.`status`='putaway' GROUP BY la.id
 		ORDER BY CONVERT(la.language_name USING gbk) COLLATE gbk_chinese_ci
 	</select>
 
