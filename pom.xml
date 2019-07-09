@@ -4,7 +4,7 @@
   <groupId>com.wise</groupId>
   <artifactId>language-talent-api</artifactId>
   <packaging>war</packaging>
-  <version>2.0.0-EXPLOIT</version>
+  <version>2.1.0-ISSUE</version>
   <name>language-talent-api Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
