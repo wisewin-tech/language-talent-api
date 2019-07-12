@@ -280,6 +280,9 @@ public class UserController extends BaseCotroller {
                         mapUser.put("islogin", UserConstants.Yes.getValue());
                     }
                     mapUser.put("userId", userBO.getId());
+                    //添加用户信息
+                    mapUser.put("headPortraitUrl", userBO.getHeadPortraitUrl());
+                    mapUser.put("nickname",userBO.getNickname());
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
                     log.info("json");
                     super.safeJsonPrint(response, json);
@@ -316,6 +319,9 @@ public class UserController extends BaseCotroller {
                 //islogin 是否为登录, yes 登录
                 mapUser.put("islogin", UserConstants.No.getValue());
                 mapUser.put("userId", userBO1.getId());
+                //添加用户信息
+                mapUser.put("headPortraitUrl", userBO1.getHeadPortraitUrl());
+                mapUser.put("nickname",userBO1.getNickname());
                 //将只带有手机号的user对象存入cookie中
                 this.putUser(response, userBO1);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
@@ -382,6 +388,9 @@ public class UserController extends BaseCotroller {
             this.putUser(response, userBO);
             mapUser.put("islogin", UserConstants.Yes.getValue());
             mapUser.put("userId", userBO.getId());
+            //添加用户信息
+            mapUser.put("headPortraitUrl", userBO.getHeadPortraitUrl());
+            mapUser.put("nickname",userBO.getNickname());
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
             super.safeJsonPrint(response, json);
             log.info("return{}",json);
@@ -442,6 +451,9 @@ public class UserController extends BaseCotroller {
                     this.putUser(response, userBO);
                     mapUser.put("islogin", UserConstants.Yes.getValue());
                     mapUser.put("userId", userBO.getId());
+                    //添加用户信息
+                    mapUser.put("headPortraitUrl", userBO.getHeadPortraitUrl());
+                    mapUser.put("nickname",userBO.getNickname());
                     log.info("绑定openid");
                     log.info("调用com.wisewin.api.service.UserService.bindOpenId");
                     //绑定openid
@@ -473,6 +485,9 @@ public class UserController extends BaseCotroller {
                 //islogin 是否为登录, yes 登录
                 mapUser.put("islogin", UserConstants.No.getValue());
                 mapUser.put("userId", userBO1.getId());
+                //添加用户信息
+                mapUser.put("headPortraitUrl", userBO1.getHeadPortraitUrl());
+                mapUser.put("nickname",userBO1.getNickname());
                 //将只带有手机号的user对象存入cookie中
                 this.putUser(response, userBO1);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(mapUser));
