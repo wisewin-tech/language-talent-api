@@ -71,8 +71,10 @@
         id=#{id}
     </update>
 
-
-
+    <!---->
+    <select id="queryIsSin" resultType="int" >
+        SELECT count(id) FROM `lt_sign`  WHERE   sign_time  BETWEEN  #{startTime} AND #{endTime}  AND user_id=#{userId}
+    </select>
 
 
 </mapper>

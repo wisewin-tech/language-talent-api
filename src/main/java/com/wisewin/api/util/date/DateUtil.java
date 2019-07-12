@@ -6,6 +6,7 @@ import com.wisewin.api.service.SignService;
 import com.wisewin.api.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -161,30 +162,30 @@ public class DateUtil {
         String result = format.format(today);
         return  DateUtil.getDate(result);
     }
-    /**
-          * 判断时间是否在时间段内
-          * @param nowTime
-          * @param beginTime
-          * @param endTime
-          * @return
-          */
-public static boolean belongCalendar(Date nowTime, Date beginTime, Date endTime) {
-//设置当前时间
-Calendar date = Calendar.getInstance();
-date.setTime(nowTime);
-//设置开始时间
-Calendar begin = Calendar.getInstance();
-begin.setTime(beginTime);
-//设置结束时间
-Calendar end = Calendar.getInstance();
-end.setTime(endTime);
-//处于开始时间之后，和结束时间之前的判断
-if (date.after(begin) && date.before(end)) {
- return true;
-} else {
- return false;
- }
-}
+          /**
+      * 判断时间是否在时间段内
+      * @param nowTime
+      * @param beginTime
+      * @param endTime
+      * @return
+      */
+    public static boolean belongCalendar(Date nowTime, Date beginTime, Date endTime) {
+        //设置当前时间
+        Calendar date = Calendar.getInstance();
+        date.setTime(nowTime);
+        //设置开始时间
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(beginTime);
+        //设置结束时间
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+        //处于开始时间之后，和结束时间之前的判断
+        if (date.after(begin) && date.before(end)) {
+              return true;
+         } else {
+              return false;
+         }
+    }
     /**
      * 获取昨天的日期
      * @return
@@ -266,9 +267,18 @@ if (date.after(begin) && date.before(end)) {
         Date end =DateUtil.getDate("2019-05-25 13:15:32");
         Boolean str = belongCalendar(new Date(),start,end);
         System.out.println(str);
-
-
-
     }
 
+    public static String getEndTime() {
+        Date data=new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        return sdf.format(data);
+    }
+
+
+    public static String getStartTime() {
+        Date data=new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        return sdf.format(data);
+    }
 }

@@ -47,7 +47,7 @@ public class UserStudyDetailsController extends BaseCotroller {
             return;
         }
             //获取当前登录用户id
-            Integer userId = userBO.getId();
+        Integer userId = userBO.getId();
         //获取昨天的日期
         String yesterday = DateUtil.getYseterday();
         logService.call("UserStudyDetailsService.getStudyDetails",userId,yesterday);
@@ -129,7 +129,7 @@ public class UserStudyDetailsController extends BaseCotroller {
                 resultMap.put("continuousLearning",continuousLearning);
                 resultMap.put("weekStudyDuration",userStudyDetailsBOList);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(resultMap));
-        logService.end("/studyDetails/getUserStudyDetails",json);
+                logService.end("/studyDetails/getUserStudyDetails",json);
                 super.safeJsonPrint(response, json);
 
 

@@ -1,8 +1,8 @@
 package com.wisewin.api.dao;
 
 import com.wisewin.api.entity.bo.SignBO;
-import com.wisewin.api.entity.bo.UserBO;
 import com.wisewin.api.entity.bo.UserSignBO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -24,5 +24,6 @@ public interface SignDAO {
     String selectSignIntegral(String key);
 
 
+    int queryIsSin(@Param("startTime")String startTime,@Param("endTime") String endTime,@Param("userId") Integer userId);
 
 }

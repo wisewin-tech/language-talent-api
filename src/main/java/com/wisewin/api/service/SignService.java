@@ -89,6 +89,13 @@ public class SignService {
         UserSignBO userBO=signDAO.selectUser(userId);
         //最后签到时间格式转化成yyyy-MM-dd
         userBO.setLastSign(DateUtil.getStr(userBO.getLastSign()));
+
+        //查询今日签到否
+
+        int now=signDAO.queryIsSin(DateUtil.getStartTime(),DateUtil.getEndTime(),userId);
+        if(now<1){
+            userBO.setContinuousSign(0);
+        }
         //创建一个map集合,用于存在签到表和用户表的信息
         Map<String,Object> mapSign=new HashMap<String, Object>();
         //把用户表的签到信息和签到表的信息放在map中

@@ -76,8 +76,8 @@ public class IndexController extends BaseCotroller {
             String sunday = DateUtil.getWeekEnd(new Date());
             Integer weekContinuousSigndays ;
             UserBO userBO2 = userService.selectById(useId);
-            if (userBO2.getLastSign()==null){
-                weekContinuousSigndays = 0;
+            if (userBO2.getLastSign()==null){ //没签过道
+                weekContinuousSigndays = 0;  //本周签到日期设为0
             }else {
                 boolean i = DateUtil.belongCalendar(userBO2.getLastSign(), DateUtil.getDate(monday), DateUtil.getDate(sunday));
                 String yesterday = DateUtil.getYseterday();
@@ -91,7 +91,7 @@ public class IndexController extends BaseCotroller {
                 }
             }
 
-            //查询签到表用户最新记录
+            //今天是否签到
             SignBO signBO = signService.selectNew(useId);
             TodaySignOrNot todaySignOrNot = new TodaySignOrNot();
             if (signBO==null){
