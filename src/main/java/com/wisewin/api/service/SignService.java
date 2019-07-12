@@ -5,7 +5,6 @@ import com.wisewin.api.dao.KeyValDAO;
 import com.wisewin.api.dao.RecordDAO;
 import com.wisewin.api.dao.SignDAO;
 import com.wisewin.api.entity.bo.*;
-import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.TimeUtil;
 import com.wisewin.api.util.date.DateUtil;
 import org.springframework.stereotype.Service;
@@ -114,6 +113,7 @@ public class SignService {
      * @return
      */
     public boolean signIn(Integer userId) {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         //获取今天的日期
         String now=dateFormat.format(new Date());
@@ -139,7 +139,13 @@ public class SignService {
         //累计签到天数
         Integer cumulativeSign=userBO.getCumulativeSign();
         //上次签到日期
-        String date=DateUtil.getStr(userBO.getLastSign());
+        String date=null;
+        Date left =null;
+        if(userBO.getLastSign()!=null){
+            date= DateUtil.getStr(userBO.getLastSign());
+            left=DateUtil.gainDate(userBO.getLastSign());
+        }
+
 
         //用户积分
         Integer integral=userBO.getIntegral();
@@ -150,19 +156,18 @@ public class SignService {
         if (yesterdays.equals(date)){
             //连续签到天数改为+1
             userBO.setContinuousSign(continuousSign + 1);
-            //获取本周周一的日期
-            String monday = DateUtil.getWeekStart(new Date());
-            System.out.println("1:"+DateUtil.getDate(monday).getTime());
-            System.out.println("2:"+yesterday.getTime());
-            if (DateUtil.getDate(monday).getTime()<yesterday.getTime()){
-                userBO.setWeekContinuousSign(weekContinuousSign+1);
+            Date weekStart = DateUtil.gainDate(DateUtil.getWeekStart(new Date()));
+            Date weekEnd = DateUtil.gainDate(DateUtil.getWeekEnd(new Date()));
+            if(left!=null && left.compareTo(weekStart)==1 &&  weekEnd.compareTo(left)==1){
+                userBO.setWeekContinuousSign( weekContinuousSign+1);
+            }else{
+                userBO.setWeekContinuousSign(1);
             }
 
         }else {
             //连续签到天数改为1
             userBO.setContinuousSign(1);
             userBO.setWeekContinuousSign(1);
-
         }
             //累计签到天数+1
             userBO.setCumulativeSign(cumulativeSign+1);
@@ -203,7 +208,7 @@ public class SignService {
     }
 
     //查询用户本周签到信息
-    public Integer selectWeek(Integer userId){
+   /* public Integer selectWeek(Integer userId){
         Integer continuousSigndays = 0;
         Date date = new Date();
         String weekstart = DateUtil.getWeekStart(date);
@@ -221,7 +226,7 @@ public class SignService {
             }
         }
         return continuousSigndays;
-    }
+    }*/
 
     /**
      * 查询签到表用户最新记录
@@ -250,5 +255,13 @@ public class SignService {
         }
         return map;
     }
+
+    /**
+     * 查询今天是否签到
+     */
+    public int isSign(Integer userId){
+        return signDAO.queryIsSin(DateUtil.getStartTime(),DateUtil.getEndTime(),userId);
+    }
+
 
 }

@@ -70,38 +70,19 @@ public class IndexController extends BaseCotroller {
             logService.call("userService.selectById",useId);
             UserBO userBO1 = userService.selectById(useId);
             logService.result(userBO1);
-            //获取本周周一的日期
-            String monday = DateUtil.getWeekStart(new Date());
-            //获取本周周日的日期
-            String sunday = DateUtil.getWeekEnd(new Date());
-            Integer weekContinuousSigndays ;
-            UserBO userBO2 = userService.selectById(useId);
-            if (userBO2.getLastSign()==null){ //没签过道
-                weekContinuousSigndays = 0;  //本周签到日期设为0
-            }else {
-                boolean i = DateUtil.belongCalendar(userBO2.getLastSign(), DateUtil.getDate(monday), DateUtil.getDate(sunday));
-                String yesterday = DateUtil.getYseterday();
-                String lastSignDate = DateUtil.getDateStr(userBO2.getLastSign());
-                if (!(i||yesterday.equals(lastSignDate))) {
-                    weekContinuousSigndays = 0;
-                } else {
-                    logService.call("signService.getContinuousSign", useId);
-                    weekContinuousSigndays = userService.getWeekContinuousSign(useId);
-                    logService.result(weekContinuousSigndays);
-                }
-            }
 
-            //今天是否签到
-            SignBO signBO = signService.selectNew(useId);
+            Integer weekContinuousSigndays ;
+
+            weekContinuousSigndays = userService.getWeekContinuousSign(useId);
+            logService.result(weekContinuousSigndays);
+
             TodaySignOrNot todaySignOrNot = new TodaySignOrNot();
-            if (signBO==null){
+            int sign = signService.isSign(useId);
+            if(weekContinuousSigndays==null ||sign<1){
                 todaySignOrNot.setTodaySignOrNot("no");
-            }else {
-                if (signBO.getSignTime().equals(DateUtil.getDateStr(new Date()))) {
-                    todaySignOrNot.setTodaySignOrNot("yes");
-                } else {
-                    todaySignOrNot.setTodaySignOrNot("no");
-                }
+                weekContinuousSigndays = 0;
+            }else{
+                todaySignOrNot.setTodaySignOrNot("yes");
             }
 
             logService.call("specialClassService.selectSpecialClassBO");
@@ -120,6 +101,5 @@ public class IndexController extends BaseCotroller {
             logService.end("/index/showIndex", result);
             super.safeJsonPrint(response, result);
         }
-
 
 }

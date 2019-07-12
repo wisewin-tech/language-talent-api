@@ -261,13 +261,6 @@ public class DateUtil {
 
 
 
-    public static void main(String[] args) {
-        DateUtil dateUtil =new DateUtil();
-        Date start =DateUtil.getDate("2019-04-25 13:15:32");
-        Date end =DateUtil.getDate("2019-05-25 13:15:32");
-        Boolean str = belongCalendar(new Date(),start,end);
-        System.out.println(str);
-    }
 
     public static String getEndTime() {
         Date data=new Date();
@@ -275,10 +268,18 @@ public class DateUtil {
         return sdf.format(data);
     }
 
-
     public static String getStartTime() {
         Date data=new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
         return sdf.format(data);
     }
+
+
+    public static void main(String[] args){
+        String weekStart = getWeekStart(new Date());
+        String end =getWeekEnd(new Date());
+        System.out.println(weekStart);
+        System.out.println(end);
+    }
+
 }
