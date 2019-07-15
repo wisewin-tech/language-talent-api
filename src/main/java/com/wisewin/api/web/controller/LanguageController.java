@@ -114,6 +114,13 @@ public class LanguageController extends BaseCotroller{
                     courseResultBO.setBuyOrNot("no");
                 }
             }
+            //如果该语言下的每门课程都为购买状态则该语言为已购买状态
+            if ("yes".equals(courseResultBO.getBuyOrNot())){
+                languageBO.setBuyOrNot("yes");
+            }else {
+                languageBO.setBuyOrNot("no");
+            }
+
         }
 
 

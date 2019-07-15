@@ -15,6 +15,7 @@ public class LanguageDetailsResultBO extends BaseModel {
     private Integer languageDiscountPrice; //特惠价格
     private Date discountStartTime;//特惠开始时间
     private Date discountEndTime;//特惠结束时间
+    private String buyOrNot;//是否购买
 
     @Override
     public String toString() {
@@ -29,6 +30,7 @@ public class LanguageDetailsResultBO extends BaseModel {
                 ", languageDiscountPrice=" + languageDiscountPrice +
                 ", discountStartTime=" + discountStartTime +
                 ", discountEndTime=" + discountEndTime +
+                ", buyOrNot='" + buyOrNot + '\'' +
                 '}';
     }
 
@@ -112,4 +114,11 @@ public class LanguageDetailsResultBO extends BaseModel {
         this.discountEndTime = discountEndTime;
     }
 
+    public String getBuyOrNot() {
+        return buyOrNot;
+    }
+
+    public void setBuyOrNot(String buyOrNot) {
+        this.buyOrNot = buyOrNot;
+    }
 }
