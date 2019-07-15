@@ -95,7 +95,10 @@ public class LanguageController extends BaseCotroller{
         logService.call("courseService.getCourseIdById",id);
         List<CourseBO> courseBOS = courseService.getCourseIdById(id);
         logService.result(courseBOS);
-        for (LanguageDetailsCourseResultBO courseResultBO:languageDetailsCourseResultBOS){
+       for (LanguageDetailsCourseResultBO courseResultBO:languageDetailsCourseResultBOS){
+       // for (int i = 0; i < languageDetailsCourseResultBOS.size(); i++) {
+            //LanguageDetailsCourseResultBO courseResultBO = languageDetailsCourseResultBOS.get(i);
+
                 Date courseDiscountStartTime = courseResultBO.getDiscountStartTime();
                 Date courseDiscountEndTime = courseResultBO.getDiscountEndTime();
             if (courseDiscountStartTime!=null&&courseDiscountEndTime!=null) {
@@ -105,15 +108,16 @@ public class LanguageController extends BaseCotroller{
             }else if (courseDiscountStartTime==null||courseDiscountEndTime==null){
                 courseResultBO.setCourseDiscountPrice(0);
             }
-            for (CourseBO courseBO : courseBOS) {
-                Integer courseId = courseBO.getCourseId();
+//            for (int j=0;j<courseBOS.size();j++) {
+//                CourseBO course = courseBOS.get(j);
+                Integer courseId = courseResultBO.getCourseId();
                 Integer count = orderService.getStatusByCourseId(userId, courseId);
                 if (count > 0) {
                     courseResultBO.setBuyOrNot("yes");
                 }else if (count<=0){
                     courseResultBO.setBuyOrNot("no");
                 }
-            }
+            //}
             //如果该语言下的每门课程都为购买状态则该语言为已购买状态
             if ("yes".equals(courseResultBO.getBuyOrNot())){
                 languageBO.setBuyOrNot("yes");
