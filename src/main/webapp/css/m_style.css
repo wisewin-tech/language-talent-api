@@ -1,0 +1,333 @@
+
+* {
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    line-height: inherit;
+}
+
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, li, pre, form, field, legend, button, input, textarea, th, td {
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+i, em {
+    font-style: normal;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6, strong, b {
+    font-weight: normal;
+}
+
+input, select, button, h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-family: inherit;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}
+
+input[type=button], input[type=submit], input[type=file], button {
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+button:focus,
+button:active:focus,
+button.active:focus,
+button.focus,
+button:active.focus,
+button.active.focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+@font-face {
+    font-family: baseFont;
+    src: url('/font/PingFang-Bold-1.ttf');
+}
+
+body {
+    margin: 0 auto;
+    min-width: 320px;
+    max-width: 640px;
+    height: 100%;
+    line-height: 1.5;
+    color: #2F2F2F;
+    background: #fff;
+    font-family: baseFont;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    font-size: 0.14rem;
+    -webkit-overflow-scrolling: touch;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 14px;
+    height: 100%;
+    -webkit-text-size-adjust: none
+}
+
+textarea {
+    resize: none;
+}
+
+input[type="text"], input[type="tel"], textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+}
+
+#page {
+    margin: 0 auto;
+}
+
+.logo .logo-info {
+    margin-top: -10rem;
+}
+
+.logo .logo-info > .logo-content {
+    text-align: center;
+    width: 16rem;
+    margin: 0 auto;
+}
+
+.logo .logo-info .title {
+    font-size: 1.6rem;
+    line-height: 1.8rem;
+    margin-top: -1.7rem;
+}
+
+.form-content {
+    margin: 3.5rem auto 0;
+    text-align: center;
+}
+
+.form-content .form-item {
+    width: 24rem;
+    height: 3.7rem;
+    margin: 1.4rem auto 0;
+
+}
+
+.form-content .form-item .input-border {
+    width: 24rem;
+    height: 3.7rem;
+    border: 1px #E3E4EA solid;
+    border-radius: 2.2rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.form-content .form-item .input-border .input {
+    margin: -2px;
+    width: 100%;
+    padding-left: 1.3rem;
+    font-size: 1.4rem;
+    height: calc(100% + 2px);
+    line-height: 3.7rem;
+}
+
+.form-content .form-item .input-border .send-btn {
+    color: #373E52;
+    font-size: 1.1rem;
+    position: absolute;
+    top: 0;
+    right: 1.3rem;
+    bottom: 0;
+    margin: auto;
+    line-height: 3.7rem;
+    user-select: none;
+}
+
+.btn-box {
+    margin-top: 3.7rem;
+}
+
+.btn-box .btn {
+    border: none;
+    border-radius: 32px;
+    font-size: 1.5rem;
+    color: #fff;
+    width: 24rem;
+    height: 4.4rem;
+    box-shadow: 0 0 5px #FEBF4E;
+    background: linear-gradient(to bottom right, #FEBF4E 0%, #F98A0D 100%);
+}
+
+.s-info {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -60%);
+    text-align: center;
+}
+
+.s-info .re-tip {
+    color: #373E52;
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    margin-top: 2.2rem;
+}
+
+.s-info .tip {
+    color: #6E6F7B;
+    font-size: 1.3rem;
+    width: 24.4rem;
+    margin-top: 0.7rem;
+}
+
+.success-btn {
+    position: absolute;
+    bottom: 4.4rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+}
+
+::-webkit-input-placeholder { /*Webkit browsers*/
+    color: #ADB5C6;
+    font-size: 1rem;
+}
+
+:-moz-placeholder { /*Mozilla Firefox 4 to 8*/
+    color: #ADB5C6;
+    font-size: 1rem;
+}
+
+::-moz-placeholder { /*Mozilla Firefox 19+*/
+    color: #ADB5C6;
+    font-size: 1rem;
+}
+
+:-ms-input-placeholder { /*Internet Explorer 10+*/
+    color: #ADB5C6;
+    font-size: 1rem;
+}
+
+/*@media screen and (max-width: 320px) {}*/
+
+/*@media screen and (min-width: 321px) and (max-width: 375px) {}*/
+
+/*@media screen and (min-width: 376px) and (max-width: 414px) {}*/
+
+/*@media screen and (min-width: 415px) and (max-width: 478px) {}*/
+
+/*@media screen and (min-width: 479px) {html {font-size: 15px}#page { max-width: 34rem;}}*/
+
+@media only screen
+
+and (min-device-width: 320px)
+
+and (max-device-width: 480px)
+
+and (-webkit-min-device-pixel-ratio: 2) {
+    html {
+        font-size: 11px
+    }
+
+    #page {
+        min-width: 31rem;
+    }
+}
+
+/*iphone 5 and 5s*/
+@media only screen
+
+and (min-device-width: 320px)
+
+and (max-device-width: 568px)
+
+and (-webkit-min-device-pixel-ratio: 2) {
+    html {
+        font-size: 10px
+    }
+
+    #page {
+        min-width: 31rem;
+    }
+}
+
+/*Android width360*/
+@media only screen
+
+and (min-device-width: 360px)
+
+and (max-device-width: 640px) {
+
+    html {
+        font-size: 11px
+    }
+
+    #page {
+        min-width: 31rem;
+    }
+}
+
+/*android width411*/
+@media only screen
+
+and (min-device-width: 400px) {
+
+    html {
+        font-size: 15px
+    }
+
+    #page {
+        min-width: 31rem;
+    }
+}
+
+/*iphone  6+*/
+@media only screen
+
+and (min-device-width: 375px)
+
+and (max-device-width: 667px)
+
+and (-webkit-min-device-pixel-ratio: 2) {
+
+    html {
+        font-size: 7px
+    }
+
+    #page {
+        min-width: 31rem;
+    }
+}
+
+/*iphone  6*/
+@media only screen
+
+and (min-device-width: 375px)
+
+and (max-device-width: 667px)
+
+and (-webkit-min-device-pixel-ratio: 2) {
+
+    html {
+        font-size: 12px
+    }
+
+    #page {
+        min-width: 31rem;
+    }
+}
