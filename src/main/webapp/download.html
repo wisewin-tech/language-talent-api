@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>注册成功</title>
+    <title>多语咖APP下载</title>
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
     <meta content="telephone=no" name="format-detection">
     <meta name="applicable-device" content="mobile">
@@ -10,22 +10,50 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no,email=no">
     <link rel="stylesheet" href="./css/m_style.css">
+    <style>
+        .hide-mongolia{
+            visibility: hidden;
+        }
+        .mongolia{
+            height: 100vh;
+            background: #000;
+            opacity: 0.6;
+        }
+
+        .wx-download-tip{
+            font-size: 1.3rem;
+            width: 24.4rem;
+            text-align: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100px;
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
 <div id="page">
 
     <div class="s-info">
-        <img class="success-logo" src="/image/bg_2.png" alt="" style="width: 8.9rem;">
+        <img class="success-logo" src="/image/logo.png" alt="" style="width: 8.9rem;">
         <div>
-            <h2 class="font re-tip">注册成功</h2>
             <div class="font tip">点击下载按钮，下载多语咖APP</div>
         </div>
     </div>
     <div class="btn-box success-btn">
         <button class="btn" id="download">下 载</button>
     </div>
+    <div id="md" class="hide-mongolia">
+        <div class="wx-download-tip" style="color:#ffffff;">请点击右上角按钮 <img src="/image/icon.png" alt="" width="32px" height="32px"> 在浏览器打开</div>
+    </div>
 </div>
 <script src="./js/jquery-3.4.1.min.js"></script>
 <script src="./js/register.js"></script>
+<script>
+    $(function () {
+
+    });
+</script>
 </body>
 </html>

@@ -28,8 +28,8 @@ $('#register').on('click', function (e) {
             source: source
         },
         success: function (response) {
-            if(response.code === '0000000'){
-                alert("注册"+response.msg);
+            if (response.code === '0000000') {
+                alert("注册" + response.msg);
                 location.href = '/re_success.html';
             }
         }
@@ -49,7 +49,7 @@ $('#sendBtn').on('click', function (e) {
             },
             success: function (response) {
                 alert(response.msg);
-                if(response.code !== '0000058'){
+                if (response.code !== '0000058') {
                     intervalId = setInterval(function () {
                         $('#sendBtn').text(i--);
                         if (i === 0 && intervalId) {
@@ -68,27 +68,25 @@ $('#sendBtn').on('click', function (e) {
     }
 });
 
-function gotoDownload(){
+function gotoDownload() {
     var url = "https://itunes.apple.com/cn/app/id350962117";
-
 }
 
 $('#download').on('click', function (e) {
-    // $('#test').text(navigator.userAgent);
-    // console.log(browser.userAgent.android);
-
-    if(browser.userAgent.ios){
+    if (browser.userAgent.ios) {
         alert('IOS手机');
-    }else if(browser.userAgent.android){
+    } else if (browser.userAgent.android && !browser.userAgent.weiXin) {
         $.ajax({
             url: '/Versions/queryVersions',
             type: 'POST',
             dataType: 'json',
-            data: {platform:'安卓'},
+            data: {platform: '安卓'},
             success: function (res) {
-                window.location.href= res.data.downurl;
+                window.location.href = res.data.downurl;
             }
         })
+    } else if (browser.userAgent.weiXin || browser.userAgent.QQ) {
+        $('#md').removeClass('hide-mongolia').addClass('mongolia');
     }
 });
 
