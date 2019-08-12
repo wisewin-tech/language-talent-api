@@ -13,7 +13,7 @@
         LEFT JOIN lt_course co ON la.id = co.language_id
         WHERE
 	      la.`status` = 'putaway' AND la.hot_or_not = 'yes' AND co.`status`='putaway'
-	      GROUP BY la.id ORDER BY la.popular_sort DESC
+	      GROUP BY la.id ORDER BY la.popular_sort DESC LIMIT 0,8
     </select>
     <!--限时特惠-->
     <select id="getFlashSales" resultType="com.wisewin.api.entity.bo.FlashSalesResultBO">
