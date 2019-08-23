@@ -19,7 +19,8 @@
         <set>
             user_id=#{userId},
             chapter_id=#{chapterId},
-            score=#{score}
+            score=#{score},
+            create_time=now()
         </set>
 
     </insert>
@@ -30,7 +31,11 @@
     </select>
     <!--更新课时成绩-->
     <update id="updateScore">
-        UPDATE `lt_user_score_record` SET score = #{score} WHERE user_id = #{userId} AND chapter_id =#{chapterId}
+        UPDATE `lt_user_score_record`
+        <set>
+            score = #{score},update_time=now()
+        </set>
+        WHERE user_id = #{userId} AND chapter_id =#{chapterId}
     </update>
 
 
