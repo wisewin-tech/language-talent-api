@@ -764,7 +764,6 @@ public class UserController extends BaseCotroller {
         log.info("请求ip{}",request);
         //从cookie中获取他的user对象的id
         UserBO user = new UserBO();//
-        user.setId(160);
         // this.getLoginUser(request);
         log.info("从cookie中获取他的user对象的id");
         log.info("user,{}",user);
@@ -790,9 +789,8 @@ public class UserController extends BaseCotroller {
     @RequestMapping("/certificateDetails")
     public void certificateDetails(HttpServletResponse response, HttpServletRequest request,Integer languageId,Integer courseId)  {
         log.info("start=============certificateDetails==========");
-      //  UserBO user = this.getLoginUser(request);
-        UserBO user = new UserBO();//
-        user.setId(160);
+        UserBO user = this.getLoginUser(request);
+
         if (user == null) {
             log.info("user == null");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
