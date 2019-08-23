@@ -2,10 +2,7 @@ package com.wisewin.api.web.controller;
 
 import com.wisewin.api.common.constants.UserConstants;
 import com.wisewin.api.dao.KeyValDAO;
-import com.wisewin.api.entity.bo.CateBO;
-import com.wisewin.api.entity.bo.CertificateResultBO;
-import com.wisewin.api.entity.bo.InviteRecordBO;
-import com.wisewin.api.entity.bo.UserBO;
+import com.wisewin.api.entity.bo.*;
 import com.wisewin.api.entity.bo.common.constants.SysConstants;
 import com.wisewin.api.entity.dto.ResultDTOBuilder;
 import com.wisewin.api.entity.param.UserParam;
@@ -648,12 +645,14 @@ public class UserController extends BaseCotroller {
             log.info("id == null,return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
+            return;
         }
         //图片非空判断
         if (image == null) {
             log.info("image == null  return");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
+            return;
         }
         OSSClientUtil ossClientUtil = new OSSClientUtil();
         //上传
@@ -690,6 +689,7 @@ public class UserController extends BaseCotroller {
             log.info("如果获取不到,参数异常");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
+            return;
         }
         //通过id找出用户对象
         //id,nickname,birthday,sex,mobile,currency,career,head_portrait_url
@@ -719,7 +719,7 @@ public class UserController extends BaseCotroller {
     }
 
     /**
-     * 查询用户证书信息
+     *  废弃  查询用户证书信息
      *
      * @param response
      * @param request
@@ -738,6 +738,7 @@ public class UserController extends BaseCotroller {
             log.info("user == null");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
             super.safeJsonPrint(response, json);
+            return;
         }
         //查询用户证书
         List<CateBO> certificateResultBOS = certificateService.queryCateList(user.getId()+"");
@@ -747,6 +748,72 @@ public class UserController extends BaseCotroller {
         log.info("return{}",json);
         log.info("end===================com.wisewin.api.web.controller.UserController.selectUserMedal==========");
     }
+
+
+
+    /**
+     * new  查询用户证书信息
+     *
+     * @param response
+     * @param request
+     * @throws Exception
+     */
+    @RequestMapping("/queryCertificate")
+    public void queryCertificate(HttpServletResponse response, HttpServletRequest request)  {
+        log.info("start===================com.wisewin.api.web.controller.UserController.queryCertificate==========");
+        log.info("请求ip{}",request);
+        //从cookie中获取他的user对象的id
+        UserBO user = new UserBO();//
+        user.setId(160);
+        // this.getLoginUser(request);
+        log.info("从cookie中获取他的user对象的id");
+        log.info("user,{}",user);
+        //如果获取不到,参数异常
+        if (user == null) {
+            log.info("user == null");
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        //查询用户证书
+        List<QCertificateBO> qCertificateBOS = certificateService.queryCertificate(user.getId());
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(qCertificateBOS));
+        super.safeJsonPrint(response, json);
+        log.info("return{}",json);
+        log.info("end===================com.wisewin.api.web.controller.UserController.selectUserMedal==========");
+    }
+
+
+    /**
+     * 证书详情页
+     */
+    @RequestMapping("/certificateDetails")
+    public void certificateDetails(HttpServletResponse response, HttpServletRequest request,Integer languageId,Integer courseId)  {
+        log.info("start=============certificateDetails==========");
+      //  UserBO user = this.getLoginUser(request);
+        UserBO user = new UserBO();//
+        user.setId(160);
+        if (user == null) {
+            log.info("user == null");
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+
+        if( languageId==null && courseId==null ){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            log.info("return{}",json);
+            return;
+        }
+
+        CertificateMsgBO certificateMsgBO = certificateService.certificateDetails(languageId, courseId, user.getId());
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(certificateMsgBO));
+        super.safeJsonPrint(response, json);
+        return;
+    }
+
+
 
     /* *//**
      *  邀请好友注册

@@ -16,6 +16,7 @@ public class LanguageDetailsResultBO extends BaseModel {
     private Date discountStartTime;//特惠开始时间
     private Date discountEndTime;//特惠结束时间
     private String buyOrNot;//是否购买
+    private String thumbnailImageUrl;
 
     @Override
     public String toString() {
@@ -32,6 +33,14 @@ public class LanguageDetailsResultBO extends BaseModel {
                 ", discountEndTime=" + discountEndTime +
                 ", buyOrNot='" + buyOrNot + '\'' +
                 '}';
+    }
+
+    public String getThumbnailImageUrl() {
+        return thumbnailImageUrl;
+    }
+
+    public void setThumbnailImageUrl(String thumbnailImageUrl) {
+        this.thumbnailImageUrl = thumbnailImageUrl;
     }
 
     public Integer getId() {

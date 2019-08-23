@@ -57,12 +57,13 @@
 	`language`.price languagePrice,
 	`language`.discount_price languageDiscountPrice,
 	`language`.discount_start_time,
-	`language`.discount_end_time
+	`language`.discount_end_time ,
+	`language`.thumbnail_image_url
+
 FROM
 	lt_language `language`
 WHERE
-	`language`.`status` = 'putaway'
-	AND `language`.id = #{id}
+ `language`.id = #{id}
 
     </select>
 	<select id="languageDetailsCourse" parameterType="java.lang.Integer"

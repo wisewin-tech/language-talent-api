@@ -35,4 +35,40 @@
         SELECT lt_user.nickname as nickname ,lt_course.course_name as courseName,lt_course.certificate_image_url as imageUrl,lt_certificate.id as id,lt_certificate.user_id as userId,lt_certificate.course_id as courseId,lt_certificate.status as status
 FROM lt_certificate,lt_course,lt_user WHERE lt_certificate.user_id = lt_user.id AND lt_certificate.course_id = lt_course.id AND lt_certificate.user_id =#{userId}
     </select>
+
+    <select id="queryCertificate" parameterType="java.lang.Integer"  resultType="com.wisewin.api.entity.bo.QCertificateBO" >
+
+        SELECT DISTINCT le.id, le.language_name as `name`
+          FROM   lt_order  der  LEFT JOIN  lt_order_courses  ses   ON  ses.order_id = der.id
+																LEFT JOIN  lt_course cour ON  ses.courses_id=cour.id
+																LEFT JOIN  lt_language  le ON  le.id =  cour.language_id
+														WHERE  cour.certificate_or_not ='yes'   AND der.user_id =#{userId}
+    </select>
+
+    <select id="queryLanguageId" parameterType="java.lang.Integer" resultType="java.lang.Integer"  >
+        SELECT language_id  FROM `lt_course` WHERE id =#{id}
+    </select>
+
+    <select id="queryCourseCer" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.CourseCerBO"  >
+        SELECT  id as courseId ,course_name as courseName  , certificate_intro as `describe`  , certificate_image_url as certificateIimage
+          FROM `lt_course` WHERE  language_id = #{id}   AND  status ='putaway'
+    </select>
+
+    <select id="queryLevelCer"  parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.LevelCerBO"  >
+      SELECT  id as levelId , level_name as levelName  FROM `lt_level`  WHERE  course_id = #{id} AND  status ='putaway'
+    </select>
+
+    <select id="queryScore"   resultType="java.math.BigDecimal">
+       SELECT IFNULL(SUM(score),0)  FROM `lt_user_score_record` score LEFT JOIN lt_chapter ter ON ter.id=score.chapter_id
+									 LEFT JOIN lt_level  lv  on  lv.id=ter.level_id
+        WHERE  score.user_id =#{userId} AND lv.id=#{id}
+    </select>
+
+    <select id="queryChaperCount" parameterType="java.lang.Integer"  resultType="int">
+        SELECT COUNT(id) FROM `lt_chapter` WHERE  `status`='putaway'  AND level_id=#{id}
+    </select>
+    
+    <select id="queryCourseName"  parameterType="java.lang.Integer"  resultType="java.lang.String" >
+          SELECT  course_name  FROM    `lt_course` WHERE  language_id = #{id}   AND  status ='putaway'  limit 0,1
+    </select>
 </mapper>
