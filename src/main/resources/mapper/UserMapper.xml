@@ -87,7 +87,7 @@
             <if test="qqOpenid!=null and qqOpenid!=''">  qq_openid=#{qqOpenid},</if>
             <if test="wxOpenid!=null and wxOpenid!=''">  wx_openid=#{wxOpenid},</if>
             <if test="learningGoal!=null and learningGoal!=''">  learning_goal=#{learningGoal},</if>
-
+            update_time=now()
         </set>
         where
           id=#{id}
