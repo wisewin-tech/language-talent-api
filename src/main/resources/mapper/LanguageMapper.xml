@@ -58,7 +58,7 @@
 	`language`.discount_price languageDiscountPrice,
 	`language`.discount_start_time,
 	`language`.discount_end_time ,
-	`language`.thumbnail_image_url
+	`language`.ensign_image_url as thumbnailImageUrl
 
 FROM
 	lt_language `language`

@@ -763,8 +763,7 @@ public class UserController extends BaseCotroller {
         log.info("start===================com.wisewin.api.web.controller.UserController.queryCertificate==========");
         log.info("请求ip{}",request);
         //从cookie中获取他的user对象的id
-        UserBO user = new UserBO();//
-        // this.getLoginUser(request);
+        UserBO user = super.getLoginUser(request);
         log.info("从cookie中获取他的user对象的id");
         log.info("user,{}",user);
         //如果获取不到,参数异常
@@ -789,7 +788,7 @@ public class UserController extends BaseCotroller {
     @RequestMapping("/certificateDetails")
     public void certificateDetails(HttpServletResponse response, HttpServletRequest request,Integer languageId,Integer courseId)  {
         log.info("start=============certificateDetails==========");
-        UserBO user = this.getLoginUser(request);
+        UserBO user = super.getLoginUser(request);
 
         if (user == null) {
             log.info("user == null");
