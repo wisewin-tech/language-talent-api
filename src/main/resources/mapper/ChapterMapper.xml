@@ -18,7 +18,7 @@
         LEFT JOIN lt_course `course` ON `level`.course_id = course.id
         LEFT JOIN lt_language `language` ON course.language_id = `language`.id
         WHERE
-	        chapter.`status`='putaway' AND `level`.id = #{levelId}
+	        chapter.`status`='putaway' AND `level`.id = #{levelId} ORDER BY chapter.serial_number DESC
     </select>
     <!--查询某个级别下的课时数-->
     <select id="chapterNum" resultType="java.lang.Integer">
