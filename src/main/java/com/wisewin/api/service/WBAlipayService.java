@@ -242,6 +242,7 @@ public class WBAlipayService {
                 //传入课程id
                 model.setPassbackParams(passback_params);
             } catch (UnsupportedEncodingException e) {
+
                 e.printStackTrace();
             }
 
