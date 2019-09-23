@@ -122,4 +122,16 @@ public class CertificateService {
         return msg;
     }
 
+    /**
+     * 判断语言有没有证书
+     * @param languageId
+     * @param courseId
+     * @return
+     */
+    public boolean  isFicate(Integer languageId, Integer courseId) {
+        if(languageId==null){
+            languageId= certificateDAO.queryLanguageId(courseId);
+        }
+        return  certificateDAO.queryNot(languageId)>0;
+    }
 }

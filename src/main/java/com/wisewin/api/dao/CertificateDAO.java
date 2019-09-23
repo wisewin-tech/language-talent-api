@@ -56,4 +56,6 @@ public interface CertificateDAO {
     Integer queryChaperCount(Integer id);
 
     String queryCourseName(Integer id);
+
+    int queryNot(@Param("id") Integer id);
 }
