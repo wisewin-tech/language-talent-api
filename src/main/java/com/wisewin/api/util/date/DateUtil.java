@@ -4,6 +4,7 @@ package com.wisewin.api.util.date;
 import com.wisewin.api.entity.bo.SignBO;
 import com.wisewin.api.service.SignService;
 import com.wisewin.api.util.StringUtils;
+import com.wisewin.api.util.TimeUtil;
 
 import javax.annotation.Resource;
 import javax.xml.crypto.Data;
@@ -16,8 +17,18 @@ import java.util.*;
  */
 public class DateUtil {
 
-    @Resource
-    private SignService signService;
+    public static int getWeek(){
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(new Date());
+        int week=cal.get(Calendar.DAY_OF_WEEK)-1;
+        return week;
+    }
+
+
+    public static void main(String[] args){
+        System.out.println(getWeek());
+    }
+
     /**
      * String转换为date类型
      * yyyy-MM-dd HH:mm:ss
@@ -274,12 +285,18 @@ public class DateUtil {
         return sdf.format(data);
     }
 
-
-    public static void main(String[] args){
-        String weekStart = getWeekStart(new Date());
-        String end =getWeekEnd(new Date());
-        System.out.println(weekStart);
-        System.out.println(end);
+    public static String getLetEndTime() {
+        Date timeStart = TimeUtil.getTimeStart(-1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        return sdf.format(timeStart);
     }
+
+    public static String getLetStartTime() {
+        Date timeStart = TimeUtil.getTimeStart(-1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        return sdf.format(timeStart);
+    }
+
+
 
 }

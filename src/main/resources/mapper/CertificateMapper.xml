@@ -51,7 +51,7 @@ FROM lt_certificate,lt_course,lt_user WHERE lt_certificate.user_id = lt_user.id 
 
     <select id="queryCourseCer" parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.CourseCerBO"  >
         SELECT  id as courseId ,course_name as courseName  , certificate_intro as `describe`  , certificate_image_url as certificateIimage
-          FROM `lt_course` WHERE  language_id = #{id}   AND  status ='putaway'
+          FROM `lt_course` WHERE  language_id = #{id}   AND  status ='putaway'  AND  certificate_or_not='yes'
     </select>
 
     <select id="queryLevelCer"  parameterType="java.lang.Integer" resultType="com.wisewin.api.entity.bo.LevelCerBO"  >
@@ -70,5 +70,9 @@ FROM lt_certificate,lt_course,lt_user WHERE lt_certificate.user_id = lt_user.id 
     
     <select id="queryCourseName"  parameterType="java.lang.Integer"  resultType="java.lang.String" >
           SELECT  course_name  FROM    `lt_course` WHERE  language_id = #{id}   AND  status ='putaway'  limit 0,1
+    </select>
+
+    <select id="queryNot"  resultType="int"   >
+        SELECT COUNT(id) FROM `lt_course`  WHERE         certificate_or_not='yes'  AND  language_id=#{id}
     </select>
 </mapper>

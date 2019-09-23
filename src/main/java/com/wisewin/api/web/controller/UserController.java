@@ -789,7 +789,6 @@ public class UserController extends BaseCotroller {
     public void certificateDetails(HttpServletResponse response, HttpServletRequest request,Integer languageId,Integer courseId)  {
         log.info("start=============certificateDetails==========");
         UserBO user = super.getLoginUser(request);
-
         if (user == null) {
             log.info("user == null");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000021"));
@@ -803,7 +802,13 @@ public class UserController extends BaseCotroller {
             log.info("return{}",json);
             return;
         }
-
+        //没有证书的语言
+        if(!certificateService.isFicate(languageId, courseId)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000080"));
+            super.safeJsonPrint(response, json);
+            log.info("return{}",json);
+            return;
+        }
         CertificateMsgBO certificateMsgBO = certificateService.certificateDetails(languageId, courseId, user.getId());
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(certificateMsgBO));
         super.safeJsonPrint(response, json);

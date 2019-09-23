@@ -6,6 +6,7 @@ import com.wisewin.api.service.*;
 import com.wisewin.api.service.base.LogService;
 import com.wisewin.api.util.DateUtils;
 import com.wisewin.api.util.JsonUtils;
+import com.wisewin.api.util.TimeUtil;
 import com.wisewin.api.util.date.DateUtil;
 import com.wisewin.api.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
@@ -78,13 +79,24 @@ public class IndexController extends BaseCotroller {
 
             TodaySignOrNot todaySignOrNot = new TodaySignOrNot();
             int sign = signService.isSign(useId);
-            if(weekContinuousSigndays==null ||sign<1){
+
+            int week = DateUtil.getWeek();
+            if(weekContinuousSigndays==null ){ //重来没有签过
                 todaySignOrNot.setTodaySignOrNot("no");
                 weekContinuousSigndays = 0;
-            }else{
+            }else if(sign>0){  //今天签了
                 todaySignOrNot.setTodaySignOrNot("yes");
+                if(week==1){
+                       //今天是周一   返回签了一次
+                    weekContinuousSigndays = 1;
+                }
+            }else {  //今天没签
+               todaySignOrNot.setTodaySignOrNot("no");
+               int let = signService.isletSign(useId);
+               if(week==1 || let<1){ //今天是周一 或者昨天没有签到
+                    weekContinuousSigndays = 0;  //返回签了0天
+                }
             }
-
             logService.call("specialClassService.selectSpecialClassBO");
             List<SpecialClassBO> specialClassBOS = specialClassService.selectSpecialClassBO();
             logService.result(specialClassBOS);
