@@ -87,8 +87,9 @@ public class SignController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+        boolean i =signService.signIn(userId);
             //如果今天第一次签到
-        if ( signService.signIn(userId)){
+        if (i){
             log.info("如果今天第一次签到");
             log.info("进入signService.signIn(userId)");
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("恭喜你！签到成功！"));
