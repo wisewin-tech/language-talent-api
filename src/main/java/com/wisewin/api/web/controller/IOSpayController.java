@@ -146,7 +146,7 @@ public class IOSpayController extends BaseCotroller {
                         log.info("转换为咖豆{}",kd);
                         Map map =  new HashMap<String, Object>();
                         map.put("currency",kd);
-                        map.put("id",161);
+                        map.put("id",user.getId());
                         userDAO.updateUserAugment(map);
                         log.info("交易成功，新增并处理订单：{}",order);
                         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("支付成功"));
